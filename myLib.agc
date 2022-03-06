@@ -33,6 +33,10 @@ function SetSpriteMiddleScreenY(spr)
 	SetSpriteY(spr, h/2-GetSpriteHeight(spr)/2)
 endfunction
 
+function SetSpriteSizeSquare(spr, size)
+	SetSpriteSize(spr, size, size)
+endfunction
+
 Function Button(sprite) 
 if GetSpriteExists(sprite) = 0 then exitfunction 0	//Added in to make sure bad buttons aren't targeted
 returnValue = 0 `reset value for check
