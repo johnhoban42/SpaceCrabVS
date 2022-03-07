@@ -45,6 +45,7 @@ do
 	
     Print(ScreenFPS())
     Print(fpsr#)
+    Print(GetRawLastKey())
     Sync()
 loop
 
@@ -56,20 +57,59 @@ function CreateGame1()
 	
 	CreateSprite(crab1, LoadImage("crab77walk8.png"))
 	SetSpriteSize(crab1, 80, 50)
+	crab1Theta# = 270
 	DrawPolar1(crab1, planetSize/2 + GetSpriteHeight(crab1)/3, crab1Theta#)
 endfunction
 
 function DoGame1()
 	
 	//The movement code
-	inc crab1Theta#, 1 //*fpsr# //Need to figure out why FPSR modifier isn't working
+	inc crab1Theta#, crab1Vel# * crab1Dir# * fpsr# //Need to figure out why FPSR modifier isn't working
+	
+	//Activating the crab turn at an input
+	if (GetPointerPressed() and (GetPointerY() > GetSpriteY(split) + GetSpriteHeight(split))) or (GetRawKeyPressed(32))
+		if crab1Turning = 0
+			if crab1Dir# > 0
+				crab1Turning = -1
+			else
+				crab1Turning = 1
+			endif
+		else
+			//Changing the direction in case it's already turning
+			crab1Turning = -1*crab1Turning
+		endif
+		
+	endif
+	
+	//Enacting the crab turn while activated
+	if crab1Turning <> 0 then TurnCrab1(crab1Turning)
 	
 	//Making sure the crab is using proper rotation numbers
 	if crab1Theta# > 360 then inc crab1Theta#, -360
 	if crab1Theta# < 0 then inc crab1Theta#, 360
 	
+	//This cancels out the weird issue where the integer is sometimes infinity
+	if crab1Theta# > 10000000 then crab1Theta# = 270
+	
 	//The visual update code
 	DrawPolar1(crab1, planetSize/2 + GetSpriteHeight(crab1)/3, crab1Theta#)
+	
+
+	
+endfunction
+
+function TurnCrab1(dir)
+	
+	//Accelerating the crab in the specified direction
+	inc crab1Dir#, dir * crab1Accel# * fpsr#
+	
+	//Checking if the crab is at it's maximum velocity, stopping and capping if it is
+	if Abs(crab1Dir#) > Abs(dir)
+		crab1Dir# = dir
+		crab1Turning = 0
+	endif
+		
+		
 	
 endfunction
 

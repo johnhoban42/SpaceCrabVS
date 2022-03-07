@@ -16,6 +16,10 @@ crab2 - The top crab, independent of it's costume
 #constant planetSize 220
 
 global crab1Theta# = 270
+global crab1Dir# = 1		//Crab dir is a float that goes from 1 to -1, it multiplies the speed
+global crab1Vel# = 1.2
+global crab1Accel# = .18
+global crab1Turning = 0 	//Is zero for when the crab isn't turning, and 1 or -1 depending on the direction it is CHANGING TO
 
 //Sprite Indexes
 #constant crab1 1
