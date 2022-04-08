@@ -9,11 +9,18 @@ split - The middle screen bar
 crab1 - The bottom crab, independent of it's costume
 crab2 - The top crab, independent of it's costume
 
+Depth List:
+
+Asteroid belt - 10
+Meteors - 20
+Behind image for fast meteors - 30
 
 */
 
 //Gameplay constants & variables
 #constant planetSize 220
+#constant metSizeX 50
+#constant metSizeY 70
 
 global crab1Theta# = 270
 global crab1Dir# = 1		//Crab dir is a float that goes from 1 to -1, it multiplies the speed
@@ -29,6 +36,7 @@ global meteorSprNum = 1001
 //Meteor type, countdown, game screen
 global met1CD1# = 300
 global met2CD1# = 400
+global met3CD1# = 400
 
 //Sprite Indexes
 #constant crab1 1

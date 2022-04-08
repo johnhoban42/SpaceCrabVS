@@ -65,8 +65,8 @@ function CreateGame1()
 	SetSpriteShape(planet1, 1)
 	DrawPolar1(planet1, 0, 270)
 	
-	CreateSprite(crab1, LoadImage("crab77walk8.png"))
-	SetSpriteSize(crab1, 80, 50)
+	CreateSprite(crab1, LoadImage("crab0walk1.png"))
+	SetSpriteSize(crab1, 64, 40)
 	crab1Theta# = 270
 	DrawPolar1(crab1, planetSize/2 + GetSpriteHeight(crab1)/3, crab1Theta#)
 endfunction
@@ -105,27 +105,27 @@ function DoGame1()
 	DrawPolar1(crab1, planetSize/2 + GetSpriteHeight(crab1)/3, crab1Theta#)
 	
 	newMet as meteor
-	
+	newMet.cat = 0
 	inc met1CD1#, -1 * fpsr#
+	inc met2CD1#, -1 * fpsr#
+	inc met3CD1#, -1 * fpsr#
+	
 	if met1CD1# < 0
 		met1CD1# = Random(250, 350)
 		newMet.theta = Random(1, 360)
 		newMet.r = 500
 		newMet.spr = meteorSprNum
 		newMet.cat = 1
-		
-		
+				
 		CreateSprite(meteorSprNum, 0)
-		SetSpriteSize(meteorSprNum, 20, 20)
-		
-		
+		SetSpriteSize(meteorSprNum, metSizeX, metSizeY)
+		SetSpriteColor(meteorSprNum, 255, 120, 40, 255)
+		SetSpriteDepth(meteorSprNum, 20)
 		inc meteorSprNum, 1
-		
-		
-		meteorQueue1.insert(newMet)
+		meteorActive1.insert(newMet)
 	endif
 	
-	inc met2CD1#, -1 * fpsr#
+	
 	if met2CD1# < 0
 		met2CD1# = Random(350, 450)
 		newMet.theta = Random(1, 360)
@@ -134,13 +134,45 @@ function DoGame1()
 		newMet.cat = 2
 		
 		CreateSprite(meteorSprNum, 0)
-		SetSpriteSize(meteorSprNum, 20, 20)
+		SetSpriteSize(meteorSprNum, metSizeX, metSizeY)
+		SetSpriteColor(meteorSprNum, 150, 40, 150, 255)
+		SetSpriteDepth(meteorSprNum, 20)
 		inc meteorSprNum, 1
 		
-		meteorQueue1.insert(newMet)
+		meteorActive1.insert(newMet)
 	endif
 	
-	Print(meteorActive1.length)
+	if met3CD1# < 0
+		met3CD1# = Random(450, 650)
+		newMet.theta = Random(1, 360)
+		newMet.r = 5000
+		newMet.spr = meteorSprNum
+		newMet.cat = 3
+		
+		CreateSprite(meteorSprNum, 0)
+		SetSpriteSize(meteorSprNum, metSizeX, metSizeY)
+		SetSpriteColor(meteorSprNum, 235, 20, 20, 255)
+		SetSpriteDepth(meteorSprNum, 20)
+		
+		CreateSprite(meteorSprNum + 10000, 0)
+		SetSpriteSize(meteorSprNum + 10000, 1, 1000)
+		SetSpriteColor(meteorSprNum + 10000, 255, 20, 20, 30)
+		SetSpriteDepth(meteorSprNum + 10000, 30)
+		
+		inc meteorSprNum, 1
+		
+		meteorActive1.insert(newMet)
+	endif
+		
+	UpdateMeteor1()
+	
+	
+endfunction
+
+/*
+THE GRAVEYARD OF THE METEOR QUEUE
+
+	meteorQueue1.insert(newMet)
 
 	if meteorQueue1.length > 0
 		
@@ -149,11 +181,8 @@ function DoGame1()
 		meteorQueue1.remove(1)
 		
 	endif
-	
-	UpdateMeteor1()
-	
-	
-endfunction
+
+*/
 
 function TurnCrab1(dir)
 	
@@ -189,6 +218,30 @@ function UpdateMeteor1()
 		elseif cat = 2	//Rotating meteor
 			meteorActive1[i].r = meteorActive1[i].r - 2*fpsr#
 			meteorActive1[i].theta = meteorActive1[i].theta + 1*fpsr#
+			
+		elseif cat = 3	//Fast meteor
+			meteorActive1[i].r = meteorActive1[i].r - 17*fpsr#
+			
+			ospr = spr + 10000 //Other sprite (is the box)
+			SetSpriteSize(ospr, GetSpriteWidth(spr)*(5000-meteorActive1[i].r)/5000.0, GetSpriteHeight(ospr))
+			SetSpriteColorAlpha(ospr, 150*(5000-meteorActive1[i].r)/5000.0)
+			DrawPolar1(ospr, GetSpriteHeight(ospr)/2, meteorActive1[i].theta)
+			
+			//The lazy but working way of how the warning light doesn't go too high
+			if GetSpriteCollision(ospr, split)
+				while GetSpriteCollision(ospr, split)
+					SetSpriteSize(ospr, GetSpriteWidth(ospr), GetSpriteHeight(ospr)-1)
+					DrawPolar1(ospr, GetSpriteHeight(ospr)/2, meteorActive1[i].theta)
+				endwhile
+				SetSpriteSize(ospr, GetSpriteWidth(ospr), GetSpriteHeight(ospr)+40)
+				DrawPolar1(ospr, GetSpriteHeight(ospr)/2, meteorActive1[i].theta)
+			endif
+			
+			//SC2 code for reference
+			//SetSpriteSize(220+i, GetSpriteWidth(120+i)*(10000.0-fMet[i,2])/10000.0, 6000)
+			//SetSpriteColorAlpha(220+i, 150*(10000.0-fMet[i,2])/10000.0)
+			//DrawPolar(220+i, 3000, fMet[i,3], GetSpriteWidth(220+i), GetSpriteHeight(220+i))
+			
 		endif
 				
 		DrawPolar1(spr, meteorActive1[i].r, meteorActive1[i].theta)
@@ -202,6 +255,7 @@ function UpdateMeteor1()
 	
 		if GetSpriteCollision(spr, planet1)
 			DeleteSprite(spr)
+			if meteorActive1[i].cat = 3 then DeleteSprite(spr + 10000)
 			//Meteor explosion goes here
 			deleted = i
 		endif
