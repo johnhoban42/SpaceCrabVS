@@ -28,8 +28,16 @@ global crab1Vel# = 1.28
 global crab1Accel# = .1	//Is .1 because it takes 2 to reach full reversal, and original game timer was 20
 global crab1Turning = 0 	//Is zero for when the crab isn't turning, and 1 or -1 depending on the direction it is CHANGING TO
 
+global crab2Theta# = 270 // Same constants for crab 2
+global crab2Dir# = 1
+global crab2Vel# = 1.28
+global crab2Accel# = .1
+global crab2Turning = 0
+
 global meteorQueue1 as meteor[0]
+global meteorQueue2 as meteor[0]
 global meteorActive1 as meteor[0]
+global meteorActive2 as meteor[0]
 
 global meteorSprNum = 1001
 
@@ -37,6 +45,10 @@ global meteorSprNum = 1001
 global met1CD1# = 300
 global met2CD1# = 400
 global met3CD1# = 400
+
+global met1CD2# = 300
+global met2CD2# = 400
+global met3CD2# = 400
 
 //Sprite Indexes
 #constant crab1 1
