@@ -53,6 +53,7 @@ do
 	
 	DoGame1()
 	DoGame2()
+	UpdateExp()
 	
     Print(ScreenFPS())
     Print(fpsr#)
@@ -75,3 +76,4 @@ THE GRAVEYARD OF THE METEOR QUEUE
 	endif
 
 */
+

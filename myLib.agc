@@ -69,6 +69,14 @@ function IncSpriteYFloat(spr, amt#)
 	SetSpriteY(spr, GetSpriteY(spr)+amt#)
 endfunction
 
+function IncSpritePosition(spr, amtX#, amtY#)
+	SetSpritePosition(spr, GetSpriteX(spr)+amtX#, GetSpriteY(spr)+amtY#)
+endfunction
+
+function IncSpriteAngle(spr, amt#)
+	SetSpriteAngle(spr, GetSpriteAngle(spr) + amt#)
+endfunction
+
 function GlideToSpot(spr, x, y, denom)
 	
 	SetSpritePosition(spr, (((GetSpriteX(spr)-x)*((denom-1)^fpsr#))/(denom)^fpsr#)+x, (((GetSpriteY(spr)-y)*((denom-1)^fpsr#))/(denom)^fpsr#)+y)
@@ -80,6 +88,10 @@ endfunction
 
 function GlideToY(spr, y, denom)
 	SetSpriteY(spr, (((GetSpriteY(spr)-y)*((denom-1)^fpsr#))/(denom)^fpsr#)+y)
+endfunction
+
+function GlideToWidth(spr, wid, denom)
+	SetSpriteSize(spr, (((GetSpriteWidth(spr)-wid)*((denom-1)^fpsr#))/(denom)^fpsr#)+wid, GetSpriteHeight(spr))
 endfunction
 
 function GlideTextToSpot(txt, x, y, denom)
