@@ -31,7 +31,12 @@ global crab1Turning = 0 	//Is zero for when the crab isn't turning, and 1 or -1 
 global meteorQueue1 as meteor[0]
 global meteorActive1 as meteor[0]
 
+global expTotal1 = 0
+global specialCost1 = 100
+
 global meteorSprNum = 1001
+global expSprNum = 2001
+global expList as Integer[0]
 
 //Meteor type, countdown, game screen
 global met1CD1# = 300
@@ -46,6 +51,15 @@ global met3CD1# = 400
 #constant planet1 101
 #constant planet2 102
 
+#constant expBar1 111
+#constant expHolder1 112
+#constant meteorButton1 113
+#constant specialButton1 114
+
+#constant expBar2 121
+#constant expHolder2 122
+#constant meteorButton2 123
+#constant specialButton2 124
 
 //Image Indexes
 #constant planetIRandStart 50
@@ -57,6 +71,14 @@ global met3CD1# = 400
 #constant planetVar6I 56
 #constant planetVar7I 57
 #constant planetVar8I 58
+
+#constant expOrbI 60
+#constant expBarI1 61
+#constant expBarI2 62
+#constant expBarI3 63
+#constant expBarI4 64
+#constant expBarI5 65
+#constant expBarI6 66
 
 type meteor
 	
@@ -87,4 +109,14 @@ function LoadBaseImages()
 	LoadImage(planetVar8I, "planet1alt8.png")
 	
 	SetFolder("/media")
+	
+	LoadImage(expOrbI, "exp.png")
+	LoadImage(expBarI1, "expBar1.png")
+	LoadImage(expBarI2, "expBar2.png")
+	LoadImage(expBarI3, "expBar3.png")
+	LoadImage(expBarI4, "expBar4.png")
+	LoadImage(expBarI5, "expBar5.png")
+	LoadImage(expBarI6, "expBar6.png")
+	
+	
 endfunction

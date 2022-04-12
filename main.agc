@@ -50,6 +50,8 @@ do
 	inc gameTime#, fpsr#
 	
 	DoGame1()
+	//DoGame2()
+	UpdateExp()
 	
     Print(ScreenFPS())
     Print(fpsr#)
@@ -69,6 +71,25 @@ function CreateGame1()
 	SetSpriteSize(crab1, 64, 40)
 	crab1Theta# = 270
 	DrawPolar1(crab1, planetSize/2 + GetSpriteHeight(crab1)/3, crab1Theta#)
+	
+	CreateSprite(expHolder1, 0)
+	SetSpriteSize(expHolder1, w - 60, 40)
+	SetSpritePosition(expHolder1, 30, h-50)
+	SetSpriteColor(expHolder1, 150, 150, 150, 200)
+	
+	CreateSprite(expBar1, 0)
+	SetSpriteSize(expBar1, 0, 26)
+	SetSpritePosition(expBar1, GetSpriteX(expHolder1) + 10, GetSpriteY(expHolder1) + 7)
+	SetSpriteColor(expBar1, 255, 160, 0, 255)
+	AddSpriteAnimationFrame(expBar1, expBarI1)
+	AddSpriteAnimationFrame(expBar1, expBarI2)
+	AddSpriteAnimationFrame(expBar1, expBarI3)
+	AddSpriteAnimationFrame(expBar1, expBarI4)
+	AddSpriteAnimationFrame(expBar1, expBarI5)
+	AddSpriteAnimationFrame(expBar1, expBarI6)
+	//Current EXP bar animation is a temp one, this is just the framework
+	PlaySprite(expBar1, 20, 1, 1, 6)
+	
 endfunction
 
 function DoGame1()
@@ -253,7 +274,8 @@ function UpdateMeteor1()
 		endif
 		
 	
-		if GetSpriteCollision(spr, planet1)
+		if GetSpriteCollision(spr, planet1) and deleted = 0	
+			CreateExp(spr, meteorActive1[i].cat)
 			DeleteSprite(spr)
 			if meteorActive1[i].cat = 3 then DeleteSprite(spr + 10000)
 			//Meteor explosion goes here
@@ -264,7 +286,6 @@ function UpdateMeteor1()
 	
 	if deleted > 0
 		meteorActive1.remove(deleted)
-		
 	endif
 	
 	
@@ -279,6 +300,87 @@ endfunction
 
 function DoGame2()
 	
+	
+endfunction
+
+function CreateExp(metSpr, metType)
+	iEnd = 3 //The default experience amount, for regular meteors
+	if metType = 2 then iEnd = 4
+	if metType = 3 then iEnd = 5
+	
+	for i = 1 to iEnd
+		CreateSprite(expSprNum, expOrbI)
+		SetSpriteSize(expSprNum, 16, 16)
+		SetSpritePosition(expSprNum, GetSpriteMiddleX(metSpr) - GetSpriteWidth(expSprNum)/2, GetSpriteMiddleY(metSpr) - GetSpriteHeight(expSprNum)/2)
+		SetSpriteColor(expSprNum, 255, 255, 0, 5)
+		SetSpriteAngle(expSprNum, Random(1, 360))
+		
+		expList.insert(expSprNum)
+		inc expSprNum
+	next i
+	
+endfunction
+
+function UpdateExp()
+	
+	deleted = 0
+	
+	for i = 1 to expList.Length
+		spr = expList[i]
+		
+		IncSpriteAngle(spr, 20*fpsr#)
+		
+		alpha = GetSpriteColorAlpha(spr)
+		if alpha < 255
+			IncSpritePosition(spr, (255-alpha)/18*fpsr#*cos(GetSpriteAngle(spr)), (255-alpha)/18*fpsr#*sin(GetSpriteAngle(spr)))
+			
+			SetSpriteColorAlpha(spr, GetSpriteColorAlpha(spr) + 10)
+		endif
+			
+		//Collision for the first crab, second crab will go in another if statement
+		dis1 = GetSpriteDistance(spr, crab1)
+		if GetSpriteDistance(spr, crab1) < 40
+			IncSpritePosition(spr, -(0-(GetSpriteMiddleX(crab1)-GetSpriteX(spr)))/4.0*fpsr#, -(0-(GetSpriteMiddleY(crab1)-GetSpriteY(spr)))/4.0*fpsr#)
+			//GlideToSpot(spr, GetSpriteMiddleX(crab1), GetSpriteMiddleY(crab1), 5)
+			//Either gliding method above works, I like the way the one on top looks more
+			
+			//Visual Indicator
+			if GetSpriteColorGreen(spr) > 90
+				SetSpriteColorGreen(spr, GetSpriteColorGreen(spr) - 40*fpsr#)
+			endif
+						
+			
+			if GetSpriteCollision(spr, crab1) and deleted = 0
+				deleted = i
+				DeleteSprite(spr)
+				
+				if expTotal1 < specialCost1
+					inc expTotal1, 1
+					if expTotal1 = specialCost1
+						SetSpriteColor(expBar1, 255, 210, 50, 255)
+						PlaySprite(expBar1, 30, 1, 1, 6)	//Faster than when it's not filled
+						//Base color: SetSpriteColor(expBar1, 255, 160, 0, 255)
+					endif
+				endif
+				
+				//This is for instant bar size adjustment
+				//SetSpriteSize(expBar1, (GetSpriteWidth(expHolder1)-20)*(1.0*expTotal1/specialCost1), 26)
+				
+				//Add to the exp bar here
+				//Todo: Sound effect
+			endif
+			
+			GlideToWidth(expBar1, (GetSpriteWidth(expHolder1)-20)*(1.0*expTotal1/specialCost1), 2)
+			
+		endif
+		
+	next i
+	
+	if deleted > 0
+		expList.remove(deleted)
+		
+	endif
+
 	
 endfunction
 

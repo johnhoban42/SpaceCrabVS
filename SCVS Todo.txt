@@ -1,0 +1,16 @@
+Gameplay:
+-EXP Bar, fills up smoothly, marker for sending one meteor
+-Button placement & functionality for meteor sender
+-Button placement for special attack
+-6 Special attack functionalities:
+    -Space Crab - Meteor Storm (lots of fast meteors)
+    -Ladder Wizard - _ (A few rows of normals)
+    -Rave Crab - Blinding Party
+    -Top Crab - Spinning Curse
+    -Cartography Crab - Planet Discovery
+    -Ninja Crab - Shuriken Strike
+-7 difficulty levels, only effects timing of meteors
+-Gate 2 harder meteor types until a certain amount of game time has passed
+
+Done:
+-EXP Bar animation, goes faster when it's fully filled up
