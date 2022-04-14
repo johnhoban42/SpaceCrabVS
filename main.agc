@@ -2,6 +2,7 @@
 #include "constants.agc"
 #include "game1.agc"
 #include "game2.agc"
+#include "startScreen.agc"
 
 // Project: SpaceCrabVS 
 // Created: 22-03-03
@@ -41,6 +42,8 @@ SetSpriteSize(split, w*1.5, 80)
 SetSpriteMiddleScreenX(split)
 SetSpriteMiddleScreenY(split)
 
+appState = GAME
+
 CreateGame1()
 CreateGame2()
 gameTime# = 0
@@ -51,9 +54,17 @@ do
 	if gameTime# > 10000000 then gameTime# = 0
 	inc gameTime#, fpsr#
 	
-	DoGame1()
-	DoGame2()
-	UpdateExp()
+	if appState = START_SCREEN
+		start = DoStartScreen()
+	elseif appState = CHARACTER_SELECT
+		// state = DoCharacterSelect()
+	elseif appState = GAME
+		DoGame1()
+		DoGame2()
+		UpdateExp()
+	elseif appState = RESULTS
+		// appState = DoResults()
+	endif
 	
     Print(ScreenFPS())
     Print(fpsr#)
