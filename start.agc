@@ -2,43 +2,41 @@
 
 
 // Whether this state has been initialized
-state_initialized as integer = 0
+global startStateInitialized as integer = 0
 
 
 // Initialize the start screen
 // Does nothing right now, just a placeholder
-function initStartScreen()
+function InitStart()
 	
-	state_initialized = 1
+	startStateInitialized = 1
 	
 endfunction
 
 
 // Start screen execution loop
 // Each time this loop exits, return the next state to enter into
-function DoStartScreen()
-	
-	state_initialized = 0
+function DoStart()
 	
 	// Initialize if we haven't done so
 	// Don't write anything before this!
-	if state_initialized = 0
-		initStartScreen()
+	if startStateInitialized = 0
+		InitStart()
 	endif
-	state = START_SCREEN
+	state = START
 	
 	// If we are leaving the state, exit appropriately
 	// Don't write anything after this!
-	if state <> START_SCREEN
-		ExitStartScreen()
+	if state <> START
+		ExitStart()
 	endif
 	
 endfunction state
 
 
 // Cleanup upon leaving this state
-function ExitStartScreen()
+function ExitStart()
 	
-	state_initialized = 0
+	startStateInitialized = 0
 	
 endfunction

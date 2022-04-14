@@ -23,6 +23,9 @@ endfunction
 
 function DoGame2()
 	
+	// Start the game loop in the GAME state
+	state = GAME
+	
 	//The movement code
 	inc crab2Theta#, crab2Vel# * crab2Dir# * fpsr# //Need to figure out why FPSR modifier isn't working
 	
@@ -116,7 +119,7 @@ function DoGame2()
 		
 	UpdateMeteor2()
 	
-endfunction
+endfunction state
 
 function TurnCrab2(dir)
 	
