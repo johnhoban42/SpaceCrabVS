@@ -21,7 +21,7 @@ function InitGame()
 endfunction
 
 
-// Start screen execution loop
+// Game execution loop
 // Each time this loop exits, return the next state to enter into
 function DoGame()
 
