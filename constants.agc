@@ -92,6 +92,13 @@ global met3CD2# = 400
 #constant expBarI5 65
 #constant expBarI6 66
 
+// Game states
+#constant START 0
+#constant CHARACTER_SELECT 1
+#constant GAME 2
+#constant PAUSE 3
+#constant RESULTS 4
+
 type meteor
 	
 	spr as integer
