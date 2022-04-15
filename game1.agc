@@ -21,8 +21,9 @@ function CreateGame1()
 	DrawPolar1(crab1, planetSize/2 + GetSpriteHeight(crab1)/3, crab1Theta#)
 	
 	CreateSprite(expHolder1, 0)
-	SetSpriteSize(expHolder1, w - 60, 40)
-	SetSpritePosition(expHolder1, 30, h-50)
+	SetSpriteSize(expHolder1, w - 230, 40)
+	SetSpriteMiddleScreenX(expHolder1)
+	SetSpriteY(expHolder1, h-50)
 	SetSpriteColor(expHolder1, 150, 150, 150, 200)
 
 	CreateSprite(expBar1, 0)
@@ -37,6 +38,13 @@ function CreateGame1()
 	AddSpriteAnimationFrame(expBar1, expBarI6)
 	//Current EXP bar animation is a temp one, this is just the framework
 	PlaySprite(expBar1, 20, 1, 1, 6)
+	
+	CreateSprite(meteorButton1, 0)
+	SetSpriteSize(meteorButton1, 90, 90)
+	SetSpritePosition(meteorButton1, GetSpriteX(expHolder1)-10-GetSpriteWidth(meteorButton1), h-10-GetSpriteHeight(meteorButton1))
+	//Might want to make the Y based on the sxp bar holder instead of the screen height
+
+	// specialButton1 115
 	
 endfunction
 
@@ -199,7 +207,6 @@ function UpdateMeteor1()
 		endif
 				
 		DrawPolar1(spr, meteorActive1[i].r, meteorActive1[i].theta)
-		//This below might be unneccisary
 		if GetSpriteY(spr) > h/2
 			SetSpriteColorAlpha(spr, 255)
 		else
@@ -302,4 +309,20 @@ function UpdateExp()
 
 	endif
 
+endfunction
+
+function SendMeteorFrom1()
+	newMet as meteor
+	
+	newMet.theta = Random(1, 360)
+	newMet.r = 500
+	newMet.spr = meteorSprNum
+	newMet.cat = 1
+			
+	CreateSprite(meteorSprNum, 0)
+	SetSpriteSize(meteorSprNum, metSizeX, metSizeY)
+	SetSpriteColor(meteorSprNum, 255, 120, 40, 255)
+	SetSpriteDepth(meteorSprNum, 20)
+	inc meteorSprNum, 1
+	meteorActive1.insert(newMet)
 endfunction

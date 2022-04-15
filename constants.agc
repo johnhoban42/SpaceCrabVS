@@ -40,7 +40,8 @@ global meteorActive1 as meteor[0]
 global meteorActive2 as meteor[0]
 
 global expTotal1 = 0
-global specialCost1 = 100
+global meteorCost1 = 15
+global specialCost1 = 20
 
 global meteorSprNum = 1001
 global expSprNum = 2001
@@ -66,7 +67,8 @@ global met3CD2# = 400
 #constant expBar1 111
 #constant expHolder1 112
 #constant meteorButton1 113
-#constant specialButton1 114
+#constant meteorMarker1 114
+#constant specialButton1 115
 
 #constant expBar2 121
 #constant expHolder2 122

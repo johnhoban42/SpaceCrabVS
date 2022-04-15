@@ -180,7 +180,6 @@ function UpdateMeteor2()
 		endif
 				
 		DrawPolar2(spr, meteorActive2[i].r, meteorActive2[i].theta)
-		//This below might be unneccisary
 		if GetSpriteY(spr) < h/2
 			SetSpriteColorAlpha(spr, 255)
 		else
