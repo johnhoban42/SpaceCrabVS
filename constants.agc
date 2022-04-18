@@ -12,6 +12,9 @@ crab2 - The top crab, independent of it's costume
 Depth List:
 
 Asteroid belt - 10
+Meteor Marker -14
+Exp Bar - 16
+Exp Bar Holder - 18
 Meteors - 20
 Behind image for fast meteors - 30
 
@@ -21,6 +24,8 @@ Behind image for fast meteors - 30
 #constant planetSize 220
 #constant metSizeX 50
 #constant metSizeY 70
+
+global gameTimer# = 0
 
 global crab1Theta# = 270
 global crab1Dir# = 1		//Crab dir is a float that goes from 1 to -1, it multiplies the speed
@@ -34,13 +39,19 @@ global crab2Vel# = 1.28
 global crab2Accel# = .1
 global crab2Turning = 0
 
-global meteorQueue1 as meteor[0]
-global meteorQueue2 as meteor[0]
+global gameDifficulty1 = 1
+global gameDifficulty2 = 1
+
+global meteorTotal1 = 0
+global meteorTotal2 = 0
+
+//global meteorQueue1 as meteor[0]
+//global meteorQueue2 as meteor[0]
 global meteorActive1 as meteor[0]
 global meteorActive2 as meteor[0]
 
 global expTotal1 = 0
-global meteorCost1 = 15
+global meteorCost1 = 5
 global specialCost1 = 20
 
 global meteorSprNum = 1001
@@ -73,7 +84,8 @@ global met3CD2# = 400
 #constant expBar2 121
 #constant expHolder2 122
 #constant meteorButton2 123
-#constant specialButton2 124
+#constant meteorMarker2 124
+#constant specialButton2 125
 
 //Image Indexes
 #constant planetIRandStart 50

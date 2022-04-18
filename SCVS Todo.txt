@@ -1,8 +1,7 @@
 Gameplay:
--Button placement & functionality for meteor sender, EXP bar marker for sending one meteor
 -Button placement for special attack
--7 difficulty levels, only effects timing of meteors
--Gate 2 harder meteor types until a certain amount of game time has passed
+-Progressive coloring for EXP bar? Dependent on percentage filled?
+-Show planets as lives system, can be added & centered dynamically
 -6 Special attack functionalities:
     -Space Crab - Meteor Storm (lots of fast meteors)
     -Ladder Wizard - ____ (A few rows of normals)
@@ -11,6 +10,13 @@ Gameplay:
     -Cartography Crab - Planet Discovery
     -Ninja Crab - Shuriken Strike
 
+Sprite attatchment:
+-Meteor animation/sizing
+-Crab animation
+
 Done:
--EXP Bar, fills up smoothly, 
+-EXP Bar, fills up smoothly
 -EXP Bar animation, goes faster when it's fully filled up
+-Button placement & functionality for meteor sender, EXP bar marker for sending one meteor
+-7 difficulty levels, only effects timing of meteors
+-Gate 2 harder meteor types until a certain amount of game time has passed

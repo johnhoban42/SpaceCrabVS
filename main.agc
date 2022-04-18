@@ -12,7 +12,7 @@ SetErrorMode(2)
 
 // set window properties
 SetWindowTitle( "SpaceCrabVS" )
-SetWindowSize( 800, 1600, 0 )
+SetWindowSize( 700, 1400, 0 )
 SetWindowAllowResize( 1 ) // allow the user to resize the window
 
 #constant w 800
@@ -49,6 +49,7 @@ do
 	fpsr# = 60.0/ScreenFPS()
 	
 	if gameTime# > 10000000 then gameTime# = 0
+	if gameTimer# > 1000000000 then gameTimer# = 0
 	inc gameTime#, fpsr#
 	
 	if appState = START
@@ -64,7 +65,8 @@ do
     Print(ScreenFPS())
     Print(fpsr#)
     Print(GetRawLastKey())
-    Print(gameTime#)
+    Print(meteorTotal1)
+    Print(gameDifficulty1)
     Sync()
 loop
 

@@ -2,11 +2,13 @@
 #include "constants.agc"
 
 function DrawPolar2(spr, rNum, theta#)
-	cenX = w/2
-	cenY = h/4 - GetSpriteHeight(split)/4
-	SetSpritePosition(spr, rNum*cos(theta#) + cenX - GetSpriteWidth(spr)/2, rNum*sin(theta#) + cenY - GetSpriteHeight(spr)/2)
-	SetSpriteAngle(spr, theta#+90)
-	//if spriteNum >= 111 and spriteNum <= 120 then SetSpriteAngle(spriteNum, theta#+45)
+	if GetSpriteExists(spr)
+		cenX = w/2
+		cenY = h/4 - GetSpriteHeight(split)/4
+		SetSpritePosition(spr, rNum*cos(theta#) + cenX - GetSpriteWidth(spr)/2, rNum*sin(theta#) + cenY - GetSpriteHeight(spr)/2)
+		SetSpriteAngle(spr, theta#+90)
+		//if spriteNum >= 111 and spriteNum <= 120 then SetSpriteAngle(spriteNum, theta#+45)
+	endif
 endfunction
 
 function CreateGame2()
@@ -30,7 +32,7 @@ function DoGame2()
 	inc crab2Theta#, crab2Vel# * crab2Dir# * fpsr# //Need to figure out why FPSR modifier isn't working
 	
 	//Activating the crab turn at an input
-	if (GetPointerPressed() and (GetPointerY() < GetSpriteY(split) - GetSpriteHeight(split))) or (GetRawKeyPressed(32) or GetRawKeyPressed(50))
+	if (GetPointerPressed() and (GetPointerY() < GetSpriteY(split))) or (GetRawKeyPressed(32) or GetRawKeyPressed(50))
 		if crab2Turning = 0
 			if crab2Dir# > 0
 				crab2Turning = -1
@@ -66,7 +68,7 @@ function DoGame2()
 	if met1CD2# < 0
 		met1CD2# = Random(250, 350)
 		newMet.theta = Random(1, 360)
-		newMet.r = 500
+		newMet.r = 600
 		newMet.spr = meteorSprNum
 		newMet.cat = 1
 				
@@ -82,7 +84,7 @@ function DoGame2()
 	if met2CD2# < 0
 		met2CD2# = Random(350, 450)
 		newMet.theta = Random(1, 360)
-		newMet.r = 500
+		newMet.r = 600
 		newMet.spr = meteorSprNum
 		newMet.cat = 2
 		
@@ -180,7 +182,7 @@ function UpdateMeteor2()
 		endif
 				
 		DrawPolar2(spr, meteorActive2[i].r, meteorActive2[i].theta)
-		if GetSpriteY(spr) < h/2
+		if GetSpriteY(spr) < h/2 - GetSpriteHeight(spr)/2
 			SetSpriteColorAlpha(spr, 255)
 		else
 			SetSpriteColorAlpha(spr, 0)

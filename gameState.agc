@@ -16,6 +16,12 @@ function InitGame()
 	
 	CreateGame1()
 	CreateGame2()
+	gameTimer# = 0
+	gameDifficulty1 = 1
+	gameDifficulty2 = 1
+	meteorTotal1 = 0
+	meteorTotal2 = 0
+	
 	gameStateInitialized = 1
 	
 endfunction
@@ -36,6 +42,8 @@ function DoGame()
 	state1 = DoGame1()
 	state2 = DoGame2()
 	UpdateExp()
+	inc gameTimer#, fpsr#
+
 	
 	// Check for state updates (pausing, losing). Sorry Player 2, Player 1 gets checked first.
 	if state1 <> GAME

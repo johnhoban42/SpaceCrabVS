@@ -2,11 +2,13 @@
 #include "constants.agc"
 
 function DrawPolar1(spr, rNum, theta#)
-	cenX = w/2
-	cenY = h*3/4 + GetSpriteHeight(split)/4
-	SetSpritePosition(spr, rNum*cos(theta#) + cenX - GetSpriteWidth(spr)/2, rNum*sin(theta#) + cenY - GetSpriteHeight(spr)/2)
-	SetSpriteAngle(spr, theta#+90)
-	//if spriteNum >= 111 and spriteNum <= 120 then SetSpriteAngle(spriteNum, theta#+45)
+	if GetSpriteExists(spr)
+		cenX = w/2
+		cenY = h*3/4 + GetSpriteHeight(split)/4
+		SetSpritePosition(spr, rNum*cos(theta#) + cenX - GetSpriteWidth(spr)/2, rNum*sin(theta#) + cenY - GetSpriteHeight(spr)/2)
+		SetSpriteAngle(spr, theta#+90)
+		//if spriteNum >= 111 and spriteNum <= 120 then SetSpriteAngle(spriteNum, theta#+45)
+	endif
 endfunction
 
 function CreateGame1()
@@ -24,11 +26,13 @@ function CreateGame1()
 	SetSpriteSize(expHolder1, w - 230, 40)
 	SetSpriteMiddleScreenX(expHolder1)
 	SetSpriteY(expHolder1, h-50)
+	SetSpriteDepth(expHolder1, 18)
 	SetSpriteColor(expHolder1, 150, 150, 150, 200)
 
 	CreateSprite(expBar1, 0)
 	SetSpriteSize(expBar1, 0, 26)
 	SetSpritePosition(expBar1, GetSpriteX(expHolder1) + 10, GetSpriteY(expHolder1) + 7)
+	SetSpriteDepth(expBar1, 18)
 	SetSpriteColor(expBar1, 255, 160, 0, 255)
 	AddSpriteAnimationFrame(expBar1, expBarI1)
 	AddSpriteAnimationFrame(expBar1, expBarI2)
@@ -42,9 +46,21 @@ function CreateGame1()
 	CreateSprite(meteorButton1, 0)
 	SetSpriteSize(meteorButton1, 90, 90)
 	SetSpritePosition(meteorButton1, GetSpriteX(expHolder1)-10-GetSpriteWidth(meteorButton1), h-10-GetSpriteHeight(meteorButton1))
+	SetSpriteDepth(meteorButton1, 15)
+	SetSpriteColor(meteorButton1, 255, 100, 30, 100)
 	//Might want to make the Y based on the sxp bar holder instead of the screen height
-
+	
+	CreateSpriteExpress(meteorMarker1, 4, GetSpriteHeight(expHolder1)+4, 0, GetSpriteY(expHolder1)-2, 14)
+	//The X is on a seperate line because it is long
+	SetSpriteX(meteorMarker1, GetSpriteX(expBar1) + 1.0*(GetSpriteWidth(expHolder1)-20)*meteorCost1/specialCost1 - 4)
+	SetSpriteColor(meteorMarker1, 255, 100, 30, 255)
 	// specialButton1 115
+	
+	CreateSprite(specialButton1, 0)
+	SetSpriteSize(specialButton1, 100, 100)
+	SetSpritePosition(specialButton1, GetSpriteX(expHolder1) + GetSpriteWidth(expHolder1) + 5, h-20-GetSpriteHeight(meteorButton1))
+	SetSpriteDepth(specialButton1, 20)
+	SetSpriteColor(specialButton1, 20, 255, 40, 100)
 	
 endfunction
 
@@ -57,7 +73,7 @@ function DoGame1()
 	inc crab1Theta#, crab1Vel# * crab1Dir# * fpsr# //Need to figure out why FPSR modifier isn't working
 	
 	//Activating the crab turn at an input
-	if (GetPointerPressed() and (GetPointerY() > GetSpriteY(split) + GetSpriteHeight(split))) or (GetRawKeyPressed(32) or GetRawKeyPressed(49))
+	if ((GetPointerPressed() and (GetPointerY() > GetSpriteY(split) + GetSpriteHeight(split))) or (GetRawKeyPressed(32) or GetRawKeyPressed(49))) and Hover(meteorButton1) = 0 and Hover(specialButton1) = 0
 		if crab1Turning = 0
 			if crab1Dir# > 0
 				crab1Turning = -1
@@ -70,6 +86,10 @@ function DoGame1()
 		endif
 		
 	endif
+	
+	
+	
+	Print(Hover(meteorButton1))
 	
 	//Enacting the crab turn while activated
 	if crab1Turning <> 0 then TurnCrab1(crab1Turning)
@@ -91,9 +111,9 @@ function DoGame1()
 	inc met3CD1#, -1 * fpsr#
 	
 	if met1CD1# < 0
-		met1CD1# = Random(250, 350)
+		met1CD1# = Random(230 - 5*gameDifficulty1, 330) - 20*gameDifficulty1
 		newMet.theta = Random(1, 360)
-		newMet.r = 500
+		newMet.r = 600
 		newMet.spr = meteorSprNum
 		newMet.cat = 1
 				
@@ -106,10 +126,10 @@ function DoGame1()
 	endif
 	
 	
-	if met2CD1# < 0
-		met2CD1# = Random(350, 450)
+	if met2CD1# < 0 and gameTimer# > 800
+		met2CD1# = Random(300 - 5*gameDifficulty1, 400) - 20*gameDifficulty1
 		newMet.theta = Random(1, 360)
-		newMet.r = 500
+		newMet.r = 600
 		newMet.spr = meteorSprNum
 		newMet.cat = 2
 		
@@ -122,8 +142,8 @@ function DoGame1()
 		meteorActive1.insert(newMet)
 	endif
 	
-	if met3CD1# < 0
-		met3CD1# = Random(450, 650)
+	if met3CD1# < 0 and gameTimer# > 1600
+		met3CD1# = Random(450 - 15*gameDifficulty1, 650) - 25*gameDifficulty1
 		newMet.theta = Random(1, 360)
 		newMet.r = 5000
 		newMet.spr = meteorSprNum
@@ -145,6 +165,14 @@ function DoGame1()
 	endif
 		
 	UpdateMeteor1()
+	
+	if expTotal1 >= meteorCost1 and (Button(meteorButton1) and GetPointerPressed())
+		SendMeteorFrom1()
+	endif
+	
+	if expTotal1 = specialCost1 and (Button(specialButton1) and GetPointerPressed())
+		SendSpecial1()
+	endif
 	
 endfunction state
 
@@ -207,7 +235,7 @@ function UpdateMeteor1()
 		endif
 				
 		DrawPolar1(spr, meteorActive1[i].r, meteorActive1[i].theta)
-		if GetSpriteY(spr) > h/2
+		if GetSpriteY(spr) > h/2 //+ GetSpriteHeight(spr)/2
 			SetSpriteColorAlpha(spr, 255)
 		else
 			SetSpriteColorAlpha(spr, 0)
@@ -226,7 +254,13 @@ function UpdateMeteor1()
 	
 	if deleted > 0
 		meteorActive1.remove(deleted)
+		inc meteorTotal1, 1
 		
+		//Updating the difficulty
+		if Mod(meteorTotal1, 15) = 0 and gameDifficulty1 < 7
+			inc gameDifficulty1, 1
+			
+		endif
 	endif
 	
 endfunction
@@ -277,7 +311,7 @@ function UpdateExp()
 				SetSpriteColorGreen(spr, GetSpriteColorGreen(spr) - 40*fpsr#)
 			endif
 
-
+			//This is only for the bottom crab
 			if GetSpriteCollision(spr, crab1) and deleted = 0
 				deleted = i
 				DeleteSprite(spr)
@@ -290,6 +324,8 @@ function UpdateExp()
 						//Base color: SetSpriteColor(expBar1, 255, 160, 0, 255)
 					endif
 				endif
+				
+				UpdateButtons1()				
 
 				//This is for instant bar size adjustment
 				//SetSpriteSize(expBar1, (GetSpriteWidth(expHolder1)-20)*(1.0*expTotal1/specialCost1), 26)
@@ -298,11 +334,13 @@ function UpdateExp()
 				//Todo: Sound effect
 			endif
 
-			GlideToWidth(expBar1, (GetSpriteWidth(expHolder1)-20)*(1.0*expTotal1/specialCost1), 2)
 
 		endif
 
 	next i
+
+	GlideToWidth(expBar1, (GetSpriteWidth(expHolder1)-20)*(1.0*expTotal1/specialCost1), 2)
+
 
 	if deleted > 0
 		expList.remove(deleted)
@@ -311,11 +349,34 @@ function UpdateExp()
 
 endfunction
 
+function UpdateButtons1()
+	
+	if expTotal1 = specialCost1
+		//Bar is full
+		SetSpriteColor(expBar1, 255, 210, 50, 255)
+		PlaySprite(expBar1, 30, 1, 1, 6)
+		SetSpriteColor(specialButton1, 20, 255, 40, 255)
+	else
+		//Bar is not full
+		SetSpriteColor(expBar1, 255, 160, 0, 255)
+		PlaySprite(expBar1, 20, 1, 1, 6)
+		SetSpriteColor(specialButton1, 20, 255, 40, 100)
+	endif
+	
+	if expTotal1 >= meteorCost1
+		//Enabling the button
+		SetSpriteColor(meteorButton1, 255, 100, 30, 255)
+	else
+		//Disabling the button
+		SetSpriteColor(meteorButton1, 255, 100, 30, 100)
+	endif
+endfunction
+
 function SendMeteorFrom1()
 	newMet as meteor
 	
 	newMet.theta = Random(1, 360)
-	newMet.r = 500
+	newMet.r = 560	//500 nearly immediatly puts it on screen
 	newMet.spr = meteorSprNum
 	newMet.cat = 1
 			
@@ -324,5 +385,18 @@ function SendMeteorFrom1()
 	SetSpriteColor(meteorSprNum, 255, 120, 40, 255)
 	SetSpriteDepth(meteorSprNum, 20)
 	inc meteorSprNum, 1
-	meteorActive1.insert(newMet)
+	meteorActive2.insert(newMet)
+	
+	
+	inc expTotal1, -1*meteorCost1
+	UpdateButtons1()
+endfunction
+
+function SendSpecial1()
+	
+	//Todo: add special attack animation
+	
+	expTotal1 = 0
+	UpdateButtons1()
+	
 endfunction
