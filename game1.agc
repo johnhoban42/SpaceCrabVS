@@ -59,7 +59,7 @@ function CreateGame1()
 	CreateSprite(specialButton1, 0)
 	SetSpriteSize(specialButton1, 100, 100)
 	SetSpritePosition(specialButton1, GetSpriteX(expHolder1) + GetSpriteWidth(expHolder1) + 5, h-20-GetSpriteHeight(meteorButton1))
-	SetSpriteDepth(specialButton1, 20)
+	SetSpriteDepth(specialButton1, 15)
 	SetSpriteColor(specialButton1, 20, 255, 40, 100)
 	
 endfunction
@@ -109,6 +109,8 @@ function DoGame1()
 	inc met1CD1#, -1 * fpsr#
 	inc met2CD1#, -1 * fpsr#
 	inc met3CD1#, -1 * fpsr#
+	
+	if specialTimerAgainst1# > 0 then inc specialTimerAgainst1#, -1*fpsr#
 	
 	if met1CD1# < 0
 		met1CD1# = Random(230 - 5*gameDifficulty1, 330) - 20*gameDifficulty1
@@ -213,9 +215,15 @@ function UpdateMeteor1()
 			meteorActive1[i].r = meteorActive1[i].r - 17*fpsr#
 			
 			ospr = spr + 10000 //Other sprite (is the box)
-			SetSpriteSize(ospr, GetSpriteWidth(spr)*(5000-meteorActive1[i].r)/5000.0, GetSpriteHeight(ospr))
-			SetSpriteColorAlpha(ospr, 150*(5000-meteorActive1[i].r)/5000.0)
-			DrawPolar1(ospr, GetSpriteHeight(ospr)/2, meteorActive1[i].theta)
+			
+			if meteorActive1[i].r < 5000
+				//Only displaying the stuff if the meteor is in range
+				SetSpriteSize(ospr, GetSpriteWidth(spr)*(5000-meteorActive1[i].r)/5000.0, GetSpriteHeight(ospr))
+				SetSpriteColorAlpha(ospr, 150*(5000-meteorActive1[i].r)/5000.0)
+				DrawPolar1(ospr, GetSpriteHeight(ospr)/2, meteorActive1[i].theta)
+			else				
+				SetSpriteColorAlpha(ospr, 0)
+			endif
 			
 			//The lazy but working way of how the warning light doesn't go too high
 			if GetSpriteCollision(ospr, split)
@@ -242,7 +250,7 @@ function UpdateMeteor1()
 		endif
 		
 	
-		if GetSpriteCollision(spr, planet1) and deleted = 0	
+		if (GetSpriteCollision(spr, planet1) or meteorActive1[i].r < 0) and deleted = 0	
 			CreateExp(spr, meteorActive1[i].cat)
 			DeleteSprite(spr)
 			if meteorActive1[i].cat = 3 then DeleteSprite(spr + 10000)
@@ -394,9 +402,136 @@ endfunction
 
 function SendSpecial1()
 	
-	//Todo: add special attack animation
+	ShowSpecialAnimation(crab1Type)
+	
+	newMetS as meteor
+	
+	if crab1Type = 1
+		//Space Crab
+		
+		angles as float[7] = [0, 51.43, 102.86, 154.29, 205.72, 257.15, 308.58]
+		angleOff = Random(1, 51)
+		for i = 1 to 7
+			randomPick = Random(1, 8-i)
+			newMetS.theta = angles[randomPick] + angleOff
+			angles.remove(randomPick)
+			newMetS.r = 5000 + i*500
+			newMetS.spr = meteorSprNum
+			newMetS.cat = 3
+			
+			CreateSprite(meteorSprNum, 0)
+			SetSpriteSize(meteorSprNum, metSizeX, metSizeY)
+			SetSpriteColor(meteorSprNum, 235, 20, 20, 255)
+			SetSpriteDepth(meteorSprNum, 20)
+			
+			CreateSprite(meteorSprNum + 10000, 0)
+			SetSpriteSize(meteorSprNum + 10000, 1, 1000)
+			SetSpriteColor(meteorSprNum + 10000, 255, 20, 20, 30)
+			SetSpriteDepth(meteorSprNum + 10000, 30)
+			
+			inc meteorSprNum, 1
+			
+			//Reproducable bug by spamming this attack, was in the spr references in ospr in the meteor 3 update
+			
+			meteorActive2.insert(newMetS)
+		next i
+		
+	elseif crab1Type = 2
+		//Ladder Wizard
+		
+		for j = 1 to 3
+		
+		baseTheta = Random(1, 360)
+		dir = Random(1, 2)
+		if dir = 2 then dir = -1
+		
+			for i = 1 to 4
+				newMetS.theta = baseTheta + i*18*dir
+				newMetS.r = 200 + j*400 + i*50
+				newMetS.spr = meteorSprNum
+				newMetS.cat = 1
+						
+				CreateSprite(meteorSprNum, 0)
+				SetSpriteSize(meteorSprNum, metSizeX, metSizeY)
+				SetSpriteColor(meteorSprNum, 255, 120, 40, 255)
+				SetSpriteDepth(meteorSprNum, 20)
+				inc meteorSprNum, 1
+				meteorActive2.insert(newMetS)
+			next i
+			
+		next j
+		
+	elseif crab1Type = 3
+		//Top Crab
+		specialTimerAgainst2# = 10000
+		
+		
+	endif
+	
 	
 	expTotal1 = 0
 	UpdateButtons1()
+	
+endfunction
+
+function ShowSpecialAnimation(crabType)
+	
+	CreateSprite(specialBG, 0)
+	SetSpriteColor(specialBG, 0, 0, 0, 80)
+	SetSpriteSizeSquare(specialBG, h*3)
+	SetSpriteMiddleScreen(specialBG)
+	SetSpriteDepth(specialBG, 3)
+	
+	wid = 400
+	hei = 400
+	for i = specialSprFront1 to specialSprBack2
+		CreateSprite(i, 0)
+		SetSpriteSize(i, 400, 400)
+		if Mod(i, 2) = 0
+			//Back Sprites
+			SetSpriteDepth(i, 2)
+			SetSpriteColor(i, 150, 150, 150, 255)
+		else
+			//Front Sprites
+			SetSpriteDepth(i, 1)
+		endif
+	next i
+	
+	//Goes from right to left on bottom
+	SetSpritePosition(specialSprFront1, w + 100, h - 500)
+	//Goes from left to right on bottom
+	SetSpritePosition(specialSprBack1, -100 - wid, h - 650)
+	
+	//Goes from right to left on bottom
+	SetSpritePosition(specialSprFront2, -100 - wid, 100)
+	//Goes from left to right on top
+	SetSpritePosition(specialSprBack2, w + 100, 250)
+	
+	iEnd = 120/fpsr#
+	for i = 1 to iEnd
+		//Setting the speed of the images based on the progress through the loop
+		if i <= iEnd*1/9
+			speed = 25
+		elseif i <= iEnd*6/9
+			speed = 3
+		else
+			speed = 5+(i-iEnd*6/9)
+		endif
+		
+		
+		IncSpriteXFloat(specialSprFront1, -1.2*speed)
+		IncSpriteXFloat(specialSprBack1, 1*speed)
+		IncSpriteXFloat(specialSprFront2, 1.2*speed)
+		IncSpriteXFloat(specialSprBack2, -1*speed)
+		
+		Sync()
+	next i
+	
+
+	
+	
+	for i = specialBG to specialSprBack2
+		DeleteSprite(i)
+	next i
 	
 endfunction

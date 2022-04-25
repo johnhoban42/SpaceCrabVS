@@ -65,6 +65,8 @@ function DoGame2()
 	inc met2CD2#, -1 * fpsr#
 	inc met3CD2#, -1 * fpsr#
 	
+	if specialTimerAgainst2# > 0 then inc specialTimerAgainst2#, -1*fpsr#
+	
 	if met1CD2# < 0
 		met1CD2# = Random(250, 350)
 		newMet.theta = Random(1, 360)
@@ -160,9 +162,15 @@ function UpdateMeteor2()
 			meteorActive2[i].r = meteorActive2[i].r - 17*fpsr#
 			
 			ospr = spr + 10000 //Other sprite (is the box)
-			SetSpriteSize(ospr, GetSpriteWidth(spr)*(5000-meteorActive2[i].r)/5000.0, GetSpriteHeight(ospr))
-			SetSpriteColorAlpha(ospr, 150*(5000-meteorActive2[i].r)/5000.0)
-			DrawPolar2(ospr, GetSpriteHeight(ospr)/2, meteorActive2[i].theta)
+			
+			if meteorActive2[i].r < 5000
+				//Only displaying the stuff if the meteor is in range
+				SetSpriteSize(ospr, GetSpriteWidth(spr)*(5000-meteorActive2[i].r)/5000.0, GetSpriteHeight(ospr))
+				SetSpriteColorAlpha(ospr, 150*(5000-meteorActive2[i].r)/5000.0)
+				DrawPolar2(ospr, GetSpriteHeight(ospr)/2, meteorActive2[i].theta)
+			else				
+				SetSpriteColorAlpha(ospr, 0)
+			endif
 			
 			//The lazy but working way of how the warning light doesn't go too high
 			if GetSpriteCollision(ospr, split)
@@ -189,7 +197,7 @@ function UpdateMeteor2()
 		endif
 		
 	
-		if GetSpriteCollision(spr, planet2)
+		if GetSpriteCollision(spr, planet2) and deleted = 0
 			DeleteSprite(spr)
 			if meteorActive2[i].cat = 3 then DeleteSprite(spr + 10000)
 			//Meteor explosion goes here

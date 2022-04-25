@@ -66,7 +66,7 @@ do
     Print(fpsr#)
     Print(GetRawLastKey())
     Print(meteorTotal1)
-    Print(gameDifficulty1)
+    Print(specialTimerAgainst2#)
     Sync()
 loop
 

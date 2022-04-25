@@ -25,6 +25,10 @@ function GetSpriteMiddleY(spr)
 	ret = GetSpriteY(spr) + GetSpriteHeight(spr)/2
 endfunction ret
 
+function SetSpriteMiddleScreen(spr)
+	SetSpritePosition(spr, w/2-GetSpriteWidth(spr)/2, h/2-GetSpriteHeight(spr)/2)
+endfunction
+
 function SetSpriteMiddleScreenX(spr)
 	SetSpriteX(spr, w/2-GetSpriteWidth(spr)/2)
 endfunction

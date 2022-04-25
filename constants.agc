@@ -18,6 +18,14 @@ Exp Bar Holder - 18
 Meteors - 20
 Behind image for fast meteors - 30
 
+Crab types (internal):
+1 - Space Crab
+2 - Ladder Wizard
+3 - Top Crab
+4 - Rave Crab
+5 - Cartography Crab
+6 - Ninja Crab
+
 */
 
 //Gameplay constants & variables
@@ -32,12 +40,15 @@ global crab1Dir# = 1		//Crab dir is a float that goes from 1 to -1, it multiplie
 global crab1Vel# = 1.28
 global crab1Accel# = .1	//Is .1 because it takes 2 to reach full reversal, and original game timer was 20
 global crab1Turning = 0 	//Is zero for when the crab isn't turning, and 1 or -1 depending on the direction it is CHANGING TO
+global crab1Type = 1
 
 global crab2Theta# = 270 // Same constants for crab 2
 global crab2Dir# = 1
 global crab2Vel# = 1.28
 global crab2Accel# = .1
 global crab2Turning = 0
+global crab2Type = 1
+
 
 global gameDifficulty1 = 1
 global gameDifficulty2 = 1
@@ -51,8 +62,14 @@ global meteorActive1 as meteor[0]
 global meteorActive2 as meteor[0]
 
 global expTotal1 = 0
-global meteorCost1 = 5
-global specialCost1 = 20
+global meteorCost1 = 1
+global specialCost1 = 3
+global specialTimerAgainst2# = 0
+
+global expTotal2 = 0
+global meteorCost2 = 1
+global specialCost2 = 3
+global specialTimerAgainst1# = 0
 
 global meteorSprNum = 1001
 global expSprNum = 2001
@@ -86,6 +103,12 @@ global met3CD2# = 400
 #constant meteorButton2 123
 #constant meteorMarker2 124
 #constant specialButton2 125
+
+#constant specialBG 130
+#constant specialSprFront1 131
+#constant specialSprBack1 132
+#constant specialSprFront2 133
+#constant specialSprBack2 134
 
 //Image Indexes
 #constant planetIRandStart 50
