@@ -133,6 +133,10 @@ function GlideViewOffset(x, y, denomX, denomY)
 
 endfunction
 
+function GlideNumToZero(oldNum#, denom)
+	newVal# =  (((oldNum#)*((denom-1)^fpsr#))/(denom)^fpsr#)
+endfunction newVal#
+
 function SnapbackToSpot(spr, iCur, iEnd, x, y, dx, dy, denom)
 	
 	if (iCur < iEnd*3/4)

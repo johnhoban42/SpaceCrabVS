@@ -123,6 +123,7 @@ function DoGame1()
 		SetSpriteSize(meteorSprNum, metSizeX, metSizeY)
 		SetSpriteColor(meteorSprNum, 255, 120, 40, 255)
 		SetSpriteDepth(meteorSprNum, 20)
+		AddMeteorAnimation(meteorSprNum)
 		inc meteorSprNum, 1
 		meteorActive1.insert(newMet)
 	endif
@@ -139,6 +140,7 @@ function DoGame1()
 		SetSpriteSize(meteorSprNum, metSizeX, metSizeY)
 		SetSpriteColor(meteorSprNum, 150, 40, 150, 255)
 		SetSpriteDepth(meteorSprNum, 20)
+		AddMeteorAnimation(meteorSprNum)
 		inc meteorSprNum, 1
 		
 		meteorActive1.insert(newMet)
@@ -155,6 +157,7 @@ function DoGame1()
 		SetSpriteSize(meteorSprNum, metSizeX, metSizeY)
 		SetSpriteColor(meteorSprNum, 235, 20, 20, 255)
 		SetSpriteDepth(meteorSprNum, 20)
+		AddMeteorAnimation(meteorSprNum)
 		
 		CreateSprite(meteorSprNum + 10000, 0)
 		SetSpriteSize(meteorSprNum + 10000, 1, 1000)
@@ -176,7 +179,35 @@ function DoGame1()
 		SendSpecial1()
 	endif
 	
+	DrawPolar1(planet1, 0, 270)
+	
+	//The screen nudging code	
+	if nudge1R# > 0
+		IncSpritePosition(crab1, -cos(nudge1Theta#)*nudge1R#, -sin(nudge1Theta#)*nudge1R#)
+		DrawPolar1(planet1, 0, 270)	//Resetting the planet so that it can be nudged
+		IncSpritePosition(planet1, -cos(nudge1Theta#)*nudge1R#, -sin(nudge1Theta#)*nudge1R#)
+		
+		//inc nudge1R#, -0.3
+		nudge1R# = GlideNumToZero(nudge1R#, 2)
+		if nudge1R# < 0.01
+			nudge1R# = 0
+			DrawPolar1(planet1, 0, 270)	//Resetting the planet so that it can be nudged
+		endif
+	endif
+	
 endfunction state
+
+function AddMeteorAnimation(spr)
+	AddSpriteAnimationFrame(spr, meteorI1)
+	AddSpriteAnimationFrame(spr, meteorI2)
+	AddSpriteAnimationFrame(spr, meteorI3)
+	AddSpriteAnimationFrame(spr, meteorI4)
+	PlaySprite(spr, 15, 1, 1, 4)
+	
+	if Random(1, 2) = 2 then SetSpriteFlip(spr, 1, 0)
+	
+	SetSpriteShapeCircle(spr, 0, GetSpriteHeight(spr)/8, GetSpriteWidth(spr)/2.8)
+endfunction
 
 function TurnCrab1(dir)
 	
@@ -251,8 +282,13 @@ function UpdateMeteor1()
 		
 	
 		if (GetSpriteCollision(spr, planet1) or meteorActive1[i].r < 0) and deleted = 0	
-			CreateExp(spr, meteorActive1[i].cat)
+			CreateExp(spr, cat)
 			DeleteSprite(spr)
+			
+			//The screen nudging
+			inc nudge1R#, 2.5 + cat*2.5
+			nudge1Theta# = meteorActive1[i].theta
+			
 			if meteorActive1[i].cat = 3 then DeleteSprite(spr + 10000)
 			//Meteor explosion goes here
 			deleted = i
@@ -423,6 +459,7 @@ function SendSpecial1()
 			SetSpriteSize(meteorSprNum, metSizeX, metSizeY)
 			SetSpriteColor(meteorSprNum, 235, 20, 20, 255)
 			SetSpriteDepth(meteorSprNum, 20)
+			AddMeteorAnimation(meteorSprNum)
 			
 			CreateSprite(meteorSprNum + 10000, 0)
 			SetSpriteSize(meteorSprNum + 10000, 1, 1000)
@@ -455,6 +492,7 @@ function SendSpecial1()
 				SetSpriteSize(meteorSprNum, metSizeX, metSizeY)
 				SetSpriteColor(meteorSprNum, 255, 120, 40, 255)
 				SetSpriteDepth(meteorSprNum, 20)
+				AddMeteorAnimation(meteorSprNum)
 				inc meteorSprNum, 1
 				meteorActive2.insert(newMetS)
 			next i
@@ -511,11 +549,11 @@ function ShowSpecialAnimation(crabType)
 	for i = 1 to iEnd
 		//Setting the speed of the images based on the progress through the loop
 		if i <= iEnd*1/9
-			speed = 25
+			speed = 25*fpsr#*75/60
 		elseif i <= iEnd*6/9
-			speed = 3
+			speed = 3*fpsr#*75/60
 		else
-			speed = 5+(i-iEnd*6/9)
+			speed = 5+(i-iEnd*6/9)*fpsr#*75/60
 		endif
 		
 		

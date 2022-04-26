@@ -30,8 +30,8 @@ Crab types (internal):
 
 //Gameplay constants & variables
 #constant planetSize 220
-#constant metSizeX 50
-#constant metSizeY 70
+#constant metSizeX 58
+#constant metSizeY 80
 
 global gameTimer# = 0
 
@@ -42,6 +42,10 @@ global crab1Accel# = .1	//Is .1 because it takes 2 to reach full reversal, and o
 global crab1Turning = 0 	//Is zero for when the crab isn't turning, and 1 or -1 depending on the direction it is CHANGING TO
 global crab1Type = 1
 
+//For the screen nudging whenever a meteor hits
+global nudge1R# = 0
+global nudge1Theta# = 0
+
 global crab2Theta# = 270 // Same constants for crab 2
 global crab2Dir# = 1
 global crab2Vel# = 1.28
@@ -49,6 +53,8 @@ global crab2Accel# = .1
 global crab2Turning = 0
 global crab2Type = 1
 
+global nudge2R# = 0
+global nudge2Theta# = 0
 
 global gameDifficulty1 = 1
 global gameDifficulty2 = 1
@@ -129,6 +135,11 @@ global met3CD2# = 400
 #constant expBarI5 65
 #constant expBarI6 66
 
+#constant meteorI1 67
+#constant meteorI2 68
+#constant meteorI3 69
+#constant meteorI4 70
+
 // Game states
 #constant START 0
 #constant CHARACTER_SELECT 1
@@ -163,6 +174,11 @@ function LoadBaseImages()
 	LoadImage(planetVar6I, "planet1alt6.png")
 	LoadImage(planetVar7I, "planet1alt7.png")
 	LoadImage(planetVar8I, "planet1alt8.png")
+	
+	LoadImage(meteorI1, "meteor1.png")
+	LoadImage(meteorI2, "meteor2.png")
+	LoadImage(meteorI3, "meteor3.png")
+	LoadImage(meteorI4, "meteor4.png")
 	
 	SetFolder("/media")
 	
