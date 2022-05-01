@@ -66,6 +66,8 @@ endfunction
 
 function DoGame1()
 	
+	//fpsr# = fpsr#*1.5
+	
 	// Start the game loop in the GAME state
 	state = GAME
 	
@@ -137,7 +139,7 @@ function DoGame1()
 		newMet.cat = 2
 		
 		CreateSprite(meteorSprNum, 0)
-		SetSpriteSize(meteorSprNum, metSizeX, metSizeY)
+		SetSpriteSize(meteorSprNum, metSizeX*1.1, metSizeY*1.1)
 		SetSpriteColor(meteorSprNum, 150, 40, 150, 255)
 		SetSpriteDepth(meteorSprNum, 20)
 		AddMeteorAnimation(meteorSprNum)
@@ -154,8 +156,8 @@ function DoGame1()
 		newMet.cat = 3
 		
 		CreateSprite(meteorSprNum, 0)
-		SetSpriteSize(meteorSprNum, metSizeX, metSizeY)
-		SetSpriteColor(meteorSprNum, 235, 20, 20, 255)
+		SetSpriteSize(meteorSprNum, metSizeX*1.2, metSizeY*1.2)
+		SetSpriteColor(meteorSprNum, 235, 60, 60, 255)
 		SetSpriteDepth(meteorSprNum, 20)
 		AddMeteorAnimation(meteorSprNum)
 		
@@ -194,6 +196,8 @@ function DoGame1()
 			DrawPolar1(planet1, 0, 270)	//Resetting the planet so that it can be nudged
 		endif
 	endif
+	
+	fpsr# = 60.0/ScreenFPS()
 	
 endfunction state
 
@@ -237,6 +241,7 @@ function UpdateMeteor1()
 		cat = meteorActive1[i].cat
 		if cat = 1	//Normal meteor
 			meteorActive1[i].r = meteorActive1[i].r - 2.5*fpsr#
+			//meteorActive1[i].theta = meteorActive1[i].theta - 1*fpsr#
 		
 		elseif cat = 2	//Rotating meteor
 			meteorActive1[i].r = meteorActive1[i].r - 2*fpsr#
@@ -244,6 +249,7 @@ function UpdateMeteor1()
 			
 		elseif cat = 3	//Fast meteor
 			meteorActive1[i].r = meteorActive1[i].r - 17*fpsr#
+			//meteorActive1[i].theta = meteorActive1[i].theta + 1*fpsr#
 			
 			ospr = spr + 10000 //Other sprite (is the box)
 			
@@ -274,6 +280,7 @@ function UpdateMeteor1()
 		endif
 				
 		DrawPolar1(spr, meteorActive1[i].r, meteorActive1[i].theta)
+		if cat = 2 then IncSpriteAngle(spr, -25)
 		if GetSpriteY(spr) > h/2 //+ GetSpriteHeight(spr)/2
 			SetSpriteColorAlpha(spr, 255)
 		else
@@ -513,6 +520,8 @@ function SendSpecial1()
 endfunction
 
 function ShowSpecialAnimation(crabType)
+	
+	fpsr# = 60.0/ScreenFPS()
 	
 	CreateSprite(specialBG, 0)
 	SetSpriteColor(specialBG, 0, 0, 0, 80)

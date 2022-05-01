@@ -68,8 +68,8 @@ global meteorActive1 as meteor[0]
 global meteorActive2 as meteor[0]
 
 global expTotal1 = 0
-global meteorCost1 = 1
-global specialCost1 = 3
+global meteorCost1 = 10
+global specialCost1 = 40
 global specialTimerAgainst2# = 0
 
 global expTotal2 = 0
