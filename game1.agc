@@ -21,6 +21,19 @@ function CreateGame1()
 	SetSpriteSize(crab1, 64, 40)
 	crab1Theta# = 270
 	DrawPolar1(crab1, planetSize/2 + GetSpriteHeight(crab1)/3, crab1Theta#)
+	AddSpriteAnimationFrame(crab1, crab1start1I)	//1
+	AddSpriteAnimationFrame(crab1, crab1start2I)
+	AddSpriteAnimationFrame(crab1, crab1walk1I)	//3
+	AddSpriteAnimationFrame(crab1, crab1walk2I)
+	AddSpriteAnimationFrame(crab1, crab1walk3I)
+	AddSpriteAnimationFrame(crab1, crab1walk4I)
+	AddSpriteAnimationFrame(crab1, crab1walk5I)
+	AddSpriteAnimationFrame(crab1, crab1walk6I)
+	AddSpriteAnimationFrame(crab1, crab1walk7I)
+	AddSpriteAnimationFrame(crab1, crab1walk8I)
+	AddSpriteAnimationFrame(crab1, crab1jump1I)	//11
+	AddSpriteAnimationFrame(crab1, crab1jump2I)
+	PlaySprite(crab1, crab1framerate, 1, 3, 10)
 	
 	CreateSprite(expHolder1, 0)
 	SetSpriteSize(expHolder1, w - 230, 40)
@@ -62,6 +75,16 @@ function CreateGame1()
 	SetSpriteDepth(specialButton1, 15)
 	SetSpriteColor(specialButton1, 20, 255, 40, 100)
 	
+	crab1PlanetS[1] = 116
+	crab1PlanetS[2] = 117
+	crab1PlanetS[3] = 118
+	//The planet UI that shows how many lives are left
+	for i = 1 to 3
+		size = 40
+		CreateSpriteExpress(crab1PlanetS[i], size, size, w/2 - size/2 + (i-2)*size*1.5, h/2 + 80, 5)
+		
+	next i
+		
 endfunction
 
 function DoGame1()
@@ -75,7 +98,7 @@ function DoGame1()
 	inc crab1Theta#, crab1Vel# * crab1Dir# * fpsr# //Need to figure out why FPSR modifier isn't working
 	
 	//Activating the crab turn at an input
-	if ((GetPointerPressed() and (GetPointerY() > GetSpriteY(split) + GetSpriteHeight(split))) or (GetRawKeyPressed(32) or GetRawKeyPressed(49))) and Hover(meteorButton1) = 0 and Hover(specialButton1) = 0
+	if ((GetPointerPressed() and (GetPointerY() > GetSpriteY(split) + GetSpriteHeight(split))) or (GetRawKeyPressed(32) or GetRawKeyPressed(49))) and Hover(meteorButton1) = 0 and Hover(specialButton1) = 0 and crab1JumpD# = 0
 		if crab1Turning = 0
 			if crab1Dir# > 0
 				crab1Turning = -1
@@ -85,11 +108,46 @@ function DoGame1()
 		else
 			//Changing the direction in case it's already turning
 			crab1Turning = -1*crab1Turning
+			
+			
+			if Abs(crab1Dir#) < crab1Vel#/3
+				//The crab leap code
+				//crab1Turning = -1*crab1Turning	//Still not sure if you should leap forwards or backwards
+				crab1JumpD# = crab1JumpDMax
+				crab1Dir# = crab1Vel#
+			endif
+			
 		endif
 		
 	endif
 	
-	
+	//The jumping movement code
+	if crab1JumpD# > 0
+		
+		if crab1JumpD# < crab1JumpDMax/8
+			PlaySprite(crab1, 0, 0, 11, 11)	
+		else
+			PlaySprite(crab1, 0, 0, 12, 12)	
+		endif
+		
+		//Incrementing the crab's movement a tiny bit more when leaping
+		inc crab1Theta#, crab1Vel# * 0.95 * crab1Dir# * fpsr#
+		//Original velo: 0.85
+		
+		inc crab1JumpD#, -1*fpsr#
+		
+		//Resetting the crab back to normal
+		if crab1JumpD# < 0
+			crab1JumpD# = 0
+			if crab1Dir# < 0
+				SetSpriteFlip(crab1, 1, 0)
+			else
+				SetSpriteFlip(crab1, 0, 0)
+			endif
+			PlaySprite(crab1, crab1framerate, 1, 3, 10)		
+		endif
+		
+	endif
 	
 	Print(Hover(meteorButton1))
 	
@@ -105,6 +163,10 @@ function DoGame1()
 	
 	//The visual update code
 	DrawPolar1(crab1, planetSize/2 + GetSpriteHeight(crab1)/3, crab1Theta#)
+	//Visuals for if the crab is jumping
+	if crab1JumpD# > 0
+		DrawPolar1(crab1, planetSize/2 + GetSpriteHeight(crab1)/3 + crab1JumpHMax# * (crab1JumpD# - (crab1JumpD#^2)/crab1JumpDMax), crab1Theta#)
+	endif
 	
 	newMet as meteor
 	newMet.cat = 0
@@ -197,21 +259,14 @@ function DoGame1()
 		endif
 	endif
 	
+	//Adjusting the crab angle for the dive, cosmetic
+	if crab1JumpD# > 0
+		SetSpriteAngle(crab1, GetSpriteAngle(crab1) + crab1JumpD#/crab1JumpDMax*360 * -1 * crab1Dir#)
+	endif
+	
 	fpsr# = 60.0/ScreenFPS()
 	
 endfunction state
-
-function AddMeteorAnimation(spr)
-	AddSpriteAnimationFrame(spr, meteorI1)
-	AddSpriteAnimationFrame(spr, meteorI2)
-	AddSpriteAnimationFrame(spr, meteorI3)
-	AddSpriteAnimationFrame(spr, meteorI4)
-	PlaySprite(spr, 15, 1, 1, 4)
-	
-	if Random(1, 2) = 2 then SetSpriteFlip(spr, 1, 0)
-	
-	SetSpriteShapeCircle(spr, 0, GetSpriteHeight(spr)/8, GetSpriteWidth(spr)/2.8)
-endfunction
 
 function TurnCrab1(dir)
 	
@@ -224,10 +279,17 @@ function TurnCrab1(dir)
 		SetSpriteFlip(crab1, 0, 0)
 	endif
 	
+	if Abs(crab1Dir#) > .5
+		PlaySprite(crab1, 0, 0, 2, 2)	
+	else
+		PlaySprite(crab1, 0, 0, 1, 1)
+	endif
+	
 	//Checking if the crab is at it's maximum velocity, stopping and capping if it is
 	if Abs(crab1Dir#) > Abs(dir)
 		crab1Dir# = dir
 		crab1Turning = 0
+		PlaySprite(crab1, crab1framerate, 1, 3, 10)		
 	endif
 		
 endfunction
@@ -314,90 +376,6 @@ function UpdateMeteor1()
 		endif
 	endif
 	
-endfunction
-
-function CreateExp(metSpr, metType)
-	iEnd = 3 //The default experience amount, for regular meteors
-	if metType = 2 then iEnd = 4
-	if metType = 3 then iEnd = 5
-
-	for i = 1 to iEnd
-		CreateSprite(expSprNum, expOrbI)
-		SetSpriteSize(expSprNum, 16, 16)
-		SetSpritePosition(expSprNum, GetSpriteMiddleX(metSpr) - GetSpriteWidth(expSprNum)/2, GetSpriteMiddleY(metSpr) - GetSpriteHeight(expSprNum)/2)
-		SetSpriteColor(expSprNum, 255, 255, 0, 5)
-		SetSpriteAngle(expSprNum, Random(1, 360))
-
-		expList.insert(expSprNum)
-		inc expSprNum
-	next i
-
-endfunction
-
-function UpdateExp()
-
-	deleted = 0
-
-	for i = 1 to expList.Length
-		spr = expList[i]
-
-		IncSpriteAngle(spr, 20*fpsr#)
-
-		alpha = GetSpriteColorAlpha(spr)
-		if alpha < 255
-			IncSpritePosition(spr, (255-alpha)/18*fpsr#*cos(GetSpriteAngle(spr)), (255-alpha)/18*fpsr#*sin(GetSpriteAngle(spr)))
-
-			SetSpriteColorAlpha(spr, GetSpriteColorAlpha(spr) + 10)
-		endif
-
-		//Collision for the first crab, second crab will go in another if statement
-		dis1 = GetSpriteDistance(spr, crab1)
-		if GetSpriteDistance(spr, crab1) < 40
-			IncSpritePosition(spr, -(0-(GetSpriteMiddleX(crab1)-GetSpriteX(spr)))/4.0*fpsr#, -(0-(GetSpriteMiddleY(crab1)-GetSpriteY(spr)))/4.0*fpsr#)
-			//GlideToSpot(spr, GetSpriteMiddleX(crab1), GetSpriteMiddleY(crab1), 5)
-			//Either gliding method above works, I like the way the one on top looks more
-
-			//Visual Indicator
-			if GetSpriteColorGreen(spr) > 90
-				SetSpriteColorGreen(spr, GetSpriteColorGreen(spr) - 40*fpsr#)
-			endif
-
-			//This is only for the bottom crab
-			if GetSpriteCollision(spr, crab1) and deleted = 0
-				deleted = i
-				DeleteSprite(spr)
-
-				if expTotal1 < specialCost1
-					inc expTotal1, 1
-					if expTotal1 = specialCost1
-						SetSpriteColor(expBar1, 255, 210, 50, 255)
-						PlaySprite(expBar1, 30, 1, 1, 6)	//Faster than when it's not filled
-						//Base color: SetSpriteColor(expBar1, 255, 160, 0, 255)
-					endif
-				endif
-				
-				UpdateButtons1()				
-
-				//This is for instant bar size adjustment
-				//SetSpriteSize(expBar1, (GetSpriteWidth(expHolder1)-20)*(1.0*expTotal1/specialCost1), 26)
-
-				//Add to the exp bar here
-				//Todo: Sound effect
-			endif
-
-
-		endif
-
-	next i
-
-	GlideToWidth(expBar1, (GetSpriteWidth(expHolder1)-20)*(1.0*expTotal1/specialCost1), 2)
-
-
-	if deleted > 0
-		expList.remove(deleted)
-
-	endif
-
 endfunction
 
 function UpdateButtons1()
@@ -519,66 +497,3 @@ function SendSpecial1()
 	
 endfunction
 
-function ShowSpecialAnimation(crabType)
-	
-	fpsr# = 60.0/ScreenFPS()
-	
-	CreateSprite(specialBG, 0)
-	SetSpriteColor(specialBG, 0, 0, 0, 80)
-	SetSpriteSizeSquare(specialBG, h*3)
-	SetSpriteMiddleScreen(specialBG)
-	SetSpriteDepth(specialBG, 3)
-	
-	wid = 400
-	hei = 400
-	for i = specialSprFront1 to specialSprBack2
-		CreateSprite(i, 0)
-		SetSpriteSize(i, 400, 400)
-		if Mod(i, 2) = 0
-			//Back Sprites
-			SetSpriteDepth(i, 2)
-			SetSpriteColor(i, 150, 150, 150, 255)
-		else
-			//Front Sprites
-			SetSpriteDepth(i, 1)
-		endif
-	next i
-	
-	//Goes from right to left on bottom
-	SetSpritePosition(specialSprFront1, w + 100, h - 500)
-	//Goes from left to right on bottom
-	SetSpritePosition(specialSprBack1, -100 - wid, h - 650)
-	
-	//Goes from right to left on bottom
-	SetSpritePosition(specialSprFront2, -100 - wid, 100)
-	//Goes from left to right on top
-	SetSpritePosition(specialSprBack2, w + 100, 250)
-	
-	iEnd = 120/fpsr#
-	for i = 1 to iEnd
-		//Setting the speed of the images based on the progress through the loop
-		if i <= iEnd*1/9
-			speed = 25*fpsr#*75/60
-		elseif i <= iEnd*6/9
-			speed = 3*fpsr#*75/60
-		else
-			speed = 5+(i-iEnd*6/9)*fpsr#*75/60
-		endif
-		
-		
-		IncSpriteXFloat(specialSprFront1, -1.2*speed)
-		IncSpriteXFloat(specialSprBack1, 1*speed)
-		IncSpriteXFloat(specialSprFront2, 1.2*speed)
-		IncSpriteXFloat(specialSprBack2, -1*speed)
-		
-		Sync()
-	next i
-	
-
-	
-	
-	for i = specialBG to specialSprBack2
-		DeleteSprite(i)
-	next i
-	
-endfunction

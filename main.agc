@@ -35,7 +35,7 @@ global fpsr#
 
 global gameTime#
 
-SetPhysicsDebugOn()
+//SetPhysicsDebugOn()
 
 
 LoadSprite(split, "sheepstart2.png")

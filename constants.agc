@@ -11,6 +11,7 @@ crab2 - The top crab, independent of it's costume
 
 Depth List:
 
+Planets for Lives - 5
 Asteroid belt - 10
 Meteor Marker -14
 Exp Bar - 16
@@ -36,11 +37,19 @@ Crab types (internal):
 global gameTimer# = 0
 
 global crab1Theta# = 270
+global crab1framerate = 10
 global crab1Dir# = 1		//Crab dir is a float that goes from 1 to -1, it multiplies the speed
 global crab1Vel# = 1.28
 global crab1Accel# = .1	//Is .1 because it takes 2 to reach full reversal, and original game timer was 20
 global crab1Turning = 0 	//Is zero for when the crab isn't turning, and 1 or -1 depending on the direction it is CHANGING TO
 global crab1Type = 1
+global crab1JumpD# = 0
+global crab1JumpHMax# = 5
+global crab1JumpDMax = 28	//This variable used to be in degrees, now it's in ticks
+//Original jump values: 3.5, 38
+
+global crab1Deaths = 0
+global crab1PlanetS as Integer[3]
 
 //For the screen nudging whenever a meteor hits
 global nudge1R# = 0
@@ -104,6 +113,10 @@ global met3CD2# = 400
 #constant meteorMarker1 114
 #constant specialButton1 115
 
+//crab1PlanetS[1] = 116
+//crab1PlanetS[2] = 117
+//crab1PlanetS[3] = 118
+
 #constant expBar2 121
 #constant expHolder2 122
 #constant meteorButton2 123
@@ -139,6 +152,19 @@ global met3CD2# = 400
 #constant meteorI2 68
 #constant meteorI3 69
 #constant meteorI4 70
+
+#constant crab1start1I 101
+#constant crab1start2I 102
+#constant crab1walk1I 103
+#constant crab1walk2I 104
+#constant crab1walk3I 105
+#constant crab1walk4I 106
+#constant crab1walk5I 107
+#constant crab1walk6I 108
+#constant crab1walk7I 109
+#constant crab1walk8I 110
+#constant crab1jump1I 111
+#constant crab1jump2I 112
 
 // Game states
 #constant START 0
@@ -190,5 +216,24 @@ function LoadBaseImages()
 	LoadImage(expBarI5, "expBar5.png")
 	LoadImage(expBarI6, "expBar6.png")
 	
+	SetFolder("/media/crabs")
+	
+	LoadImage(crab1start1I, "crab1start1.png")
+	LoadImage(crab1start2I, "crab1start2.png")
+	LoadImage(crab1walk1I, "crab1walk1.png")
+	LoadImage(crab1walk2I, "crab1walk2.png")
+	LoadImage(crab1walk3I, "crab1walk3.png")
+	LoadImage(crab1walk4I, "crab1walk4.png")
+	LoadImage(crab1walk5I, "crab1walk5.png")
+	LoadImage(crab1walk6I, "crab1walk6.png")
+	LoadImage(crab1walk7I, "crab1walk7.png")
+	LoadImage(crab1walk8I, "crab1walk8.png")
+	LoadImage(crab1jump1I, "crab1jump1.png")
+	LoadImage(crab1jump2I, "crab1jump2.png")
+	
+	
+	
+	
+	SetFolder("/media")
 	
 endfunction
