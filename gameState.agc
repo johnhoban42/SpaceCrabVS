@@ -240,13 +240,13 @@ function ShowSpecialAnimation(crabType)
 	next i
 	
 	//Resuming the current animations
-	PlaySprite(crab1)
-	PlaySprite(crab2)
+	ResumeSprite(crab1)
+	//ResumeSprite(crab2)
 	for i = 1 to meteorActive1.length
-		PlaySprite(meteorActive1[i].spr)
+		ResumeSprite(meteorActive1[i].spr)
 	next i
 	for i = 1 to meteorActive2.length
-		PlaySprite(meteorActive2[i].spr)
+		//ResumeSprite(meteorActive2[i].spr)
 	next i
 	
 endfunction

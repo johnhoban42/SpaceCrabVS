@@ -24,7 +24,7 @@ Crab types (internal):
 2 - Ladder Wizard
 3 - Top Crab
 4 - Rave Crab
-5 - Cartography Crab
+5 - Chrono Crab
 6 - Ninja Crab
 
 */
@@ -34,6 +34,9 @@ Crab types (internal):
 #constant metSizeX 58
 #constant metSizeY 80
 
+#constant topCrabTimeMax 1500
+#constant chronoCrabTimeMax 2300	//Is longer because the timer goes down faster
+
 global gameTimer# = 0
 
 global crab1Theta# = 270
@@ -42,7 +45,7 @@ global crab1Dir# = 1		//Crab dir is a float that goes from 1 to -1, it multiplie
 global crab1Vel# = 1.28
 global crab1Accel# = .1	//Is .1 because it takes 2 to reach full reversal, and original game timer was 20
 global crab1Turning = 0 	//Is zero for when the crab isn't turning, and 1 or -1 depending on the direction it is CHANGING TO
-global crab1Type = 1
+global crab1Type = 5
 global crab1JumpD# = 0
 global crab1JumpHMax# = 5
 global crab1JumpDMax = 28	//This variable used to be in degrees, now it's in ticks
@@ -77,8 +80,8 @@ global meteorActive1 as meteor[0]
 global meteorActive2 as meteor[0]
 
 global expTotal1 = 0
-global meteorCost1 = 10
-global specialCost1 = 40
+global meteorCost1 = 2 //10
+global specialCost1 = 3 //40
 global specialTimerAgainst2# = 0
 
 global expTotal2 = 0

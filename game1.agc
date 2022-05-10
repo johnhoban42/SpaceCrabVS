@@ -89,7 +89,21 @@ endfunction
 
 function DoGame1()
 	
-	//fpsr# = fpsr#*1.5
+	//The Chrono Crab special
+	if specialTimerAgainst1# > 0 and crab2Type = 5
+		if specialTimerAgainst1# > chronoCrabTimeMax*9/10
+			//The startup
+			ratio# = (specialTimerAgainst1#-chronoCrabTimeMax*9/10)/(chronoCrabTimeMax/10)
+			fpsr# = fpsr# * 1 + 0.9*(1.0-ratio#)
+		elseif specialTimerAgainst1# < chronoCrabTimeMax/10
+			//The winddown
+			ratio# = specialTimerAgainst1#/(chronoCrabTimeMax/10)
+			fpsr# = fpsr# * 1 + 0.9*ratio#
+		else
+			//The normal
+			fpsr# = fpsr# * 1.9
+		endif
+	endif
 	
 	// Start the game loop in the GAME state
 	state = GAME
@@ -124,7 +138,7 @@ function DoGame1()
 	//The jumping movement code
 	if crab1JumpD# > 0
 		
-		if crab1JumpD# < crab1JumpDMax/8
+		if crab1JumpD# > crab1JumpDMax*7/8
 			PlaySprite(crab1, 0, 0, 11, 11)	
 		else
 			PlaySprite(crab1, 0, 0, 12, 12)	
@@ -266,6 +280,7 @@ function DoGame1()
 	
 	fpsr# = 60.0/ScreenFPS()
 	
+	
 endfunction state
 
 function TurnCrab1(dir)
@@ -303,15 +318,61 @@ function UpdateMeteor1()
 		cat = meteorActive1[i].cat
 		if cat = 1	//Normal meteor
 			meteorActive1[i].r = meteorActive1[i].r - 2.5*fpsr#
-			//meteorActive1[i].theta = meteorActive1[i].theta - 1*fpsr#
+			
+			//The top crab's special
+			if specialTimerAgainst1# > 0 and crab2Type = 3
+				if specialTimerAgainst1# > topCrabTimeMax*9/10
+					//The startup
+					ratio# = (specialTimerAgainst1#-topCrabTimeMax*9/10)/(topCrabTimeMax/10)
+					meteorActive1[i].theta = meteorActive1[i].theta - 1*fpsr#*(1.0-ratio#)
+				elseif specialTimerAgainst1# < topCrabTimeMax/10
+					//The winddown
+					ratio# = specialTimerAgainst1#/(topCrabTimeMax/10)
+					meteorActive1[i].theta = meteorActive1[i].theta - 1*fpsr#*ratio#
+				else
+					//The normal
+					meteorActive1[i].theta = meteorActive1[i].theta - 1*fpsr#
+				endif
+			endif
 		
 		elseif cat = 2	//Rotating meteor
 			meteorActive1[i].r = meteorActive1[i].r - 2*fpsr#
 			meteorActive1[i].theta = meteorActive1[i].theta + 1*fpsr#
 			
+			//The top crab's special
+			if specialTimerAgainst1# > 0 and crab2Type = 3
+				if specialTimerAgainst1# > topCrabTimeMax*9/10
+					//The startup
+					ratio# = (specialTimerAgainst1#-topCrabTimeMax*9/10)/(topCrabTimeMax/10)
+					meteorActive1[i].theta = meteorActive1[i].theta + 0.5*fpsr#*(1.0-ratio#)
+				elseif specialTimerAgainst1# < topCrabTimeMax/10
+					//The winddown
+					ratio# = specialTimerAgainst1#/(topCrabTimeMax/10)
+					meteorActive1[i].theta = meteorActive1[i].theta + 0.5*fpsr#*ratio#
+				else
+					//The normal
+					meteorActive1[i].theta = meteorActive1[i].theta + 0.5*fpsr#
+				endif
+			endif
+			
 		elseif cat = 3	//Fast meteor
 			meteorActive1[i].r = meteorActive1[i].r - 17*fpsr#
-			//meteorActive1[i].theta = meteorActive1[i].theta + 1*fpsr#
+			
+			//The top crab's special
+			if specialTimerAgainst1# > 0 and crab2Type = 3
+				if specialTimerAgainst1# > topCrabTimeMax*9/10
+					//The startup
+					ratio# = (specialTimerAgainst1#-topCrabTimeMax*9/10)/(topCrabTimeMax/10)
+					meteorActive1[i].theta = meteorActive1[i].theta + 1*fpsr#*(1.0-ratio#)
+				elseif specialTimerAgainst1# < topCrabTimeMax/10
+					//The winddown
+					ratio# = specialTimerAgainst1#/(topCrabTimeMax/10)
+					meteorActive1[i].theta = meteorActive1[i].theta + 1*fpsr#*ratio#
+				else
+					//The normal
+					meteorActive1[i].theta = meteorActive1[i].theta + 1*fpsr#
+				endif
+			endif
 			
 			ospr = spr + 10000 //Other sprite (is the box)
 			
@@ -486,9 +547,11 @@ function SendSpecial1()
 		
 	elseif crab1Type = 3
 		//Top Crab
-		specialTimerAgainst2# = 10000
+		specialTimerAgainst2# = topCrabTimeMax		
 		
-		
+	elseif crab1Type = 5
+		//Chrono Crab
+		specialTimerAgainst2# = chronoCrabTimeMax	
 	endif
 	
 	
