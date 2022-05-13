@@ -413,6 +413,7 @@ function UpdateMeteor1()
 	
 		if (GetSpriteCollision(spr, planet1) or meteorActive1[i].r < 0) and deleted = 0	
 			CreateExp(spr, cat)
+			ActivateMeteorParticles(cat, spr, 1)
 			DeleteSprite(spr)
 			
 			//The screen nudging
@@ -523,11 +524,9 @@ function SendSpecial1()
 		//Ladder Wizard
 		
 		for j = 1 to 3
-		
 		baseTheta = Random(1, 360)
 		dir = Random(1, 2)
 		if dir = 2 then dir = -1
-		
 			for i = 1 to 4
 				newMetS.theta = baseTheta + i*18*dir
 				newMetS.r = 200 + j*400 + i*50
@@ -542,8 +541,9 @@ function SendSpecial1()
 				inc meteorSprNum, 1
 				meteorActive2.insert(newMetS)
 			next i
-			
 		next j
+		
+		ActivateMeteorParticles(4, 0, 2)
 		
 	elseif crab1Type = 3
 		//Top Crab

@@ -17,6 +17,7 @@ Meteor Marker -14
 Exp Bar - 16
 Exp Bar Holder - 18
 Meteors - 20
+Particle Dust Clouds - 25
 Behind image for fast meteors - 30
 
 Crab types (internal):
@@ -45,7 +46,7 @@ global crab1Dir# = 1		//Crab dir is a float that goes from 1 to -1, it multiplie
 global crab1Vel# = 1.28
 global crab1Accel# = .1	//Is .1 because it takes 2 to reach full reversal, and original game timer was 20
 global crab1Turning = 0 	//Is zero for when the crab isn't turning, and 1 or -1 depending on the direction it is CHANGING TO
-global crab1Type = 5
+global crab1Type = 2
 global crab1JumpD# = 0
 global crab1JumpHMax# = 5
 global crab1JumpDMax = 28	//This variable used to be in degrees, now it's in ticks
@@ -168,6 +169,18 @@ global met3CD2# = 400
 #constant crab1walk8I 110
 #constant crab1jump1I 111
 #constant crab1jump2I 112
+
+//Particle Indexes
+#constant par1met1 1
+#constant par1met2 2
+#constant par1met3 3
+#constant par1spe1 4
+
+#constant par2met1 5
+#constant par2met2 6
+#constant par2met3 7
+#constant par2spe1 8
+
 
 // Game states
 #constant START 0
