@@ -181,6 +181,10 @@ global met3CD2# = 400
 #constant par2met3 7
 #constant par2spe1 8
 
+//Start screen sprites
+#constant SPR_TITLE 200
+#constant SPR_START 201
+
 
 // Game states
 #constant START 0

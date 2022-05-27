@@ -43,7 +43,7 @@ SetSpriteSize(split, w*1.5, 80)
 SetSpriteMiddleScreenX(split)
 SetSpriteMiddleScreenY(split)
 
-appState = GAME
+appState = START
 
 gameTime# = 0
 
