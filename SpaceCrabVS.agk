@@ -41,6 +41,9 @@ splash_logo=
 firebase_config_path=
 splash_color=
 prov_profile_path=
+splash_1136_path=
+splash_2048_path=
+splash_960_path=
 
 [html5_settings]
 commands_used=0
@@ -59,15 +62,11 @@ FILE_7=results.agc;-1
 FILE_8=start.agc;-1
 
 [files]
-FILE_NAME_0=0;constants.agc;74;0
-FILE_NAME_1=0;main.agc;54;1
-FILE_NAME_2=0;myLib.agc;80;2
-FILE_NAME_3=0;game1.agc;134;3
-FILE_NAME_4=0;game2.agc;178;4
-FILE_NAME_5=0;characterSelect.agc;0;5
-FILE_NAME_6=0;gameState.agc;0;6
-FILE_NAME_7=0;results.agc;0;7
-FILE_NAME_8=1;start.agc;0;8
+FILE_NAME_0=0;constants.agc;4838;0
+FILE_NAME_1=1;main.agc;219;4
+FILE_NAME_2=0;game1.agc;6387;2
+FILE_NAME_3=0;characterSelect.agc;1749;3
+FILE_NAME_4=0;start.agc;795;1
 
 [watchvariables]
 watch_variable=@Version;

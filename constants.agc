@@ -185,6 +185,21 @@ global met3CD2# = 400
 #constant SPR_TITLE 200
 #constant SPR_START 201
 
+//Character select screen sprites - player 1
+#constant SPR_CS_READY_1 300
+#constant SPR_CS_ARROW_L_1 301
+#constant SPR_CS_ARROW_R_1 302
+#constant TXT_CS_CRAB_NAME_1 303
+#constant TXT_CS_CRAB_DESC_1 304
+#constant SPR_CS_CRABS_1 390
+
+//Character select screen sprites - player 2
+#constant SPR_CS_READY_2 400
+#constant SPR_CS_ARROW_L_2 401
+#constant SPR_CS_ARROW_R_2 402
+#constant TXT_CS_CRAB_NAME_2 403
+#constant TXT_CS_CRAB_DESC_2 404
+#constant SPR_CS_CRABS_2 490
 
 // Game states
 #constant START 0
