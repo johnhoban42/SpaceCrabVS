@@ -4,12 +4,35 @@
 // Whether this state has been initialized
 global characterSelectStateInitialized as integer = 0
 
+global csc1 as CharacterSelectController
+global csc2 as CharacterSelectController
+
+global crabNames as string[5] = [
+	"SPACE CRAB",
+	"WIZARD CRAB",
+	"NINJA CRAB",
+	"TOP CRAB",
+	"RAVE CRAB",
+	"CHRONO CRAB"]
+
+global crabDescs as string[5] = [
+	"Space Crab is a crab in space.",
+	"Wizard Crab is a crab wizard.",
+	"Ninja Crab is a crab ninja.",
+	"Top Crab is a crab top.",
+	"Rave Crab is a raving crab.",
+	"Chrono Crab is a... crab with chrono?"]
+
+
 // Controller that holds state data for each screen
 type CharacterSelectController
 	
 	// Game state
 	ready as integer
 	crabSelected as integer
+	glideFrame as integer
+	glideDirection as integer
+	
 	// Sprite indices
 	sprReady as integer
 	sprLeftArrow as integer
@@ -21,9 +44,10 @@ type CharacterSelectController
 	
 endtype
 
+
 // Initialize the sprites within a CSC
 // "player" -> 1 or 2
-function InitCharacterSelectController(csc as CharacterSelectController, player as integer)
+function InitCharacterSelectController(csc ref as CharacterSelectController, player as integer)
 	
 	p as integer, f as integer
 	if player = 1 then p = 1 else p = -1 // makes the position calculations easier
@@ -38,6 +62,7 @@ function InitCharacterSelectController(csc as CharacterSelectController, player 
 	SetSpriteSize(csc.sprLeftArrow, 50, 50)
 	SetSpriteMiddleScreenOffset(csc.sprLeftArrow, p*-3*w/8, p*3*h/16)
 	SetSpriteFlip(csc.sprLeftArrow, f, f)
+	SetSpriteVisible(csc.sprLeftArrow, 0)
 	
 	LoadSprite(csc.sprRightArrow, "rightArrow.png")
 	SetSpriteSize(csc.sprRightArrow, 50, 50)
@@ -52,12 +77,12 @@ function InitCharacterSelectController(csc as CharacterSelectController, player 
 	next i
 	
 	// The offset mumbo-jumbo with f-coefficients is because AGK's text rendering is awful
-	CreateText(csc.txtCrabName, "GAMMA CRAB")
+	CreateText(csc.txtCrabName, crabNames[0])
 	SetTextSize(csc.txtCrabName, 96)
 	SetTextAngle(csc.txtCrabName, f*180)
 	SetTextMiddleScreenOffset(csc.txtCrabName, f, 0, p*100)
 	
-	CreateText(csc.txtCrabDesc, "This whimsical crab is ready for a fight of galactic proportions.")
+	CreateText(csc.txtCrabDesc, crabDescs[0])
 	SetTextSize(csc.txtCrabDesc, 36)
 	SetTextAngle(csc.txtCrabDesc, f*180)
 	SetTextMiddleScreenOffset(csc.txtCrabDesc, f, 0, p*3*h/8)
@@ -72,7 +97,6 @@ function InitCharacterSelect()
 	SetSpriteVisible(split, 1)
 	
 	// Init controllers
-	csc1 as CharacterSelectController
 	csc1.ready = 0
 	csc1.crabSelected = 0
 	csc1.sprReady = SPR_CS_READY_1
@@ -82,7 +106,6 @@ function InitCharacterSelect()
 	csc1.txtCrabDesc = TXT_CS_CRAB_DESC_1
 	csc1.sprCrabs = SPR_CS_CRABS_1
 	
-	csc2 as CharacterSelectController
 	csc2.ready = 0
 	csc2.crabSelected = 0
 	csc2.sprReady = SPR_CS_READY_2
@@ -100,6 +123,69 @@ function InitCharacterSelect()
 endfunction
 
 
+// Change the selected crab
+// dir -> -1 for left, 1 for right
+function ChangeCrabs(csc ref as CharacterSelectController, player as integer, dir as integer)
+	
+	p as integer, f as integer
+	if player = 1 then p = 1 else p = -1 // makes the position calculations easier
+	if player = 1 then f = 0 else f = 1 // makes the flip calculations easier
+	
+	// Start the glide
+	if csc.glideFrame = 0
+		csc.glideFrame = 30
+		csc.glideDirection = dir
+		SetSpriteVisible(csc.sprLeftArrow, 0)
+		SetSpriteVisible(csc.sprRightArrow, 0)
+		SetSpriteVisible(csc.sprReady, 0)
+	endif
+	
+	// Glide
+	for spr = csc.sprCrabs to csc.sprCrabs + 5
+		GlideToX(spr, GetSpriteX(spr) + -1*p*dir*w, 30)
+	next spr
+	dec csc.glideFrame
+	
+	// Finish the glide and change the displayed crab
+	if csc.glideFrame = 0
+		csc.crabSelected = csc.crabSelected + dir
+		SetTextString(csc.txtCrabName, crabNames[csc.crabSelected])
+		SetTextMiddleScreenX(csc.txtCrabName, f)
+		SetTextString(csc.txtCrabDesc, crabDescs[csc.crabSelected])
+		SetTextMiddleScreenX(csc.txtCrabDesc, f)
+		if csc.CrabSelected <> 0
+			SetSpriteVisible(csc.sprLeftArrow, 1)
+		endif
+		if csc.CrabSelected <> 5
+			SetSpriteVisible(csc.sprRightArrow, 1)
+		endif
+		SetSpriteVisible(csc.sprReady, 1)
+	endif
+	
+endfunction
+
+
+// Game loop for a single screen
+function DoCharacterSelectController(csc ref as CharacterSelectController, player as integer)
+	
+	if GetPointerPressed()
+		// Scroll left
+		if csc.crabSelected <> 0 and GetSpriteHitTest(csc.sprLeftArrow, GetPointerX(), GetPointerY())
+			ChangeCrabs(csc, player, -1)
+		// Scroll right
+		elseif csc.crabSelected <> 5 and GetSpriteHitTest(csc.sprRightArrow, GetPointerX(), GetPointerY())
+			ChangeCrabs(csc, player, 1)
+		endif
+	endif
+	
+	// Continue an existing glide
+	if csc.glideFrame > 0
+		ChangeCrabs(csc, player, csc.glideDirection)
+	endif
+	
+endfunction
+
+
 // Character select screen execution loop
 // Each time this loop exits, return the next state to enter into
 function DoCharacterSelect()
@@ -110,6 +196,9 @@ function DoCharacterSelect()
 		InitCharacterSelect()
 	endif
 	state = CHARACTER_SELECT
+	
+	DoCharacterSelectController(csc1, 1)
+	DoCharacterSelectController(csc2, 2)
 	
 	// If we are leaving the state, exit appropriately
 	// Don't write anything after this!

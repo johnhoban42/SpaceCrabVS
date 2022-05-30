@@ -46,6 +46,10 @@ function SetTextMiddleScreen(txt, flip)
 	SetTextPosition(txt, w/2-GetTextTotalWidth(txt)/2 + flip*GetTextTotalWidth(txt), h/2-GetTextTotalHeight(txt)/2 + flip*GetTextTotalHeight(txt))
 endfunction
 
+function SetTextMiddleScreenX(txt, flip)
+	SetTextX(txt, w/2-GetTextTotalWidth(txt)/2 + flip*GetTextTotalWidth(txt))
+endfunction
+
 function SetTextMiddleScreenOffset(txt, flip, dx, dy)
 	SetTextMiddleScreen(txt, flip)
 	SetTextPosition(txt, GetTextX(txt) + dx, GetTextY(txt) + dy)
