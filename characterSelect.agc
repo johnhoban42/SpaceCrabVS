@@ -7,7 +7,7 @@ global characterSelectStateInitialized as integer = 0
 global csc1 as CharacterSelectController
 global csc2 as CharacterSelectController
 
-global crabNames as string[5] = [
+global crabNames as string[NUM_CRABS] = [
 	"SPACE CRAB",
 	"WIZARD CRAB",
 	"NINJA CRAB",
@@ -15,7 +15,7 @@ global crabNames as string[5] = [
 	"RAVE CRAB",
 	"CHRONO CRAB"]
 
-global crabDescs as string[5] = [
+global crabDescs as string[NUM_CRABS] = [
 	"Space Crab is a crab in space.",
 	"Wizard Crab is a crab wizard.",
 	"Ninja Crab is a crab ninja.",
@@ -69,7 +69,7 @@ function InitCharacterSelectController(csc ref as CharacterSelectController, pla
 	SetSpriteMiddleScreenOffset(csc.sprRightArrow, p*3*w/8, p*3*h/16)
 	SetSpriteFlip(csc.sprRightArrow, f, f)
 	
-	for i = 0 to 5
+	for i = 0 to NUM_CRABS-1
 		LoadSprite(csc.sprCrabs + i, "crab1.png")
 		SetSpriteSize(csc.sprCrabs + i, 350, 350)
 		SetSpriteMiddleScreenOffset(csc.sprCrabs + i, p*i*w, p*335)
@@ -141,7 +141,7 @@ function ChangeCrabs(csc ref as CharacterSelectController, player as integer, di
 	endif
 	
 	// Glide
-	for spr = csc.sprCrabs to csc.sprCrabs + 5
+	for spr = csc.sprCrabs to csc.sprCrabs + NUM_CRABS-1
 		GlideToX(spr, GetSpriteX(spr) + -1*p*dir*w, 30)
 	next spr
 	dec csc.glideFrame
@@ -156,7 +156,7 @@ function ChangeCrabs(csc ref as CharacterSelectController, player as integer, di
 		if csc.CrabSelected <> 0
 			SetSpriteVisible(csc.sprLeftArrow, 1)
 		endif
-		if csc.CrabSelected <> 5
+		if csc.CrabSelected <> NUM_CRABS-1
 			SetSpriteVisible(csc.sprRightArrow, 1)
 		endif
 		SetSpriteVisible(csc.sprReady, 1)
@@ -173,7 +173,7 @@ function DoCharacterSelectController(csc ref as CharacterSelectController, playe
 		if csc.crabSelected <> 0 and GetSpriteHitTest(csc.sprLeftArrow, GetPointerX(), GetPointerY())
 			ChangeCrabs(csc, player, -1)
 		// Scroll right
-		elseif csc.crabSelected <> 5 and GetSpriteHitTest(csc.sprRightArrow, GetPointerX(), GetPointerY())
+		elseif csc.crabSelected <> NUM_CRABS-1 and GetSpriteHitTest(csc.sprRightArrow, GetPointerX(), GetPointerY())
 			ChangeCrabs(csc, player, 1)
 		endif
 	endif

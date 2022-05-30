@@ -30,6 +30,9 @@ Crab types (internal):
 
 */
 
+//Number of crabs in the game - made a constant in case we add/remove crabs
+#constant NUM_CRABS 6
+
 //Gameplay constants & variables
 #constant planetSize 220
 #constant metSizeX 58
