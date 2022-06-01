@@ -194,6 +194,7 @@ global met3CD2# = 400
 #constant SPR_CS_ARROW_R_1 302
 #constant TXT_CS_CRAB_NAME_1 303
 #constant TXT_CS_CRAB_DESC_1 304
+#constant TXT_CS_READY_1 305
 #constant SPR_CS_CRABS_1 390
 
 //Character select screen sprites - player 2
@@ -202,6 +203,7 @@ global met3CD2# = 400
 #constant SPR_CS_ARROW_R_2 402
 #constant TXT_CS_CRAB_NAME_2 403
 #constant TXT_CS_CRAB_DESC_2 404
+#constant TXT_CS_READY_2 405
 #constant SPR_CS_CRABS_2 490
 
 // Game states

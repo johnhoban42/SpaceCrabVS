@@ -39,6 +39,7 @@ type CharacterSelectController
 	sprRightArrow as integer
 	txtCrabName as integer
 	txtCrabDesc as integer
+	txtReady as integer
 	// Sprite index of the first crab shown on the select screen
 	sprCrabs as integer
 	
@@ -87,6 +88,12 @@ function InitCharacterSelectController(csc ref as CharacterSelectController, pla
 	SetTextAngle(csc.txtCrabDesc, f*180)
 	SetTextMiddleScreenOffset(csc.txtCrabDesc, f, 0, p*3*h/8)
 	
+	CreateText(csc.txtReady, "Waiting for your opponent...")
+	SetTextSize(csc.txtReady, 36)
+	SetTextAngle(csc.txtReady, f*180)
+	SetTextMiddleScreenOffset(csc.txtReady, f, 0, p*7*h/16)
+	SetTextVisible(csc.txtReady, 0)
+	
 endfunction
 
 
@@ -104,6 +111,7 @@ function InitCharacterSelect()
 	csc1.sprRightArrow = SPR_CS_ARROW_R_1
 	csc1.txtCrabName = TXT_CS_CRAB_NAME_1
 	csc1.txtCrabDesc = TXT_CS_CRAB_DESC_1
+	csc1.txtReady = TXT_CS_READY_1
 	csc1.sprCrabs = SPR_CS_CRABS_1
 	
 	csc2.ready = 0
@@ -113,6 +121,7 @@ function InitCharacterSelect()
 	csc2.sprRightArrow = SPR_CS_ARROW_R_2
 	csc2.txtCrabName = TXT_CS_CRAB_NAME_2
 	csc2.txtCrabDesc = TXT_CS_CRAB_DESC_2
+	csc2.txtReady = TXT_CS_READY_2
 	csc2.sprCrabs = SPR_CS_CRABS_2
 	
 	InitCharacterSelectController(csc1, 1)
@@ -165,16 +174,37 @@ function ChangeCrabs(csc ref as CharacterSelectController, player as integer, di
 endfunction
 
 
+// Select a crab, cannot be undone by the player
+function SelectCrab(csc ref as CharacterSelectController, player as integer)
+	
+	if player = 1
+		crab1Type = csc.crabSelected
+	else
+		crab2Type = csc.crabSelected
+	endif
+	
+	SetSpriteVisible(csc.sprReady, 0)
+	SetSpriteVisible(csc.sprLeftArrow, 0)
+	SetSpriteVisible(csc.sprRightArrow, 0)
+	SetTextVisible(csc.txtReady, 1)
+	
+	csc.ready = 1
+	
+endfunction
+
 // Game loop for a single screen
 function DoCharacterSelectController(csc ref as CharacterSelectController, player as integer)
 	
 	if GetPointerPressed()
 		// Scroll left
-		if csc.crabSelected <> 0 and GetSpriteHitTest(csc.sprLeftArrow, GetPointerX(), GetPointerY())
+		if not csc.ready and csc.crabSelected <> 0 and GetSpriteHitTest(csc.sprLeftArrow, GetPointerX(), GetPointerY())
 			ChangeCrabs(csc, player, -1)
 		// Scroll right
-		elseif csc.crabSelected <> NUM_CRABS-1 and GetSpriteHitTest(csc.sprRightArrow, GetPointerX(), GetPointerY())
+		elseif not csc.ready and csc.crabSelected <> NUM_CRABS-1 and GetSpriteHitTest(csc.sprRightArrow, GetPointerX(), GetPointerY())
 			ChangeCrabs(csc, player, 1)
+		// Ready button
+		elseif GetSpriteHitTest(csc.sprReady, GetPointerX(), GetPointerY())
+			SelectCrab(csc, player)
 		endif
 	endif
 	
@@ -200,6 +230,10 @@ function DoCharacterSelect()
 	DoCharacterSelectController(csc1, 1)
 	DoCharacterSelectController(csc2, 2)
 	
+	if csc1.ready and csc2.ready
+		state = GAME
+	endif
+	
 	// If we are leaving the state, exit appropriately
 	// Don't write anything after this!
 	if state <> CHARACTER_SELECT
@@ -209,8 +243,26 @@ function DoCharacterSelect()
 endfunction state
 
 
+// Dispose of assets from a single controller
+function CleanupCharacterSelectController(csc ref as CharacterSelectController)
+	
+	DeleteSprite(csc.sprReady)
+	DeleteSprite(csc.sprLeftArrow)
+	DeleteSprite(csc.sprRightArrow)
+	DeleteText(csc.txtCrabName)
+	DeleteText(csc.txtCrabDesc)
+	DeleteText(csc.txtReady)
+	for spr = csc.sprCrabs to csc.sprCrabs + NUM_CRABS-1
+		DeleteSprite(spr)
+	next spr
+	
+endfunction
+
 // Cleanup upon leaving this state
 function ExitCharacterSelect()
+	
+	CleanupCharacterSelectController(csc1)
+	CleanupCharacterSelectController(csc2)
 	
 	characterSelectStateInitialized = 0
 	
