@@ -10,18 +10,18 @@ global csc2 as CharacterSelectController
 global crabNames as string[NUM_CRABS] = [
 	"SPACE CRAB",
 	"WIZARD CRAB",
-	"NINJA CRAB",
 	"TOP CRAB",
 	"RAVE CRAB",
-	"CHRONO CRAB"]
+	"CHRONO CRAB",
+	"NINJA CRAB"]
 
 global crabDescs as string[NUM_CRABS] = [
 	"Space Crab is a crab in space.",
 	"Wizard Crab is a crab wizard.",
-	"Ninja Crab is a crab ninja.",
 	"Top Crab is a crab top.",
 	"Rave Crab is a raving crab.",
-	"Chrono Crab is a... crab with chrono?"]
+	"Chrono Crab is a... crab with chrono?",
+	"Ninja Crab is a crab ninja."]
 
 
 // Controller that holds state data for each screen
@@ -177,10 +177,12 @@ endfunction
 // Select a crab, cannot be undone by the player
 function SelectCrab(csc ref as CharacterSelectController, player as integer)
 	
+	// We need this off-by-one adjustment because the crab types are based on 1-based indexing,
+	// whereas the selected crabs are based on 0-based indexing
 	if player = 1
-		crab1Type = csc.crabSelected
+		crab1Type = csc.crabSelected + 1
 	else
-		crab2Type = csc.crabSelected
+		crab2Type = csc.crabSelected + 1
 	endif
 	
 	SetSpriteVisible(csc.sprReady, 0)
@@ -191,6 +193,7 @@ function SelectCrab(csc ref as CharacterSelectController, player as integer)
 	csc.ready = 1
 	
 endfunction
+
 
 // Game loop for a single screen
 function DoCharacterSelectController(csc ref as CharacterSelectController, player as integer)
@@ -257,6 +260,7 @@ function CleanupCharacterSelectController(csc ref as CharacterSelectController)
 	next spr
 	
 endfunction
+
 
 // Cleanup upon leaving this state
 function ExitCharacterSelect()
