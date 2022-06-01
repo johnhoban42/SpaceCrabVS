@@ -1,4 +1,5 @@
 #include "constants.agc"
+#include "myLib.agc"
 
 
 // Whether this state has been initialized
@@ -8,6 +9,20 @@ global startStateInitialized as integer = 0
 // Initialize the start screen
 // Does nothing right now, just a placeholder
 function InitStart()
+	
+	SetSpriteVisible(split, 0)
+	
+	LoadSprite(SPR_TITLE, "title.png")
+	SetSpriteSize(SPR_TITLE, 2*h/3, w/2)
+	SetSpriteMiddleScreen(SPR_TITLE)
+	IncSpriteX(SPR_TITLE, 150)
+	SetSpriteAngle(SPR_TITLE, 90)
+	
+	LoadSprite(SPR_START, "start.png")
+	SetSpriteSize(SPR_START, h/2, w/5)
+	SetSpriteMiddleScreen(SPR_START)
+	IncSpriteX(SPR_START, -250)
+	SetSpriteAngle(SPR_START, 90)
 	
 	startStateInitialized = 1
 	
@@ -25,6 +40,11 @@ function DoStart()
 	endif
 	state = START
 	
+	// Start button pressed
+	if Button(SPR_START)
+		state = CHARACTER_SELECT
+	endif
+	
 	// If we are leaving the state, exit appropriately
 	// Don't write anything after this!
 	if state <> START
@@ -36,6 +56,9 @@ endfunction state
 
 // Cleanup upon leaving this state
 function ExitStart()
+	
+	DeleteSprite(SPR_TITLE)
+	DeleteSprite(SPR_START)
 	
 	startStateInitialized = 0
 	

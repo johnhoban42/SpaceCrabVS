@@ -2,6 +2,7 @@
 #include "constants.agc"
 #include "gameState.agc"
 #include "start.agc"
+#include "characterSelect.agc"
 
 // Project: SpaceCrabVS 
 // Created: 22-03-03
@@ -43,7 +44,7 @@ SetSpriteSize(split, w*1.5, 80)
 SetSpriteMiddleScreenX(split)
 SetSpriteMiddleScreenY(split)
 
-appState = GAME
+appState = START
 
 gameTime# = 0
 
@@ -57,7 +58,7 @@ do
 	if appState = START
 		appState = DoStart()
 	elseif appState = CHARACTER_SELECT
-		// appState = DoCharacterSelect()
+		appState = DoCharacterSelect()
 	elseif appState = GAME
 		appState = DoGame()
 	elseif appState = RESULTS

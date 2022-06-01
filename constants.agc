@@ -30,6 +30,9 @@ Crab types (internal):
 
 */
 
+//Number of crabs in the game - made a constant in case we add/remove crabs
+#constant NUM_CRABS 6
+
 //Gameplay constants & variables
 #constant planetSize 220
 #constant metSizeX 58
@@ -181,6 +184,27 @@ global met3CD2# = 400
 #constant par2met3 7
 #constant par2spe1 8
 
+//Start screen sprites
+#constant SPR_TITLE 200
+#constant SPR_START 201
+
+//Character select screen sprites - player 1
+#constant SPR_CS_READY_1 300
+#constant SPR_CS_ARROW_L_1 301
+#constant SPR_CS_ARROW_R_1 302
+#constant TXT_CS_CRAB_NAME_1 303
+#constant TXT_CS_CRAB_DESC_1 304
+#constant TXT_CS_READY_1 305
+#constant SPR_CS_CRABS_1 390
+
+//Character select screen sprites - player 2
+#constant SPR_CS_READY_2 400
+#constant SPR_CS_ARROW_L_2 401
+#constant SPR_CS_ARROW_R_2 402
+#constant TXT_CS_CRAB_NAME_2 403
+#constant TXT_CS_CRAB_DESC_2 404
+#constant TXT_CS_READY_2 405
+#constant SPR_CS_CRABS_2 490
 
 // Game states
 #constant START 0
