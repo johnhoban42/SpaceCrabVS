@@ -59,37 +59,14 @@ function SetSpriteSizeSquare(spr, size)
 	SetSpriteSize(spr, size, size)
 endfunction
 
-Function Button(sprite) 
-if GetSpriteExists(sprite) = 0 then exitfunction 0	//Added in to make sure bad buttons aren't targeted
-returnValue = 0 `reset value for check
-If GetPointerX() > GetSpriteXByOffset( sprite ) - ( GetSpriteWidth( sprite ) / 2 )
- If GetPointerX() < GetSpriteXByOffset( sprite ) + ( GetSpriteWidth( sprite ) / 2 )
-   If GetPointerY() > GetSpriteYByOffset( sprite ) - ( GetSpriteHeight( sprite ) / 2 )
-    If GetPointerY() < GetSpriteYByOffset( sprite ) + ( GetSpriteHeight( sprite ) / 2 )
-      If GetPointerState() = 1
-        returnValue = 1
-      Endif
-     Endif
-   Endif
-  Endif
-Endif
-EndFunction returnValue
+function Hover(sprite) 
+	if GetSpriteExists(sprite) = 0 then exitfunction 0	//Added in to make sure bad buttons aren't targeted
+	returnValue = GetSpriteHitTest(sprite, GetPointerX(), GetPointerY())
+endfunction returnValue
 
-Function Hover(sprite) 
-if GetSpriteExists(sprite) = 0 then exitfunction 0	//Added in to make sure bad buttons aren't targeted
-returnValue = 0 `reset value for check
-If GetPointerX() > GetSpriteXByOffset( sprite ) - ( GetSpriteWidth( sprite ) / 2 )
- If GetPointerX() < GetSpriteXByOffset( sprite ) + ( GetSpriteWidth( sprite ) / 2 )
-   If GetPointerY() > GetSpriteYByOffset( sprite ) - ( GetSpriteHeight( sprite ) / 2 )
-    If GetPointerY() < GetSpriteYByOffset( sprite ) + ( GetSpriteHeight( sprite ) / 2 )
-      //If GetPointerState() = 1
-        returnValue = 1
-      //Endif
-     Endif
-   Endif
-  Endif
-Endif
-EndFunction returnValue
+function Button(sprite) 
+	returnValue = GetPointerPressed() and Hover(sprite)
+endfunction returnValue
 
 function CreateSpriteExpress(spr, wid, hei, x, y, depth)
 	CreateSprite(spr, 0)

@@ -41,7 +41,7 @@ function DoStart()
 	state = START
 	
 	// Start button pressed
-	if GetPointerPressed() and GetSpriteHitTest(SPR_START, GetPointerX(), GetPointerY())
+	if Button(SPR_START)
 		state = CHARACTER_SELECT
 	endif
 	

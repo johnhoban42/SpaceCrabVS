@@ -27,6 +27,9 @@ global crabDescs as string[NUM_CRABS] = [
 // Controller that holds state data for each screen
 type CharacterSelectController
 	
+	// Player ID (1 or 2)
+	player as integer
+	
 	// Game state
 	ready as integer
 	crabSelected as integer
@@ -48,11 +51,11 @@ endtype
 
 // Initialize the sprites within a CSC
 // "player" -> 1 or 2
-function InitCharacterSelectController(csc ref as CharacterSelectController, player as integer)
+function InitCharacterSelectController(csc ref as CharacterSelectController)
 	
 	p as integer, f as integer
-	if player = 1 then p = 1 else p = -1 // makes the position calculations easier
-	if player = 1 then f = 0 else f = 1 // makes the flip calculations easier
+	if csc.player = 1 then p = 1 else p = -1 // makes the position calculations easier
+	if csc.player = 1 then f = 0 else f = 1 // makes the flip calculations easier
 	
 	LoadSprite(csc.sprReady, "ready.png")
 	SetSpriteSize(csc.sprReady, w/3, h/16)
@@ -104,6 +107,7 @@ function InitCharacterSelect()
 	SetSpriteVisible(split, 1)
 	
 	// Init controllers
+	csc1.player = 1
 	csc1.ready = 0
 	csc1.crabSelected = 0
 	csc1.sprReady = SPR_CS_READY_1
@@ -114,6 +118,7 @@ function InitCharacterSelect()
 	csc1.txtReady = TXT_CS_READY_1
 	csc1.sprCrabs = SPR_CS_CRABS_1
 	
+	csc2.player = 2
 	csc2.ready = 0
 	csc2.crabSelected = 0
 	csc2.sprReady = SPR_CS_READY_2
@@ -124,8 +129,8 @@ function InitCharacterSelect()
 	csc2.txtReady = TXT_CS_READY_2
 	csc2.sprCrabs = SPR_CS_CRABS_2
 	
-	InitCharacterSelectController(csc1, 1)
-	InitCharacterSelectController(csc2, 2)
+	InitCharacterSelectController(csc1)
+	InitCharacterSelectController(csc2)
 	
 	characterSelectStateInitialized = 1
 	
@@ -134,11 +139,11 @@ endfunction
 
 // Change the selected crab
 // dir -> -1 for left, 1 for right
-function ChangeCrabs(csc ref as CharacterSelectController, player as integer, dir as integer)
+function ChangeCrabs(csc ref as CharacterSelectController, dir as integer)
 	
 	p as integer, f as integer
-	if player = 1 then p = 1 else p = -1 // makes the position calculations easier
-	if player = 1 then f = 0 else f = 1 // makes the flip calculations easier
+	if csc.player = 1 then p = 1 else p = -1 // makes the position calculations easier
+	if csc.player = 1 then f = 0 else f = 1 // makes the flip calculations easier
 	
 	// Start the glide
 	if csc.glideFrame = 0
@@ -175,11 +180,11 @@ endfunction
 
 
 // Select a crab, cannot be undone by the player
-function SelectCrab(csc ref as CharacterSelectController, player as integer)
+function SelectCrab(csc ref as CharacterSelectController)
 	
 	// We need this off-by-one adjustment because the crab types are based on 1-based indexing,
 	// whereas the selected crabs are based on 0-based indexing
-	if player = 1
+	if csc.player = 1
 		crab1Type = csc.crabSelected + 1
 	else
 		crab2Type = csc.crabSelected + 1
@@ -196,24 +201,22 @@ endfunction
 
 
 // Game loop for a single screen
-function DoCharacterSelectController(csc ref as CharacterSelectController, player as integer)
-	
-	if GetPointerPressed()
-		// Scroll left
-		if not csc.ready and csc.crabSelected <> 0 and GetSpriteHitTest(csc.sprLeftArrow, GetPointerX(), GetPointerY())
-			ChangeCrabs(csc, player, -1)
-		// Scroll right
-		elseif not csc.ready and csc.crabSelected <> NUM_CRABS-1 and GetSpriteHitTest(csc.sprRightArrow, GetPointerX(), GetPointerY())
-			ChangeCrabs(csc, player, 1)
-		// Ready button
-		elseif GetSpriteHitTest(csc.sprReady, GetPointerX(), GetPointerY())
-			SelectCrab(csc, player)
-		endif
+function DoCharacterSelectController(csc ref as CharacterSelectController)
+
+	// Scroll left
+	if Button(csc.sprLeftArrow) and not csc.ready and csc.crabSelected > 0
+		ChangeCrabs(csc, -1)
+	// Scroll right
+	elseif Button(csc.sprRightArrow) and not csc.ready and csc.crabSelected < NUM_CRABS-1
+		ChangeCrabs(csc, 1)
+	// Ready button
+	elseif Button(csc.sprReady)
+		SelectCrab(csc)
 	endif
 	
 	// Continue an existing glide
 	if csc.glideFrame > 0
-		ChangeCrabs(csc, player, csc.glideDirection)
+		ChangeCrabs(csc, csc.glideDirection)
 	endif
 	
 endfunction
@@ -230,8 +233,8 @@ function DoCharacterSelect()
 	endif
 	state = CHARACTER_SELECT
 	
-	DoCharacterSelectController(csc1, 1)
-	DoCharacterSelectController(csc2, 2)
+	DoCharacterSelectController(csc1)
+	DoCharacterSelectController(csc2)
 	
 	if csc1.ready and csc2.ready
 		state = GAME
