@@ -95,6 +95,7 @@ function CreateExp(metSpr, metType)
 		SetSpritePosition(expSprNum, GetSpriteMiddleX(metSpr) - GetSpriteWidth(expSprNum)/2, GetSpriteMiddleY(metSpr) - GetSpriteHeight(expSprNum)/2)
 		SetSpriteColor(expSprNum, 255, 255, 0, 5)
 		SetSpriteAngle(expSprNum, Random(1, 360))
+		SetSpriteDepth(expSprNum, 7)
 
 		expList.insert(expSprNum)
 		inc expSprNum
@@ -144,7 +145,11 @@ function UpdateExp()
 					endif
 				endif
 				
-				UpdateButtons1()				
+				UpdateButtons1()	
+				
+				//For second crab, have a different kind pf exp sound
+				rnd = Random(0, 4)
+				PlaySound(exp1S + rnd, volumeSE)
 
 				//This is for instant bar size adjustment
 				//SetSpriteSize(expBar1, (GetSpriteWidth(expHolder1)-20)*(1.0*expTotal1/specialCost1), 26)
@@ -172,6 +177,8 @@ function ShowSpecialAnimation(crabType)
 	
 	fpsr# = 60.0/ScreenFPS()
 	
+	PlaySound(specialS, volumeSE)
+	
 	//Pausing the current animations
 	StopSprite(crab1)
 	StopSprite(crab2)
@@ -180,6 +187,9 @@ function ShowSpecialAnimation(crabType)
 	next i
 	for i = 1 to meteorActive2.length
 		StopSprite(meteorActive2[i].spr)
+	next i
+	for i = par1met1 to par2spe1
+		SetParticlesActive(i, 0)
 	next i
 	
 	CreateSprite(specialBG, 0)
@@ -215,6 +225,12 @@ function ShowSpecialAnimation(crabType)
 	
 	iEnd = 120/fpsr#
 	for i = 1 to iEnd
+		
+		if i <= iEnd*1/4 and i > 2
+			if GetPointerPressed() and GetPointerY() > h/2 then buffer1 = 1
+			if GetPointerPressed() and GetPointerY() < h/2 then buffer2 = 1
+		endif
+		
 		//Setting the speed of the images based on the progress through the loop
 		if i <= iEnd*1/9
 			speed = 25*fpsr#*75/60
@@ -224,6 +240,7 @@ function ShowSpecialAnimation(crabType)
 			speed = 5+(i-iEnd*6/9)*fpsr#*75/60
 		endif
 		
+		if i = iEnd*2/3 then PlaySound(specialExitS, volumeSE)
 		
 		IncSpriteXFloat(specialSprFront1, -1.2*speed)
 		IncSpriteXFloat(specialSprBack1, 1*speed)
@@ -249,6 +266,9 @@ function ShowSpecialAnimation(crabType)
 	for i = 1 to meteorActive2.length
 		//ResumeSprite(meteorActive2[i].spr)
 	next i
+	for i = par1met1 to par2spe1
+		SetParticlesActive(i, 1)
+	next i
 	
 endfunction
 
@@ -264,7 +284,7 @@ function InitParticles()
     		SetParticlesImage (i, img)
 			SetParticlesFrequency(i, 300)
 			SetParticlesLife(i, lifeEnd#)	//Time in seconds that the particles stick around
-			SetParticlesSize(i, 25)
+			SetParticlesSize(i, 20)
 			SetParticlesStartZone(i, -5, -5, 5, 5) //The box that the particles can start from
     		SetParticlesDirection(i, 30, 20)
     		SetParticlesAngle(i, 360)
@@ -289,7 +309,7 @@ function InitParticles()
 				SetParticlesImage (i, expOrbI)
 				SetParticlesPosition (i, w/2, h*3/4 - h/2*(i/4-1))	//Places them on different screen centers
 				SetParticlesFrequency(i, 60)
-	    		SetParticlesMax (i, 480)
+	    		SetParticlesMax(i, 0)
 				SetParticlesLife(i, lifeEnd#)	//Time in seconds that the particles stick around
 				SetParticlesSize(i, 8)
 				SetParticlesStartZone(i, -w/2, -h/4, w/2, h/4) //The box that the particles can start from
@@ -297,7 +317,6 @@ function InitParticles()
 	    		SetParticlesAngle(i, 360)
 	    		SetParticlesVelocityRange (i, .1, .6)
 	    		SetParticlesDepth(i, 5)
-	    		SetParticlesActive(i, 0)
 	    		
 	    		AddParticlesColorKeyFrame (i, 0.0, 255, 255, 100, 0 )
 				AddParticlesColorKeyFrame (i, .6, 255, 255, 100, 255 )
@@ -319,6 +338,50 @@ function ActivateMeteorParticles(mType, spr, gameNum)
 		//For wizard sparkles
 	    SetParticlesActive(par, 1)
 		ResetParticleCount(par)
+		SetParticlesMax(par, 480)
 	endif    
  
+endfunction
+
+function SetSpriteColorByCycle(spr, numOf360)
+	//Make sure the cycleLength is divisible by 6!
+	cycleLength = 360
+	colorTime = Mod(numOf360*3, 360)
+	phaseLen = cycleLength/6
+	
+	tmpSpr = CreateSprite(0)
+	
+	//Each colorphase will last for one phaseLen
+	if colorTime <= phaseLen	//Red -> O
+		t = colorTime
+		SetSpriteColor(tmpSpr, 255, (t*127.0)/phaseLen, 0, 255)
+		
+	elseif colorTime <= phaseLen*2	//Orange -> Y
+		t = colorTime-phaseLen
+		SetSpriteColor(tmpSpr, 255, 128+(t*127.0)/phaseLen, 0, 255)
+		
+	elseif colorTime <= phaseLen*3	//Yellow -> G
+		t = colorTime-phaseLen*2
+		SetSpriteColor(tmpSpr, 255-(t*255.0/phaseLen), 255, 0, 255)
+		
+	elseif colorTime <= phaseLen*4	//Green -> B
+		t = colorTime-phaseLen*3
+		SetSpriteColor(tmpSpr, 0, 255-(t*255.0/phaseLen), (t*255.0/phaseLen), 255)
+		
+	elseif colorTime <= phaseLen*5	//Blue -> P
+		t = colorTime-phaseLen*4
+		SetSpriteColor(tmpSpr, (t*139.0/phaseLen), 0, 255, 255)
+		
+	else 	//Purple -> R
+		t = colorTime-phaseLen*5
+		SetSpriteColor(tmpSpr, 139+(t*116.0/phaseLen), 0, 255-(t*255.0/phaseLen), 255)
+		
+	endif
+	//The -255 is a remnant from SPA, to keep the color changing the same, this can be removed if desired
+	r = 255-GetSpriteColorRed(tmpSpr)
+	g = 255-GetSpriteColorGreen(tmpSpr)
+	b = 255-GetSpriteColorBlue(tmpSpr)
+	SetSpriteColor(spr, r, g, b, GetSpriteColorAlpha(spr))
+	
+	DeleteSprite(tmpSpr)
 endfunction

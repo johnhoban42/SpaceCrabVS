@@ -11,11 +11,16 @@ crab2 - The top crab, independent of it's costume
 
 Depth List:
 
+Crab - 3
 Planets for Lives - 5
+EXP - 7
+Planets - 8
 Asteroid belt - 10
+Rave Crab Text Sprite - 12
 Meteor Marker -14
 Exp Bar - 16
 Exp Bar Holder - 18
+Rave Crab Boarders - 19
 Meteors - 20
 Particle Dust Clouds - 25
 Behind image for fast meteors - 30
@@ -39,6 +44,7 @@ Crab types (internal):
 #constant metSizeY 80
 
 #constant topCrabTimeMax 1500
+#constant raveCrabTimeMax 1600
 #constant chronoCrabTimeMax 2300	//Is longer because the timer goes down faster
 
 global gameTimer# = 0
@@ -49,7 +55,7 @@ global crab1Dir# = 1		//Crab dir is a float that goes from 1 to -1, it multiplie
 global crab1Vel# = 1.28
 global crab1Accel# = .1	//Is .1 because it takes 2 to reach full reversal, and original game timer was 20
 global crab1Turning = 0 	//Is zero for when the crab isn't turning, and 1 or -1 depending on the direction it is CHANGING TO
-global crab1Type = 2
+global crab1Type = 4
 global crab1JumpD# = 0
 global crab1JumpHMax# = 5
 global crab1JumpDMax = 28	//This variable used to be in degrees, now it's in ticks
@@ -92,6 +98,10 @@ global expTotal2 = 0
 global meteorCost2 = 1
 global specialCost2 = 3
 global specialTimerAgainst1# = 0
+
+//Input buffers
+global buffer1 = 0
+global buffer2 = 0
 
 global meteorSprNum = 1001
 global expSprNum = 2001
@@ -136,6 +146,19 @@ global met3CD2# = 400
 #constant specialSprFront2 133
 #constant specialSprBack2 134
 
+//The sprite indexes of extra sprites needed for specials
+#constant special1Ex1 141
+#constant special1Ex2 142
+#constant special1Ex3 143
+#constant special1Ex4 144
+#constant special1Ex5 145
+
+#constant special2Ex1 146
+#constant special2Ex2 147
+#constant special2Ex3 148
+#constant special2Ex4 149
+#constant special2Ex5 150
+
 //Image Indexes
 #constant planetIRandStart 50
 #constant planetVar1I 51
@@ -159,6 +182,9 @@ global met3CD2# = 400
 #constant meteorI2 68
 #constant meteorI3 69
 #constant meteorI4 70
+#constant meteorTractorI 71
+
+#constant boarderI 72
 
 #constant crab1start1I 101
 #constant crab1start2I 102
@@ -184,27 +210,50 @@ global met3CD2# = 400
 #constant par2met3 7
 #constant par2spe1 8
 
-//Start screen sprites
-#constant SPR_TITLE 200
-#constant SPR_START 201
+//Sound Indexes
+#constant turnS 1
+#constant jumpS 2
+#constant specialS 3
+#constant specialExitS 4
 
-//Character select screen sprites - player 1
-#constant SPR_CS_READY_1 300
-#constant SPR_CS_ARROW_L_1 301
-#constant SPR_CS_ARROW_R_1 302
+#constant exp1S 11
+#constant exp2S 12
+#constant exp3S 13
+#constant exp4S 14
+#constant exp5S 15
+
+
+
+//Music Indexes
+#constant raveBass1 21
+#constant raveBass2 22
+
+//Sound effects volume
+global volumeM = 40
+global volumeSE = 20
+
+
+//Start screen sprites 
+#constant SPR_TITLE 200 
+#constant SPR_START 201 
+ 
+//Character select screen sprites - player 1 
+#constant SPR_CS_READY_1 300 
+#constant SPR_CS_ARROW_L_1 301 
+#constant SPR_CS_ARROW_R_1 302 
 #constant TXT_CS_CRAB_NAME_1 303
-#constant TXT_CS_CRAB_DESC_1 304
-#constant TXT_CS_READY_1 305
-#constant SPR_CS_CRABS_1 390
-
+#constant TXT_CS_CRAB_DESC_1 304 
+#constant TXT_CS_READY_1 305 
+#constant SPR_CS_CRABS_1 390 
+ 
 //Character select screen sprites - player 2
 #constant SPR_CS_READY_2 400
 #constant SPR_CS_ARROW_L_2 401
-#constant SPR_CS_ARROW_R_2 402
+#constant SPR_CS_ARROW_R_2 402 
 #constant TXT_CS_CRAB_NAME_2 403
-#constant TXT_CS_CRAB_DESC_2 404
+#constant TXT_CS_CRAB_DESC_2 404 
 #constant TXT_CS_READY_2 405
-#constant SPR_CS_CRABS_2 490
+#constant SPR_CS_CRABS_2 490 
 
 // Game states
 #constant START 0
@@ -229,6 +278,37 @@ type meteor
 	
 endtype
 
+function LoadBaseSounds()
+	SetFolder("/media/sounds")
+	
+	LoadSoundOGG(turnS, "turn.ogg")
+	LoadSoundOGG(jumpS, "jump.ogg")
+	LoadSoundOGG(specialS, "special.ogg")
+	LoadSoundOGG(specialExitS, "specialExit.ogg")
+	
+	
+	LoadSoundOGG(exp1S, "exp1.ogg")
+	LoadSoundOGG(exp2S, "exp2.ogg")
+	LoadSoundOGG(exp3S, "exp3.ogg")
+	LoadSoundOGG(exp4S, "exp4.ogg")
+	LoadSoundOGG(exp5S, "exp5.ogg")
+		
+	SetFolder("/media")
+	
+endfunction
+
+function LoadBaseMusic()
+	SetFolder("/media/sounds")
+		
+	LoadMusicOGG(raveBass1, "raveBass.ogg")
+	LoadMusicOGG(raveBass2, "raveBass2.ogg")
+	
+	SetFolder("/media")
+	
+	SetMusicSystemVolumeOGG(volumeM)
+	
+endfunction
+
 function LoadBaseImages()
 	SetFolder("/media/envi")
 	
@@ -245,6 +325,7 @@ function LoadBaseImages()
 	LoadImage(meteorI2, "meteor2.png")
 	LoadImage(meteorI3, "meteor3.png")
 	LoadImage(meteorI4, "meteor4.png")
+	LoadImage(meteorTractorI, "tractor.png")
 	
 	SetFolder("/media")
 	
@@ -272,8 +353,8 @@ function LoadBaseImages()
 	LoadImage(crab1jump2I, "crab1jump2.png")
 	
 	
-	
-	
 	SetFolder("/media")
+	
+	LoadImage(boarderI, "boader.png")
 	
 endfunction

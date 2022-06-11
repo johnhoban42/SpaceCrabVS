@@ -16,9 +16,12 @@ function CreateGame2()
 	SetSpriteSizeSquare(planet2, planetSize)
 	SetSpriteShape(planet2, 1)
 	DrawPolar2(planet2, 0, 270)
+	SetSpriteAngle(planet2, 180)
+	SetSpriteDepth(planet2, 8)
 	
 	CreateSprite(crab2, LoadImage("crab0walk1.png"))
 	SetSpriteSize(crab2, 64, 40)
+	SetSpriteDepth(crab1, 3)
 	crab2Theta# = 270
 	DrawPolar2(crab2, planetSize/2 + GetSpriteHeight(crab2)/3, crab2Theta#)
 endfunction
@@ -40,6 +43,20 @@ function DoGame2()
 			fpsr# = fpsr# * 1.9
 		endif
 	endif
+	
+	//The Rave Crab special
+	if specialTimerAgainst2# > 0 and crab1Type = 4
+		for i = special1Ex1 to special1Ex5
+			SetSpriteColorByCycle(i, specialTimerAgainst2#)
+		next i
+		if specialTimerAgainst2# < raveCrabTimeMax/8
+			for i = special1Ex1 to special1Ex5
+				SetSpriteColorAlpha(i, specialTimerAgainst2#*255/(raveCrabTimeMax/8))
+			next i
+			SetMusicVolumeOGG(raveBass1, specialTimerAgainst2#*100/(raveCrabTimeMax/8))
+		endif
+	endif
+	
 		
 	// Start the game loop in the GAME state
 	state = GAME
@@ -48,7 +65,8 @@ function DoGame2()
 	inc crab2Theta#, crab2Vel# * crab2Dir# * fpsr# //Need to figure out why FPSR modifier isn't working
 	
 	//Activating the crab turn at an input
-	if (GetPointerPressed() and (GetPointerY() < GetSpriteY(split))) or (GetRawKeyPressed(32) or GetRawKeyPressed(50))
+	if buffer2 or ((GetPointerPressed() and (GetPointerY() < GetSpriteY(split))) or (GetRawKeyPressed(32) or GetRawKeyPressed(50)))
+		buffer2 = 0
 		if crab2Turning = 0
 			if crab2Dir# > 0
 				crab2Turning = -1
@@ -82,6 +100,13 @@ function DoGame2()
 	inc met3CD2#, -1 * fpsr#
 	
 	if specialTimerAgainst2# > 0 then inc specialTimerAgainst2#, -1*fpsr#
+	//Cleaning up Rave Crab's special
+	if specialTimerAgainst2# <= 0 and crab1Type = 4
+		for i = special1Ex1 to special1Ex5
+			DeleteSprite(i)
+		next i
+		StopMusicOGG(raveBass1)
+	endif
 	Print(specialTimerAgainst2#)
 	
 	if met1CD2# < 0
@@ -128,7 +153,7 @@ function DoGame2()
 		SetSpriteColor(meteorSprNum, 235, 20, 20, 255)
 		SetSpriteDepth(meteorSprNum, 20)
 		
-		CreateSprite(meteorSprNum + 10000, 0)
+		CreateSprite(meteorSprNum + 10000, meteorTractorI)
 		SetSpriteSize(meteorSprNum + 10000, 1, 1000)
 		SetSpriteColor(meteorSprNum + 10000, 255, 20, 20, 30)
 		SetSpriteDepth(meteorSprNum + 10000, 30)

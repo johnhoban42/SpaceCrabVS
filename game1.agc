@@ -16,9 +16,11 @@ function CreateGame1()
 	SetSpriteSizeSquare(planet1, planetSize)
 	SetSpriteShape(planet1, 1)
 	DrawPolar1(planet1, 0, 270)
+	SetSpriteDepth(planet1, 8)
 	
 	CreateSprite(crab1, LoadImage("crab0walk1.png"))
 	SetSpriteSize(crab1, 64, 40)
+	SetSpriteDepth(crab1, 3)
 	crab1Theta# = 270
 	DrawPolar1(crab1, planetSize/2 + GetSpriteHeight(crab1)/3, crab1Theta#)
 	AddSpriteAnimationFrame(crab1, crab1start1I)	//1
@@ -112,8 +114,11 @@ function DoGame1()
 	inc crab1Theta#, crab1Vel# * crab1Dir# * fpsr# //Need to figure out why FPSR modifier isn't working
 	
 	//Activating the crab turn at an input
-	if ((GetPointerPressed() and (GetPointerY() > GetSpriteY(split) + GetSpriteHeight(split))) or (GetRawKeyPressed(32) or GetRawKeyPressed(49))) and Hover(meteorButton1) = 0 and Hover(specialButton1) = 0 and crab1JumpD# = 0
+	if buffer1 or(((GetPointerPressed() and (GetPointerY() > GetSpriteY(split) + GetSpriteHeight(split))) or (GetRawKeyPressed(32) or GetRawKeyPressed(49))) and Hover(meteorButton1) = 0 and Hover(specialButton1) = 0 and crab1JumpD# = 0)
+		
+		buffer1 = 0
 		if crab1Turning = 0
+			PlaySound(turnS, volumeSE)
 			if crab1Dir# > 0
 				crab1Turning = -1
 			else
@@ -127,8 +132,13 @@ function DoGame1()
 			if Abs(crab1Dir#) < crab1Vel#/3
 				//The crab leap code
 				//crab1Turning = -1*crab1Turning	//Still not sure if you should leap forwards or backwards
+				PlaySound(jumpS, volumeSE)
 				crab1JumpD# = crab1JumpDMax
 				crab1Dir# = crab1Vel#
+			else
+				//Crab has turned
+				PlaySound(turnS, volumeSE)
+				
 			endif
 			
 		endif
@@ -237,7 +247,7 @@ function DoGame1()
 		SetSpriteDepth(meteorSprNum, 20)
 		AddMeteorAnimation(meteorSprNum)
 		
-		CreateSprite(meteorSprNum + 10000, 0)
+		CreateSprite(meteorSprNum + 10000, meteorTractorI)
 		SetSpriteSize(meteorSprNum + 10000, 1, 1000)
 		SetSpriteColor(meteorSprNum + 10000, 255, 20, 20, 30)
 		SetSpriteDepth(meteorSprNum + 10000, 30)
@@ -528,7 +538,7 @@ function SendSpecial1()
 		dir = Random(1, 2)
 		if dir = 2 then dir = -1
 			for i = 1 to 4
-				newMetS.theta = baseTheta + i*18*dir
+				newMetS.theta = baseTheta + i*22*dir
 				newMetS.r = 200 + j*400 + i*50
 				newMetS.spr = meteorSprNum
 				newMetS.cat = 1
@@ -547,11 +557,55 @@ function SendSpecial1()
 		
 	elseif crab1Type = 3
 		//Top Crab
-		specialTimerAgainst2# = topCrabTimeMax		
+		specialTimerAgainst2# = topCrabTimeMax
 		
+	elseif crab1Type = 4
+		//Rave Crab
+		PlayMusicOGG(raveBass1, 1)
+		SetMusicVolumeOGG(raveBass1, 100)
+		
+		specialTimerAgainst2# = raveCrabTimeMax
+		if GetSpriteExists(special1Ex1) = 0
+			CreateSprite(special1Ex1, boarderI)
+			CreateSprite(special1Ex2, boarderI)
+			CreateSprite(special1Ex3, boarderI)
+			CreateSprite(special1Ex4, boarderI)
+			CreateSprite(special1Ex5, 0)
+		endif
+		
+		for i = special1Ex1 to special1Ex4
+			SetSpriteDepth(i, 19)
+			FixSpriteToScreen(i, 1)
+			SetSpriteColorByCycle(i, specialTimerAgainst2#)
+		next i
+		SetSpriteDepth(special1Ex5, 7)
+		
+		size = 160
+		
+		SetSpriteSize(special1Ex1, size, h/2)
+		//SetSpriteY(special1Ex1, h/2)
+		
+		SetSpriteSize(special1Ex2, size, h/2)
+		SetSpriteFlip(special1Ex2, 1, 0)
+		SetSpritePosition(special1Ex2, w-size, 0)
+		
+		SetSpriteSize(special1Ex3, size, w)
+		SetSpritePosition(special1Ex3, w/2-size/2, -w/2+size/2)
+		SetSpriteAngle(special1Ex3, 90)
+		
+		SetSpriteSize(special1Ex4, size, w)
+		SetSpritePosition(special1Ex4, w/2-size/2, h/2-w/2-size/2-GetSpriteHeight(split)/2)
+		SetSpriteAngle(special1Ex4, 270)
+		
+		SetSpriteSize(special1Ex5, 140, 140)
+		DrawPolar2(special1Ex5, 0, 180)
+		SetSpriteColorByCycle(special1Ex5, specialTimerAgainst2#)
+	
 	elseif crab1Type = 5
 		//Chrono Crab
-		specialTimerAgainst2# = chronoCrabTimeMax	
+		specialTimerAgainst2# = chronoCrabTimeMax
+		CreateSprite(special1Ex1, 0)
+		
 	endif
 	
 	
