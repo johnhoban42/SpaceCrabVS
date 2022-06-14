@@ -28,22 +28,34 @@ endfunction
 
 function DoGame2()
 
-	//The Chrono Crab special
-	if specialTimerAgainst2# > 0 and crab1Type = 5
-		if specialTimerAgainst2# > chronoCrabTimeMax*9/10
-			//The startup
-			ratio# = (specialTimerAgainst2#-chronoCrabTimeMax*9/10)/(chronoCrabTimeMax/10)
-			fpsr# = fpsr# * 1 + 0.9*(1.0-ratio#)
-		elseif specialTimerAgainst2# < chronoCrabTimeMax/10
-			//The winddown
-			ratio# = specialTimerAgainst2#/(chronoCrabTimeMax/10)
-			fpsr# = fpsr# * 1 + 0.9*ratio#
-		else
-			//The normal
-			fpsr# = fpsr# * 1.9
-		endif
+	//The Space Crab special (just Space Ned)
+	if specialTimerAgainst2# > 0 and crab1Type = 1
+		DrawPolar2(special1Ex1, 180 + ((specialTimerAgainst2# - 100)^2)/11, 0 + specialTimerAgainst2#)
+		SetSpriteAngle(special1Ex1, 180 + sin(specialTimerAgainst2#*8)*10)
 	endif
-	
+
+	//The Top Crab special
+	if specialTimerAgainst2# > 0 and crab1Type = 3
+		if specialTimerAgainst2# > topCrabTimeMax*3/5
+			//Phase 1 and 2
+			inc planet2RotSpeed#, planetSpeedUpRate#*fpsr#
+			
+		elseif specialTimerAgainst2# > topCrabTimeMax*2/5
+			//Phase 3
+			inc planet2RotSpeed#, -3*planetSpeedUpRate#*fpsr#
+			
+		elseif specialTimerAgainst2# > topCrabTimeMax/5
+			//Phase 4
+			inc planet2RotSpeed#, -1*planetSpeedUpRate#*fpsr#
+			
+		else
+			//Phase 5 (end)
+			inc planet2RotSpeed#, 2*planetSpeedUpRate#*fpsr#
+		endif
+		IncSpriteAngle(planet2, planet2RotSpeed#)
+		inc crab2Theta#, planet2RotSpeed#
+	endif
+		
 	//The Rave Crab special
 	if specialTimerAgainst2# > 0 and crab1Type = 4
 		for i = special1Ex1 to special1Ex5
@@ -57,6 +69,64 @@ function DoGame2()
 		endif
 	endif
 	
+	//The Chrono Crab special
+	if specialTimerAgainst2# > 0 and crab1Type = 5
+		if specialTimerAgainst2# > chronoCrabTimeMax*9/10
+			//The startup
+			ratio# = (specialTimerAgainst2#-chronoCrabTimeMax*9/10)/(chronoCrabTimeMax/10)
+			fpsr# = fpsr# * 1 + 0.9*(1.0-ratio#)
+			for i = special1Ex1 to special1Ex3
+				FadeSpriteIn(i, specialTimerAgainst2#, chronoCrabTimeMax, chronoCrabTimeMax*9/10)
+			next i 
+		elseif specialTimerAgainst2# < chronoCrabTimeMax/10
+			//The winddown
+			ratio# = specialTimerAgainst2#/(chronoCrabTimeMax/10)
+			fpsr# = fpsr# * 1 + 0.9*ratio#
+			for i = special1Ex1 to special1Ex3
+				FadeSpriteOut(i, specialTimerAgainst2#, chronoCrabTimeMax/10, 0)
+			next i 
+		else
+			//The normal
+			fpsr# = fpsr# * 1.9
+		endif
+		DrawPolar2(special1Ex1, GetSpriteHeight(special1Ex1)/2, 90 - (specialTimerAgainst2#/chronoCrabTimeMax)*1080*6) //Minute Hand
+		DrawPolar2(special1Ex2, GetSpriteHeight(special1Ex2)/2, 90 - (specialTimerAgainst2#/chronoCrabTimeMax)*360*2) //Hour Hand
+		//Clock wiggle
+		SetSpriteSize(special1Ex3, 150+12*sin(specialTimerAgainst2#*6), 150+12*cos(specialTimerAgainst2#*5))
+		DrawPolar2(special1Ex3, 0, 0)
+		SetSpriteAngle(special1Ex3, 180 + 5.0*cos(specialTimerAgainst2#*2))
+	endif
+	
+	//The Ninja Crab special
+	if specialTimerAgainst2# > 0 and crab1Type = 6
+		
+		if specialTimerAgainst2# < ninjaCrabTimeMax and GetSpriteColorAlpha(special1Ex1) = 0
+			spr = special1Ex1
+			SetSpriteColorAlpha(spr, 255)
+			SetSpritePosition(spr, GetSpriteMiddleX(crab1)-GetSpriteWidth(spr)/2, GetSpriteMiddleY(crab1)-GetSpriteHeight(spr)/2)
+			PlaySound(ninjaStarS, volumeSE)
+		endif
+		if specialTimerAgainst2# < ninjaCrabTimeMax*4/5 and GetSpriteColorAlpha(special1Ex2) = 0
+			spr = special1Ex2
+			SetSpriteColorAlpha(spr, 255)
+			SetSpritePosition(spr, GetSpriteMiddleX(crab1)-GetSpriteWidth(spr)/2, GetSpriteMiddleY(crab1)-GetSpriteHeight(spr)/2)
+			PlaySound(ninjaStarS, volumeSE)
+		endif
+		if specialTimerAgainst2# < ninjaCrabTimeMax*3/5 and GetSpriteColorAlpha(special1Ex3) = 0
+			spr = special1Ex3
+			SetSpriteColorAlpha(spr, 255)
+			SetSpritePosition(spr, GetSpriteMiddleX(crab1)-GetSpriteWidth(spr)/2, GetSpriteMiddleY(crab1)-GetSpriteHeight(spr)/2)
+			PlaySound(ninjaStarS, volumeSE)
+		endif
+		
+		for i = special1Ex1 to special1Ex3
+			numLoop = i - special1Ex1 + 1
+			
+			
+			IncSpriteAngle(i, 16*fpsr#)
+			IncSpriteYFloat(i, -5.5*fpsr#)
+		next i
+	endif
 		
 	// Start the game loop in the GAME state
 	state = GAME
@@ -100,6 +170,26 @@ function DoGame2()
 	inc met3CD2#, -1 * fpsr#
 	
 	if specialTimerAgainst2# > 0 then inc specialTimerAgainst2#, -1*fpsr#
+	
+	//Cleaning up Space Crab's special
+	if specialTimerAgainst2# < 0 and crab1Type = 1
+		specialTimerAgainst2# = 0
+		DeleteSprite(special1Ex1)
+		
+	endif
+	
+	//Cleaning up Top Crab's special
+	if specialTimerAgainst2# < 0 and crab1Type = 3
+		if Abs(GetSpriteAngle(planet2)-180) > 1
+			ang# = GlideNumToZero(GetSpriteAngle(planet2)-180, 10)
+			SetSpriteAngle(planet2, ang#+180)
+		else
+			specialTimerAgainst2# = 0
+			SetSpriteAngle(planet2, 180)
+		endif
+		
+	endif
+	
 	//Cleaning up Rave Crab's special
 	if specialTimerAgainst2# <= 0 and crab1Type = 4
 		for i = special1Ex1 to special1Ex5
@@ -107,6 +197,15 @@ function DoGame2()
 		next i
 		StopMusicOGG(raveBass1)
 	endif
+	
+	//Cleaning up Chrono & Ninja Crab's special
+	if specialTimerAgainst2# < 0 and (crab1Type = 5 or crab1Type = 6)
+		for i = special1Ex1 to special1Ex3
+			DeleteSprite(i)
+		next i
+		specialTimerAgainst2# = 0
+	endif
+		
 	Print(specialTimerAgainst2#)
 	
 	if met1CD2# < 0
@@ -289,7 +388,7 @@ function UpdateMeteor2()
 		endif
 		
 	
-		if GetSpriteCollision(spr, planet2) and deleted = 0
+		if (GetSpriteCollision(spr, planet2) or meteorActive2[i].r < 0) and deleted = 0	
 			DeleteSprite(spr)
 			if meteorActive2[i].cat = 3 then DeleteSprite(spr + 10000)
 			//Meteor explosion goes here

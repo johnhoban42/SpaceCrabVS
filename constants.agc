@@ -12,7 +12,10 @@ crab2 - The top crab, independent of it's costume
 Depth List:
 
 Crab - 3
+Ninja stars - 4
 Planets for Lives - 5
+Clock Hands - 6
+Clock - 7
 EXP - 7
 Planets - 8
 Asteroid belt - 10
@@ -21,6 +24,7 @@ Meteor Marker -14
 Exp Bar - 16
 Exp Bar Holder - 18
 Rave Crab Boarders - 19
+Space Ned (during Special) - 19
 Meteors - 20
 Particle Dust Clouds - 25
 Behind image for fast meteors - 30
@@ -43,9 +47,11 @@ Crab types (internal):
 #constant metSizeX 58
 #constant metSizeY 80
 
+#constant spaceCrabTimeMax 200	//This is just for moving the UFO
 #constant topCrabTimeMax 1500
 #constant raveCrabTimeMax 1600
 #constant chronoCrabTimeMax 2300	//Is longer because the timer goes down faster
+#constant ninjaCrabTimeMax 500	
 
 global gameTimer# = 0
 
@@ -55,7 +61,7 @@ global crab1Dir# = 1		//Crab dir is a float that goes from 1 to -1, it multiplie
 global crab1Vel# = 1.28
 global crab1Accel# = .1	//Is .1 because it takes 2 to reach full reversal, and original game timer was 20
 global crab1Turning = 0 	//Is zero for when the crab isn't turning, and 1 or -1 depending on the direction it is CHANGING TO
-global crab1Type = 4
+global crab1Type = 6
 global crab1JumpD# = 0
 global crab1JumpHMax# = 5
 global crab1JumpDMax = 28	//This variable used to be in degrees, now it's in ticks
@@ -84,13 +90,17 @@ global gameDifficulty2 = 1
 global meteorTotal1 = 0
 global meteorTotal2 = 0
 
+global planet1RotSpeed# = 0
+global planet2RotSpeed# = 0
+#constant planetSpeedUpRate# = .0032
+
 //global meteorQueue1 as meteor[0]
 //global meteorQueue2 as meteor[0]
 global meteorActive1 as meteor[0]
 global meteorActive2 as meteor[0]
 
 global expTotal1 = 0
-global meteorCost1 = 2 //10
+global meteorCost1 = 1 //10
 global specialCost1 = 3 //40
 global specialTimerAgainst2# = 0
 
@@ -115,6 +125,15 @@ global met3CD1# = 400
 global met1CD2# = 300
 global met2CD2# = 400
 global met3CD2# = 400
+
+#constant met1RNDLow 190		//OG: 230
+#constant met1RNDHigh 300	//OG: 330
+#constant met2RNDLow 300
+#constant met2RNDHigh 400
+#constant met3RNDLow 450
+#constant met3RNDHigh 650
+	
+#constant metStartDistance 700
 
 //Sprite Indexes
 #constant crab1 1
@@ -185,6 +204,11 @@ global met3CD2# = 400
 #constant meteorTractorI 71
 
 #constant boarderI 72
+#constant ufoI 73
+#constant clockI 74
+#constant clockMinI 75
+#constant clockHourI 76
+#constant ninjaStarI 77
 
 #constant crab1start1I 101
 #constant crab1start2I 102
@@ -198,6 +222,32 @@ global met3CD2# = 400
 #constant crab1walk8I 110
 #constant crab1jump1I 111
 #constant crab1jump2I 112
+
+#constant crab2start1I 121
+#constant crab2start2I 122
+#constant crab2walk1I 123
+#constant crab2walk2I 124
+#constant crab2walk3I 125
+#constant crab2walk4I 126
+#constant crab2walk5I 127
+#constant crab2walk6I 128
+#constant crab2walk7I 129
+#constant crab2walk8I 130
+#constant crab2jump1I 131
+#constant crab2jump2I 132
+
+#constant crab6start1I 201
+#constant crab6start2I 202
+#constant crab6walk1I 203
+#constant crab6walk2I 204
+#constant crab6walk3I 205
+#constant crab6walk4I 206
+#constant crab6walk5I 207
+#constant crab6walk6I 208
+#constant crab6walk7I 209
+#constant crab6walk8I 210
+#constant crab6jump1I 211
+#constant crab6jump2I 212
 
 //Particle Indexes
 #constant par1met1 1
@@ -221,6 +271,11 @@ global met3CD2# = 400
 #constant exp3S 13
 #constant exp4S 14
 #constant exp5S 15
+
+#constant ufoS 21
+#constant wizardSpell1S 22
+#constant wizardSpell2S 23
+#constant ninjaStarS 24
 
 
 
@@ -292,6 +347,11 @@ function LoadBaseSounds()
 	LoadSoundOGG(exp3S, "exp3.ogg")
 	LoadSoundOGG(exp4S, "exp4.ogg")
 	LoadSoundOGG(exp5S, "exp5.ogg")
+	
+	LoadSoundOGG(ufoS, "ufo.ogg")
+	LoadSoundOGG(wizardSpell1S, "wizardSpell1.ogg")
+	LoadSoundOGG(wizardSpell2S, "wizardSpell2.ogg")
+	LoadSoundOGG(ninjaStarS, "ninjaStar.ogg")
 		
 	SetFolder("/media")
 	
@@ -352,9 +412,37 @@ function LoadBaseImages()
 	LoadImage(crab1jump1I, "crab1jump1.png")
 	LoadImage(crab1jump2I, "crab1jump2.png")
 	
+	LoadImage(crab2start1I, "crab2start1.png")
+	LoadImage(crab2start2I, "crab2start2.png")
+	LoadImage(crab2walk1I, "crab2walk1.png")
+	LoadImage(crab2walk2I, "crab2walk2.png")
+	LoadImage(crab2walk3I, "crab2walk3.png")
+	LoadImage(crab2walk4I, "crab2walk4.png")
+	LoadImage(crab2walk5I, "crab2walk5.png")
+	LoadImage(crab2walk6I, "crab2walk6.png")
+	LoadImage(crab2walk7I, "crab2walk7.png")
+	LoadImage(crab2walk8I, "crab2walk8.png")
+	LoadImage(crab2jump1I, "crab2jump1.png")
+	LoadImage(crab2jump2I, "crab2jump2.png")
+	
+	LoadImage(crab6start1I, "crab6start1.png")
+	LoadImage(crab6start2I, "crab6start2.png")
+	LoadImage(crab6walk1I, "crab6walk1.png")
+	LoadImage(crab6walk2I, "crab6walk2.png")
+	LoadImage(crab6walk3I, "crab6walk3.png")
+	LoadImage(crab6walk4I, "crab6walk4.png")
+	LoadImage(crab6walk5I, "crab6walk5.png")
+	LoadImage(crab6walk6I, "crab6walk6.png")
+	LoadImage(crab6walk7I, "crab6walk7.png")
+	LoadImage(crab6walk8I, "crab6walk8.png")
+	LoadImage(crab6jump1I, "crab6jump1.png")
+	LoadImage(crab6jump2I, "crab6jump2.png")
+	
 	
 	SetFolder("/media")
 	
 	LoadImage(boarderI, "boader.png")
+	LoadImage(ufoI, "spaceNed.png")
+	LoadImage(ninjaStarI, "ninjaStar.png")
 	
 endfunction

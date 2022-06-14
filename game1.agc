@@ -21,9 +21,30 @@ function CreateGame1()
 	CreateSprite(crab1, LoadImage("crab0walk1.png"))
 	SetSpriteSize(crab1, 64, 40)
 	SetSpriteDepth(crab1, 3)
+	SetSpriteShapeCircle(crab1, 0, 0, 24)
 	crab1Theta# = 270
 	DrawPolar1(crab1, planetSize/2 + GetSpriteHeight(crab1)/3, crab1Theta#)
-	AddSpriteAnimationFrame(crab1, crab1start1I)	//1
+	if crab1Type = 1		//Space
+		for i = crab1start1I to crab1jump2I
+			AddSpriteAnimationFrame(crab1, i)
+		next i
+	elseif crab1Type = 2
+		for i = crab2start1I to crab2jump2I
+			AddSpriteAnimationFrame(crab1, i)
+		next i
+		SetSpriteSize(crab1, 64, 60)
+		SetSpriteShapeCircle(crab1, 0, 10, 24)
+	elseif crab1Type = 6
+		for i = crab6start1I to crab6jump2I
+			AddSpriteAnimationFrame(crab1, i)
+		next i
+	else
+		//The debug option, no crab selected
+		for i = crab1start1I to crab1jump2I
+			AddSpriteAnimationFrame(crab1, i)
+		next i
+	endif
+	/*AddSpriteAnimationFrame(crab1, crab1start1I)	//1
 	AddSpriteAnimationFrame(crab1, crab1start2I)
 	AddSpriteAnimationFrame(crab1, crab1walk1I)	//3
 	AddSpriteAnimationFrame(crab1, crab1walk2I)
@@ -34,7 +55,7 @@ function CreateGame1()
 	AddSpriteAnimationFrame(crab1, crab1walk7I)
 	AddSpriteAnimationFrame(crab1, crab1walk8I)
 	AddSpriteAnimationFrame(crab1, crab1jump1I)	//11
-	AddSpriteAnimationFrame(crab1, crab1jump2I)
+	AddSpriteAnimationFrame(crab1, crab1jump2I)*/
 	PlaySprite(crab1, crab1framerate, 1, 3, 10)
 	
 	CreateSprite(expHolder1, 0)
@@ -201,9 +222,9 @@ function DoGame1()
 	if specialTimerAgainst1# > 0 then inc specialTimerAgainst1#, -1*fpsr#
 	
 	if met1CD1# < 0
-		met1CD1# = Random(230 - 5*gameDifficulty1, 330) - 20*gameDifficulty1
+		met1CD1# = Random(met1RNDLow - 5*gameDifficulty1, met1RNDHigh) - 20*gameDifficulty1
 		newMet.theta = Random(1, 360)
-		newMet.r = 600
+		newMet.r = metStartDistance
 		newMet.spr = meteorSprNum
 		newMet.cat = 1
 				
@@ -216,11 +237,10 @@ function DoGame1()
 		meteorActive1.insert(newMet)
 	endif
 	
-	
 	if met2CD1# < 0 and gameTimer# > 800
-		met2CD1# = Random(300 - 5*gameDifficulty1, 400) - 20*gameDifficulty1
+		met2CD1# = Random(met2RNDLow - 5*gameDifficulty1, met2RNDHigh) - 20*gameDifficulty1
 		newMet.theta = Random(1, 360)
-		newMet.r = 600
+		newMet.r = metStartDistance
 		newMet.spr = meteorSprNum
 		newMet.cat = 2
 		
@@ -235,7 +255,7 @@ function DoGame1()
 	endif
 	
 	if met3CD1# < 0 and gameTimer# > 1600
-		met3CD1# = Random(450 - 15*gameDifficulty1, 650) - 25*gameDifficulty1
+		met3CD1# = Random(met3RNDLow - 15*gameDifficulty1, met3RNDHigh) - 25*gameDifficulty1
 		newMet.theta = Random(1, 360)
 		newMet.r = 5000
 		newMet.spr = meteorSprNum
@@ -414,7 +434,7 @@ function UpdateMeteor1()
 				
 		DrawPolar1(spr, meteorActive1[i].r, meteorActive1[i].theta)
 		if cat = 2 then IncSpriteAngle(spr, -25)
-		if GetSpriteY(spr) > h/2 //+ GetSpriteHeight(spr)/2
+		if GetSpriteY(spr) > h/2 - GetSpriteHeight(spr)/2
 			SetSpriteColorAlpha(spr, 255)
 		else
 			SetSpriteColorAlpha(spr, 0)
@@ -501,6 +521,14 @@ function SendSpecial1()
 	
 	if crab1Type = 1
 		//Space Crab
+		specialTimerAgainst2# = spaceCrabTimeMax
+		
+		if GetSpriteExists(special1Ex1) = 0
+			CreateSpriteExpress(special1Ex1, 70, 70, -100, -100, 19)
+			SetSpriteImage(special1Ex1, ufoI)
+		endif
+		
+		PlaySound(ufoS, volumeSE)
 		
 		angles as float[7] = [0, 51.43, 102.86, 154.29, 205.72, 257.15, 308.58]
 		angleOff = Random(1, 51)
@@ -518,7 +546,7 @@ function SendSpecial1()
 			SetSpriteDepth(meteorSprNum, 20)
 			AddMeteorAnimation(meteorSprNum)
 			
-			CreateSprite(meteorSprNum + 10000, 0)
+			CreateSprite(meteorSprNum + 10000, meteorTractorI)
 			SetSpriteSize(meteorSprNum + 10000, 1, 1000)
 			SetSpriteColor(meteorSprNum + 10000, 255, 20, 20, 30)
 			SetSpriteDepth(meteorSprNum + 10000, 30)
@@ -532,6 +560,13 @@ function SendSpecial1()
 		
 	elseif crab1Type = 2
 		//Ladder Wizard
+		
+		rnd = Random(1, 2)
+		if rnd = 1
+			PlaySound(wizardSpell1S, volumeSE)
+		else
+			PlaySound(wizardSpell2S, volumeSE)
+		endif
 		
 		for j = 1 to 3
 		baseTheta = Random(1, 360)
@@ -558,6 +593,7 @@ function SendSpecial1()
 	elseif crab1Type = 3
 		//Top Crab
 		specialTimerAgainst2# = topCrabTimeMax
+		planet2RotSpeed# = 0
 		
 	elseif crab1Type = 4
 		//Rave Crab
@@ -604,7 +640,42 @@ function SendSpecial1()
 	elseif crab1Type = 5
 		//Chrono Crab
 		specialTimerAgainst2# = chronoCrabTimeMax
-		CreateSprite(special1Ex1, 0)
+		
+		if GetSpriteExists(special1Ex1) = 0
+			CreateSpriteExpress(special1Ex1, 12, 80, -100, -100, 6)	//Minute hand
+			CreateSpriteExpress(special1Ex2, 20, 60, -100, -100, 6)	//Hour hand
+			CreateSpriteExpress(special1Ex3, 100, 100, -200, -200, 7)	//Clock
+		endif
+		
+		SetSpriteColorAlpha(special1Ex1, 0)
+		SetSpriteColorAlpha(special1Ex2, 0)
+		SetSpriteColor(special1Ex3, 100, 100, 100, 0)
+		
+		
+		DrawPolar2(special1Ex1, GetSpriteHeight(special1Ex1)/2, 90 + (specialTimerAgainst2#/chronoCrabTimeMax)*1080)
+		DrawPolar2(special1Ex2, GetSpriteHeight(special1Ex2)/2, 90 + (specialTimerAgainst2#/chronoCrabTimeMax)*360)
+		
+		//Clock wiggle
+		SetSpriteSize(special1Ex3, 150+12*sin(specialTimerAgainst2#*4), 150+12*cos(specialTimerAgainst2#*3))
+		DrawPolar2(special1Ex3, 0, 0)
+		SetSpriteAngle(special1Ex3, 180 + 5.0*cos(specialTimerAgainst2#*2))
+		
+	elseif crab1Type = 6
+		//Ninja Crab
+		specialTimerAgainst2# = ninjaCrabTimeMax
+		
+		ninjaStarSize = 80
+		
+		//The 3 throwing stars
+		if GetSpriteExists(special1Ex1) = 0
+			CreateSpriteExpress(special1Ex1, ninjaStarSize, ninjaStarSize, -200, -200, 4)
+			CreateSpriteExpress(special1Ex2, ninjaStarSize, ninjaStarSize, -200, -200, 4)
+			CreateSpriteExpress(special1Ex3, ninjaStarSize, ninjaStarSize, -200, -200, 4)
+		endif
+		for i = special1Ex1 to special1Ex3
+			SetSpriteImage(i, ninjaStarI)
+			SetSpriteColorAlpha(i, 0)
+		next i
 		
 	endif
 	

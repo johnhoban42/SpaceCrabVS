@@ -168,6 +168,30 @@ function SnapbackToY(spr, iCur, iEnd, y, dy, denom)
 	
 endfunction
 
+//Fades a sprite in over a given time
+function FadeSpriteIn(spr, curT#, startT#, endT#)
+	if curT# < endT#
+		SetSpriteColorAlpha(spr, 255.0 - 255.0*(curT#-startT#)/(endT#-startT#))
+	elseif curT# > endT#
+		SetSpriteColorAlpha(spr, 255.0*(curT#-startT#)/(endT#-startT#))
+	else
+		SetSpriteColorAlpha(spr, 255)
+	endif
+	
+endfunction
+
+function FadeSpriteOut(spr, curT#, startT#, endT#)
+	if curT# < endT#
+		SetSpriteColorAlpha(spr, 255.0*(curT#-startT#)/(endT#-startT#))
+	elseif curT# > endT#
+		SetSpriteColorAlpha(spr, 255.0 - 255.0*(curT#-startT#)/(endT#-startT#))
+	else
+		SetSpriteColorAlpha(spr, 0)
+	endif
+	
+endfunction
+	//SetSpriteColorAlpha(i, (specialTimerAgainst2#/(chronoCrabTimeMax/10))*255.0)
+
 function SetSpriteColorRandomBright(spr)
 	//Recoloring!
 	r = 0
