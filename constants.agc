@@ -19,6 +19,7 @@ Clock - 7
 EXP - 7
 Planets - 8
 Asteroid belt - 10
+Crab during death - 11
 Rave Crab Text Sprite - 12
 Meteor Marker -14
 Exp Bar - 16
@@ -53,15 +54,21 @@ Crab types (internal):
 #constant chronoCrabTimeMax 2300	//Is longer because the timer goes down faster
 #constant ninjaCrabTimeMax 500	
 
+#constant hitSceneMax 300
+global hit1Timer# = 0
+global hit2Timer# = 0
+
 global gameTimer# = 0
 
+global crab1R# = 1
+global crab1Rdefault# = 1
 global crab1Theta# = 270
 global crab1framerate = 10
 global crab1Dir# = 1		//Crab dir is a float that goes from 1 to -1, it multiplies the speed
 global crab1Vel# = 1.28
 global crab1Accel# = .1	//Is .1 because it takes 2 to reach full reversal, and original game timer was 20
 global crab1Turning = 0 	//Is zero for when the crab isn't turning, and 1 or -1 depending on the direction it is CHANGING TO
-global crab1Type = 6
+global crab1Type = 1
 global crab1JumpD# = 0
 global crab1JumpHMax# = 5
 global crab1JumpDMax = 28	//This variable used to be in degrees, now it's in ticks
@@ -69,12 +76,14 @@ global crab1JumpDMax = 28	//This variable used to be in degrees, now it's in tic
 
 global crab1Deaths = 0
 global crab1PlanetS as Integer[3]
+#constant planetIconSize 40
 
 //For the screen nudging whenever a meteor hits
 global nudge1R# = 0
 global nudge1Theta# = 0
 
-global crab2Theta# = 270 // Same constants for crab 2
+global crab2R# = 1	//Same constants for crab 2
+global crab2Theta# = 270
 global crab2Dir# = 1
 global crab2Vel# = 1.28
 global crab2Accel# = .1
@@ -222,6 +231,8 @@ global met3CD2# = 400
 #constant crab1walk8I 110
 #constant crab1jump1I 111
 #constant crab1jump2I 112
+#constant crab1death1I 113
+#constant crab1death2I 114
 
 #constant crab2start1I 121
 #constant crab2start2I 122
@@ -235,6 +246,8 @@ global met3CD2# = 400
 #constant crab2walk8I 130
 #constant crab2jump1I 131
 #constant crab2jump2I 132
+#constant crab2death1I 133
+#constant crab2death2I 134
 
 #constant crab6start1I 201
 #constant crab6start2I 202
@@ -248,6 +261,8 @@ global met3CD2# = 400
 #constant crab6walk8I 210
 #constant crab6jump1I 211
 #constant crab6jump2I 212
+#constant crab6death1I 213
+#constant crab6death2I 214
 
 //Particle Indexes
 #constant par1met1 1
@@ -411,6 +426,8 @@ function LoadBaseImages()
 	LoadImage(crab1walk8I, "crab1walk8.png")
 	LoadImage(crab1jump1I, "crab1jump1.png")
 	LoadImage(crab1jump2I, "crab1jump2.png")
+	LoadImage(crab1death1I, "crab1death1.png")
+	LoadImage(crab1death2I, "crab1death2.png")
 	
 	LoadImage(crab2start1I, "crab2start1.png")
 	LoadImage(crab2start2I, "crab2start2.png")
@@ -424,6 +441,8 @@ function LoadBaseImages()
 	LoadImage(crab2walk8I, "crab2walk8.png")
 	LoadImage(crab2jump1I, "crab2jump1.png")
 	LoadImage(crab2jump2I, "crab2jump2.png")
+	LoadImage(crab2death1I, "crab2death1.png")
+	LoadImage(crab2death2I, "crab2death2.png")
 	
 	LoadImage(crab6start1I, "crab6start1.png")
 	LoadImage(crab6start2I, "crab6start2.png")
@@ -437,6 +456,8 @@ function LoadBaseImages()
 	LoadImage(crab6walk8I, "crab6walk8.png")
 	LoadImage(crab6jump1I, "crab6jump1.png")
 	LoadImage(crab6jump2I, "crab6jump2.png")
+	LoadImage(crab6death1I, "crab6death1.png")
+	LoadImage(crab6death2I, "crab6death2.png")
 	
 	
 	SetFolder("/media")

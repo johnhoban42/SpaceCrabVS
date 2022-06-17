@@ -40,7 +40,13 @@ function DoGame()
 	state = GAME
 	
 	// Game execution loops
-	state1 = DoGame1()
+	if hit1Timer# > 0
+		//This is the case for getting hit
+		state1 = HitScene1()
+	else
+		//This is the case for normal gameplay
+		state1 = DoGame1()
+	endif
 	state2 = DoGame2()
 	UpdateExp()
 	inc gameTimer#, fpsr#
@@ -171,6 +177,43 @@ function UpdateExp()
 
 	endif
 
+endfunction
+
+//This deletes all experience on half of the board
+function DeleteHalfExp(gameNum)
+	badLeave = 1
+	while badLeave = 1
+		
+		badLeave = 0
+		deleted = 0
+		
+		for i = 1 to expList.Length
+			
+			spr = expList[i]
+			if gameNum = 1
+				//This is only for the bottom crab
+				if GetSpriteY(spr) > h/2 and deleted = 0
+					deleted = i
+					DeleteSprite(spr)
+					badLeave = 1
+				endif
+			endif
+			
+			if gameNum = 2
+				//This is only for the top crab
+				if GetSpriteY(spr) < h/2 and deleted = 0
+					deleted = i
+					DeleteSprite(spr)
+					badLeave = 1
+				endif
+			endif
+			
+		next i
+		
+		if deleted > 0
+			expList.remove(deleted)
+		endif
+	endwhile
 endfunction
 
 function ShowSpecialAnimation(crabType)
@@ -385,3 +428,8 @@ function SetSpriteColorByCycle(spr, numOf360)
 	
 	DeleteSprite(tmpSpr)
 endfunction
+
+function GetCrabDefaultR(spr)
+	//Returns the normal height that a crab will be at
+	r# = planetSize/2 + GetSpriteHeight(spr)/3
+endfunction r#

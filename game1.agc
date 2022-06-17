@@ -22,25 +22,30 @@ function CreateGame1()
 	SetSpriteSize(crab1, 64, 40)
 	SetSpriteDepth(crab1, 3)
 	SetSpriteShapeCircle(crab1, 0, 0, 24)
+	crab1R# = GetCrabDefaultR(crab1)
+	
 	crab1Theta# = 270
-	DrawPolar1(crab1, planetSize/2 + GetSpriteHeight(crab1)/3, crab1Theta#)
+	DrawPolar1(crab1, crab1R#, crab1Theta#)
 	if crab1Type = 1		//Space
-		for i = crab1start1I to crab1jump2I
+		for i = crab1start1I to crab1death2I
 			AddSpriteAnimationFrame(crab1, i)
 		next i
-	elseif crab1Type = 2
-		for i = crab2start1I to crab2jump2I
+		
+	elseif crab1Type = 2	//Wizard
+		for i = crab2start1I to crab2death2I
 			AddSpriteAnimationFrame(crab1, i)
 		next i
 		SetSpriteSize(crab1, 64, 60)
 		SetSpriteShapeCircle(crab1, 0, 10, 24)
-	elseif crab1Type = 6
-		for i = crab6start1I to crab6jump2I
+		
+	elseif crab1Type = 6	//Ninja
+		for i = crab6start1I to crab6death2I
 			AddSpriteAnimationFrame(crab1, i)
 		next i
+		
 	else
 		//The debug option, no crab selected
-		for i = crab1start1I to crab1jump2I
+		for i = crab1start1I to crab1death2I
 			AddSpriteAnimationFrame(crab1, i)
 		next i
 	endif
@@ -103,10 +108,12 @@ function CreateGame1()
 	crab1PlanetS[3] = 118
 	//The planet UI that shows how many lives are left
 	for i = 1 to 3
-		size = 40
-		CreateSpriteExpress(crab1PlanetS[i], size, size, w/2 - size/2 + (i-2)*size*1.5, h/2 + 80, 5)
+		CreateSpriteExpress(crab1PlanetS[i], planetIconSize, planetIconSize, w/2 - planetIconSize/2 + (i-2)*planetIconSize*1.5, h/2 + 80, 5)
 		
 	next i
+	
+	//Setting gameplay parameters to their proper values
+	crab1Deaths = 0
 		
 endfunction
 
@@ -287,6 +294,15 @@ function DoGame1()
 		SendSpecial1()
 	endif
 	
+	//Death is above so that the screen nudging code activates
+	hitSpr = CheckDeath1()
+	if hitSpr <> 0
+		DeleteSprite(hitSpr)
+		//Kill crab
+		inc crab1Deaths, 1
+		hit1Timer# = hitSceneMax
+	endif
+	
 	DrawPolar1(planet1, 0, 270)
 	
 	//The screen nudging code	
@@ -307,6 +323,8 @@ function DoGame1()
 	if crab1JumpD# > 0
 		SetSpriteAngle(crab1, GetSpriteAngle(crab1) + crab1JumpD#/crab1JumpDMax*360 * -1 * crab1Dir#)
 	endif
+	
+	
 	
 	fpsr# = 60.0/ScreenFPS()
 	
@@ -505,6 +523,7 @@ function SendMeteorFrom1()
 	SetSpriteSize(meteorSprNum, metSizeX, metSizeY)
 	SetSpriteColor(meteorSprNum, 255, 120, 40, 255)
 	SetSpriteDepth(meteorSprNum, 20)
+	AddMeteorAnimation(meteorSprNum)
 	inc meteorSprNum, 1
 	meteorActive2.insert(newMet)
 	
@@ -685,3 +704,151 @@ function SendSpecial1()
 	
 endfunction
 
+function CheckDeath1()
+	isHit = 0
+	
+	for i = 1 to meteorActive1.length
+		spr = meteorActive1[i].spr
+		if GetSpriteCollision(crab1, spr)
+			isHit = spr
+			inc nudge1R#, 30
+			nudge1Theta# = crab1Theta#
+			cat = meteorActive1[i].cat
+			if meteorActive1[i].cat = 3 then DeleteSprite(spr + 10000)
+			//ActivateMeteorParticles(cat, spr, 1)
+			PlaySprite(crab1, 0, 1, Random(13, 14), -1)
+			DeleteHalfExp(1)
+			
+			//Leaving the loop early
+			meteorActive1.remove(i)
+			i = meteorActive1.length + 10
+		endif
+	next
+	
+	//Collision for their ninja stars
+	if crab2Type = 6
+		for i = special2Ex1 to special2Ex3
+			if GetSpriteExists(i)
+				if GetSpriteCollision(crab1, i) then isHit = i
+				inc nudge1R#, 20
+				nudge1Theta# = 270
+				PlaySprite(crab1, 0, 1, Random(13, 14), -1)
+				DeleteHalfExp(1)
+			endif
+		next i
+	endif
+	
+endfunction isHit
+
+function HitScene1()
+	
+	state = GAME
+	
+	inc hit1Timer#, -1*fpsr#
+	Print(hit1Timer#)
+	
+	if crab1Deaths < 3
+		//The first and second deaths
+		if hit1Timer# > hitSceneMax*4/5
+			//Flying off the planet
+			inc crab1R#, 12*fpsr#
+			SetSpriteDepth(crab1, 11)
+			
+			
+			
+			
+		elseif hit1Timer# > hitSceneMax/5
+			//Flying towards the next planet
+			
+			//Hiding the old remaining meteors
+			for i = 1 to meteorActive1.length
+				SetSpriteColorAlpha(meteorActive1[i].spr, 0)
+				if meteorActive1[i].cat = 3 then SetSpriteColorAlpha(meteorActive1[i].spr + 10000, 0)
+			next
+			for i = special2Ex1 to special2Ex3
+				if GetSpriteExists(i)
+					SetSpriteColorAlpha(i, 0)
+				endif
+			next i
+			
+			SetSpriteColorAlpha(planet1, 0)
+			SetSpriteImage(planet1, planetIRandStart + Random(1, 8))
+			
+			crab1R# = 0
+			
+			if hit1Timer# < hitSceneMax/2*3
+				SetSpriteColor(crab1PlanetS[crab1Deaths], 100, 100, 100, 255)
+				
+				if crab1Deaths = 2
+					SetSpriteColor(crab1PlanetS[crab1Deaths+1], 255, 100, 100, 255)
+					//todo: play warning sound
+				endif
+				size = planetIconSize + 3 + 7*cos(hit1Timer#*10)*crab1Deaths	//The final multiplier makes it a bigger deal for the last planet
+				SetSpriteSize(crab1PlanetS[crab1Deaths+1], size, size)
+				SetSpritePosition(crab1PlanetS[crab1Deaths+1], w/2 - size/2 + (crab1Deaths-1)*size*1.5, h/2 + 80)
+			endif
+			
+		elseif hit1Timer# > 0
+			//Hitting the new planet
+			
+			crab1R# = -1*GetCrabDefaultR(crab1) - 12*hit1Timer#
+			
+			//Planet adjustment
+			DrawPolar1(planet1, 0, 270)
+			SetSpriteColorAlpha(planet1, 255)
+			
+			//Planet icon adjustment
+			SetSpriteSize(crab1PlanetS[crab1Deaths+1], planetIconSize, planetIconSize)
+			SetSpritePosition(crab1PlanetS[crab1Deaths+1], w/2 - planetIconSize/2 + (crab1Deaths-1)*planetIconSize*1.5, h/2 + 80)
+		
+		elseif hit1Timer# <= 0
+			//Return to normal, this code runs once
+			
+			//Removing the old remaining meteors
+			for i = 1 to meteorActive1.length
+				DeleteSprite(meteorActive1[i].spr)
+				if meteorActive1[i].cat = 3 then DeleteSprite(meteorActive1[i].spr + 10000)
+			next
+			for i = 1 to meteorActive1.length
+				meteorActive1.remove()
+			next
+			meteorActive1.length = 0
+			for i = special2Ex1 to special2Ex3
+				if GetSpriteExists(i)
+					DeleteSprite(i)
+				endif
+			next i
+			
+			//Crab stuff
+			crab1JumpD# = crab1JumpDMax*2/3
+			PlaySprite(crab1, crab1framerate, 1, 3, 10)
+			crab1R# = planetSize/2 + GetSpriteHeight(crab1)/3
+			SetSpriteDepth(crab1, 3)
+			//Part of the trick that makes the crab hit the other side of the planet
+			inc crab1Theta#, 180
+			
+			//Planet adjustment
+			nudge1R# = 60
+			nudge1Theta# = crab1Theta#
+			
+			gameDifficulty1 = Max(gameDifficulty1-2, 1)
+			
+			hit1Timer# = 0
+		endif
+		
+		
+		
+	else
+		//The final death
+		
+		
+		state =  0
+	endif
+	
+	DrawPolar1(crab1, crab1R#, crab1Theta#)
+	SetSpriteAngle(crab1, hit1Timer#*30)
+	if GetSpriteY(crab1) < h/2 then SetSpriteY(crab1, 9999)	//Correction for if the crab ends up on player 2's screen
+	
+	
+	
+endfunction state
