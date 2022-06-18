@@ -29,6 +29,7 @@ Space Ned (during Special) - 19
 Meteors - 20
 Particle Dust Clouds - 25
 Behind image for fast meteors - 30
+Background image - 100
 
 Crab types (internal):
 1 - Space Crab
@@ -54,7 +55,7 @@ Crab types (internal):
 #constant chronoCrabTimeMax 2300	//Is longer because the timer goes down faster
 #constant ninjaCrabTimeMax 500	
 
-#constant hitSceneMax 300
+#constant hitSceneMax 240
 global hit1Timer# = 0
 global hit2Timer# = 0
 
@@ -68,7 +69,7 @@ global crab1Dir# = 1		//Crab dir is a float that goes from 1 to -1, it multiplie
 global crab1Vel# = 1.28
 global crab1Accel# = .1	//Is .1 because it takes 2 to reach full reversal, and original game timer was 20
 global crab1Turning = 0 	//Is zero for when the crab isn't turning, and 1 or -1 depending on the direction it is CHANGING TO
-global crab1Type = 1
+global crab1Type = 6
 global crab1JumpD# = 0
 global crab1JumpHMax# = 5
 global crab1JumpDMax = 28	//This variable used to be in degrees, now it's in ticks
@@ -83,12 +84,20 @@ global nudge1R# = 0
 global nudge1Theta# = 0
 
 global crab2R# = 1	//Same constants for crab 2
+global crab2Rdefault# = 1
 global crab2Theta# = 270
+global crab2framerate = 10
 global crab2Dir# = 1
 global crab2Vel# = 1.28
 global crab2Accel# = .1
 global crab2Turning = 0
-global crab2Type = 1
+global crab2Type = 6
+global crab2JumpD# = 0
+global crab2JumpHMax# = 5
+global crab2JumpDMax = 28	//This variable used to be in degrees, now it's in ticks
+
+global crab2Deaths = 0
+global crab2PlanetS as Integer[3]
 
 global nudge2R# = 0
 global nudge2Theta# = 0
@@ -109,13 +118,13 @@ global meteorActive1 as meteor[0]
 global meteorActive2 as meteor[0]
 
 global expTotal1 = 0
-global meteorCost1 = 1 //10
-global specialCost1 = 3 //40
+global meteorCost1 = 10 //10
+global specialCost1 = 50 //40
 global specialTimerAgainst2# = 0
 
 global expTotal2 = 0
-global meteorCost2 = 1
-global specialCost2 = 3
+global meteorCost2 = 10
+global specialCost2 = 50
 global specialTimerAgainst1# = 0
 
 //Input buffers
@@ -149,6 +158,9 @@ global met3CD2# = 400
 #constant crab2 2
 #constant split 3
 
+#constant bgGame1 4
+#constant bgGame2 5
+
 #constant planet1 101
 #constant planet2 102
 
@@ -167,6 +179,10 @@ global met3CD2# = 400
 #constant meteorButton2 123
 #constant meteorMarker2 124
 #constant specialButton2 125
+
+//crab2PlanetS[1] = 126
+//crab2PlanetS[2] = 127
+//crab2PlanetS[3] = 128
 
 #constant specialBG 130
 #constant specialSprFront1 131
@@ -218,6 +234,10 @@ global met3CD2# = 400
 #constant clockMinI 75
 #constant clockHourI 76
 #constant ninjaStarI 77
+
+#constant bg1I 81
+#constant bg2I 82
+#constant bg3I 83
 
 #constant crab1start1I 101
 #constant crab1start2I 102
@@ -402,6 +422,10 @@ function LoadBaseImages()
 	LoadImage(meteorI4, "meteor4.png")
 	LoadImage(meteorTractorI, "tractor.png")
 	
+	LoadImage(bg1I, "bg1.png")
+	LoadImage(bg2I, "bg2.png")
+	LoadImage(bg3I, "bg3.png")
+	
 	SetFolder("/media")
 	
 	LoadImage(expOrbI, "exp.png")
@@ -467,3 +491,22 @@ function LoadBaseImages()
 	LoadImage(ninjaStarI, "ninjaStar.png")
 	
 endfunction
+
+/*
+The Code Graveyard
+
+AddSpriteAnimationFrame(crab1, crab1start1I)	//1
+	AddSpriteAnimationFrame(crab1, crab1start2I)
+	AddSpriteAnimationFrame(crab1, crab1walk1I)	//3
+	AddSpriteAnimationFrame(crab1, crab1walk2I)
+	AddSpriteAnimationFrame(crab1, crab1walk3I)
+	AddSpriteAnimationFrame(crab1, crab1walk4I)
+	AddSpriteAnimationFrame(crab1, crab1walk5I)
+	AddSpriteAnimationFrame(crab1, crab1walk6I)
+	AddSpriteAnimationFrame(crab1, crab1walk7I)
+	AddSpriteAnimationFrame(crab1, crab1walk8I)
+	AddSpriteAnimationFrame(crab1, crab1jump1I)	//11
+	AddSpriteAnimationFrame(crab1, crab1jump2I)
+
+
+*/

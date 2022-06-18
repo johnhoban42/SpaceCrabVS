@@ -47,7 +47,13 @@ function DoGame()
 		//This is the case for normal gameplay
 		state1 = DoGame1()
 	endif
-	state2 = DoGame2()
+	if hit2Timer# > 0
+		//This is the case for getting hit
+		state2 = HitScene2()
+	else
+		//This is the case for normal gameplay
+		state2 = DoGame2()
+	endif
 	UpdateExp()
 	inc gameTimer#, fpsr#
 
@@ -125,8 +131,8 @@ function UpdateExp()
 			SetSpriteColorAlpha(spr, GetSpriteColorAlpha(spr) + 10)
 		endif
 
-		//Collision for the first crab, second crab will go in another if statement
-		dis1 = GetSpriteDistance(spr, crab1)
+		//Collision for the first/bottom crab
+		//dis1 = GetSpriteDistance(spr, crab1)
 		if GetSpriteDistance(spr, crab1) < 40
 			IncSpritePosition(spr, -(0-(GetSpriteMiddleX(crab1)-GetSpriteX(spr)))/4.0*fpsr#, -(0-(GetSpriteMiddleY(crab1)-GetSpriteY(spr)))/4.0*fpsr#)
 			//GlideToSpot(spr, GetSpriteMiddleX(crab1), GetSpriteMiddleY(crab1), 5)
@@ -166,10 +172,55 @@ function UpdateExp()
 
 
 		endif
+		
+		//Collision for the second/top crab
+		//dis1 = GetSpriteDistance(spr, crab2)
+		if deleted = 0
+			if GetSpriteDistance(spr, crab2) < 40
+				IncSpritePosition(spr, -(0-(GetSpriteMiddleX(crab2)-GetSpriteX(spr)))/4.0*fpsr#, -(0-(GetSpriteMiddleY(crab2)-GetSpriteY(spr)))/4.0*fpsr#)
+				//GlideToSpot(spr, GetSpriteMiddleX(crab2), GetSpriteMiddleY(crab2), 5)
+				//Either gliding method above works, I like the way the one on top looks more
+	
+				//Visual Indicator
+				if GetSpriteColorGreen(spr) > 90
+					SetSpriteColorGreen(spr, GetSpriteColorGreen(spr) - 40*fpsr#)
+				endif
+	
+				//This is only for the top crab
+				if GetSpriteCollision(spr, crab2) and deleted = 0
+					deleted = i
+					DeleteSprite(spr)
+	
+					if expTotal2 < specialCost2
+						inc expTotal2, 1
+						if expTotal2 = specialCost2
+							SetSpriteColor(expBar2, 255, 210, 50, 255)
+							PlaySprite(expBar2, 30, 1, 1, 6)	//Faster than when it's not filled
+							//Base color: SetSpriteColor(expBar1, 255, 160, 0, 255)
+						endif
+					endif
+					
+					UpdateButtons2()	
+					
+					//For second crab, have a different kind pf exp sound??
+					rnd = Random(0, 4)
+					PlaySound(exp1S + rnd, volumeSE)
+	
+					//This is for instant bar size adjustment
+					//SetSpriteSize(expBar1, (GetSpriteWidth(expHolder1)-20)*(1.0*expTotal1/specialCost1), 26)
+	
+					//Add to the exp bar here
+					//Todo: Sound effect
+				endif
+	
+	
+			endif
+		endif
 
 	next i
 
 	GlideToWidth(expBar1, (GetSpriteWidth(expHolder1)-20)*(1.0*expTotal1/specialCost1), 2)
+	GlideToWidth(expBar2, (GetSpriteWidth(expHolder2)-20)*(1.0*expTotal2/specialCost2), 2)
 
 
 	if deleted > 0
@@ -433,3 +484,11 @@ function GetCrabDefaultR(spr)
 	//Returns the normal height that a crab will be at
 	r# = planetSize/2 + GetSpriteHeight(spr)/3
 endfunction r#
+
+function SetBGRandomPosition(spr)
+	//Sets the background to a random angle/spot
+	SetSpriteSizeSquare(spr, w*2)
+	if spr = bgGame1 then SetSpritePosition(spr, -1*w/2 - Random(-w/2, w/2), h/2)
+	if spr = bgGame2 then SetSpritePosition(spr, -1*w/2 - Random(-w/2, w/2), h/2-GetSpriteHeight(spr))
+	SetSpriteAngle(spr, 90*Random(1, 4))
+endfunction
