@@ -41,6 +41,9 @@ Crab types (internal):
 
 */
 
+#constant MOBILE 1
+#constant DESKTOP 2
+
 //Number of crabs in the game - made a constant in case we add/remove crabs
 #constant NUM_CRABS 6
 
@@ -69,7 +72,7 @@ global crab1Dir# = 1		//Crab dir is a float that goes from 1 to -1, it multiplie
 global crab1Vel# = 1.28
 global crab1Accel# = .1	//Is .1 because it takes 2 to reach full reversal, and original game timer was 20
 global crab1Turning = 0 	//Is zero for when the crab isn't turning, and 1 or -1 depending on the direction it is CHANGING TO
-global crab1Type = 6
+global crab1Type = 1
 global crab1JumpD# = 0
 global crab1JumpHMax# = 5
 global crab1JumpDMax = 28	//This variable used to be in degrees, now it's in ticks
@@ -104,6 +107,7 @@ global nudge2Theta# = 0
 
 global gameDifficulty1 = 1
 global gameDifficulty2 = 1
+global difficultyBar = 10
 
 global meteorTotal1 = 0
 global meteorTotal2 = 0
@@ -118,13 +122,13 @@ global meteorActive1 as meteor[0]
 global meteorActive2 as meteor[0]
 
 global expTotal1 = 0
-global meteorCost1 = 10 //10
-global specialCost1 = 50 //40
+global meteorCost1 = 1 //10
+global specialCost1 = 4 //40
 global specialTimerAgainst2# = 0
 
 global expTotal2 = 0
-global meteorCost2 = 10
-global specialCost2 = 50
+global meteorCost2 = 1
+global specialCost2 = 4
 global specialTimerAgainst1# = 0
 
 //Input buffers
@@ -318,9 +322,9 @@ global met3CD2# = 400
 #constant raveBass1 21
 #constant raveBass2 22
 
-//Sound effects volume
-global volumeM = 40
-global volumeSE = 20
+//Volume for music and sound effects
+global volumeM = 60
+global volumeSE = 40
 
 
 //Start screen sprites 

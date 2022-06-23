@@ -215,8 +215,12 @@ function DoGame1()
 	//The movement code
 	inc crab1Theta#, crab1Vel# * crab1Dir# * fpsr# //Need to figure out why FPSR modifier isn't working
 	
+	true1 = 0
+	if (deviceType = DESKTOP and ((GetPointerPressed() and (GetPointerY() > GetSpriteY(split) + GetSpriteHeight(split))) or (GetRawKeyPressed(32) or GetRawKeyPressed(49))) and Hover(meteorButton1) = 0 and Hover(specialButton1) = 0) then true1 = 1
+	true2 = 0
+	if (GetMulitouchPressedButton(meteorButton1) = 0 and GetMulitouchPressedButton(specialButton1) = 0 and GetMultitouchPressedBottom() and deviceType = MOBILE) then true2 = 1
 	//Activating the crab turn at an input
-	if buffer1 or(((GetPointerPressed() and (GetPointerY() > GetSpriteY(split) + GetSpriteHeight(split))) or (GetRawKeyPressed(32) or GetRawKeyPressed(49))) and Hover(meteorButton1) = 0 and Hover(specialButton1) = 0 and crab1JumpD# = 0)
+	if (true2 or buffer1 or true1) and crab1JumpD# = 0
 		
 		buffer1 = 0
 		if crab1Turning = 0
@@ -230,7 +234,8 @@ function DoGame1()
 			//Changing the direction in case it's already turning
 			crab1Turning = -1*crab1Turning
 			
-			if Abs(crab1Dir#) < crab1Vel#/3
+			//This checks that either the crab1Dir is small enough, or that it is right at the start of the process
+			if Abs(crab1Dir#) < 0.4 or (crab1Turning * crab1Dir# > 0)
 				//The crab leap code
 				//crab1Turning = -1*crab1Turning	//Still not sure if you should leap forwards or backwards
 				PlaySound(jumpS, volumeSE)
@@ -396,11 +401,15 @@ function DoGame1()
 	
 	//DrawPolar1(planet1, 0, 270)
 	
-	if expTotal1 >= meteorCost1 and (Button(meteorButton1) and GetPointerPressed()) and hit2Timer# <= 0
+	true1 = 0
+	if (Button(meteorButton1) and GetPointerPressed() and deviceType = DESKTOP) or (GetMulitouchPressedButton(meteorButton1) and deviceType = MOBILE) then true1 = 1
+	if expTotal1 >= meteorCost1 and true1 and hit2Timer# <= 0
 		SendMeteorFrom1()
 	endif
 	
-	if expTotal1 = specialCost1 and (Button(specialButton1) and GetPointerPressed()) and hit2Timer# <= 0
+	true1 = 0
+	if (Button(specialButton1) and GetPointerPressed() and deviceType = DESKTOP) or (GetMulitouchPressedButton(specialButton1) and deviceType = MOBILE) then true1 = 1
+	if expTotal1 = specialCost1 and true1 and hit2Timer# <= 0
 		SendSpecial1()
 	endif
 	
@@ -411,6 +420,13 @@ function DoGame1()
 		//Kill crab
 		inc crab1Deaths, 1
 		hit1Timer# = hitSceneMax
+		
+		for i = special2Ex1 to special2Ex5
+			if GetSpriteExists(i)
+				DeleteSprite(i)
+			endif
+		next i
+		
 	endif
 	
 	NudgeScreen1()
@@ -541,7 +557,7 @@ function UpdateMeteor1()
 			SetSpriteColorAlpha(spr, 0)
 		endif
 		
-	
+	`
 		if (GetSpriteCollision(spr, planet1) or meteorActive1[i].r < 0) and deleted = 0	
 			CreateExp(spr, cat)
 			ActivateMeteorParticles(cat, spr, 1)
@@ -563,7 +579,7 @@ function UpdateMeteor1()
 		inc meteorTotal1, 1
 		
 		//Updating the difficulty
-		if Mod(meteorTotal1, 15) = 0 and gameDifficulty1 < 7
+		if Mod(meteorTotal1, difficultyBar) = 0 and gameDifficulty1 < 7
 			inc gameDifficulty1, 1
 		endif
 	endif
@@ -866,11 +882,6 @@ function HitScene1()
 					meteorActive1.remove()
 				next
 				meteorActive1.length = 0
-				for i = special2Ex1 to special2Ex3
-					if GetSpriteExists(i) and crab2Type = 6
-						DeleteSprite(i)
-					endif
-				next i
 			endif
 			
 			SetSpriteColorAlpha(planet1, 0)

@@ -13,7 +13,7 @@ function InitStart()
 	SetSpriteVisible(split, 0)
 	
 	LoadSprite(SPR_TITLE, "title.png")
-	SetSpriteSize(SPR_TITLE, 2*h/3, w/2)
+	SetSpriteSize(SPR_TITLE, w/2, w/2)
 	SetSpriteMiddleScreen(SPR_TITLE)
 	IncSpriteX(SPR_TITLE, 150)
 	SetSpriteAngle(SPR_TITLE, 90)

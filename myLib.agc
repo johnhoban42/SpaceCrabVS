@@ -100,7 +100,6 @@ function IncSpriteAngle(spr, amt#)
 endfunction
 
 function GlideToSpot(spr, x, y, denom)
-	
 	SetSpritePosition(spr, (((GetSpriteX(spr)-x)*((denom-1)^fpsr#))/(denom)^fpsr#)+x, (((GetSpriteY(spr)-y)*((denom-1)^fpsr#))/(denom)^fpsr#)+y)
 endfunction
 
@@ -191,6 +190,83 @@ function FadeSpriteOut(spr, curT#, startT#, endT#)
 	
 endfunction
 	//SetSpriteColorAlpha(i, (specialTimerAgainst2#/(chronoCrabTimeMax/10))*255.0)
+
+//The touch variables
+global oldTouch as Integer[20]
+global newTouch as Integer[20]
+global currentTouch as Integer[1]
+
+function ProcessMultitouch()
+	
+	//Clearing the currentTouch array to reset it for this frame
+	for i = 1 to currentTouch.length
+		currentTouch.remove()
+	next
+	currentTouch.length = 0
+	
+	//Populating the newTouch array with all current touches
+	newTouch[1] = GetRawFirstTouchEvent(1)
+	for i = 2 to 20
+		newTouch[i] = GetRawNextTouchEvent()
+	next i
+	
+	//This is here incase we need to test multitouch logic
+	//for i = 1 to 20
+		//Print(newTouch[i])
+	//next i
+	//Print(9)
+	//for i = 1 to 20
+		//Print(oldTouch[i])
+	//next i
+	
+	//Checking the newTouch array for any touches that weren't in the previous frame, and acting on those touches
+	for i = 1 to 20
+		if newTouch[i] <> 0 and oldTouch.find(newTouch[i]) = -1
+			//This is a new touch! This touch ID is added to the list of current touches.
+			currentTouch.insert(newTouch[i])			
+		endif
+	next i
+	
+	//Setting the oldTouch array to the contents of the current newTouch array
+	for i = 1 to 20
+		oldTouch[i] = newTouch[i]
+	next i
+	oldTouch.sort()
+	
+	
+endfunction
+
+function GetMulitouchPressedButton(spr)
+	result = 0
+	
+	for i = 1 to currentTouch.length
+		x = GetRawTouchCurrentX(currentTouch[i])
+		y = GetRawTouchCurrentY(currentTouch[i])		
+		if GetSpriteHitTest(spr, x, y) then result = 1
+	next i
+	
+endfunction result
+
+//These top and bottom functions are probably used more for this project only, but they can stay
+function GetMultitouchPressedTop()
+	result = 0
+	
+	for i = 1 to currentTouch.length
+		y = GetRawTouchCurrentY(currentTouch[i])		
+		if y < h/2 then result = 1
+	next i
+	
+endfunction result
+
+function GetMultitouchPressedBottom()
+	result = 0
+	
+	for i = 1 to currentTouch.length
+		y = GetRawTouchCurrentY(currentTouch[i])		
+		if y > h/2 then result = 1
+	next i
+	
+endfunction result
 
 function SetSpriteColorRandomBright(spr)
 	//Recoloring!

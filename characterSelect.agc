@@ -156,7 +156,9 @@ function ChangeCrabs(csc ref as CharacterSelectController, dir as integer)
 	
 	// Glide
 	for spr = csc.sprCrabs to csc.sprCrabs + NUM_CRABS-1
-		GlideToX(spr, GetSpriteX(spr) + -1*p*dir*w, 30)
+		num = spr - csc.sprCrabs
+		GlideToX(spr, GetSpriteX(spr) + -1*p*dir*num*w, 7)
+		//GlideToX(spr, GetSpriteX(spr) + -1*p*dir*w, 30)
 	next spr
 	dec csc.glideFrame
 	

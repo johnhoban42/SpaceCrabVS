@@ -38,6 +38,8 @@ global fpsr#
 
 global gameTime#
 
+global deviceType = DESKTOP
+
 //SetPhysicsDebugOn()
 
 
@@ -46,7 +48,7 @@ SetSpriteSize(split, w*1.5, 80)
 SetSpriteMiddleScreenX(split)
 SetSpriteMiddleScreenY(split)
 
-appState = START
+global appState = GAME
 
 gameTime# = 0
 
@@ -57,6 +59,8 @@ do
 	if gameTimer# > 1000000000 then gameTimer# = 0
 	inc gameTime#, fpsr#
 	
+	ProcessMultitouch()
+	
 	if appState = START
 		appState = DoStart()
 	elseif appState = CHARACTER_SELECT
@@ -66,6 +70,12 @@ do
 	elseif appState = RESULTS
 		// appState = DoResults()
 	endif
+	
+	touch = GetRawFirstTouchEvent(1)
+	while touch <> 0
+		//Print(touch)
+		touch = GetRawNextTouchEvent()
+	endwhile
 	
     Print(ScreenFPS())
     Print(fpsr#)
