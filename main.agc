@@ -38,7 +38,7 @@ global fpsr#
 
 global gameTime#
 
-global deviceType = DESKTOP
+global deviceType = MOBILE
 
 //SetPhysicsDebugOn()
 
@@ -48,7 +48,7 @@ SetSpriteSize(split, w*1.5, 80)
 SetSpriteMiddleScreenX(split)
 SetSpriteMiddleScreenY(split)
 
-global appState = GAME
+global appState = START
 
 gameTime# = 0
 

@@ -43,11 +43,15 @@ function SetSpriteMiddleScreenOffset(spr, dx, dy)
 endfunction
 
 function SetTextMiddleScreen(txt, flip)
-	SetTextPosition(txt, w/2-GetTextTotalWidth(txt)/2 + flip*GetTextTotalWidth(txt), h/2-GetTextTotalHeight(txt)/2 + flip*GetTextTotalHeight(txt))
+	//SetTextPosition(txt, w/2-GetTextTotalWidth(txt)/2 + flip*GetTextTotalWidth(txt), h/2-GetTextTotalHeight(txt)/2 + flip*GetTextTotalHeight(txt))
+	SetTextAlignment(txt, 1)
+	SetTextPosition(txt, w/2, h/2-GetTextTotalHeight(txt)/2 + flip*GetTextTotalHeight(txt)) //If the alignment is in the middle, we dont need the X offset
 endfunction
 
 function SetTextMiddleScreenX(txt, flip)
-	SetTextX(txt, w/2-GetTextTotalWidth(txt)/2 + flip*GetTextTotalWidth(txt))
+	//SetTextX(txt, w/2-GetTextTotalWidth(txt)/2 + flip*GetTextTotalWidth(txt))
+	SetTextAlignment(txt, 1)
+	SetTextX(txt, w/2)		//If the alignment is in the middle, we dont need the X offset
 endfunction
 
 function SetTextMiddleScreenOffset(txt, flip, dx, dy)
@@ -143,14 +147,14 @@ function SnapbackToSpot(spr, iCur, iEnd, x, y, dx, dy, denom)
 	
 endfunction
 
-function SnapbackToX(spr, iCur, iEnd, x, dx, denom)
+function SnapbackToX(spr, iCur, iEnd, x, dx, denom, ratio)
 	
-	if (iCur < iEnd*3/4)
+	if (iCur < iEnd*(ratio-1)/ratio)
 		//Moving to the farther position
 		SetSpriteX(spr, (((GetSpriteX(spr)-(x+dx))*((denom-1)^fpsr#))/(denom)^fpsr#)+(x+dx))
 	else
 		//Sliding back
-		SetSpriteX(spr, (((GetSpriteX(spr)-x)*((denom-1)^fpsr#))/(denom)^fpsr#)+x)
+		SetSpriteX(spr, (((GetSpriteX(spr)-x)*((denom-2)^fpsr#))/(denom-1)^fpsr#)+x)
 	endif
 	
 endfunction
@@ -267,6 +271,14 @@ function GetMultitouchPressedBottom()
 	next i
 	
 endfunction result
+
+function ButtonMultitouchEnabled(spr)
+    if (Button(spr) and GetPointerPressed() and deviceType = DESKTOP) or (GetMulitouchPressedButton(spr) and deviceType = MOBILE)
+        returnValue = 1
+    else
+        returnValue = 0
+    endif
+endfunction returnValue
 
 function SetSpriteColorRandomBright(spr)
 	//Recoloring!

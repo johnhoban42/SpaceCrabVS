@@ -401,15 +401,11 @@ function DoGame1()
 	
 	//DrawPolar1(planet1, 0, 270)
 	
-	true1 = 0
-	if (Button(meteorButton1) and GetPointerPressed() and deviceType = DESKTOP) or (GetMulitouchPressedButton(meteorButton1) and deviceType = MOBILE) then true1 = 1
-	if expTotal1 >= meteorCost1 and true1 and hit2Timer# <= 0
+	if expTotal1 >= meteorCost1 and ButtonMultitouchEnabled(meteorButton1) and hit2Timer# <= 0
 		SendMeteorFrom1()
 	endif
 	
-	true1 = 0
-	if (Button(specialButton1) and GetPointerPressed() and deviceType = DESKTOP) or (GetMulitouchPressedButton(specialButton1) and deviceType = MOBILE) then true1 = 1
-	if expTotal1 = specialCost1 and true1 and hit2Timer# <= 0
+	if expTotal1 = specialCost1 and ButtonMultitouchEnabled(specialButton1) and hit2Timer# <= 0
 		SendSpecial1()
 	endif
 	
@@ -562,6 +558,7 @@ function UpdateMeteor1()
 			CreateExp(spr, cat)
 			ActivateMeteorParticles(cat, spr, 1)
 			DeleteSprite(spr)
+			PlaySound(explodeS, volumeSE)
 			
 			//The screen nudging
 			inc nudge1R#, 2.5 + cat*2.5

@@ -53,9 +53,9 @@ Crab types (internal):
 #constant metSizeY 80
 
 #constant spaceCrabTimeMax 200	//This is just for moving the UFO
-#constant topCrabTimeMax 1500
-#constant raveCrabTimeMax 1600
-#constant chronoCrabTimeMax 2300	//Is longer because the timer goes down faster
+#constant topCrabTimeMax 1200
+#constant raveCrabTimeMax 1200
+#constant chronoCrabTimeMax 1900	//Is longer because the timer goes down faster
 #constant ninjaCrabTimeMax 500	
 
 #constant hitSceneMax 240
@@ -122,13 +122,13 @@ global meteorActive1 as meteor[0]
 global meteorActive2 as meteor[0]
 
 global expTotal1 = 0
-global meteorCost1 = 1 //10
-global specialCost1 = 4 //40
+global meteorCost1 = 10 //10
+global specialCost1 = 50 //40
 global specialTimerAgainst2# = 0
 
 global expTotal2 = 0
-global meteorCost2 = 1
-global specialCost2 = 4
+global meteorCost2 = 10
+global specialCost2 = 50
 global specialTimerAgainst1# = 0
 
 //Input buffers
@@ -208,6 +208,9 @@ global met3CD2# = 400
 #constant special2Ex5 150
 
 //Image Indexes
+
+#constant crab1select1I 11
+
 #constant planetIRandStart 50
 #constant planetVar1I 51
 #constant planetVar2I 52
@@ -242,6 +245,8 @@ global met3CD2# = 400
 #constant bg1I 81
 #constant bg2I 82
 #constant bg3I 83
+#constant bg4I 84
+#constant bg5I 85
 
 #constant crab1start1I 101
 #constant crab1start2I 102
@@ -304,6 +309,7 @@ global met3CD2# = 400
 #constant jumpS 2
 #constant specialS 3
 #constant specialExitS 4
+#constant explodeS 5
 
 #constant exp1S 11
 #constant exp2S 12
@@ -319,6 +325,14 @@ global met3CD2# = 400
 
 
 //Music Indexes
+#constant titleMusic 1
+#constant characterMusic 2
+#constant endMusic 3
+
+#constant fightAMusic 4	//Andy's fight song
+#constant fightBMusic 5	//Brad's fight song
+#constant fightJMusic 6	//John's fight song
+
 #constant raveBass1 21
 #constant raveBass2 22
 
@@ -326,6 +340,7 @@ global met3CD2# = 400
 global volumeM = 60
 global volumeSE = 40
 
+SetMusicSystemVolumeOGG(volumeM)
 
 //Start screen sprites 
 #constant SPR_TITLE 200 
@@ -335,6 +350,7 @@ global volumeSE = 40
 #constant SPR_CS_READY_1 300 
 #constant SPR_CS_ARROW_L_1 301 
 #constant SPR_CS_ARROW_R_1 302 
+#constant SPR_CS_BG_1 306
 #constant TXT_CS_CRAB_NAME_1 303
 #constant TXT_CS_CRAB_DESC_1 304 
 #constant TXT_CS_READY_1 305 
@@ -344,6 +360,7 @@ global volumeSE = 40
 #constant SPR_CS_READY_2 400
 #constant SPR_CS_ARROW_L_2 401
 #constant SPR_CS_ARROW_R_2 402 
+#constant SPR_CS_BG_2 406
 #constant TXT_CS_CRAB_NAME_2 403
 #constant TXT_CS_CRAB_DESC_2 404 
 #constant TXT_CS_READY_2 405
@@ -379,6 +396,7 @@ function LoadBaseSounds()
 	LoadSoundOGG(jumpS, "jump.ogg")
 	LoadSoundOGG(specialS, "special.ogg")
 	LoadSoundOGG(specialExitS, "specialExit.ogg")
+	LoadSoundOGG(explodeS, "explode.ogg")
 	
 	
 	LoadSoundOGG(exp1S, "exp1.ogg")
@@ -397,8 +415,11 @@ function LoadBaseSounds()
 endfunction
 
 function LoadBaseMusic()
-	SetFolder("/media/sounds")
-		
+	SetFolder("/media/music")
+	
+	LoadMusicOGG(fightAMusic, "fightA.ogg")
+	LoadMusicOGG(characterMusic, "character.ogg")
+	
 	LoadMusicOGG(raveBass1, "raveBass.ogg")
 	LoadMusicOGG(raveBass2, "raveBass2.ogg")
 	
@@ -409,6 +430,9 @@ function LoadBaseMusic()
 endfunction
 
 function LoadBaseImages()
+	SetFolder("/media/art")
+	LoadImage(crab1select1I, "crab1select.png")
+	
 	SetFolder("/media/envi")
 	
 	LoadImage(planetVar1I, "planet1alt1.png")
@@ -429,6 +453,8 @@ function LoadBaseImages()
 	LoadImage(bg1I, "bg1.png")
 	LoadImage(bg2I, "bg2.png")
 	LoadImage(bg3I, "bg3.png")
+	LoadImage(bg4I, "bg4.png")
+	LoadImage(bg5I, "bg5.png")
 	
 	SetFolder("/media")
 	

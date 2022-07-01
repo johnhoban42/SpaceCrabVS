@@ -23,6 +23,8 @@ function InitGame()
 	meteorTotal1 = 0
 	meteorTotal2 = 0
 	
+	PlayMusicOGG(fightAMusic, 1)	//Todo: put in a music randomizer
+	
 	gameStateInitialized = 1
 	
 endfunction
@@ -76,6 +78,12 @@ endfunction state
 
 // Cleanup upon leaving this state
 function ExitGame()
+	
+	for i = fightAMusic to fightJMusic
+		if GetMusicExistsOGG(i)
+			if GetMusicPlayingOGG(i) then StopMusicOGG(i)
+		endif
+	next i
 	
 	// Whatever we do for something like ExitGame1() and ExitGame2() will go here
 	gameStateInitialized = 0
@@ -488,7 +496,7 @@ endfunction r#
 function SetBGRandomPosition(spr)
 	//Sets the background to a random angle/spot
 	SetSpriteSizeSquare(spr, w*2)
-	if spr = bgGame1 then SetSpritePosition(spr, -1*w/2 - Random(-w/2, w/2), h/2)
-	if spr = bgGame2 then SetSpritePosition(spr, -1*w/2 - Random(-w/2, w/2), h/2-GetSpriteHeight(spr))
+	if spr = bgGame1 or spr = SPR_CS_BG_1 then SetSpritePosition(spr, -1*w/2 - Random(-w/2, w/2), h/2)
+	if spr = bgGame2 or spr = SPR_CS_BG_2 then SetSpritePosition(spr, -1*w/2 - Random(-w/2, w/2), h/2-GetSpriteHeight(spr))
 	SetSpriteAngle(spr, 90*Random(1, 4))
 endfunction
