@@ -209,7 +209,27 @@ global met3CD2# = 400
 
 //Image Indexes
 
+#constant fontSpecialI 1
+#constant fontDescI 2	//Tahoma
+#constant fontDescItalI 4	//Tahoma (Italicized)
+#constant fontCrabI 3	//Somerset Barnyard
+
 #constant crab1select1I 11
+#constant crab2select1I 12
+
+#constant crab1attack1I 21
+#constant crab2attack1I 22
+#constant crab3attack1I 23
+#constant crab4attack1I 24
+#constant crab5attack1I 25
+#constant crab6attack1I 26
+
+#constant crab1attack2I 31
+#constant crab2attack2I 32
+#constant crab3attack2I 33
+#constant crab4attack2I 34
+#constant crab5attack2I 35
+#constant crab6attack2I 36
 
 #constant planetIRandStart 50
 #constant planetVar1I 51
@@ -430,8 +450,24 @@ function LoadBaseMusic()
 endfunction
 
 function LoadBaseImages()
+	
+	SetFolder("/media/fonts")
+	
+	LoadImage(fontSpecialI, "fontSpecial.png")
+	LoadImage(fontDescI, "fontDesc.png")
+	LoadImage(fontDescItalI, "fontDescItal.png")
+	LoadImage(fontCrabI, "fontCrab.png")
+	
+	//#constant fontDesc 2
+	
 	SetFolder("/media/art")
+	
 	LoadImage(crab1select1I, "crab1select.png")
+	LoadImage(crab2select1I, "crab2select.png")
+	
+	LoadImage(crab1attack1I, "crab1attack1.png")
+	LoadImage(crab1attack2I, "crab1attack2.png")
+	
 	
 	SetFolder("/media/envi")
 	

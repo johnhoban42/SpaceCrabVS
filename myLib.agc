@@ -125,6 +125,10 @@ function GlideTextToSpot(txt, x, y, denom)
 
 endfunction
 
+function GlideTextToX(txt, x, denom)
+	SetTextX(txt, (((GetTextX(txt)-x)*((denom-1)^fpsr#))/(denom)^fpsr#)+x)
+endfunction
+
 function GlideViewOffset(x, y, denomX, denomY)
 	
 	SetViewOffset((((GetViewOffsetX()-x)*((denomX-1)^fpsr#))/(denomX)^fpsr#)+x, (((GetViewOffsetY()-y)*((denomY-1)^fpsr#))/(denomY)^fpsr#)+y)

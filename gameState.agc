@@ -304,26 +304,61 @@ function ShowSpecialAnimation(crabType)
 	hei = 400
 	for i = specialSprFront1 to specialSprBack2
 		CreateSprite(i, 0)
-		SetSpriteSize(i, 400, 400)
+		SetSpriteSizeSquare(i, 400)
 		if Mod(i, 2) = 0
 			//Back Sprites
 			SetSpriteDepth(i, 2)
-			SetSpriteColor(i, 150, 150, 150, 255)
+			SetSpriteColor(i, 220, 220, 220, 255)
+			SetSpriteSizeSquare(i, 300)	//Smaller at Brad's request
+			if crabType = 1
+				//This if statement is only here while not every image is in the game
+				SetSpriteImage(i, crab1attack2I - 1 + crabType)
+			endif
 		else
 			//Front Sprites
 			SetSpriteDepth(i, 1)
+			if crabType = 1
+				//This if statement is only here while not every image is in the game
+				SetSpriteImage(i, crab1attack1I - 1 + crabType)
+			endif
 		endif
+		
+		if i >= specialSprFront2 then SetSpriteAngle(i, 180)
+		
 	next i
 	
-	//Goes from right to left on bottom
-	SetSpritePosition(specialSprFront1, w + 100, h - 500)
-	//Goes from left to right on bottom
-	SetSpritePosition(specialSprBack1, -100 - wid, h - 650)
+	offsetY = 30
 	
 	//Goes from right to left on bottom
-	SetSpritePosition(specialSprFront2, -100 - wid, 100)
+	SetSpritePosition(specialSprFront1, w + 100, h - 500 - offsetY)
+	//Goes from left to right on bottom
+	SetSpritePosition(specialSprBack1, -100 - wid, h - 650 - offsetY)
+	
+	//Goes from right to left on top
+	SetSpritePosition(specialSprFront2, -100 - wid, 100 + offsetY)
 	//Goes from left to right on top
-	SetSpritePosition(specialSprBack2, w + 100, 250)
+	SetSpritePosition(specialSprBack2, w + 100, 250 + offsetY)
+	
+	//The text for the special
+	
+	tDir = 1
+	
+	for i = specialSprFront1 to specialSprFront2 step 2
+		CreateText(i, "")
+		SetTextFontImage(i, fontSpecialI)
+		SetTextAlignment(i, 1)
+		SetTextSize(i, 110)
+		SetTextPosition(i, 2000*tDir, 1440)
+		if i = specialSprFront2
+			SetTextX(i, -2000*tDir)
+			SetTextY(i, h - 1440 )
+			SetTextAngle(i, 180)
+		endif
+		SetTextDepth(i, 1)
+		SetTextSpacing(i, -20)
+		if crabType = 1 then SetTextString(i, "METEOR SHOWER")
+		if crabType = 4 then SetTextString(i, "PARTY TIME!")
+	next i
 	
 	iEnd = 120/fpsr#
 	for i = 1 to iEnd
@@ -349,6 +384,14 @@ function ShowSpecialAnimation(crabType)
 		IncSpriteXFloat(specialSprFront2, 1.2*speed)
 		IncSpriteXFloat(specialSprBack2, -1*speed)
 		
+		if i < iEnd*5/7
+			GlideTextToX(specialSprFront1, w/2, 6)
+			GlideTextToX(specialSprFront2, w/2, 6)
+		else
+			GlideTextToX(specialSprFront1, -2000*tDir, 30)
+			GlideTextToX(specialSprFront2, 2000*tDir, 30)
+		endif
+		
 		Sync()
 	next i
 	
@@ -370,6 +413,9 @@ function ShowSpecialAnimation(crabType)
 	next i
 	for i = par1met1 to par2spe1
 		SetParticlesActive(i, 1)
+	next i
+	for i = specialSprFront1 to specialSprFront2 step 2
+		DeleteText(i)
 	next i
 	
 endfunction

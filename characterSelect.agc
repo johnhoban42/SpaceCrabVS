@@ -58,6 +58,8 @@ type CharacterSelectController
 	
 endtype
 
+#constant charWid 390
+#constant charHei 257
 
 // Initialize the sprites within a CSC
 // "player" -> 1 or 2
@@ -88,42 +90,48 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 	SetSpriteDepth(csc.sprBG, 100)
 	
 	for i = 0 to NUM_CRABS-1
-		if i = 0
-			CreateSprite(csc.sprCrabs + i, crab1select1I)
+		if i <= 1
+			CreateSprite(csc.sprCrabs + i, crab1select1I + i)
 		else
 			LoadSprite(csc.sprCrabs + i, "crab1.png")
 		endif
-		SetSpriteSize(csc.sprCrabs + i, 390, 260)
+		SetSpriteSize(csc.sprCrabs + i, charWid, charHei)
 		SetSpriteMiddleScreenOffset(csc.sprCrabs + i, p*i*w, p*335)
 		SetSpriteFlip(csc.sprCrabs + i, f, f)
 	next i
 	
 	//Descriptions were moved down here to include newline characters
 	crabDescs[0] = "Known across the cosmos for his quick dodges!" + chr(10) + "Has connections in high places."
-	crabDescs[1] = "He's been hitting the books AND the gym!" + chr(10) + "His new meteor spells are a force to be reckoned with."
+	crabDescs[1] = "He's been hitting the books AND the gym! His" + chr(10) + "new meteor spells are a force to be reckoned with."
 	crabDescs[2] = "Started spinning one day, and never stopped!" + chr(10) + "Learned to weaponize his rotational influence."
 	crabDescs[3] = "Always ready to start a party!!" + chr(10) + "How can you say no?"
-	crabDescs[4] = "A master of time! Doesn't usually bend the time stream," + chr(10) + "but might make an exception this once."
+	crabDescs[4] = "A master of time! Doesn't usually bend the time" + chr(10) + "stream, but might make an exception this once."
+	crabDescs[5] = "So sneaky, that they don't" + chr(10) + "even have a description yet!"
 	
 	// The offset mumbo-jumbo with f-coefficients is because AGK's text rendering is awful
 	CreateText(csc.txtCrabName, crabNames[0])
 	SetTextSize(csc.txtCrabName, 96)
 	SetTextAngle(csc.txtCrabName, f*180)
-	SetTextMiddleScreenOffset(csc.txtCrabName, f, 0, p*100)
+	SetTextFontImage(csc.txtCrabName, fontCrabI)
+	SetTextSpacing(csc.txtCrabName, -22)
+	SetTextMiddleScreenOffset(csc.txtCrabName, f, 0, p*130)
 	//SetTextMiddleScreenOffset(csc.txtCrabName, f, 0, p*100)
 	SetTextAlignment(csc.txtCrabName, 1)
 	
 	CreateText(csc.txtCrabDesc, crabDescs[0])
-	SetTextSize(csc.txtCrabDesc, 44)
+	SetTextSize(csc.txtCrabDesc, 47)
 	SetTextAngle(csc.txtCrabDesc, f*180)
-	SetTextSpacing(csc.txtCrabDesc, -2)
+	SetTextFontImage(csc.txtCrabDesc, fontDescI)
+	SetTextSpacing(csc.txtCrabDesc, -15)
 	SetTextMiddleScreenOffset(csc.txtCrabDesc, f, 0, p*3*h/8.5)
 	//SetTextMiddleScreenOffset(csc.txtCrabDesc, f, 0, p*3*h/8)
 	SetTextAlignment(csc.txtCrabDesc, 1)
 	
 	CreateText(csc.txtReady, "Waiting for your opponent...")
-	SetTextSize(csc.txtReady, 36)
+	SetTextSize(csc.txtReady, 86)
 	SetTextAngle(csc.txtReady, f*180)
+	SetTextFontImage(csc.txtReady, fontDescItalI)
+	SetTextSpacing(csc.txtReady, -30)
 	SetTextMiddleScreenOffset(csc.txtReady, f, 0, p*7*h/16)
 	SetTextVisible(csc.txtReady, 0)
 	
@@ -180,7 +188,7 @@ function ChangeCrabs(csc ref as CharacterSelectController, dir as integer, start
 	if csc.player = 1 then f = 0 else f = 1 // makes the flip calculations easier
 		
 	//This goes on the outside so it can be used for the glide loop
-	glideMax = 30/fpsr#
+	glideMax = 24/fpsr#
 		
 	// Start the glide
 	if csc.glideFrame = 0 or startCycle = 1
@@ -192,6 +200,11 @@ function ChangeCrabs(csc ref as CharacterSelectController, dir as integer, start
 		
 		//The change of the crab is done up here to make the glide work
 		csc.crabSelected = csc.crabSelected + dir
+		//This is moved up so that people can see the names quicker
+		SetTextString(csc.txtCrabName, crabNames[csc.crabSelected])
+		SetTextMiddleScreenX(csc.txtCrabName, f)
+		SetTextString(csc.txtCrabDesc, crabDescs[csc.crabSelected])
+		SetTextMiddleScreenX(csc.txtCrabDesc, f)
 	endif
 	
 	cNum = csc.crabSelected
@@ -199,12 +212,21 @@ function ChangeCrabs(csc ref as CharacterSelectController, dir as integer, start
 	// Glide
 	for spr = csc.sprCrabs to csc.sprCrabs + NUM_CRABS-1
 		num = spr - csc.sprCrabs
-		SnapbackToX(spr, glideMax - csc.glideFrame, glideMax, w/2 - GetSpriteWidth(spr)/2 - (cNum-num)*1000, -40*dir, 4, 5)
+		GlideToX(spr, w/2 - GetSpriteWidth(spr)/2 - (cNum-num)*1000*p, 4)
+		//SnapbackToX(spr, glideMax - csc.glideFrame, glideMax, w/2 - GetSpriteWidth(spr)/2 - (cNum-num)*1000*p, -40*dir*p, 4, 5)	//Andy Version
 		//SnapbackToX(spr, csc.glideFrame, glideMax, w/2 - GetSpriteWidth(spr)/2 * cNum*1000, 30, 10)
 		//GlideToX(spr, GetSpriteX(spr) + -1*p*dir*w, 30)
 		//Print(GetSPriteX(spr))
+		
+		if csc.glideFrame > glideMax/2
+			SetSpriteSize(spr, charWid - 45 + (glideMax - csc.glideFrame)/glideMax*90, charHei - 30 + (glideMax - csc.glideFrame)/glideMax*60)
+			color = (glideMax - csc.glideFrame)/glideMax*110
+		SetSpriteColor(spr, 200 + color, 200 + color, 200 + color, 255)
+		endif
+		
+		
 	next spr
-	dec csc.glideFrame//, //fpsr#
+	dec csc.glideFrame
 	
 	Print(cNum)
 	//Sleep(500)
@@ -212,10 +234,7 @@ function ChangeCrabs(csc ref as CharacterSelectController, dir as integer, start
 	// Finish the glide and change the displayed crab
 	if csc.glideFrame = 0
 		
-		SetTextString(csc.txtCrabName, crabNames[csc.crabSelected])
-		SetTextMiddleScreenX(csc.txtCrabName, f)
-		SetTextString(csc.txtCrabDesc, crabDescs[csc.crabSelected])
-		SetTextMiddleScreenX(csc.txtCrabDesc, f)
+		
 		if csc.CrabSelected <> 0
 			SetSpriteVisible(csc.sprLeftArrow, 1)
 		endif
@@ -244,7 +263,34 @@ function SelectCrab(csc ref as CharacterSelectController)
 	SetSpriteVisible(csc.sprRightArrow, 0)
 	SetTextVisible(csc.txtReady, 1)
 	
+	
+	//Text gets bigger to show that a selection has been locked in
+	SetTextSize(csc.txtCrabName, GetTextSize(csc.txtCrabName) + 10)
+	
 	csc.ready = 1
+	
+endfunction
+
+function UnselectCrab(csc ref as CharacterSelectController)
+	
+	// We need this off-by-one adjustment because the crab types are based on 1-based indexing,
+	// whereas the selected crabs are based on 0-based indexing
+	//if csc.player = 1
+	//	crab1Type = csc.crabSelected + 1
+	//else
+	//	crab2Type = csc.crabSelected + 1
+	//endif
+	
+	SetSpriteVisible(csc.sprReady, 1)
+	SetSpriteVisible(csc.sprLeftArrow, 1)
+	SetSpriteVisible(csc.sprRightArrow, 1)
+	SetTextVisible(csc.txtReady, 0)
+	
+	
+	//Text gets smaller again
+	SetTextSize(csc.txtCrabName, GetTextSize(csc.txtCrabName) - 10)
+	
+	csc.ready = 0
 	
 endfunction
 
@@ -252,15 +298,17 @@ endfunction
 // Game loop for a single screen
 function DoCharacterSelectController(csc ref as CharacterSelectController)
 
-	// Scroll left
-	if Button(csc.sprLeftArrow) and not csc.ready and csc.crabSelected > 0
-		ChangeCrabs(csc, -1, 1)
-	// Scroll right
-	elseif Button(csc.sprRightArrow) and not csc.ready and csc.crabSelected < NUM_CRABS-1
-		ChangeCrabs(csc, 1, 1)
-	// Ready button
-	elseif Button(csc.sprReady)
-		SelectCrab(csc)
+	if not csc.ready
+		// Scroll left
+		if ButtonMultitouchEnabled(csc.sprLeftArrow) and csc.crabSelected > 0
+			ChangeCrabs(csc, -1, 1)
+		// Scroll right
+		elseif ButtonMultitouchEnabled(csc.sprRightArrow) and csc.crabSelected < NUM_CRABS-1
+			ChangeCrabs(csc, 1, 1)
+		// Ready button
+		elseif Button(csc.sprReady)
+			SelectCrab(csc)
+		endif
 	endif
 	
 	
@@ -272,6 +320,7 @@ function DoCharacterSelectController(csc ref as CharacterSelectController)
 	
 endfunction
 
+#constant jitterNum 5
 
 // Character select screen execution loop
 // Each time this loop exits, return the next state to enter into
@@ -286,6 +335,37 @@ function DoCharacterSelect()
 	
 	DoCharacterSelectController(csc1)
 	DoCharacterSelectController(csc2)
+	
+	//Unselects the crab if the screen is touched again (only works on mobile for testing)
+	if csc1.ready = 1 and GetMultitouchPressedBottom() then UnselectCrab(csc1)
+	if csc2.ready = 1 and GetMultitouchPressedTop() then UnselectCrab(csc2)
+	
+	//Jittering the letters
+	if csc1.ready = 0
+		txt = csc1.txtCrabName
+		for i = 0 to GetTextLength(txt)
+			SetTextCharY(txt, i, -1 * (jitterNum + csc1.glideFrame) + Random(0, (jitterNum + csc1.glideFrame)*2))
+			SetTextCharAngle(txt, i, -1 * (jitterNum + csc1.glideFrame) + Random(0, jitterNum + csc1.glideFrame)*2)
+		next i
+	else
+		txt = csc1.txtReady
+		for i = 0 to GetTextLength(txt)
+			SetTextCharY(txt, GetTextLength(txt)-i, 48 - 8*abs(10*cos(GetMusicPositionOGG(characterMusic)*200+i*10 )))	//Code from SnowTunes
+		next i		
+	endif
+	
+	if csc2.ready = 0
+		txt = csc2.txtCrabName
+		for i = 0 to GetTextLength(txt)
+			SetTextCharY(txt, i, -102 -1 * (jitterNum + csc2.glideFrame) + Random(0, (jitterNum + csc2.glideFrame)*2))
+			SetTextCharAngle(txt, i, 180 - 1*(jitterNum + csc2.glideFrame) + Random(0, jitterNum + csc2.glideFrame)*2)
+		next i
+	else
+		txt = csc2.txtReady
+		for i = 0 to GetTextLength(txt)
+			SetTextCharY(txt, GetTextLength(txt)-i, -110 + 8*abs(10*cos(GetMusicPositionOGG(characterMusic)*200+i*10 )))	//Code from SnowTunes
+		next i
+	endif
 	
 	if csc1.ready and csc2.ready
 		state = GAME
