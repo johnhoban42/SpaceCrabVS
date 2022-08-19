@@ -9,6 +9,8 @@
 
 // show all errors
 
+//#renderer "Basic"
+
 SetErrorMode(2)
 
 // set window properties
@@ -24,7 +26,7 @@ SetAntialiasMode( 1 )
 // set display properties
 SetVirtualResolution( w, h ) // doesn't have to match the window
 SetOrientationAllowed(1, 0, 0, 0) // allow both portrait and landscape on mobile devices
-SetSyncRate( 30, 0 ) // 30fps instead of 60 to save battery	//LOL
+SetSyncRate( 120, 0 ) // 30fps instead of 60 to save battery	//LOL
 SetScissor( 0,0,0,0 ) // use the maximum available screen space, no black borders
 UseNewDefaultFonts( 1 )
 
@@ -38,13 +40,22 @@ global fpsr#
 
 global gameTime#
 
-global deviceType = MOBILE
+device$ = GetDeviceBaseName()
+global deviceType = DESKTOP
+
+if device$ = "android" or device$ = "ios" then deviceType = MOBILE
+
+if deviceType = MOBILE then SetScissor(0, 0, w, h)
+SetImmersiveMode(1)
 
 //SetPhysicsDebugOn()
 
-
-LoadSprite(split, "sheepstart2.png")
-SetSpriteSize(split, w*1.5, 80)
+//RIP Sheep
+//LoadSprite(split, "sheepstart2.png")
+//SetSpriteSize(split, w*1.5, 80)
+LoadSprite(split, "belt.png")
+SetSpriteSize(split, w, 120)
+SetSpriteColor(split, 200, 200, 200, 255)
 SetSpriteMiddleScreenX(split)
 SetSpriteMiddleScreenY(split)
 
@@ -82,6 +93,8 @@ do
     Print(GetRawLastKey())
     Print(meteorTotal1)
     Print(specialTimerAgainst2#)
+    
+		Print(GetDeviceBaseName())
     Sync()
 loop
 

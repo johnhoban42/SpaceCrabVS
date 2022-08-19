@@ -284,6 +284,19 @@ function ButtonMultitouchEnabled(spr)
     endif
 endfunction returnValue
 
+function PlaySoundR(sound, vol)
+	if GetSoundExists(sound)
+		if GetDeviceBaseName() <> "android"
+			//The normal case, for normal devices
+			PlaySound(sound, vol)
+		else
+			//The strange case for WEIRD and PSYCHO android devices
+			PlayMusicOGG(sound, 0)
+		endif
+	endif
+	
+endfunction
+
 function SetSpriteColorRandomBright(spr)
 	//Recoloring!
 	r = 0
@@ -305,6 +318,8 @@ function SetSpriteColorRandomBright(spr)
 		if r2 = 1 then r = r3
 		if r2 = 2 then b = r3
 	endif
-	SetSpriteColor(spr, r, g, b, 255)
+	SetSpriteColorRed(spr, r)
+	SetSpriteColorGreen(spr, g)
+	SetSpriteColorBlue(spr, b)
 	
 endfunction

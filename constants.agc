@@ -54,7 +54,7 @@ Crab types (internal):
 
 #constant spaceCrabTimeMax 200	//This is just for moving the UFO
 #constant topCrabTimeMax 1200
-#constant raveCrabTimeMax 1200
+#constant raveCrabTimeMax 900
 #constant chronoCrabTimeMax 1900	//Is longer because the timer goes down faster
 #constant ninjaCrabTimeMax 500	
 
@@ -80,7 +80,7 @@ global crab1JumpDMax = 28	//This variable used to be in degrees, now it's in tic
 
 global crab1Deaths = 0
 global crab1PlanetS as Integer[3]
-#constant planetIconSize 40
+#constant planetIconSize 60
 
 //For the screen nudging whenever a meteor hits
 global nudge1R# = 0
@@ -122,14 +122,16 @@ global meteorActive1 as meteor[0]
 global meteorActive2 as meteor[0]
 
 global expTotal1 = 0
-global meteorCost1 = 10 //10
-global specialCost1 = 50 //40
+global meteorCost1 = 8 //10
+global specialCost1 = 20 //40
 global specialTimerAgainst2# = 0
 
 global expTotal2 = 0
-global meteorCost2 = 10
-global specialCost2 = 50
+global meteorCost2 = 8
+global specialCost2 = 20
 global specialTimerAgainst1# = 0
+
+#constant specialMult# 1.3
 
 //Input buffers
 global buffer1 = 0
@@ -214,8 +216,38 @@ global met3CD2# = 400
 #constant fontDescItalI 4	//Tahoma (Italicized)
 #constant fontCrabI 3	//Somerset Barnyard
 
-#constant crab1select1I 11
-#constant crab2select1I 12
+#constant crab1select1I 301
+#constant crab1select2I 302
+#constant crab1select3I 303
+#constant crab1select4I 304
+#constant crab1select5I 305
+#constant crab1select6I 306
+
+#constant crab2select1I 311
+#constant crab2select2I 312
+#constant crab2select3I 313
+#constant crab2select4I 314
+#constant crab2select5I 315
+#constant crab2select6I 316
+
+#constant crab6select1I 351
+#constant crab6select2I 352
+#constant crab6select3I 353
+#constant crab6select4I 354
+#constant crab6select5I 355
+#constant crab6select6I 356
+
+#constant crab1life1I 371
+#constant crab1life2I 372
+#constant crab1life3I 373
+
+#constant crab2life1I 374
+#constant crab2life2I 375
+#constant crab2life3I 376
+
+#constant crab6life1I 386
+#constant crab6life2I 387
+#constant crab6life3I 388
 
 #constant crab1attack1I 21
 #constant crab2attack1I 22
@@ -230,16 +262,6 @@ global met3CD2# = 400
 #constant crab4attack2I 34
 #constant crab5attack2I 35
 #constant crab6attack2I 36
-
-#constant planetIRandStart 50
-#constant planetVar1I 51
-#constant planetVar2I 52
-#constant planetVar3I 53
-#constant planetVar4I 54
-#constant planetVar5I 55
-#constant planetVar6I 56
-#constant planetVar7I 57
-#constant planetVar8I 58
 
 #constant expOrbI 60
 #constant expBarI1 61
@@ -313,6 +335,21 @@ global met3CD2# = 400
 #constant crab6death1I 213
 #constant crab6death2I 214
 
+
+//Planets images are 401 to 430
+#constant planetIMax 23
+#constant planetITotalMax 29
+global planetVarI as Integer[planetITotalMax]
+
+//#constant planetVar1I 51
+//#constant planetVar2I 52
+//#constant planetVar3I 53
+//#constant planetVar4I 54
+//#constant planetVar5I 55
+//#constant planetVar6I 56
+//#constant planetVar7I 57
+//#constant planetVar8I 58
+
 //Particle Indexes
 #constant par1met1 1
 #constant par1met2 2
@@ -345,16 +382,16 @@ global met3CD2# = 400
 
 
 //Music Indexes
-#constant titleMusic 1
-#constant characterMusic 2
-#constant endMusic 3
+#constant titleMusic 101
+#constant characterMusic 102
+#constant endMusic 103
 
-#constant fightAMusic 4	//Andy's fight song
-#constant fightBMusic 5	//Brad's fight song
-#constant fightJMusic 6	//John's fight song
+#constant fightAMusic 104	//Andy's fight song
+#constant fightBMusic 105	//Brad's fight song
+#constant fightJMusic 106	//John's fight song
 
-#constant raveBass1 21
-#constant raveBass2 22
+#constant raveBass1 121
+#constant raveBass2 122
 
 //Volume for music and sound effects
 global volumeM = 60
@@ -429,7 +466,29 @@ function LoadBaseSounds()
 	LoadSoundOGG(wizardSpell1S, "wizardSpell1.ogg")
 	LoadSoundOGG(wizardSpell2S, "wizardSpell2.ogg")
 	LoadSoundOGG(ninjaStarS, "ninjaStar.ogg")
+	
+	
+	//Have to load them all in AGAIN as music, thanks dumb android sound threads ):<
+	if GetDeviceBaseName() = "android"
+		LoadMusicOGG(turnS, "turn.ogg")
+		LoadMusicOGG(jumpS, "jump.ogg")
+		LoadMusicOGG(specialS, "special.ogg")
+		LoadMusicOGG(specialExitS, "specialExit.ogg")
+		LoadMusicOGG(explodeS, "explode.ogg")
 		
+		
+		LoadMusicOGG(exp1S, "exp1.ogg")
+		LoadMusicOGG(exp2S, "exp2.ogg")
+		LoadMusicOGG(exp3S, "exp3.ogg")
+		LoadMusicOGG(exp4S, "exp4.ogg")
+		LoadMusicOGG(exp5S, "exp5.ogg")
+		
+		LoadMusicOGG(ufoS, "ufo.ogg")
+		LoadMusicOGG(wizardSpell1S, "wizardSpell1.ogg")
+		LoadMusicOGG(wizardSpell2S, "wizardSpell2.ogg")
+		LoadMusicOGG(ninjaStarS, "ninjaStar.ogg")
+	endif
+			
 	SetFolder("/media")
 	
 endfunction
@@ -462,15 +521,36 @@ function LoadBaseImages()
 	
 	SetFolder("/media/art")
 	
-	LoadImage(crab1select1I, "crab1select.png")
-	LoadImage(crab2select1I, "crab2select.png")
+	//Loading the start screen images
+	for i = 1 to 6
+		if i = 1 or i = 2 or i = 6
+			for j = 1 to 6
+				LoadImage(crab1select1I - 1 + j + i*10, "crab" + str(i) + "select" + str(j) + ".png")
+			next j
+		endif
+	next i
+	
+	//LoadImage(crab1select1I, "crab1select.png")
+	//LoadImage(crab2select1I, "crab2select.png")
 	
 	LoadImage(crab1attack1I, "crab1attack1.png")
 	LoadImage(crab1attack2I, "crab1attack2.png")
+	LoadImage(crab2attack1I, "crab2attack1.png")
+	LoadImage(crab2attack2I, "crab2attack2.png")
+	
+	//The lives
+	for i = 1 to 6
+		if i = 1 or i = 2 or i = 6
+			for j = 1 to 3
+				LoadImage(crab1life1I - 1 + j + (i-1)*3, "crab" + str(i) + "life" + str(j) + ".png")
+			next j
+		endif
+	next i
+	
 	
 	
 	SetFolder("/media/envi")
-	
+	/*
 	LoadImage(planetVar1I, "planet1alt1.png")
 	LoadImage(planetVar2I, "planet1alt2.png")
 	LoadImage(planetVar3I, "planet1alt3.png")
@@ -479,6 +559,17 @@ function LoadBaseImages()
 	LoadImage(planetVar6I, "planet1alt6.png")
 	LoadImage(planetVar7I, "planet1alt7.png")
 	LoadImage(planetVar8I, "planet1alt8.png")
+	*/
+
+	for i = 1 to planetITotalMax
+		planetVarI[i] = 400 + i
+	next i
+	for i = 1 to planetIMax
+		LoadImage(planetVarI[i], "p" + str(i) + ".png")
+	next i
+	for i = 1 to planetITotalMax - planetIMax
+		LoadImage(planetVarI[planetIMax + i], "legendp" + str(i) + ".png")
+	next i
 	
 	LoadImage(meteorI1, "meteor1.png")
 	LoadImage(meteorI2, "meteor2.png")

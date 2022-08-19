@@ -59,7 +59,7 @@ type CharacterSelectController
 endtype
 
 #constant charWid 390
-#constant charHei 257
+#constant charHei 357 //257
 
 // Initialize the sprites within a CSC
 // "player" -> 1 or 2
@@ -90,8 +90,13 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 	SetSpriteDepth(csc.sprBG, 100)
 	
 	for i = 0 to NUM_CRABS-1
-		if i <= 1
-			CreateSprite(csc.sprCrabs + i, crab1select1I + i)
+		if i = 0 or i = 1 or i = 5
+			CreateSprite(csc.sprCrabs + i, 0)
+			for j = 1 to 6
+				AddSpriteAnimationFrame(csc.sprCrabs + i, crab1select1I - 1 + j + (i+1)*10)
+			next j
+			PlaySprite(csc.sprCrabs + i, 18, 1, 1, 6)
+			
 		else
 			LoadSprite(csc.sprCrabs + i, "crab1.png")
 		endif
@@ -105,7 +110,7 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 	crabDescs[1] = "He's been hitting the books AND the gym! His" + chr(10) + "new meteor spells are a force to be reckoned with."
 	crabDescs[2] = "Started spinning one day, and never stopped!" + chr(10) + "Learned to weaponize his rotational influence."
 	crabDescs[3] = "Always ready to start a party!!" + chr(10) + "How can you say no?"
-	crabDescs[4] = "A master of time! Doesn't usually bend the time" + chr(10) + "stream, but might make an exception this once."
+	crabDescs[4] = "A master of time! Doesn't like to bend time," + chr(10) + "but will make an exception in a fight."
 	crabDescs[5] = "So sneaky, that they don't" + chr(10) + "even have a description yet!"
 	
 	// The offset mumbo-jumbo with f-coefficients is because AGK's text rendering is awful
@@ -321,6 +326,8 @@ function DoCharacterSelectController(csc ref as CharacterSelectController)
 endfunction
 
 #constant jitterNum 5
+#constant TextJitterFPS 40
+global TextJitterTimer# = 0
 
 // Character select screen execution loop
 // Each time this loop exits, return the next state to enter into
@@ -340,8 +347,18 @@ function DoCharacterSelect()
 	if csc1.ready = 1 and GetMultitouchPressedBottom() then UnselectCrab(csc1)
 	if csc2.ready = 1 and GetMultitouchPressedTop() then UnselectCrab(csc2)
 	
+	doJit = 0
+	inc TextJitterTimer#, GetFrameTime()
+	if TextJitterTimer# >= 1.0/TextJitterFPS
+		doJit = 1
+		inc TextJitterTimer#, -TextJitterFPS
+		if TextJitterTimer# < 0 then TextJitterTimer# = 0
+	endif
+	Print(GetFrameTime())
+	Print(TextJitterTimer#)
+	
 	//Jittering the letters
-	if csc1.ready = 0
+	if csc1.ready = 0 and doJit
 		txt = csc1.txtCrabName
 		for i = 0 to GetTextLength(txt)
 			SetTextCharY(txt, i, -1 * (jitterNum + csc1.glideFrame) + Random(0, (jitterNum + csc1.glideFrame)*2))
@@ -350,11 +367,11 @@ function DoCharacterSelect()
 	else
 		txt = csc1.txtReady
 		for i = 0 to GetTextLength(txt)
-			SetTextCharY(txt, GetTextLength(txt)-i, 48 - 8*abs(10*cos(GetMusicPositionOGG(characterMusic)*200+i*10 )))	//Code from SnowTunes
+			SetTextCharY(txt, GetTextLength(txt)-i, 48.0 - 8.0*abs(10*cos(GetMusicPositionOGG(characterMusic)*200+i*10 )))	//Code from SnowTunes
 		next i		
 	endif
 	
-	if csc2.ready = 0
+	if csc2.ready = 0 and doJit
 		txt = csc2.txtCrabName
 		for i = 0 to GetTextLength(txt)
 			SetTextCharY(txt, i, -102 -1 * (jitterNum + csc2.glideFrame) + Random(0, (jitterNum + csc2.glideFrame)*2))
@@ -363,7 +380,7 @@ function DoCharacterSelect()
 	else
 		txt = csc2.txtReady
 		for i = 0 to GetTextLength(txt)
-			SetTextCharY(txt, GetTextLength(txt)-i, -110 + 8*abs(10*cos(GetMusicPositionOGG(characterMusic)*200+i*10 )))	//Code from SnowTunes
+			SetTextCharY(txt, GetTextLength(txt)-i, -130.0 + 8.0*abs(10*cos(GetMusicPositionOGG(characterMusic)*200+i*10 )))	//Code from SnowTunes
 		next i
 	endif
 	

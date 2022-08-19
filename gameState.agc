@@ -104,10 +104,10 @@ function AddMeteorAnimation(spr)
 	SetSpriteShapeCircle(spr, 0, GetSpriteHeight(spr)/8, GetSpriteWidth(spr)/2.8)
 endfunction
 
-function CreateExp(metSpr, metType)
-	iEnd = 3 //The default experience amount, for regular meteors
-	if metType = 2 then iEnd = 4
-	if metType = 3 then iEnd = 5
+function CreateExp(metSpr, metType, planetNum)
+	iEnd = 1 + planetNum //The default experience amount, for regular meteors
+	if metType = 2 then iEnd = 2 + planetNum
+	if metType = 3 then iEnd = 3 + planetNum
 
 	for i = 1 to iEnd
 		CreateSprite(expSprNum, expOrbI)
@@ -169,7 +169,7 @@ function UpdateExp()
 				
 				//For second crab, have a different kind pf exp sound
 				rnd = Random(0, 4)
-				PlaySound(exp1S + rnd, volumeSE)
+				PlaySoundR(exp1S + rnd, volumeSE)
 
 				//This is for instant bar size adjustment
 				//SetSpriteSize(expBar1, (GetSpriteWidth(expHolder1)-20)*(1.0*expTotal1/specialCost1), 26)
@@ -212,7 +212,7 @@ function UpdateExp()
 					
 					//For second crab, have a different kind pf exp sound??
 					rnd = Random(0, 4)
-					PlaySound(exp1S + rnd, volumeSE)
+					PlaySoundR(exp1S + rnd, volumeSE)
 	
 					//This is for instant bar size adjustment
 					//SetSpriteSize(expBar1, (GetSpriteWidth(expHolder1)-20)*(1.0*expTotal1/specialCost1), 26)
@@ -229,7 +229,7 @@ function UpdateExp()
 
 	GlideToWidth(expBar1, (GetSpriteWidth(expHolder1)-20)*(1.0*expTotal1/specialCost1), 2)
 	GlideToWidth(expBar2, (GetSpriteWidth(expHolder2)-20)*(1.0*expTotal2/specialCost2), 2)
-
+	SetSpriteX(expBar2, GetSpriteX(expHolder2) + GetSpriteWidth(expHolder2) - GetSpriteWidth(expBar2)-10)
 
 	if deleted > 0
 		expList.remove(deleted)
@@ -279,7 +279,7 @@ function ShowSpecialAnimation(crabType)
 	
 	fpsr# = 60.0/ScreenFPS()
 	
-	PlaySound(specialS, volumeSE)
+	PlaySoundR(specialS, volumeSE)
 	
 	//Pausing the current animations
 	StopSprite(crab1)
@@ -310,14 +310,14 @@ function ShowSpecialAnimation(crabType)
 			SetSpriteDepth(i, 2)
 			SetSpriteColor(i, 220, 220, 220, 255)
 			SetSpriteSizeSquare(i, 300)	//Smaller at Brad's request
-			if crabType = 1
+			if crabType = 1 or crabType = 2
 				//This if statement is only here while not every image is in the game
 				SetSpriteImage(i, crab1attack2I - 1 + crabType)
 			endif
 		else
 			//Front Sprites
 			SetSpriteDepth(i, 1)
-			if crabType = 1
+			if crabType = 1 or crabType = 2
 				//This if statement is only here while not every image is in the game
 				SetSpriteImage(i, crab1attack1I - 1 + crabType)
 			endif
@@ -330,14 +330,27 @@ function ShowSpecialAnimation(crabType)
 	offsetY = 30
 	
 	//Goes from right to left on bottom
-	SetSpritePosition(specialSprFront1, w + 100, h - 500 - offsetY)
+	//SetSpritePosition(specialSprFront1, w + 100, h - 500 - offsetY)
 	//Goes from left to right on bottom
-	SetSpritePosition(specialSprBack1, -100 - wid, h - 650 - offsetY)
+	//SetSpritePosition(specialSprBack1, -100 - wid, h - 650 - offsetY)
 	
 	//Goes from right to left on top
-	SetSpritePosition(specialSprFront2, -100 - wid, 100 + offsetY)
+	//SetSpritePosition(specialSprFront2, -100 - wid, 100 + offsetY)
 	//Goes from left to right on top
-	SetSpritePosition(specialSprBack2, w + 100, 250 + offsetY)
+	//SetSpritePosition(specialSprBack2, w + 100, 250 + offsetY)
+	
+	//For Wizard crab only (actually, this is now for every crab!)
+	//if crabType = 2
+		//Goes from right to left on bottom
+		SetSpritePosition(specialSprFront1, -100 - wid, h - 500 - offsetY)
+		//Goes from left to right on bottom
+		SetSpritePosition(specialSprBack1, w + 100, h - 650 - offsetY)
+		
+		//Goes from right to left on top
+		SetSpritePosition(specialSprFront2, w + 100, 100 + offsetY)
+		//Goes from left to right on top
+		SetSpritePosition(specialSprBack2, -100 - wid, 250 + offsetY)
+	//endif
 	
 	//The text for the special
 	
@@ -357,6 +370,7 @@ function ShowSpecialAnimation(crabType)
 		SetTextDepth(i, 1)
 		SetTextSpacing(i, -20)
 		if crabType = 1 then SetTextString(i, "METEOR SHOWER")
+		if crabType = 2 then SetTextString(i, "CONJURE COMETS")
 		if crabType = 4 then SetTextString(i, "PARTY TIME!")
 	next i
 	
@@ -377,12 +391,21 @@ function ShowSpecialAnimation(crabType)
 			speed = 5+(i-iEnd*6/9)*fpsr#*75/60
 		endif
 		
-		if i = iEnd*2/3 then PlaySound(specialExitS, volumeSE)
+		if i = iEnd*2/3 then PlaySoundR(specialExitS, volumeSE)
 		
-		IncSpriteXFloat(specialSprFront1, -1.2*speed)
-		IncSpriteXFloat(specialSprBack1, 1*speed)
-		IncSpriteXFloat(specialSprFront2, 1.2*speed)
-		IncSpriteXFloat(specialSprBack2, -1*speed)
+		/*
+		if crabType <> 2
+			IncSpriteXFloat(specialSprFront1, -1.2*speed)
+			IncSpriteXFloat(specialSprBack1, 1*speed)
+			IncSpriteXFloat(specialSprFront2, 1.2*speed)
+			IncSpriteXFloat(specialSprBack2, -1*speed)
+		else */
+			//For wizard crab's positioning
+			IncSpriteXFloat(specialSprFront1, 1.3*speed)
+			IncSpriteXFloat(specialSprBack1, -1.1*speed)
+			IncSpriteXFloat(specialSprFront2, -1.3*speed)
+			IncSpriteXFloat(specialSprBack2, 1.1*speed)
+		//endif
 		
 		if i < iEnd*5/7
 			GlideTextToX(specialSprFront1, w/2, 6)
@@ -542,7 +565,21 @@ endfunction r#
 function SetBGRandomPosition(spr)
 	//Sets the background to a random angle/spot
 	SetSpriteSizeSquare(spr, w*2)
-	if spr = bgGame1 or spr = SPR_CS_BG_1 then SetSpritePosition(spr, -1*w/2 - Random(-w/2, w/2), h/2)
-	if spr = bgGame2 or spr = SPR_CS_BG_2 then SetSpritePosition(spr, -1*w/2 - Random(-w/2, w/2), h/2-GetSpriteHeight(spr))
+	if spr = bgGame1 or spr = SPR_CS_BG_1 then SetSpritePosition(spr, -1*w + Random(0, w), h/2)
+	if spr = bgGame2 or spr = SPR_CS_BG_2 then SetSpritePosition(spr, -1*w + Random(0, w), h/2-GetSpriteHeight(spr))
 	SetSpriteAngle(spr, 90*Random(1, 4))
+	
+	if appState = CHARACTER_SELECT
+		SetSpriteSizeSquare(spr, w)
+		if spr = SPR_CS_BG_1
+			SetSpriteAngle(spr, 0)
+			SetSpritePosition(spr, 0, h/2)
+		endif
+		if spr = SPR_CS_BG_2
+			SetSpritePosition(spr, 0, h/2-GetSpriteHeight(spr))
+			SetSpriteAngle(spr, 180)
+		endif
+		//For the character selection
+	endif
+	
 endfunction
