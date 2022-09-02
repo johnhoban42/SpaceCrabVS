@@ -53,6 +53,7 @@ type CharacterSelectController
 	txtCrabName as integer
 	txtCrabDesc as integer
 	txtReady as integer
+	sprTxtBack as integer
 	// Sprite index of the first crab shown on the select screen
 	sprCrabs as integer
 	
@@ -85,6 +86,12 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 	SetSpriteMiddleScreenOffset(csc.sprRightArrow, p*3*w/8, p*3*h/16)
 	SetSpriteFlip(csc.sprRightArrow, f, f)
 	
+	//The background on the Descriptions
+	LoadSprite(csc.sprTxtBack, "charInfo.png")
+	SetSpriteSize(csc.sprTxtBack, w, 160)
+	SetSpriteMiddleScreenOffset(csc.sprTxtBack, 0, p*3*h/8.5)
+	SetSpriteColorAlpha(csc.sprTxtBack, 160)
+	
 	CreateSprite(csc.sprBG, bg5I)
 	SetBGRandomPosition(csc.sprBG)
 	SetSpriteDepth(csc.sprBG, 100)
@@ -111,7 +118,7 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 	crabDescs[2] = "Started spinning one day, and never stopped!" + chr(10) + "Learned to weaponize his rotational influence."
 	crabDescs[3] = "Always ready to start a party!!" + chr(10) + "How can you say no?"
 	crabDescs[4] = "A master of time! Doesn't like to bend time," + chr(10) + "but will make an exception in a fight."
-	crabDescs[5] = "So sneaky, that they don't" + chr(10) + "even have a description yet!"
+	crabDescs[5] = "Lurking in black holes, opponents will" + chr(10) + "never expect his spinning-star blades!"
 	
 	// The offset mumbo-jumbo with f-coefficients is because AGK's text rendering is awful
 	CreateText(csc.txtCrabName, crabNames[0])
@@ -131,6 +138,8 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 	SetTextMiddleScreenOffset(csc.txtCrabDesc, f, 0, p*3*h/8.5)
 	//SetTextMiddleScreenOffset(csc.txtCrabDesc, f, 0, p*3*h/8)
 	SetTextAlignment(csc.txtCrabDesc, 1)
+	
+	
 	
 	CreateText(csc.txtReady, "Waiting for your opponent...")
 	SetTextSize(csc.txtReady, 86)
@@ -161,6 +170,7 @@ function InitCharacterSelect()
 	csc1.txtCrabDesc = TXT_CS_CRAB_DESC_1
 	csc1.txtReady = TXT_CS_READY_1
 	csc1.sprCrabs = SPR_CS_CRABS_1
+	csc1.sprTxtBack = SPR_CS_TXT_BACK_1
 	
 	csc2.player = 2
 	csc2.ready = 0
@@ -173,6 +183,7 @@ function InitCharacterSelect()
 	csc2.txtCrabDesc = TXT_CS_CRAB_DESC_2
 	csc2.txtReady = TXT_CS_READY_2
 	csc2.sprCrabs = SPR_CS_CRABS_2
+	csc2.sprTxtBack = SPR_CS_TXT_BACK_2
 	
 	InitCharacterSelectController(csc1)
 	InitCharacterSelectController(csc2)
@@ -287,8 +298,9 @@ function UnselectCrab(csc ref as CharacterSelectController)
 	//endif
 	
 	SetSpriteVisible(csc.sprReady, 1)
-	SetSpriteVisible(csc.sprLeftArrow, 1)
-	SetSpriteVisible(csc.sprRightArrow, 1)
+	
+	if csc.crabSelected <> 0 then SetSpriteVisible(csc.sprLeftArrow, 1)
+	if csc.crabSelected <> 5 then SetSpriteVisible(csc.sprRightArrow, 1)
 	SetTextVisible(csc.txtReady, 0)
 	
 	
@@ -304,15 +316,18 @@ endfunction
 function DoCharacterSelectController(csc ref as CharacterSelectController)
 
 	if not csc.ready
+		// Ready button
+		if Button(csc.sprReady)
+			PlaySoundR(chooseS, 100)
+			SelectCrab(csc)
 		// Scroll left
-		if ButtonMultitouchEnabled(csc.sprLeftArrow) and csc.crabSelected > 0
+		elseif (ButtonMultitouchEnabled(csc.sprLeftArrow) or (GetMultitouchPressedTopRight() and csc.player = 2) or (GetMultitouchPressedBottomLeft() and csc.player = 1)) and csc.crabSelected > 0
+			PlaySoundR(arrowS, 100)
 			ChangeCrabs(csc, -1, 1)
 		// Scroll right
-		elseif ButtonMultitouchEnabled(csc.sprRightArrow) and csc.crabSelected < NUM_CRABS-1
+		elseif (ButtonMultitouchEnabled(csc.sprRightArrow) or (GetMultitouchPressedTopLeft() and csc.player = 2) or (GetMultitouchPressedBottomRight() and csc.player = 1)) and csc.crabSelected < NUM_CRABS-1
 			ChangeCrabs(csc, 1, 1)
-		// Ready button
-		elseif Button(csc.sprReady)
-			SelectCrab(csc)
+			PlaySoundR(arrowS, 100)
 		endif
 	endif
 	
@@ -342,7 +357,7 @@ function DoCharacterSelect()
 	
 	DoCharacterSelectController(csc1)
 	DoCharacterSelectController(csc2)
-	
+		
 	//Unselects the crab if the screen is touched again (only works on mobile for testing)
 	if csc1.ready = 1 and GetMultitouchPressedBottom() then UnselectCrab(csc1)
 	if csc2.ready = 1 and GetMultitouchPressedTop() then UnselectCrab(csc2)
@@ -354,8 +369,8 @@ function DoCharacterSelect()
 		inc TextJitterTimer#, -TextJitterFPS
 		if TextJitterTimer# < 0 then TextJitterTimer# = 0
 	endif
-	Print(GetFrameTime())
-	Print(TextJitterTimer#)
+	//Print(GetFrameTime())
+	//Print(TextJitterTimer#)
 	
 	//Jittering the letters
 	if csc1.ready = 0 and doJit
@@ -407,6 +422,7 @@ function CleanupCharacterSelectController(csc ref as CharacterSelectController)
 	DeleteText(csc.txtCrabName)
 	DeleteText(csc.txtCrabDesc)
 	DeleteText(csc.txtReady)
+	DeleteSprite(csc.sprTxtBack)
 	for spr = csc.sprCrabs to csc.sprCrabs + NUM_CRABS-1
 		DeleteSprite(spr)
 	next spr

@@ -58,7 +58,15 @@ function DoGame()
 	endif
 	UpdateExp()
 	inc gameTimer#, fpsr#
-
+	
+	if hit1Timer# > 0 or hit2Timer# > 0
+		DisableAttackButtons()
+	endif
+	
+	//Stops the game from crashing if this number gets too high (proper range is 1000 to 2000).
+	if meteorSprNum > 1900
+		meteorSprNum = 1050
+	endif
 	
 	// Check for state updates (pausing, losing). Sorry Player 2, Player 1 gets checked first.
 	if state1 <> GAME
@@ -310,14 +318,14 @@ function ShowSpecialAnimation(crabType)
 			SetSpriteDepth(i, 2)
 			SetSpriteColor(i, 220, 220, 220, 255)
 			SetSpriteSizeSquare(i, 300)	//Smaller at Brad's request
-			if crabType = 1 or crabType = 2
+			if crabType = 1 or crabType = 2 or crabType = 6
 				//This if statement is only here while not every image is in the game
 				SetSpriteImage(i, crab1attack2I - 1 + crabType)
 			endif
 		else
 			//Front Sprites
 			SetSpriteDepth(i, 1)
-			if crabType = 1 or crabType = 2
+			if crabType = 1 or crabType = 2 or crabType = 6
 				//This if statement is only here while not every image is in the game
 				SetSpriteImage(i, crab1attack1I - 1 + crabType)
 			endif
@@ -360,7 +368,7 @@ function ShowSpecialAnimation(crabType)
 		CreateText(i, "")
 		SetTextFontImage(i, fontSpecialI)
 		SetTextAlignment(i, 1)
-		SetTextSize(i, 110)
+		SetTextSize(i, 106)
 		SetTextPosition(i, 2000*tDir, 1440)
 		if i = specialSprFront2
 			SetTextX(i, -2000*tDir)
@@ -371,7 +379,10 @@ function ShowSpecialAnimation(crabType)
 		SetTextSpacing(i, -20)
 		if crabType = 1 then SetTextString(i, "METEOR SHOWER")
 		if crabType = 2 then SetTextString(i, "CONJURE COMETS")
+		if crabType = 3 then SetTextString(i, "ORBITAL NIGHTMARE")
 		if crabType = 4 then SetTextString(i, "PARTY TIME!")
+		if crabType = 5 then SetTextString(i, "FAST FOWARD")
+		if crabType = 6 then SetTextString(i, "SHURI-KRUSTACEAN")
 	next i
 	
 	iEnd = 120/fpsr#
@@ -582,4 +593,16 @@ function SetBGRandomPosition(spr)
 		//For the character selection
 	endif
 	
+endfunction
+
+function DisableAttackButtons()
+	SetSpriteColorAlpha(meteorButton1, 100)
+	SetSpriteColorAlpha(specialButton1, 100)
+	SetSpriteColorAlpha(meteorButton2, 100)
+	SetSpriteColorAlpha(specialButton2, 100)
+endfunction
+
+function EnableAttackButtons()
+	UpdateButtons1()
+	UpdateButtons2()
 endfunction

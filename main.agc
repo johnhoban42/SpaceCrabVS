@@ -89,12 +89,12 @@ do
 	endwhile
 	
     Print(ScreenFPS())
-    Print(fpsr#)
-    Print(GetRawLastKey())
-    Print(meteorTotal1)
-    Print(specialTimerAgainst2#)
+    //Print(fpsr#)
+    //Print(GetRawLastKey())
+    //Print(meteorTotal1)
+    //Print(specialTimerAgainst2#)
     
-		Print(GetDeviceBaseName())
+		//Print(GetDeviceBaseName())
     Sync()
 loop
 

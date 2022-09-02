@@ -34,6 +34,7 @@ function CreateGame2()
 		for i = crab1start1I to crab1death2I
 			AddSpriteAnimationFrame(crab2, i)
 		next i
+		specialCost2 = specialPrice1
 		
 	elseif crab2Type = 2	//Wizard
 		for i = crab2start1I to crab2death2I
@@ -41,17 +42,38 @@ function CreateGame2()
 		next i
 		SetSpriteSize(crab2, 64, 60)
 		SetSpriteShapeCircle(crab2, 0, 10, 24)
+		specialCost2 = specialPrice2
+		
+	elseif crab2Type = 3	//Top
+		for i = crab1start1I to crab1death2I
+			AddSpriteAnimationFrame(crab2, i)
+		next i
+		specialCost2 = specialPrice3
+		
+	elseif crab2Type = 4	//Rave
+		for i = crab1start1I to crab1death2I
+			AddSpriteAnimationFrame(crab2, i)
+		next i
+		specialCost2 = specialPrice4
+		
+	elseif crab2Type = 5	//Chrono
+		for i = crab1start1I to crab1death2I
+			AddSpriteAnimationFrame(crab2, i)
+		next i
+		specialCost2 = specialPrice5
 		
 	elseif crab2Type = 6	//Ninja
 		for i = crab6start1I to crab6death2I
 			AddSpriteAnimationFrame(crab2, i)
 		next i
+		specialCost2 = specialPrice6
 		
 	else
 		//The debug option, no crab selected
 		for i = crab1start1I to crab1death2I
 			AddSpriteAnimationFrame(crab2, i)
 		next i
+		specialCost2 = 1
 	endif
 	
 	PlaySprite(crab2, crab2framerate, 1, 3, 10)
@@ -238,7 +260,7 @@ function DoGame2()
 			crab2Turning = -1*crab2Turning
 			
 			//This checks that either the crab1Dir is small enough, or that it is right at the start of the process
-			if Abs(crab2Dir#) < 0.4 or (crab2Turning * crab2Dir# > 0)
+			if Abs(crab2Dir#) < 0.4 or (crab2Turning * crab2Dir# > 0) or (Abs(crab2Dir#) < 1 and specialTimerAgainst2# > 0 and crab1Type = 5)
 				//The crab leap code
 				//crab1Turning = -1*crab1Turning	//Still not sure if you should leap forwards or backwards
 				PlaySoundR(jumpS, volumeSE)
@@ -560,14 +582,18 @@ function UpdateMeteor2()
 		
 	
 		if (GetSpriteCollision(spr, planet2) or meteorActive2[i].r < 0) and deleted = 0	
-			if GetSpriteColorAlpha(spr) = 255 then CreateExp(spr, cat, crab1Deaths + 1)	//Only non-special meteors give EXP
-			ActivateMeteorParticles(cat, spr, 2)
+			if hit2Timer# <= 0
+				//Only doing the special extras when the crab isn't dead
+				if GetSpriteColorAlpha(spr) = 255 then CreateExp(spr, cat, crab1Deaths + 1)	//Only non-special meteors give EXP
+				ActivateMeteorParticles(cat, spr, 2)
+			
+				//The screen nudging
+				inc nudge2R#, 2.5 + cat*2.5
+				nudge2Theta# = meteorActive2[i].theta
+			endif
+			
 			DeleteSprite(spr)
 			PlaySoundR(explodeS, volumeSE)
-			
-			//The screen nudging
-			inc nudge2R#, 2.5 + cat*2.5
-			nudge2Theta# = meteorActive2[i].theta
 			
 			if meteorActive2[i].cat = 3 then DeleteSprite(spr + 10000)
 			//Meteor explosion goes here
@@ -629,6 +655,8 @@ function SendMeteorFrom2()
 	inc meteorSprNum, 1
 	meteorActive1.insert(newMet)
 	
+	meteorCost2 = meteorCost2*meteorMult#
+	if meteorCost2 > specialCost2-1 then meteorCost2 = specialCost2-1
 	
 	inc expTotal2, -1*meteorCost2
 	UpdateButtons2()
@@ -694,7 +722,7 @@ function SendSpecial2()
 		dir = Random(1, 2)
 		if dir = 2 then dir = -1
 			for i = 1 to 4
-				newMetS.theta = baseTheta + i*28*dir
+				newMetS.theta = baseTheta + i*38*dir
 				newMetS.r = 200 + j*400 + i*50
 				newMetS.spr = meteorSprNum
 				newMetS.cat = 1
@@ -865,18 +893,46 @@ function HitScene2()
 	if crab2Deaths < 3
 		//The first and second deaths
 		if hit2Timer# > hitSceneMax*3/4
-			//Flying off the planet
-			inc crab2R#, 12*fpsr#
-			SetSpriteDepth(crab2, 11)
 			
-			NudgeScreen2()
+			if hit2Timer# = hitSceneMax-1*fpsr#
+				//Running the first time
+				PlaySoundR(crackS, 100)
+				PlaySoundR(explodeS, 100)
+				inc crab2R#, -20
+				LoadSprite(bgHit2, "envi/bg0.png")
+				SetSpriteSizeSquare(bgHit2, w)
+				DrawPolar2(bgHit2, 0, crab2Theta#)
+				SetSpriteColorAlpha(bgGame2, 80)
+				for i = 1 to meteorActive2.length
+					StopSprite(meteorActive2[i].spr)
+				next i
+			endif
 			
+			//Accounting for the Smash Bros Freeze
+			if hit2Timer# < hitSceneMax*8/9
+				if GetSoundPlayingR(launchS) = 0 then PlaySoundR(launchS, 100)
+				
+				for i = 1 to meteorActive2.length
+					ResumeSprite(meteorActive2[i].spr)
+				next i
+				UpdateMeteor2()
+				
+				//Flying off the planet
+				inc crab2R#, 25*fpsr#
+				SetSpriteDepth(crab2, 11)
+				
+				if GetSpriteExists(bgHit2) then DeleteSprite(bgHit2)
+				SetSpriteColorAlpha(bgGame2, 255)
+				
+				NudgeScreen2()
+			endif			
 			
 		elseif hit2Timer# > hitSceneMax/4
 			//Flying towards the next planet
 			
 			//The one time changes:
 			if GetSpriteColorAlpha(crab2) = 255
+				PlaySoundR(flyingS,100)
 				SetSpriteColorAlpha(crab2, 254)
 				SetBGRandomPosition(bgGame2)
 			
@@ -952,7 +1008,11 @@ function HitScene2()
 			nudge2R# = 60
 			nudge2Theta# = crab2Theta#
 			
+			EnableAttackButtons()
+			
 			gameDifficulty2 = Max(gameDifficulty2-2, 1)
+			
+			PlaySoundR(landingS, 100)
 			
 			hit2Timer# = 0
 		endif
@@ -965,7 +1025,15 @@ function HitScene2()
 	endif
 	
 	DrawPolar2(crab2, crab2R#, crab2Theta#)
-	SetSpriteAngle(crab2, hit2Timer#*30)
+	
+	if hit2Timer# > hitSceneMax*11/12
+		//The Smash Bros Freeze
+		range = 20-(hitSceneMax-hit2Timer#)
+		IncSpritePosition(crab2, Random(-range, range), Random(-range, range))			
+	elseif hit2Timer# < hitSceneMax*8/9
+		SetSpriteAngle(crab2, hit2Timer#*30)
+	endif
+	
 	if GetSpriteY(crab2) > h/2 then SetSpriteY(crab2, -9999)	//Correction for if the crab ends up on player 1's screen
 	
 endfunction state

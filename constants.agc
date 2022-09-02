@@ -58,6 +58,13 @@ Crab types (internal):
 #constant chronoCrabTimeMax 1900	//Is longer because the timer goes down faster
 #constant ninjaCrabTimeMax 500	
 
+#constant specialPrice1 20
+#constant specialPrice2 20
+#constant specialPrice3 25
+#constant specialPrice4 23
+#constant specialPrice5 30
+#constant specialPrice6 18
+
 #constant hitSceneMax 240
 global hit1Timer# = 0
 global hit2Timer# = 0
@@ -131,7 +138,8 @@ global meteorCost2 = 8
 global specialCost2 = 20
 global specialTimerAgainst1# = 0
 
-#constant specialMult# 1.3
+#constant meteorMult# 1.3
+#constant specialMult# 1.8
 
 //Input buffers
 global buffer1 = 0
@@ -166,6 +174,8 @@ global met3CD2# = 400
 
 #constant bgGame1 4
 #constant bgGame2 5
+#constant bgHit1 6
+#constant bgHit2 7
 
 #constant planet1 101
 #constant planet2 102
@@ -367,6 +377,12 @@ global planetVarI as Integer[planetITotalMax]
 #constant specialS 3
 #constant specialExitS 4
 #constant explodeS 5
+#constant launchS 6
+#constant crackS 7
+#constant flyingS 8
+#constant landingS 9
+#constant arrowS 10
+#constant chooseS 16
 
 #constant exp1S 11
 #constant exp2S 12
@@ -411,7 +427,8 @@ SetMusicSystemVolumeOGG(volumeM)
 #constant TXT_CS_CRAB_NAME_1 303
 #constant TXT_CS_CRAB_DESC_1 304 
 #constant TXT_CS_READY_1 305 
-#constant SPR_CS_CRABS_1 390 
+#constant SPR_CS_CRABS_1 390
+#constant SPR_CS_TXT_BACK_1 389
  
 //Character select screen sprites - player 2
 #constant SPR_CS_READY_2 400
@@ -422,6 +439,7 @@ SetMusicSystemVolumeOGG(volumeM)
 #constant TXT_CS_CRAB_DESC_2 404 
 #constant TXT_CS_READY_2 405
 #constant SPR_CS_CRABS_2 490 
+#constant SPR_CS_TXT_BACK_2 489
 
 // Game states
 #constant START 0
@@ -454,6 +472,12 @@ function LoadBaseSounds()
 	LoadSoundOGG(specialS, "special.ogg")
 	LoadSoundOGG(specialExitS, "specialExit.ogg")
 	LoadSoundOGG(explodeS, "explode.ogg")
+	LoadSoundOGG(launchS, "launch.ogg")
+	LoadSoundOGG(crackS, "crack.ogg")
+	LoadSoundOGG(flyingS, "flying.ogg")
+	LoadSoundOGG(landingS, "landing.ogg")
+	LoadSoundOGG(arrowS, "arrow.ogg")
+	LoadSoundOGG(chooseS, "choose.ogg")
 	
 	
 	LoadSoundOGG(exp1S, "exp1.ogg")
@@ -475,6 +499,12 @@ function LoadBaseSounds()
 		LoadMusicOGG(specialS, "special.ogg")
 		LoadMusicOGG(specialExitS, "specialExit.ogg")
 		LoadMusicOGG(explodeS, "explode.ogg")
+		LoadMusicOGG(launchS, "launch.ogg")
+		LoadMusicOGG(crackS, "crack.ogg")
+		LoadMusicOGG(flyingS, "flying.ogg")
+		LoadMusicOGG(landingS, "landing.ogg")
+		LoadMusicOGG(arrowS, "arrow.ogg")
+		LoadMusicOGG(chooseS, "choose.ogg")
 		
 		
 		LoadMusicOGG(exp1S, "exp1.ogg")
@@ -537,6 +567,8 @@ function LoadBaseImages()
 	LoadImage(crab1attack2I, "crab1attack2.png")
 	LoadImage(crab2attack1I, "crab2attack1.png")
 	LoadImage(crab2attack2I, "crab2attack2.png")
+	LoadImage(crab6attack1I, "crab6attack1.png")
+	LoadImage(crab6attack2I, "crab6attack2.png")
 	
 	//The lives
 	for i = 1 to 6

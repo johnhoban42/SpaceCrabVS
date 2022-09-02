@@ -276,6 +276,54 @@ function GetMultitouchPressedBottom()
 	
 endfunction result
 
+//For the character selection
+function GetMultitouchPressedTopLeft()
+	result = 0
+	
+	for i = 1 to currentTouch.length
+		x = GetRawTouchCurrentX(currentTouch[i])	
+		y = GetRawTouchCurrentY(currentTouch[i])		
+		if x < w/4 and y < h/2 then result = 1
+	next i
+	
+endfunction result
+
+//For the character selection
+function GetMultitouchPressedTopRight()
+	result = 0
+	
+	for i = 1 to currentTouch.length
+		x = GetRawTouchCurrentX(currentTouch[i])	
+		y = GetRawTouchCurrentY(currentTouch[i])		
+		if x > w*3/4 and y < h/2 then result = 1
+	next i
+	
+endfunction result
+
+//For the character selection
+function GetMultitouchPressedBottomLeft()
+	result = 0
+	
+	for i = 1 to currentTouch.length
+		x = GetRawTouchCurrentX(currentTouch[i])	
+		y = GetRawTouchCurrentY(currentTouch[i])		
+		if x < w/4 and y > h/2 then result = 1
+	next i
+	
+endfunction result
+
+//For the character selection
+function GetMultitouchPressedBottomRight()
+	result = 0
+	
+	for i = 1 to currentTouch.length
+		x = GetRawTouchCurrentX(currentTouch[i])	
+		y = GetRawTouchCurrentY(currentTouch[i])		
+		if x > w*3/4 and y > h/2 then result = 1
+	next i
+	
+endfunction result
+
 function ButtonMultitouchEnabled(spr)
     if (Button(spr) and GetPointerPressed() and deviceType = DESKTOP) or (GetMulitouchPressedButton(spr) and deviceType = MOBILE)
         returnValue = 1
@@ -296,6 +344,21 @@ function PlaySoundR(sound, vol)
 	endif
 	
 endfunction
+
+function GetSoundPlayingR(sound)
+	result = 0
+	
+	if GetSoundExists(sound)
+		if GetDeviceBaseName() <> "android"
+			//The normal case, for normal devices
+			result = GetSoundInstances(sound)
+		else
+			//The strange case for WEIRD and PSYCHO android devices
+			result = GetMusicPlayingOGG(sound)
+		endif
+	endif
+	
+endfunction result
 
 function SetSpriteColorRandomBright(spr)
 	//Recoloring!
