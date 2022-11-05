@@ -44,6 +44,9 @@ Crab types (internal):
 #constant MOBILE 1
 #constant DESKTOP 2
 
+//The timer for the starting screen
+global startTimer# = 0
+
 //Number of crabs in the game - made a constant in case we add/remove crabs
 #constant NUM_CRABS 6
 
@@ -114,7 +117,7 @@ global nudge2Theta# = 0
 
 global gameDifficulty1 = 1
 global gameDifficulty2 = 1
-global difficultyBar = 10
+global difficultyBar = 10	//The amount of meteors it takes to make the difficulty go up
 
 global meteorTotal1 = 0
 global meteorTotal2 = 0
@@ -150,22 +153,30 @@ global expSprNum = 2001
 global expList as Integer[0]
 
 //Meteor type, countdown, game screen
-global met1CD1# = 300
-global met2CD1# = 400
-global met3CD1# = 400
+global met1CD1# = 50 //300
+global met2CD1# = 0 //400
+global met3CD1# = 0 //400
 
-global met1CD2# = 300
-global met2CD2# = 400
-global met3CD2# = 400
+global met1CD2# = 50 //300
+global met2CD2# = 0 //400
+global met3CD2# = 0 //400
 
-#constant met1RNDLow 190		//OG: 230
-#constant met1RNDHigh 300	//OG: 330
-#constant met2RNDLow 300
-#constant met2RNDHigh 400
-#constant met3RNDLow 450
-#constant met3RNDHigh 650
+#constant gameTimeGate1 800		//Ticks until rotation meteors
+#constant gameTimeGate2 1600		//Ticks until fast meteors
+
+#constant met1RNDLow 180		//OG: 230
+#constant met1RNDHigh 290	//OG: 330
+#constant met2RNDLow 290
+#constant met2RNDHigh 390
+#constant met3RNDLow 440
+#constant met3RNDHigh 640
 	
 #constant metStartDistance 700
+
+#constant met1speed 3.6	//SC2: 4
+#constant met2speed 2.7 //SC2: 3
+#constant met3speed 18.0 //SC2: 20
+#constant diffMetMod .1 //How fast the meteors will speed up on each difficulty increase
 
 //Sprite Indexes
 #constant crab1 1
@@ -299,6 +310,8 @@ global met3CD2# = 400
 #constant bg3I 83
 #constant bg4I 84
 #constant bg5I 85
+
+#constant meteorGlowI 86
 
 #constant crab1start1I 101
 #constant crab1start2I 102
@@ -448,10 +461,12 @@ SetMusicSystemVolumeOGG(volumeM)
 #constant PAUSE 3
 #constant RESULTS 4
 
+#constant glowS 20000
 type meteor
 	
 	spr as integer
 	//Backup sprite is this + 10000
+	//Glow is this + 20000
 	
 	cat as integer
 	//Category 1 is normal
@@ -616,6 +631,8 @@ function LoadBaseImages()
 	LoadImage(bg5I, "bg5.png")
 	
 	SetFolder("/media")
+	
+	LoadImage(meteorGlowI, "glow.png")
 	
 	LoadImage(expOrbI, "exp.png")
 	LoadImage(expBarI1, "expBar1.png")

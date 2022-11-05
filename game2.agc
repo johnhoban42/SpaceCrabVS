@@ -272,6 +272,14 @@ function DoGame2()
 			endif
 		endif
 		
+		
+		
+		
+		//Extra space for the unfinished ninja crab turn code in game 1
+		
+		
+		
+		
 	endif
 	
 	//The jumping movement code
@@ -360,66 +368,29 @@ function DoGame2()
 		specialTimerAgainst2# = 0
 	endif
 	
-	newMet as meteor
-	newMet.cat = 0
 	inc met1CD2#, -1 * fpsr#
 	inc met2CD2#, -1 * fpsr#
 	inc met3CD2#, -1 * fpsr#
 	
 	if met1CD2# < 0
 		met1CD2# = Random(met1RNDLow - 5*gameDifficulty2, met1RNDHigh) - 20*gameDifficulty2
-		newMet.theta = Random(1, 360)
-		newMet.r = metStartDistance
-		newMet.spr = meteorSprNum
-		newMet.cat = 1
-				
-		CreateSprite(meteorSprNum, 0)
-		SetSpriteSize(meteorSprNum, metSizeX, metSizeY)
-		SetSpriteColor(meteorSprNum, 255, 120, 40, 255)
-		SetSpriteDepth(meteorSprNum, 20)
-		AddMeteorAnimation(meteorSprNum)
-		inc meteorSprNum, 1
-		meteorActive2.insert(newMet)
+		if gameTimer# < gameTimeGate1 then dec met1CD2#, 60
+		if gameTimer# < gameTimeGate2 then dec met1CD2#, 30
+		
+		CreateMeteor(2, 1, 0)
 	endif
 	
-	if met2CD2# < 0 and gameTimer# > 800
+	if met2CD2# < 0 and gameTimer# > gameTimeGate1
 		met2CD2# = Random(met2RNDLow - 5*gameDifficulty2, met2RNDHigh) - 20*gameDifficulty2
-		newMet.theta = Random(1, 360)
-		newMet.r = metStartDistance
-		newMet.spr = meteorSprNum
-		newMet.cat = 2
+		if gameTimer# < gameTimeGate2 then dec met2CD2#, 40
 		
-		CreateSprite(meteorSprNum, 0)
-		SetSpriteSize(meteorSprNum, metSizeX, metSizeY)
-		SetSpriteColor(meteorSprNum, 150, 40, 150, 255)
-		SetSpriteDepth(meteorSprNum, 20)
-		AddMeteorAnimation(meteorSprNum)
-		inc meteorSprNum, 1
-		
-		meteorActive2.insert(newMet)
+		CreateMeteor(2, 2, 0)
 	endif
 	
-	if met3CD2# < 0 and gameTimer# > 1600
+	if met3CD2# < 0 and gameTimer# > gameTimeGate2
 		met3CD2# = Random(met3RNDLow - 15*gameDifficulty2, met3RNDHigh) - 25*gameDifficulty2
-		newMet.theta = Random(1, 360)
-		newMet.r = 5000
-		newMet.spr = meteorSprNum
-		newMet.cat = 3
 		
-		CreateSprite(meteorSprNum, 0)
-		SetSpriteSize(meteorSprNum, metSizeX, metSizeY)
-		SetSpriteColor(meteorSprNum, 235, 20, 20, 255)
-		SetSpriteDepth(meteorSprNum, 20)
-		AddMeteorAnimation(meteorSprNum)
-		
-		CreateSprite(meteorSprNum + 10000, meteorTractorI)
-		SetSpriteSize(meteorSprNum + 10000, 1, 1000)
-		SetSpriteColor(meteorSprNum + 10000, 255, 20, 20, 30)
-		SetSpriteDepth(meteorSprNum + 10000, 30)
-		
-		inc meteorSprNum, 1
-		
-		meteorActive2.insert(newMet)
+		CreateMeteor(2, 3, 0)
 	endif
 		
 	UpdateMeteor2()
@@ -438,6 +409,7 @@ function DoGame2()
 	hitSpr = CheckDeath2()
 	if hitSpr <> 0
 		DeleteSprite(hitSpr)
+		if getSpriteExists(hitSpr+glowS) then DeleteSprite(hitSpr + glowS)
 		//Kill crab
 		inc crab2Deaths, 1
 		hit2Timer# = hitSceneMax
@@ -485,12 +457,13 @@ endfunction
 function UpdateMeteor2()
 	
 	deleted = 0
+	nonSpecMet = 0
 	
 	for i = 1 to meteorActive2.length
 		spr = meteorActive2[i].spr
 		cat = meteorActive2[i].cat
 		if cat = 1	//Normal meteor
-			meteorActive2[i].r = meteorActive2[i].r - 2.5*fpsr#
+			meteorActive2[i].r = meteorActive2[i].r - met1speed*(1 + (gameDifficulty2-1)*diffMetMod)*fpsr#
 			
 			//The top crab's special
 			if specialTimerAgainst2# > 0 and crab1Type = 3
@@ -509,7 +482,7 @@ function UpdateMeteor2()
 			endif
 			
 		elseif cat = 2	//Rotating meteor
-			meteorActive2[i].r = meteorActive2[i].r - 2*fpsr#
+			meteorActive2[i].r = meteorActive2[i].r - met2speed*(1 + (gameDifficulty2-1)*diffMetMod)*fpsr#
 			meteorActive2[i].theta = meteorActive2[i].theta + 1*fpsr#
 			
 			//The top crab's special
@@ -529,7 +502,7 @@ function UpdateMeteor2()
 			endif
 			
 		elseif cat = 3	//Fast meteor
-			meteorActive2[i].r = meteorActive2[i].r - 17*fpsr#
+			meteorActive2[i].r = meteorActive2[i].r - met3speed*(1 + (gameDifficulty2-1)*diffMetMod)*fpsr#
 			
 			//The top crab's special
 			if specialTimerAgainst2# > 0 and crab1Type = 3
@@ -571,20 +544,26 @@ function UpdateMeteor2()
 		endif
 				
 		DrawPolar2(spr, meteorActive2[i].r, meteorActive2[i].theta)
+		DrawPolar2(spr+glowS, meteorActive2[i].r, meteorActive2[i].theta)		//For the glow
+		
 		if cat = 2 then IncSpriteAngle(spr, -25)
+		if cat = 2 then IncSpriteAngle(spr+glowS, -25)
 		if GetSpriteY(spr) < h/2 - GetSpriteHeight(spr)/2
 			SetSpriteVisible(spr, 1)
-			//SetSpriteColorAlpha(spr, 255)
+			SetSpriteVisible(spr+glowS, 1)
 		else
 			SetSpriteVisible(spr, 0)
-			//SetSpriteColorAlpha(spr, 0)
+			SetSpriteVisible(spr+glowS, 0)
 		endif
 		
 	
 		if (GetSpriteCollision(spr, planet2) or meteorActive2[i].r < 0) and deleted = 0	
 			if hit2Timer# <= 0
 				//Only doing the special extras when the crab isn't dead
-				if GetSpriteColorAlpha(spr) = 255 then CreateExp(spr, cat, crab1Deaths + 1)	//Only non-special meteors give EXP
+				if GetSpriteColorAlpha(spr) = 255
+					CreateExp(spr, cat, crab2Deaths + 1)	//Only non-special meteors give EXP
+					nonSpecMet = 1
+				endif
 				ActivateMeteorParticles(cat, spr, 2)
 			
 				//The screen nudging
@@ -593,6 +572,7 @@ function UpdateMeteor2()
 			endif
 			
 			DeleteSprite(spr)
+			if getSpriteExists(spr+glowS) then DeleteSprite(spr + glowS)
 			PlaySoundR(explodeS, volumeSE)
 			
 			if meteorActive2[i].cat = 3 then DeleteSprite(spr + 10000)
@@ -640,20 +620,9 @@ function UpdateButtons2()
 endfunction
 
 function SendMeteorFrom2()
-	newMet as meteor
+	PlaySoundR(arrowS, 100)
 	
-	newMet.theta = Random(1, 360)
-	newMet.r = metStartDistance-50
-	newMet.spr = meteorSprNum
-	newMet.cat = 1
-			
-	CreateSprite(meteorSprNum, 0)
-	SetSpriteSize(meteorSprNum, metSizeX, metSizeY)
-	SetSpriteColor(meteorSprNum, 30, 160, 255, 254)
-	SetSpriteDepth(meteorSprNum, 20)
-	AddMeteorAnimation(meteorSprNum)
-	inc meteorSprNum, 1
-	meteorActive1.insert(newMet)
+	CreateMeteor(1, 4, 0)
 	
 	meteorCost2 = meteorCost2*meteorMult#
 	if meteorCost2 > specialCost2-1 then meteorCost2 = specialCost2-1
@@ -939,6 +908,7 @@ function HitScene2()
 				//Removing the old remaining meteors
 				for i = 1 to meteorActive2.length
 					DeleteSprite(meteorActive2[i].spr)
+					DeleteSprite(meteorActive2[i].spr+glowS)
 					if meteorActive2[i].cat = 3 then DeleteSprite(meteorActive2[i].spr + 10000)
 				next
 				for i = 1 to meteorActive2.length

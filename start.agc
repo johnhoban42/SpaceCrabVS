@@ -13,9 +13,9 @@ function InitStart()
 	SetSpriteVisible(split, 0)
 	
 	LoadSprite(SPR_TITLE, "title.png")
-	SetSpriteSize(SPR_TITLE, w/2, w/2)
+	SetSpriteSize(SPR_TITLE, w*2/3, w*2/3)
 	SetSpriteMiddleScreen(SPR_TITLE)
-	IncSpriteX(SPR_TITLE, 150)
+	//IncSpriteX(SPR_TITLE, 150)
 	SetSpriteAngle(SPR_TITLE, 90)
 	
 	LoadSprite(SPR_START, "start.png")
@@ -40,6 +40,13 @@ function DoStart()
 	endif
 	state = START
 	
+	
+	
+	SetSpriteAngle(SPR_TITLE, 90 + 320*sin(startTimer#) + 50*sin(startTimer#*3))
+	
+	inc startTimer#, fpsr#
+	if startTimer# > 360 then startTimer# = 0
+	
 	// Start button pressed
 	if Button(SPR_START)
 		state = CHARACTER_SELECT
@@ -59,6 +66,8 @@ function ExitStart()
 	
 	DeleteSprite(SPR_TITLE)
 	DeleteSprite(SPR_START)
+	
+	startTimer# = 0
 	
 	startStateInitialized = 0
 	

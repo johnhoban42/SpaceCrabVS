@@ -475,15 +475,15 @@ function InitParticles()
     		SetParticlesDepth(i, 25)
     		
     		 if Mod(i, 4) = 1
-				AddParticlesColorKeyFrame (i, 0.0, 255, 0, 0, 0 )
+				AddParticlesColorKeyFrame (i, 0.0, 255, 0, 0, 255 )
 				AddParticlesColorKeyFrame (i, 0.01, 255, 255, 0, 255 )
 				AddParticlesColorKeyFrame (i, lifeEnd#, 255, 0, 0, 0 )
 			elseif Mod(i, 4) = 2
-				AddParticlesColorKeyFrame (i, 0.0, 0, 0, 0, 0 )
+				AddParticlesColorKeyFrame (i, 0.0, 0, 0, 0, 255 )
 				AddParticlesColorKeyFrame (i, 0.01, 239, 0, 239, 255 )
 				AddParticlesColorKeyFrame (i, lifeEnd#, 30, 50, 180, 0 )
 			elseif Mod(i, 4) = 3
-				AddParticlesColorKeyFrame (i, 0.0, 255, 0, 0, 0 )
+				AddParticlesColorKeyFrame (i, 0.0, 255, 0, 0, 255 )
 				AddParticlesColorKeyFrame (i, 0.01, 255, 100, 100, 255 )
 				AddParticlesColorKeyFrame (i, lifeEnd#, 255, 0, 0, 0 )
 			elseif Mod(i, 4) = 0
@@ -605,4 +605,60 @@ endfunction
 function EnableAttackButtons()
 	UpdateButtons1()
 	UpdateButtons2()
+endfunction
+
+function CreateMeteor(gameNum, category, special)
+	newMet as meteor
+	newMet.cat = 0
+	
+	newMet.theta = Random(1, 360)
+	newMet.r = metStartDistance
+	newMet.spr = meteorSprNum
+	newMet.cat = category
+	
+	CreateSprite(meteorSprNum, 0)
+	SetSpriteSize(meteorSprNum, metSizeX, metSizeY)
+	SetSpriteDepth(meteorSprNum, 20)
+	AddMeteorAnimation(meteorSprNum)
+	
+	if category = 1	//Normal
+		SetSpriteColor(meteorSprNum, 255, 120, 40, 255)
+	elseif category = 2	//Spin
+		SetSpriteSize(meteorSprNum, metSizeX*1.1, metSizeY*1.1)
+		SetSpriteColor(meteorSprNum, 150, 40, 150, 255)
+	elseif category = 3	//Fast
+		newMet.r = 5000
+		SetSpriteSize(meteorSprNum, metSizeX*1.2, metSizeY*1.2)
+		SetSpriteColor(meteorSprNum, 235, 60, 60, 255)
+		
+		CreateSprite(meteorSprNum + 10000, meteorTractorI)
+		SetSpriteSize(meteorSprNum + 10000, 1, 1000)
+		SetSpriteColor(meteorSprNum + 10000, 255, 20, 20, 30)
+		SetSpriteDepth(meteorSprNum + 10000, 30)
+		
+	elseif category = 4	//Attack from other player (this 4 indexing is only used here)
+		newMet.r = metStartDistance-50
+		newMet.cat = 1
+		SetSpriteColor(meteorSprNum, 40, 160, 255, 254)
+		
+	endif
+	
+	CreateMeteorGlow(meteorSprNum)
+	
+	inc meteorSprNum, 1
+	
+	if gameNum = 1
+		meteorActive1.insert(newMet)
+	elseif gameNum = 2
+		meteorActive2.insert(newMet)
+	endif
+	
+endfunction
+
+function CreateMeteorGlow(spr)
+	mult# = 1.6
+	CreateSprite(spr+glowS, meteorGlowI)
+	SetSpriteSize(spr+glowS, GetSpriteWidth(spr)*mult#, GetSpriteHeight(spr)*mult#)
+	SetSpriteDepth(spr+glowS, 21)
+	SetSpriteColor(spr+glowS, GetSpriteColorRed(spr), GetSpriteColorGreen(spr), GetSpriteColorBlue(spr), 255)
 endfunction

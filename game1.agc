@@ -248,7 +248,7 @@ function DoGame1()
 	if (true2 or buffer1 or true1) and crab1JumpD# = 0
 		
 		buffer1 = 0
-		if crab1Turning = 0
+		if crab1Turning = 0 and crab1Type <> 6
 			PlaySoundR(turnS, volumeSE)
 			if crab1Dir# > 0
 				crab1Turning = -1
@@ -260,12 +260,20 @@ function DoGame1()
 			crab1Turning = -1*crab1Turning
 			
 			//This checks that either the crab1Dir is small enough, or that it is right at the start of the process
-			if Abs(crab1Dir#) < 0.4 or (crab1Turning * crab1Dir# > 0) or (Abs(crab1Dir#) < 1 and specialTimerAgainst1# > 0 and crab2Type = 5)
+			if Abs(crab1Dir#) < 0.4 or (crab1Turning * crab1Dir# > 0) or (Abs(crab1Dir#) < 1 and specialTimerAgainst1# > 0 and crab2Type = 5) or crab1Type = 6
 				//The crab leap code
 				//crab1Turning = -1*crab1Turning	//Still not sure if you should leap forwards or backwards
 				PlaySoundR(jumpS, volumeSE)
 				crab1JumpD# = crab1JumpDMax
-				crab1Dir# = crab1Vel#
+				if crab1Type <> 6
+					crab1Dir# = crab1Vel#
+				else
+					//Ninja code!
+					//crab1Turning = -1*crab1Turning
+					crab1Dir# = -1*crab1Dir#
+					//crab1Dir# = dir
+					crab1Turning = 0
+				endif
 			else
 				//Crab has turned
 				PlaySoundR(turnS, volumeSE)
@@ -360,66 +368,29 @@ function DoGame1()
 		specialTimerAgainst1# = 0
 	endif
 	
-	newMet as meteor
-	newMet.cat = 0
 	inc met1CD1#, -1 * fpsr#
 	inc met2CD1#, -1 * fpsr#
 	inc met3CD1#, -1 * fpsr#
 	
 	if met1CD1# < 0
 		met1CD1# = Random(met1RNDLow - 5*gameDifficulty1, met1RNDHigh) - 20*gameDifficulty1
-		newMet.theta = Random(1, 360)
-		newMet.r = metStartDistance
-		newMet.spr = meteorSprNum
-		newMet.cat = 1
-				
-		CreateSprite(meteorSprNum, 0)
-		SetSpriteSize(meteorSprNum, metSizeX, metSizeY)
-		SetSpriteColor(meteorSprNum, 255, 120, 40, 255)
-		SetSpriteDepth(meteorSprNum, 20)
-		AddMeteorAnimation(meteorSprNum)
-		inc meteorSprNum, 1
-		meteorActive1.insert(newMet)
+		if gameTimer# < gameTimeGate1 then dec met1CD1#, 60
+		if gameTimer# < gameTimeGate2 then dec met1CD1#, 30
+		
+		CreateMeteor(1, 1, 0)
 	endif
 	
-	if met2CD1# < 0 and gameTimer# > 800
+	if met2CD1# < 0 and gameTimer# > gameTimeGate1
 		met2CD1# = Random(met2RNDLow - 5*gameDifficulty1, met2RNDHigh) - 20*gameDifficulty1
-		newMet.theta = Random(1, 360)
-		newMet.r = metStartDistance
-		newMet.spr = meteorSprNum
-		newMet.cat = 2
+		if gameTimer# < gameTimeGate2 then dec met2CD1#, 40
 		
-		CreateSprite(meteorSprNum, 0)
-		SetSpriteSize(meteorSprNum, metSizeX*1.1, metSizeY*1.1)
-		SetSpriteColor(meteorSprNum, 150, 40, 150, 255)
-		SetSpriteDepth(meteorSprNum, 20)
-		AddMeteorAnimation(meteorSprNum)
-		inc meteorSprNum, 1
-		
-		meteorActive1.insert(newMet)
+		CreateMeteor(1, 2, 0)
 	endif
 	
-	if met3CD1# < 0 and gameTimer# > 1600
+	if met3CD1# < 0 and gameTimer# > gameTimeGate2
 		met3CD1# = Random(met3RNDLow - 15*gameDifficulty1, met3RNDHigh) - 25*gameDifficulty1
-		newMet.theta = Random(1, 360)
-		newMet.r = 5000
-		newMet.spr = meteorSprNum
-		newMet.cat = 3
 		
-		CreateSprite(meteorSprNum, 0)
-		SetSpriteSize(meteorSprNum, metSizeX*1.2, metSizeY*1.2)
-		SetSpriteColor(meteorSprNum, 235, 60, 60, 255)
-		SetSpriteDepth(meteorSprNum, 20)
-		AddMeteorAnimation(meteorSprNum)
-		
-		CreateSprite(meteorSprNum + 10000, meteorTractorI)
-		SetSpriteSize(meteorSprNum + 10000, 1, 1000)
-		SetSpriteColor(meteorSprNum + 10000, 255, 20, 20, 30)
-		SetSpriteDepth(meteorSprNum + 10000, 30)
-		
-		inc meteorSprNum, 1
-		
-		meteorActive1.insert(newMet)
+		CreateMeteor(1, 3, 0)
 	endif
 		
 	UpdateMeteor1()
@@ -438,6 +409,7 @@ function DoGame1()
 	hitSpr = CheckDeath1()
 	if hitSpr <> 0
 		DeleteSprite(hitSpr)
+		if getSpriteExists(hitSpr+glowS) then DeleteSprite(hitSpr + glowS)
 		//Kill crab
 		inc crab1Deaths, 1
 		hit1Timer# = hitSceneMax
@@ -485,12 +457,13 @@ endfunction
 function UpdateMeteor1()
 	
 	deleted = 0
+	nonSpecMet = 0
 	
 	for i = 1 to meteorActive1.length
 		spr = meteorActive1[i].spr
 		cat = meteorActive1[i].cat
 		if cat = 1	//Normal meteor
-			meteorActive1[i].r = meteorActive1[i].r - 2.5*fpsr#
+			meteorActive1[i].r = meteorActive1[i].r - met1speed*(1 + (gameDifficulty1-1)*diffMetMod)*fpsr#
 			
 			//The top crab's special
 			if specialTimerAgainst1# > 0 and crab2Type = 3
@@ -509,7 +482,7 @@ function UpdateMeteor1()
 			endif
 		
 		elseif cat = 2	//Rotating meteor
-			meteorActive1[i].r = meteorActive1[i].r - 2*fpsr#
+			meteorActive1[i].r = meteorActive1[i].r - met2speed*(1 + (gameDifficulty1-1)*diffMetMod)*fpsr#
 			meteorActive1[i].theta = meteorActive1[i].theta + 1*fpsr#
 			
 			//The top crab's special
@@ -529,7 +502,7 @@ function UpdateMeteor1()
 			endif
 			
 		elseif cat = 3	//Fast meteor
-			meteorActive1[i].r = meteorActive1[i].r - 17*fpsr#
+			meteorActive1[i].r = meteorActive1[i].r - met3speed*(1 + (gameDifficulty1-1)*diffMetMod)*fpsr#
 			
 			//The top crab's special
 			if specialTimerAgainst1# > 0 and crab2Type = 3
@@ -571,20 +544,26 @@ function UpdateMeteor1()
 		endif
 				
 		DrawPolar1(spr, meteorActive1[i].r, meteorActive1[i].theta)
+		DrawPolar1(spr+glowS, meteorActive1[i].r, meteorActive1[i].theta)		//For the glow
+		
 		if cat = 2 then IncSpriteAngle(spr, -25)
+		if cat = 2 then IncSpriteAngle(spr+glowS, -25)
 		if GetSpriteY(spr) > h/2 - GetSpriteHeight(spr)/2
 			SetSpriteVisible(spr, 1)
-			//SetSpriteColorAlpha(spr, 255)
+			SetSpriteVisible(spr+glowS, 1)
 		else
 			SetSpriteVisible(spr, 0)
-			//SetSpriteColorAlpha(spr, 0)
+			SetSpriteVisible(spr+glowS, 0)
 		endif
 		
 	`
 		if (GetSpriteCollision(spr, planet1) or meteorActive1[i].r < 0) and deleted = 0	
 			if hit1Timer# <= 0
 				//Only doing the special extras when the crab isn't dead
-				if GetSpriteColorAlpha(spr) = 255 then CreateExp(spr, cat, crab1Deaths+1)		//Only non-special meteors give EXP
+				if GetSpriteColorAlpha(spr) = 255
+					CreateExp(spr, cat, crab1Deaths+1)		//Only non-special meteors give EXP
+					nonSpecMet = 1
+				endif
 				ActivateMeteorParticles(cat, spr, 1)
 				
 				//The screen nudging
@@ -593,6 +572,7 @@ function UpdateMeteor1()
 			endif
 			
 			DeleteSprite(spr)
+			if getSpriteExists(spr+glowS) then DeleteSprite(spr + glowS)
 			PlaySoundR(explodeS, volumeSE)
 			
 			if meteorActive1[i].cat = 3 then DeleteSprite(spr + 10000)
@@ -604,7 +584,7 @@ function UpdateMeteor1()
 	
 	if deleted > 0
 		meteorActive1.remove(deleted)
-		inc meteorTotal1, 1
+		if nonSpecMet = 1 then inc meteorTotal1, 1	//Only want real meteors to increase the difficulty
 		
 		//Updating the difficulty
 		if Mod(meteorTotal1, difficultyBar) = 0 and gameDifficulty1 < 7
@@ -640,20 +620,9 @@ function UpdateButtons1()
 endfunction
 
 function SendMeteorFrom1()
-	newMet as meteor
+	PlaySoundR(arrowS, 100)
 	
-	newMet.theta = Random(1, 360)
-	newMet.r = metStartDistance-50
-	newMet.spr = meteorSprNum
-	newMet.cat = 1
-			
-	CreateSprite(meteorSprNum, 0)
-	SetSpriteSize(meteorSprNum, metSizeX, metSizeY)
-	SetSpriteColor(meteorSprNum, 40, 160, 255, 254)
-	SetSpriteDepth(meteorSprNum, 20)
-	AddMeteorAnimation(meteorSprNum)
-	inc meteorSprNum, 1
-	meteorActive2.insert(newMet)
+	CreateMeteor(2, 4, 0)
 	
 	meteorCost1 = meteorCost1*meteorMult#
 	if meteorCost1> specialCost1-1 then meteorCost1 = specialCost1-1
@@ -700,6 +669,8 @@ function SendSpecial1()
 			SetSpriteColor(meteorSprNum + 10000, 255, 20, 20, 30)
 			SetSpriteDepth(meteorSprNum + 10000, 30)
 			
+			CreateMeteorGlow(meteorSprNum)
+			
 			inc meteorSprNum, 1
 			
 			//Reproducable bug by spamming this attack, was in the spr references in ospr in the meteor 3 update
@@ -733,6 +704,7 @@ function SendSpecial1()
 				SetSpriteDepth(meteorSprNum, 20)
 				SetSpriteColorRandomBright(meteorSprNum)
 				AddMeteorAnimation(meteorSprNum)
+				CreateMeteorGlow(meteorSprNum)
 				inc meteorSprNum, 1
 				meteorActive2.insert(newMetS)
 			next i
@@ -939,6 +911,7 @@ function HitScene1()
 				//Removing the old remaining meteors
 				for i = 1 to meteorActive1.length
 					DeleteSprite(meteorActive1[i].spr)
+					DeleteSprite(meteorActive1[i].spr+glowS)
 					if meteorActive1[i].cat = 3 then DeleteSprite(meteorActive1[i].spr + 10000)
 				next
 				for i = 1 to meteorActive1.length

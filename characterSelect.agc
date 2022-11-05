@@ -331,7 +331,8 @@ function DoCharacterSelectController(csc ref as CharacterSelectController)
 		endif
 	endif
 	
-	
+	//Slowly lighting the backgrounds
+	SetSpriteColorAlpha(csc.sprBG, 205+abs(50*cos(90*csc.player + 80*GetMusicPositionOGG(characterMusic))))
 	
 	// Continue an existing glide
 	if csc.glideFrame > 0
@@ -398,6 +399,7 @@ function DoCharacterSelect()
 			SetTextCharY(txt, GetTextLength(txt)-i, -130.0 + 8.0*abs(10*cos(GetMusicPositionOGG(characterMusic)*200+i*10 )))	//Code from SnowTunes
 		next i
 	endif
+	
 	
 	if csc1.ready and csc2.ready
 		state = GAME
