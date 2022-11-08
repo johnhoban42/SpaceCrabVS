@@ -79,6 +79,21 @@ function CreateSpriteExpress(spr, wid, hei, x, y, depth)
 	SetSpriteDepth(spr, depth)
 endfunction
 
+function CreateSpriteExpressImage(spr, img, wid, hei, x, y, depth)
+	CreateSprite(spr, img)
+	SetSpriteSize(spr, wid, hei)
+	SetSpritePosition(spr, x, y)
+	SetSpriteDepth(spr, depth)
+endfunction
+
+
+function LoadSpriteExpress(spr, file$, wid, hei, x, y, depth)
+	LoadSprite(spr, file$)
+	SetSpriteSize(spr, wid, hei)
+	SetSpritePosition(spr, x, y)
+	SetSpriteDepth(spr, depth)
+endfunction
+
 function IncSpriteX(spr, amt)
 	SetSpriteX(spr, GetSpriteX(spr)+amt)
 endfunction

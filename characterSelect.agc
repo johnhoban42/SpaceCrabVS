@@ -189,6 +189,8 @@ function InitCharacterSelect()
 	InitCharacterSelectController(csc2)
 	
 	PlayMusicOGG(characterMusic, 1)
+	PlayMusicOGG(fireMusic, 1)
+	SetMusicVolumeOGG(fireMusic, 20)
 	
 	characterSelectStateInitialized = 1
 	
@@ -439,6 +441,7 @@ function ExitCharacterSelect()
 	CleanupCharacterSelectController(csc2)
 	
 	if GetMusicPlayingOGG(characterMusic) then StopMusicOGG(characterMusic)
+	if GetMusicPlayingOGG(fireMusic) then StopMusicOGG(fireMusic)
 	
 	characterSelectStateInitialized = 0
 	

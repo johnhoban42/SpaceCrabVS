@@ -374,7 +374,7 @@ function DoGame1()
 	
 	if met1CD1# < 0
 		met1CD1# = Random(met1RNDLow - 5*gameDifficulty1, met1RNDHigh) - 20*gameDifficulty1
-		if gameTimer# < gameTimeGate1 then dec met1CD1#, 60
+		if gameTimer# < gameTimeGate1 then dec met1CD1#, 40
 		if gameTimer# < gameTimeGate2 then dec met1CD1#, 30
 		
 		CreateMeteor(1, 1, 0)

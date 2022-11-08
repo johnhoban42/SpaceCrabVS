@@ -421,6 +421,7 @@ global planetVarI as Integer[planetITotalMax]
 
 #constant raveBass1 121
 #constant raveBass2 122
+#constant fireMusic 123
 
 //Volume for music and sound effects
 global volumeM = 60
@@ -430,7 +431,21 @@ SetMusicSystemVolumeOGG(volumeM)
 
 //Start screen sprites 
 #constant SPR_TITLE 200 
-#constant SPR_START 201 
+#constant SPR_START1 201
+#constant SPR_START2 203
+#constant SPR_BG_START 202
+#constant SPR_START1P 204
+
+//Different Crab buttons for the single player mode
+#constant SPR_STARTC1 205
+#constant SPR_STARTC2 206
+#constant SPR_STARTC3 207
+#constant SPR_STARTC4 208
+#constant SPR_STARTC5 209
+#constant SPR_STARTC6 210
+
+#constant SPR_STARTMM 211
+
  
 //Character select screen sprites - player 1 
 #constant SPR_CS_READY_1 300 
@@ -546,6 +561,7 @@ function LoadBaseMusic()
 	
 	LoadMusicOGG(raveBass1, "raveBass.ogg")
 	LoadMusicOGG(raveBass2, "raveBass2.ogg")
+	LoadMusicOGG(fireMusic, "fire.ogg")
 	
 	SetFolder("/media")
 	

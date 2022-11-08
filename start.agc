@@ -18,11 +18,24 @@ function InitStart()
 	//IncSpriteX(SPR_TITLE, 150)
 	SetSpriteAngle(SPR_TITLE, 90)
 	
-	LoadSprite(SPR_START, "start.png")
-	SetSpriteSize(SPR_START, h/2, w/5)
-	SetSpriteMiddleScreen(SPR_START)
-	IncSpriteX(SPR_START, -250)
-	SetSpriteAngle(SPR_START, 90)
+	LoadSprite(SPR_START1, "start.png")
+	SetSpriteSize(SPR_START1, 600, 160)
+	SetSpriteMiddleScreenX(SPR_START1)
+	SetSpriteY(SPR_START1, h/2 + 550)
+	SetSpriteAngle(SPR_START1, 0)
+	
+	LoadSprite(SPR_START2, "start.png")
+	SetSpriteSize(SPR_START2, 600, 160)
+	SetSpriteMiddleScreenX(SPR_START2)
+	SetSpriteY(SPR_START2, h/2 - 550 - GetSpriteHeight(SPR_START2))
+	SetSpriteAngle(SPR_START2, 180)
+	
+	LoadSprite(SPR_START1P, "singlePlayerButton.png")
+	SetSpriteSize(SPR_START1P, 250, 150)
+	SetSpritePosition(SPR_START1P, 520, 1130)
+	
+	LoadSpriteExpress(SPR_BG_START, "envi/bg4.png",h*1.5, h*1.5, 0, 0, 100)
+	SetSpriteMiddleScreen(SPR_BG_START)
 	
 	startStateInitialized = 1
 	
@@ -48,7 +61,7 @@ function DoStart()
 	if startTimer# > 360 then startTimer# = 0
 	
 	// Start button pressed
-	if Button(SPR_START)
+	if Button(SPR_START1)
 		state = CHARACTER_SELECT
 	endif
 	
@@ -65,7 +78,10 @@ endfunction state
 function ExitStart()
 	
 	DeleteSprite(SPR_TITLE)
-	DeleteSprite(SPR_START)
+	DeleteSprite(SPR_START1)
+	DeleteSprite(SPR_START2)
+	DeleteSprite(SPR_START1P)
+	DeleteSprite(SPR_BG_START)
 	
 	startTimer# = 0
 	

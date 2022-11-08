@@ -374,7 +374,7 @@ function DoGame2()
 	
 	if met1CD2# < 0
 		met1CD2# = Random(met1RNDLow - 5*gameDifficulty2, met1RNDHigh) - 20*gameDifficulty2
-		if gameTimer# < gameTimeGate1 then dec met1CD2#, 60
+		if gameTimer# < gameTimeGate1 then dec met1CD2#, 40
 		if gameTimer# < gameTimeGate2 then dec met1CD2#, 30
 		
 		CreateMeteor(2, 1, 0)
@@ -669,6 +669,8 @@ function SendSpecial2()
 			SetSpriteColor(meteorSprNum + 10000, 255, 20, 20, 30)
 			SetSpriteDepth(meteorSprNum + 10000, 30)
 			
+			CreateMeteorGlow(meteorSprNum)
+			
 			inc meteorSprNum, 1
 			
 			//Reproducable bug by spamming this attack, was in the spr references in ospr in the meteor 3 update
@@ -702,6 +704,7 @@ function SendSpecial2()
 				SetSpriteDepth(meteorSprNum, 20)
 				SetSpriteColorRandomBright(meteorSprNum)
 				AddMeteorAnimation(meteorSprNum)
+				CreateMeteorGlow(meteorSprNum)
 				inc meteorSprNum, 1
 				meteorActive1.insert(newMetS)
 			next i
@@ -1011,7 +1014,6 @@ endfunction state
 function NudgeScreen2()
 	if crab1Type = 3 and specialTimerAgainst2# > 0
 		//Nothing here lol
-		Print("AAAAAAAAAAAAAA")
 	else
 		if nudge2R# > 0
 			IncSpritePosition(crab2, -cos(nudge2Theta#)*nudge2R#, -sin(nudge2Theta#)*nudge2R#)
