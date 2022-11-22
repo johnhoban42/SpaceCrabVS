@@ -85,6 +85,7 @@ global crab1Turning = 0 	//Is zero for when the crab isn't turning, and 1 or -1 
 global crab1Type = 1
 global crab1JumpD# = 0
 global crab1JumpHMax# = 5
+global crab1JumpSpeed# = 1.216
 global crab1JumpDMax = 28	//This variable used to be in degrees, now it's in ticks
 //Original jump values: 3.5, 38
 
@@ -107,6 +108,7 @@ global crab2Turning = 0
 global crab2Type = 6
 global crab2JumpD# = 0
 global crab2JumpHMax# = 5
+global crab2JumpSpeed# = 1.216
 global crab2JumpDMax = 28	//This variable used to be in degrees, now it's in ticks
 
 global crab2Deaths = 0
@@ -161,8 +163,8 @@ global met1CD2# = 50 //300
 global met2CD2# = 0 //400
 global met3CD2# = 0 //400
 
-#constant gameTimeGate1 800		//Ticks until rotation meteors
-#constant gameTimeGate2 1600		//Ticks until fast meteors
+#constant gameTimeGate1 600		//Ticks until rotation meteors
+#constant gameTimeGate2 1200		//Ticks until fast meteors
 
 #constant met1RNDLow 180		//OG: 230
 #constant met1RNDHigh 290	//OG: 330

@@ -11,6 +11,7 @@ function DrawPolar2(spr, rNum, theta#)
 endfunction
 
 function CreateGame2()
+	crab2Deaths = 0
 	CreateSprite(planet2, planetVarI[Random(1, 23)])
 	SetSpriteSizeSquare(planet2, planetSize)
 	SetSpriteShape(planet2, 1)
@@ -35,6 +36,11 @@ function CreateGame2()
 			AddSpriteAnimationFrame(crab2, i)
 		next i
 		specialCost2 = specialPrice1
+		crab2Vel# = 1.28
+		crab2Accel# = .1
+		crab2JumpHMax# = 5
+		crab2JumpSpeed# = 1.216
+		crab2JumpDMax = 28
 		
 	elseif crab2Type = 2	//Wizard
 		for i = crab2start1I to crab2death2I
@@ -43,30 +49,55 @@ function CreateGame2()
 		SetSpriteSize(crab2, 64, 60)
 		SetSpriteShapeCircle(crab2, 0, 10, 24)
 		specialCost2 = specialPrice2
+		crab2Vel# = 1.08
+		crab2Accel# = .13
+		crab2JumpHMax# = 10.5
+		crab2JumpSpeed# = 1.516
+		crab2JumpDMax = 40
 		
 	elseif crab2Type = 3	//Top
 		for i = crab1start1I to crab1death2I
 			AddSpriteAnimationFrame(crab2, i)
 		next i
 		specialCost2 = specialPrice3
+		crab2Vel# = 2.48
+		crab2Accel# = .03
+		crab2JumpHMax# = 8
+		crab2JumpSpeed# = -3
+		crab2JumpDMax = 32
 		
 	elseif crab2Type = 4	//Rave
 		for i = crab1start1I to crab1death2I
 			AddSpriteAnimationFrame(crab2, i)
 		next i
 		specialCost2 = specialPrice4
+		crab2Vel# = 1.59
+		crab2Accel# = .08
+		crab2JumpHMax# = 8
+		crab2JumpSpeed# = -1.28
+		crab2JumpDMax = 35
 		
 	elseif crab2Type = 5	//Chrono
 		for i = crab1start1I to crab1death2I
 			AddSpriteAnimationFrame(crab2, i)
 		next i
 		specialCost2 = specialPrice5
+		crab2Vel# = 1.38
+		crab2Accel# = .1
+		crab2JumpHMax# = 5
+		crab2JumpSpeed# = -3.216
+		crab2JumpDMax = 28
 		
 	elseif crab2Type = 6	//Ninja
 		for i = crab6start1I to crab6death2I
 			AddSpriteAnimationFrame(crab2, i)
 		next i
 		specialCost2 = specialPrice6
+		crab2Vel# = 1.5
+		crab2Accel# = .1
+		crab2JumpHMax# = 6
+		crab2JumpSpeed# = .816
+		crab2JumpDMax = 26
 		
 	else
 		//The debug option, no crab selected
@@ -248,7 +279,7 @@ function DoGame2()
 	if (true2 or buffer2 or true1) and crab2JumpD# = 0
 		
 		buffer2 = 0
-		if crab2Turning = 0
+		if crab2Turning = 0 and crab2Type <> 6
 			PlaySoundR(turnS, volumeSE)
 			if crab2Dir# > 0
 				crab2Turning = -1
@@ -260,25 +291,23 @@ function DoGame2()
 			crab2Turning = -1*crab2Turning
 			
 			//This checks that either the crab1Dir is small enough, or that it is right at the start of the process
-			if Abs(crab2Dir#) < 0.4 or (crab2Turning * crab2Dir# > 0) or (Abs(crab2Dir#) < 1 and specialTimerAgainst2# > 0 and crab1Type = 5)
+			if Abs(crab2Dir#) < .7 or (crab2Turning * crab2Dir# > 0) or (Abs(crab2Dir#) < 1 and specialTimerAgainst2# > 0 and crab1Type = 5) or crab2Type = 6
 				//The crab leap code
 				//crab1Turning = -1*crab1Turning	//Still not sure if you should leap forwards or backwards
 				PlaySoundR(jumpS, volumeSE)
 				crab2JumpD# = crab2JumpDMax
-				crab2Dir# = crab2Vel#
+				if crab2Type <> 6
+					crab2Dir# = crab2Vel#*crab2Turning
+				else
+					//Ninja code!
+					crab2Dir# = -1*crab2Dir#
+					crab2Turning = 0
+				endif
 			else
 				//Crab has turned
 				PlaySoundR(turnS, volumeSE)
 			endif
 		endif
-		
-		
-		
-		
-		//Extra space for the unfinished ninja crab turn code in game 1
-		
-		
-		
 		
 	endif
 	
@@ -292,7 +321,7 @@ function DoGame2()
 		endif
 		
 		//Incrementing the crab's movement a tiny bit more when leaping
-		inc crab2Theta#, crab2Vel# * 0.95 * crab2Dir# * fpsr#
+		inc crab2Theta#, crab2jumpSpeed# * crab2Dir# * fpsr#
 		//Original velo: 0.85
 		
 		inc crab2JumpD#, -1*fpsr#
@@ -747,11 +776,11 @@ function SendSpecial2()
 		SetSpritePosition(special2Ex2, w-size, 0)
 		
 		SetSpriteSize(special2Ex3, size, w)
-		SetSpritePosition(special2Ex3, w/2-size/2, -w/2+size/2)
+		SetSpritePosition(special2Ex3, w/2-size/2, -w/2+size*3/4)
 		SetSpriteAngle(special2Ex3, 90)
 		
 		SetSpriteSize(special2Ex4, size, w)
-		SetSpritePosition(special2Ex4, w/2-size/2, h/2-w/2-size/2-GetSpriteHeight(split)/2-40)
+		SetSpritePosition(special2Ex4, w/2-size/2, h/2-w/2-size/2-GetSpriteHeight(split)/2+60)
 		SetSpriteAngle(special2Ex4, 270)
 		
 		//The lazy way to set it to the bottom screen

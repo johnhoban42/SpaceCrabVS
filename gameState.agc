@@ -93,6 +93,104 @@ function ExitGame()
 		endif
 	next i
 	
+	//Game 1 (Bottom)
+	DeleteSprite(planet1)
+	DeleteSprite(crab1)
+	DeleteSprite(bgGame1)
+	DeleteSprite(expHolder1)
+	DeleteSprite(expBar1)
+	DeleteSprite(meteorButton1)
+	DeleteSprite(meteorMarker1)
+	DeleteSprite(specialButton1)
+	DeleteSprite(crab1PlanetS[1])
+	DeleteSprite(crab1PlanetS[2])
+	DeleteSprite(crab1PlanetS[3])
+	specialTimerAgainst1# = 0
+	
+	for i = special2Ex1 to special2Ex5
+		DeleteSprite(i)
+	next i
+	if GetMusicPlayingOGG(raveBass2) then StopMusicOGG(raveBass2)
+	
+	
+	met1CD1# = 50
+	met2CD1# = 0
+	met3CD1# = 0 
+	
+	for i = 1 to meteorActive1.length
+		DeleteSprite(meteorActive1[i].spr)
+		DeleteSprite(meteorActive1[i].spr+glowS)
+		if meteorActive1[i].cat = 3 then DeleteSprite(meteorActive1[i].spr + 10000)
+	next
+	for i = 1 to meteorActive1.length
+		meteorActive1.remove()
+	next
+	meteorActive1.length = 0
+	
+	crab1Theta# = 270
+	crab1Dir# = 1
+	crab1Turning = 0
+	crab1Type = 1
+	crab1JumpD# = 0
+	nudge1R# = 0
+	nudge1Theta# = 0
+	expTotal1 = 0
+	meteorCost1 = 8
+	specialCost1 = 20
+	buffer1 = 0
+	hit1Timer# = 0
+	
+	//Game 2 (Top)
+	DeleteSprite(planet2)
+	DeleteSprite(crab2)
+	DeleteSprite(bgGame2)
+	DeleteSprite(expHolder2)
+	DeleteSprite(expBar2)
+	DeleteSprite(meteorButton2)
+	DeleteSprite(meteorMarker2)
+	DeleteSprite(specialButton2)
+	DeleteSprite(crab2PlanetS[1])
+	DeleteSprite(crab2PlanetS[2])
+	DeleteSprite(crab2PlanetS[3])
+	specialTimerAgainst2# = 0
+	
+	for i = special1Ex1 to special1Ex5
+		DeleteSprite(i)
+	next i
+	if GetMusicPlayingOGG(raveBass1) then StopMusicOGG(raveBass1)
+	
+	
+	met1CD2# = 50
+	met2CD2# = 0
+	met3CD2# = 0 
+	
+	for i = 1 to meteorActive2.length
+		DeleteSprite(meteorActive2[i].spr)
+		DeleteSprite(meteorActive2[i].spr+glowS)
+		if meteorActive2[i].cat = 3 then DeleteSprite(meteorActive2[i].spr + 10000)
+	next
+	for i = 1 to meteorActive2.length
+		meteorActive2.remove()
+	next
+	meteorActive2.length = 0
+	
+	crab2Theta# = 270
+	crab2Dir# = 1
+	crab2Turning = 0
+	crab2Type = 1
+	crab2JumpD# = 0
+	nudge2R# = 0
+	nudge2Theta# = 0
+	expTotal2 = 0
+	meteorCost2 = 8
+	specialCost2 = 20
+	buffer2 = 0
+	hit2Timer# = 0
+	
+	//Extra (both)
+	DeleteHalfExp(1)
+	DeleteHalfExp(2)	
+	
 	// Whatever we do for something like ExitGame1() and ExitGame2() will go here
 	gameStateInitialized = 0
 	
@@ -127,6 +225,7 @@ function CreateExp(metSpr, metType, planetNum)
 
 		expList.insert(expSprNum)
 		inc expSprNum
+		if expSprNum = 3000 then expSprNum = 2001
 	next i
 
 endfunction

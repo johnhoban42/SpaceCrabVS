@@ -11,6 +11,7 @@ function DrawPolar1(spr, rNum, theta#)
 endfunction
 
 function CreateGame1()
+	crab1Deaths = 0
 	CreateSprite(planet1, planetVarI[Random(1, 23)])
 	SetSpriteSizeSquare(planet1, planetSize)
 	SetSpriteShape(planet1, 1)
@@ -35,6 +36,11 @@ function CreateGame1()
 			AddSpriteAnimationFrame(crab1, i)
 		next i
 		specialCost1 = specialPrice1
+		crab1Vel# = 1.28
+		crab1Accel# = .1
+		crab1JumpHMax# = 5
+		crab1JumpSpeed# = 1.216
+		crab1JumpDMax = 28
 		
 	elseif crab1Type = 2	//Wizard
 		for i = crab2start1I to crab2death2I
@@ -43,30 +49,55 @@ function CreateGame1()
 		SetSpriteSize(crab1, 64, 60)
 		SetSpriteShapeCircle(crab1, 0, 10, 24)
 		specialCost1 = specialPrice2
+		crab1Vel# = 1.08
+		crab1Accel# = .13
+		crab1JumpHMax# = 10.5
+		crab1JumpSpeed# = 1.516
+		crab1JumpDMax = 40
 		
 	elseif crab1Type = 3	//Top
 		for i = crab1start1I to crab1death2I
 			AddSpriteAnimationFrame(crab1, i)
 		next i
 		specialCost1 = specialPrice3
+		crab1Vel# = 2.48
+		crab1Accel# = .03
+		crab1JumpHMax# = 8
+		crab1JumpSpeed# = -3 //-2 //-3.4 //-2
+		crab1JumpDMax = 32
 		
 	elseif crab1Type = 4	//Rave
 		for i = crab1start1I to crab1death2I
 			AddSpriteAnimationFrame(crab1, i)
 		next i
 		specialCost1 = specialPrice4
+		crab1Vel# = 1.59
+		crab1Accel# = .08
+		crab1JumpHMax# = 8
+		crab1JumpSpeed# = -1.28
+		crab1JumpDMax = 35
 		
 	elseif crab1Type = 5	//Chrono
 		for i = crab1start1I to crab1death2I
 			AddSpriteAnimationFrame(crab1, i)
 		next i
 		specialCost1 = specialPrice5
+		crab1Vel# = 1.38
+		crab1Accel# = .1
+		crab1JumpHMax# = 5
+		crab1JumpSpeed# = -3.216
+		crab1JumpDMax = 28
 		
 	elseif crab1Type = 6	//Ninja
 		for i = crab6start1I to crab6death2I
 			AddSpriteAnimationFrame(crab1, i)
 		next i
 		specialCost1 = specialPrice6
+		crab1Vel# = 1.5
+		crab1Accel# = .1
+		crab1JumpHMax# = 6
+		crab1JumpSpeed# = .816
+		crab1JumpDMax = 26
 		
 	else
 		//The debug option, no crab selected
@@ -260,18 +291,16 @@ function DoGame1()
 			crab1Turning = -1*crab1Turning
 			
 			//This checks that either the crab1Dir is small enough, or that it is right at the start of the process
-			if Abs(crab1Dir#) < 0.4 or (crab1Turning * crab1Dir# > 0) or (Abs(crab1Dir#) < 1 and specialTimerAgainst1# > 0 and crab2Type = 5) or crab1Type = 6
+			if Abs(crab1Dir#) < .7 or (crab1Turning * crab1Dir# > 0) or (Abs(crab1Dir#) < 1 and specialTimerAgainst1# > 0 and crab2Type = 5) or crab1Type = 6
 				//The crab leap code
 				//crab1Turning = -1*crab1Turning	//Still not sure if you should leap forwards or backwards
 				PlaySoundR(jumpS, volumeSE)
 				crab1JumpD# = crab1JumpDMax
 				if crab1Type <> 6
-					crab1Dir# = crab1Vel#
+					crab1Dir# = crab1Vel#*crab1Turning
 				else
 					//Ninja code!
-					//crab1Turning = -1*crab1Turning
 					crab1Dir# = -1*crab1Dir#
-					//crab1Dir# = dir
 					crab1Turning = 0
 				endif
 			else
@@ -292,7 +321,7 @@ function DoGame1()
 		endif
 		
 		//Incrementing the crab's movement a tiny bit more when leaping
-		inc crab1Theta#, crab1Vel# * 0.95 * crab1Dir# * fpsr#
+		inc crab1Theta#, crab1jumpSpeed# * crab1Dir# * fpsr#
 		//Original velo: 0.85
 		
 		inc crab1JumpD#, -1*fpsr#
