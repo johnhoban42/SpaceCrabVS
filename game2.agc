@@ -73,9 +73,9 @@ function CreateGame2()
 		specialCost2 = specialPrice4
 		crab2Vel# = 1.59
 		crab2Accel# = .08
-		crab2JumpHMax# = 8
+		crab2JumpHMax# = 10
 		crab2JumpSpeed# = -1.28
-		crab2JumpDMax = 35
+		crab2JumpDMax = 43
 		
 	elseif crab2Type = 5	//Chrono
 		for i = crab1start1I to crab1death2I
@@ -1023,7 +1023,7 @@ function HitScene2()
 		//The final death
 		
 		
-		state =  0
+		state =  4
 	endif
 	
 	DrawPolar2(crab2, crab2R#, crab2Theta#)

@@ -130,7 +130,6 @@ function ExitGame()
 	crab1Theta# = 270
 	crab1Dir# = 1
 	crab1Turning = 0
-	crab1Type = 1
 	crab1JumpD# = 0
 	nudge1R# = 0
 	nudge1Theta# = 0
@@ -177,7 +176,6 @@ function ExitGame()
 	crab2Theta# = 270
 	crab2Dir# = 1
 	crab2Turning = 0
-	crab2Type = 1
 	crab2JumpD# = 0
 	nudge2R# = 0
 	nudge2Theta# = 0
@@ -189,7 +187,9 @@ function ExitGame()
 	
 	//Extra (both)
 	DeleteHalfExp(1)
-	DeleteHalfExp(2)	
+	DeleteHalfExp(2)
+	if GetSpriteExists(bgHit1) then DeleteSprite(bgHit1)
+	if GetSpriteExists(bgHit2) then DeleteSprite(bgHit2)
 	
 	// Whatever we do for something like ExitGame1() and ExitGame2() will go here
 	gameStateInitialized = 0
@@ -675,8 +675,8 @@ endfunction r#
 function SetBGRandomPosition(spr)
 	//Sets the background to a random angle/spot
 	SetSpriteSizeSquare(spr, w*2)
-	if spr = bgGame1 or spr = SPR_CS_BG_1 then SetSpritePosition(spr, -1*w + Random(0, w), h/2)
-	if spr = bgGame2 or spr = SPR_CS_BG_2 then SetSpritePosition(spr, -1*w + Random(0, w), h/2-GetSpriteHeight(spr))
+	if spr = bgGame1 then SetSpritePosition(spr, -1*w + Random(0, w), h/2)
+	if spr = bgGame2 then SetSpritePosition(spr, -1*w + Random(0, w), h/2-GetSpriteHeight(spr))
 	SetSpriteAngle(spr, 90*Random(1, 4))
 	
 	if appState = CHARACTER_SELECT
@@ -685,9 +685,21 @@ function SetBGRandomPosition(spr)
 			SetSpriteAngle(spr, 0)
 			SetSpritePosition(spr, 0, h/2)
 		endif
+		if spr = SPR_CS_BG_1B
+			SetSpriteSizeSquare(spr, w*1.3)
+			SetSpriteAngle(spr, 0)
+			SetSpriteMiddleScreenX(spr)
+			SetSpriteY(spr, h*3/4 - GetSpriteHeight(spr)/2)
+		endif
 		if spr = SPR_CS_BG_2
 			SetSpritePosition(spr, 0, h/2-GetSpriteHeight(spr))
 			SetSpriteAngle(spr, 180)
+		endif
+		if spr = SPR_CS_BG_2B
+			SetSpriteSizeSquare(spr, w*1.3)
+			SetSpriteAngle(spr, 180)
+			SetSpriteMiddleScreenX(spr)
+			SetSpriteY(spr, h/4 - GetSpriteHeight(spr)/2)
 		endif
 		//For the character selection
 	endif

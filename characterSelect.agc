@@ -50,6 +50,7 @@ type CharacterSelectController
 	sprLeftArrow as integer
 	sprRightArrow as integer
 	sprBG as integer
+	sprBGB as integer
 	txtCrabName as integer
 	txtCrabDesc as integer
 	txtReady as integer
@@ -79,12 +80,13 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 	SetSpriteSize(csc.sprLeftArrow, 100, 100)
 	SetSpriteMiddleScreenOffset(csc.sprLeftArrow, p*-3*w/8, p*3*h/16)
 	SetSpriteFlip(csc.sprLeftArrow, f, f)
-	SetSpriteVisible(csc.sprLeftArrow, 0)
+	if csc.crabSelected = 0 then SetSpriteVisible(csc.sprLeftArrow, 0)
 	
 	LoadSprite(csc.sprRightArrow, "rightArrow.png")
 	SetSpriteSize(csc.sprRightArrow, 100, 100)
 	SetSpriteMiddleScreenOffset(csc.sprRightArrow, p*3*w/8, p*3*h/16)
 	SetSpriteFlip(csc.sprRightArrow, f, f)
+	if csc.crabSelected = 5 then SetSpriteVisible(csc.sprRightArrow, 0)
 	
 	//The background on the Descriptions
 	LoadSprite(csc.sprTxtBack, "charInfo.png")
@@ -95,6 +97,11 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 	CreateSprite(csc.sprBG, bg5I)
 	SetBGRandomPosition(csc.sprBG)
 	SetSpriteDepth(csc.sprBG, 100)
+	
+	LoadSprite(csc.sprBGB, "bg5B.png")
+	SetBGRandomPosition(csc.sprBGB)
+	SetSpriteDepth(csc.sprBGB, 99)
+	SetSpriteColorAlpha(csc.sprBGB, 255) 
 	
 	for i = 0 to NUM_CRABS-1
 		if i = 0 or i = 1 or i = 5
@@ -108,7 +115,7 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 			LoadSprite(csc.sprCrabs + i, "crab1.png")
 		endif
 		SetSpriteSize(csc.sprCrabs + i, charWid, charHei)
-		SetSpriteMiddleScreenOffset(csc.sprCrabs + i, p*i*w, p*335)
+		SetSpriteMiddleScreenOffset(csc.sprCrabs + i, p*(i-csc.crabSelected)*w, p*335)
 		SetSpriteFlip(csc.sprCrabs + i, f, f)
 	next i
 	
@@ -121,7 +128,7 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 	crabDescs[5] = "Lurking in black holes, opponents will" + chr(10) + "never expect his spinning-star blades!"
 	
 	// The offset mumbo-jumbo with f-coefficients is because AGK's text rendering is awful
-	CreateText(csc.txtCrabName, crabNames[0])
+	CreateText(csc.txtCrabName, crabNames[csc.crabSelected])
 	SetTextSize(csc.txtCrabName, 96)
 	SetTextAngle(csc.txtCrabName, f*180)
 	SetTextFontImage(csc.txtCrabName, fontCrabI)
@@ -130,7 +137,7 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 	//SetTextMiddleScreenOffset(csc.txtCrabName, f, 0, p*100)
 	SetTextAlignment(csc.txtCrabName, 1)
 	
-	CreateText(csc.txtCrabDesc, crabDescs[0])
+	CreateText(csc.txtCrabDesc, crabDescs[csc.crabSelected])
 	SetTextSize(csc.txtCrabDesc, 47)
 	SetTextAngle(csc.txtCrabDesc, f*180)
 	SetTextFontImage(csc.txtCrabDesc, fontDescI)
@@ -161,11 +168,12 @@ function InitCharacterSelect()
 	// Init controllers
 	csc1.player = 1
 	csc1.ready = 0
-	csc1.crabSelected = 0
+	csc1.crabSelected = crab1Type - 1
 	csc1.sprReady = SPR_CS_READY_1
 	csc1.sprLeftArrow = SPR_CS_ARROW_L_1
 	csc1.sprRightArrow = SPR_CS_ARROW_R_1
 	csc1.sprBG = SPR_CS_BG_1
+	csc1.sprBGB = SPR_CS_BG_1B
 	csc1.txtCrabName = TXT_CS_CRAB_NAME_1
 	csc1.txtCrabDesc = TXT_CS_CRAB_DESC_1
 	csc1.txtReady = TXT_CS_READY_1
@@ -174,11 +182,12 @@ function InitCharacterSelect()
 	
 	csc2.player = 2
 	csc2.ready = 0
-	csc2.crabSelected = 0
+	csc2.crabSelected = crab2Type - 1
 	csc2.sprReady = SPR_CS_READY_2
 	csc2.sprLeftArrow = SPR_CS_ARROW_L_2
 	csc2.sprRightArrow = SPR_CS_ARROW_R_2
 	csc2.sprBG = SPR_CS_BG_2
+	csc2.sprBGB = SPR_CS_BG_2B
 	csc2.txtCrabName = TXT_CS_CRAB_NAME_2
 	csc2.txtCrabDesc = TXT_CS_CRAB_DESC_2
 	csc2.txtReady = TXT_CS_READY_2
@@ -335,6 +344,7 @@ function DoCharacterSelectController(csc ref as CharacterSelectController)
 	
 	//Slowly lighting the backgrounds
 	SetSpriteColorAlpha(csc.sprBG, 205+abs(50*cos(90*csc.player + 80*GetMusicPositionOGG(characterMusic))))
+	IncSpriteAngle(csc.sprBGB, 6*fpsr#)
 	
 	// Continue an existing glide
 	if csc.glideFrame > 0
@@ -423,6 +433,7 @@ function CleanupCharacterSelectController(csc ref as CharacterSelectController)
 	DeleteSprite(csc.sprLeftArrow)
 	DeleteSprite(csc.sprRightArrow)
 	DeleteSprite(csc.sprBG)
+	DeleteSprite(csc.sprBGB)
 	DeleteText(csc.txtCrabName)
 	DeleteText(csc.txtCrabDesc)
 	DeleteText(csc.txtReady)

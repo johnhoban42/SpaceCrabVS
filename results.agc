@@ -9,6 +9,8 @@ global resultsStateInitialized as integer = 0
 // Does nothing right now, just a placeholder
 function InitResults()
 	
+	PlayMusicOGG(resultsMusic, 1)
+	
 	resultsStateInitialized = 1
 	
 endfunction
@@ -24,7 +26,7 @@ function DoResults()
 		InitResults()
 	endif
 	state = RESULTS
-	
+		
 	// If we are leaving the state, exit appropriately
 	// Don't write anything after this!
 	if state <> RESULTS
@@ -36,6 +38,8 @@ endfunction state
 
 // Cleanup upon leaving this state
 function ExitResults()
+	
+	if GetMusicPlayingOgg(resultsMusic) then StopMusicOGG(resultsMusic)
 	
 	resultsStateInitialized = 0
 	

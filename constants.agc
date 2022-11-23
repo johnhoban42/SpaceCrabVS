@@ -82,7 +82,7 @@ global crab1Dir# = 1		//Crab dir is a float that goes from 1 to -1, it multiplie
 global crab1Vel# = 1.28
 global crab1Accel# = .1	//Is .1 because it takes 2 to reach full reversal, and original game timer was 20
 global crab1Turning = 0 	//Is zero for when the crab isn't turning, and 1 or -1 depending on the direction it is CHANGING TO
-global crab1Type = 1
+global crab1Type = 2
 global crab1JumpD# = 0
 global crab1JumpHMax# = 5
 global crab1JumpSpeed# = 1.216
@@ -105,7 +105,7 @@ global crab2Dir# = 1
 global crab2Vel# = 1.28
 global crab2Accel# = .1
 global crab2Turning = 0
-global crab2Type = 6
+global crab2Type = 5
 global crab2JumpD# = 0
 global crab2JumpHMax# = 5
 global crab2JumpSpeed# = 1.216
@@ -415,7 +415,7 @@ global planetVarI as Integer[planetITotalMax]
 //Music Indexes
 #constant titleMusic 101
 #constant characterMusic 102
-#constant endMusic 103
+#constant resultsMusic 103
 
 #constant fightAMusic 104	//Andy's fight song
 #constant fightBMusic 105	//Brad's fight song
@@ -454,6 +454,7 @@ SetMusicSystemVolumeOGG(volumeM)
 #constant SPR_CS_ARROW_L_1 301 
 #constant SPR_CS_ARROW_R_1 302 
 #constant SPR_CS_BG_1 306
+#constant SPR_CS_BG_1B 307
 #constant TXT_CS_CRAB_NAME_1 303
 #constant TXT_CS_CRAB_DESC_1 304 
 #constant TXT_CS_READY_1 305 
@@ -465,6 +466,7 @@ SetMusicSystemVolumeOGG(volumeM)
 #constant SPR_CS_ARROW_L_2 401
 #constant SPR_CS_ARROW_R_2 402 
 #constant SPR_CS_BG_2 406
+#constant SPR_CS_BG_2B 407
 #constant TXT_CS_CRAB_NAME_2 403
 #constant TXT_CS_CRAB_DESC_2 404 
 #constant TXT_CS_READY_2 405
@@ -560,11 +562,13 @@ function LoadBaseMusic()
 	
 	LoadMusicOGG(fightAMusic, "fightA.ogg")
 	LoadMusicOGG(characterMusic, "character.ogg")
+	LoadMusicOGG(resultsMusic, "results.ogg")
+	SetMusicLoopTimesOGG(resultsMusic, 14.22, -1)
 	
 	LoadMusicOGG(raveBass1, "raveBass.ogg")
 	LoadMusicOGG(raveBass2, "raveBass2.ogg")
 	LoadMusicOGG(fireMusic, "fire.ogg")
-	
+		
 	SetFolder("/media")
 	
 	SetMusicSystemVolumeOGG(volumeM)

@@ -36,7 +36,7 @@ function InitStart()
 	
 	LoadSpriteExpress(SPR_BG_START, "envi/bg4.png",h*1.5, h*1.5, 0, 0, 100)
 	SetSpriteMiddleScreen(SPR_BG_START)
-	
+		
 	startStateInitialized = 1
 	
 endfunction

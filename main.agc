@@ -3,6 +3,7 @@
 #include "gameState.agc"
 #include "start.agc"
 #include "characterSelect.agc"
+#include "results.agc"
 
 // Project: SpaceCrabVS 
 // Created: 22-03-03
@@ -79,7 +80,7 @@ do
 	elseif appState = GAME
 		appState = DoGame()
 	elseif appState = RESULTS
-		// appState = DoResults()
+		appState = DoResults()
 	endif
 	
 	touch = GetRawFirstTouchEvent(1)
