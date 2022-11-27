@@ -67,7 +67,7 @@ function CreateGame1()
 		crab1JumpDMax = 32
 		
 	elseif crab1Type = 4	//Rave
-		for i = crab1start1I to crab1death2I
+		for i = crab4start1I to crab4death2I
 			AddSpriteAnimationFrame(crab1, i)
 		next i
 		specialCost1 = specialPrice4
@@ -76,6 +76,7 @@ function CreateGame1()
 		crab1JumpHMax# = 10
 		crab1JumpSpeed# = -1.28
 		crab1JumpDMax = 43
+		SetSpriteSize(crab1, 119, 67)
 		
 	elseif crab1Type = 5	//Chrono
 		for i = crab1start1I to crab1death2I
@@ -154,7 +155,7 @@ function CreateGame1()
 	//The planet UI that shows how many lives are left
 	for i = 1 to 3
 		CreateSpriteExpress(crab1PlanetS[i], planetIconSize, planetIconSize, w/2 - planetIconSize/2 + (i-2)*planetIconSize*1.5, h/2 + 80, 5)
-		if crab1Type = 1 or crab1Type = 2 or crab1Type = 6 then SetSpriteImage(crab1PlanetS[i], crab1life1I - 1 + (crab1Type-1)*3 + i)
+		if crab1Type = 1 or crab1Type = 2 or crab1Type = 4 or crab1Type = 6 then SetSpriteImage(crab1PlanetS[i], crab1life1I - 1 + (crab1Type-1)*3 + i)
 		if i > 1 then SetSpriteSize(crab1PlanetS[i], planetIconSize/4, planetIconSize/4)
 		DrawPolar1(crab1PlanetS[i], 300, 270 + (i-2)*20)
 		SetSpriteAngle(crab1PlanetS[i], 0)
@@ -197,7 +198,7 @@ function DoGame1()
 		
 	//The Rave Crab special
 	if specialTimerAgainst1# > 0 and crab2Type = 4
-		for i = special2Ex1 to special2Ex5
+		for i = special2Ex1 to special2Ex4 //special2Ex5
 			SetSpriteColorByCycle(i, specialTimerAgainst1#)
 		next i
 		if specialTimerAgainst1# < raveCrabTimeMax/8
@@ -784,13 +785,17 @@ function SendSpecial1()
 		SetSpriteAngle(special1Ex4, 270)
 		
 		//Extra whitespace so that this matches with the game2 code
+		//(On the other screen, this is just to position the rave lights on the bottom screen)
 		
 		
 		
-		
-		SetSpriteSize(special1Ex5, 140, 140)
-		DrawPolar2(special1Ex5, 0, 180)
-		SetSpriteColorByCycle(special1Ex5, specialTimerAgainst2#)
+		SetSpriteSizeSquare(special1Ex5, 220)
+		DrawPolar2(special1Ex5, 0, 90)
+		//SetSpriteColorByCycle(special1Ex5, specialTimerAgainst2#)
+		for i = special4s1 to special4s8
+			AddSpriteAnimationFrame(special1Ex5, i)
+		next i
+		PlaySprite(special1Ex5, 20, 1, 1, 8)
 	
 	elseif crab1Type = 5
 		//Chrono Crab

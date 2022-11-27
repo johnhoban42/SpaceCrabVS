@@ -64,7 +64,7 @@ global startTimer# = 0
 #constant specialPrice1 20
 #constant specialPrice2 20
 #constant specialPrice3 25
-#constant specialPrice4 23
+#constant specialPrice4 0 //23
 #constant specialPrice5 30
 #constant specialPrice6 18
 
@@ -82,7 +82,7 @@ global crab1Dir# = 1		//Crab dir is a float that goes from 1 to -1, it multiplie
 global crab1Vel# = 1.28
 global crab1Accel# = .1	//Is .1 because it takes 2 to reach full reversal, and original game timer was 20
 global crab1Turning = 0 	//Is zero for when the crab isn't turning, and 1 or -1 depending on the direction it is CHANGING TO
-global crab1Type = 2
+global crab1Type = 4
 global crab1JumpD# = 0
 global crab1JumpHMax# = 5
 global crab1JumpSpeed# = 1.216
@@ -268,6 +268,10 @@ global met3CD2# = 0 //400
 #constant crab2life2I 375
 #constant crab2life3I 376
 
+#constant crab4life1I 380
+#constant crab4life2I 381
+#constant crab4life3I 382
+
 #constant crab6life1I 386
 #constant crab6life2I 387
 #constant crab6life3I 388
@@ -345,6 +349,21 @@ global met3CD2# = 0 //400
 #constant crab2death1I 133
 #constant crab2death2I 134
 
+#constant crab4start1I 161
+#constant crab4start2I 162
+#constant crab4walk1I 163
+#constant crab4walk2I 164
+#constant crab4walk3I 165
+#constant crab4walk4I 166
+#constant crab4walk5I 167
+#constant crab4walk6I 168
+#constant crab4walk7I 169
+#constant crab4walk8I 170
+#constant crab4jump1I 171
+#constant crab4jump2I 172
+#constant crab4death1I 173
+#constant crab4death2I 174
+
 #constant crab6start1I 201
 #constant crab6start2I 202
 #constant crab6walk1I 203
@@ -360,6 +379,14 @@ global met3CD2# = 0 //400
 #constant crab6death1I 213
 #constant crab6death2I 214
 
+#constant special4s1 215
+#constant special4s2 216
+#constant special4s3 217
+#constant special4s4 218
+#constant special4s5 219
+#constant special4s6 220
+#constant special4s7 221
+#constant special4s8 222
 
 //Planets images are 401 to 430
 #constant planetIMax 23
@@ -590,7 +617,7 @@ function LoadBaseImages()
 	
 	//Loading the start screen images
 	for i = 1 to 6
-		if i = 1 or i = 2 or i = 6
+		if i = 1 or i = 2 or i = 4 or i = 6
 			for j = 1 to 6
 				LoadImage(crab1select1I - 1 + j + i*10, "crab" + str(i) + "select" + str(j) + ".png")
 			next j
@@ -604,12 +631,14 @@ function LoadBaseImages()
 	LoadImage(crab1attack2I, "crab1attack2.png")
 	LoadImage(crab2attack1I, "crab2attack1.png")
 	LoadImage(crab2attack2I, "crab2attack2.png")
+	LoadImage(crab4attack1I, "crab4attack1.png")
+	LoadImage(crab4attack2I, "crab4attack2.png")
 	LoadImage(crab6attack1I, "crab6attack1.png")
 	LoadImage(crab6attack2I, "crab6attack2.png")
 	
 	//The lives
 	for i = 1 to 6
-		if i = 1 or i = 2 or i = 6
+		if i = 1 or i = 2 or i = 4 or i = 6
 			for j = 1 to 3
 				LoadImage(crab1life1I - 1 + j + (i-1)*3, "crab" + str(i) + "life" + str(j) + ".png")
 			next j
@@ -619,6 +648,11 @@ function LoadBaseImages()
 	
 	
 	SetFolder("/media/envi")
+	
+	for i = special4s1 to special4s8
+		LoadImage(i, "ravespprop" + str(i - special4s1 + 1) + ".png")
+	next i
+	
 	/*
 	LoadImage(planetVar1I, "planet1alt1.png")
 	LoadImage(planetVar2I, "planet1alt2.png")
@@ -695,6 +729,21 @@ function LoadBaseImages()
 	LoadImage(crab2jump2I, "crab2jump2.png")
 	LoadImage(crab2death1I, "crab2death1.png")
 	LoadImage(crab2death2I, "crab2death2.png")
+	
+	LoadImage(crab4start1I, "crab4start1.png")
+	LoadImage(crab4start2I, "crab4start2.png")
+	LoadImage(crab4walk1I, "crab4walk1.png")
+	LoadImage(crab4walk2I, "crab4walk2.png")
+	LoadImage(crab4walk3I, "crab4walk3.png")
+	LoadImage(crab4walk4I, "crab4walk4.png")
+	LoadImage(crab4walk5I, "crab4walk5.png")
+	LoadImage(crab4walk6I, "crab4walk6.png")
+	LoadImage(crab4walk7I, "crab4walk7.png")
+	LoadImage(crab4walk8I, "crab4walk8.png")
+	LoadImage(crab4jump1I, "crab4jump1.png")
+	LoadImage(crab4jump2I, "crab4jump2.png")
+	LoadImage(crab4death1I, "crab4death1.png")
+	LoadImage(crab4death2I, "crab4death2.png")
 	
 	LoadImage(crab6start1I, "crab6start1.png")
 	LoadImage(crab6start2I, "crab6start2.png")

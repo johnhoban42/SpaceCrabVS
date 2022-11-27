@@ -104,7 +104,7 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 	SetSpriteColorAlpha(csc.sprBGB, 255) 
 	
 	for i = 0 to NUM_CRABS-1
-		if i = 0 or i = 1 or i = 5
+		if i = 0 or i = 1 or i = 3 or i = 5
 			CreateSprite(csc.sprCrabs + i, 0)
 			for j = 1 to 6
 				AddSpriteAnimationFrame(csc.sprCrabs + i, crab1select1I - 1 + j + (i+1)*10)

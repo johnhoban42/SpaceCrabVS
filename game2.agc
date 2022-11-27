@@ -67,7 +67,7 @@ function CreateGame2()
 		crab2JumpDMax = 32
 		
 	elseif crab2Type = 4	//Rave
-		for i = crab1start1I to crab1death2I
+		for i = crab4start1I to crab4death2I
 			AddSpriteAnimationFrame(crab2, i)
 		next i
 		specialCost2 = specialPrice4
@@ -154,7 +154,7 @@ function CreateGame2()
 	//The planet UI that shows how many lives are left
 	for i = 1 to 3 //The 4 minus below makes the planet sprites go in the correct order for the top
 		CreateSpriteExpress(crab2PlanetS[i], planetIconSize, planetIconSize, w/2 - planetIconSize/2 + (i-2)*planetIconSize*1.5, h/2 - 80 - planetIconSize, 5)
-		if crab2Type = 1 or crab2Type = 2 or crab2Type = 6 then SetSpriteImage(crab2PlanetS[i], crab1life1I - 1 + (crab2Type-1)*3 + i)
+		if crab2Type = 1 or crab2Type = 2 or crab2Type = 4 or crab2Type = 6 then SetSpriteImage(crab2PlanetS[i], crab1life1I - 1 + (crab2Type-1)*3 + i)
 		if i > 1 then SetSpriteSize(crab2PlanetS[i], planetIconSize/4, planetIconSize/4)
 		DrawPolar2(crab2PlanetS[i], 300, 90 + (i-2)*20)
 		SetSpriteAngle(crab2PlanetS[i], 180)
@@ -197,7 +197,7 @@ function DoGame2()
 		
 	//The Rave Crab special
 	if specialTimerAgainst2# > 0 and crab1Type = 4
-		for i = special1Ex1 to special1Ex5
+		for i = special1Ex1 to special1Ex4 //special1Ex5
 			SetSpriteColorByCycle(i, specialTimerAgainst2#)
 		next i
 		if specialTimerAgainst2# < raveCrabTimeMax/8
@@ -788,9 +788,13 @@ function SendSpecial2()
 			IncSpriteY(i, h/2)
 		next i
 		
-		SetSpriteSize(special2Ex5, 140, 140)
-		DrawPolar1(special2Ex5, 0, 180)
-		SetSpriteColorByCycle(special2Ex5, specialTimerAgainst1#)
+		SetSpriteSizeSquare(special2Ex5, 220)
+		DrawPolar1(special2Ex5, 0, 270)
+		//SetSpriteColorByCycle(special2Ex5, specialTimerAgainst1#)
+		for i = special4s1 to special4s8
+			AddSpriteAnimationFrame(special2Ex5, i)
+		next i
+		PlaySprite(special2Ex5, 20, 1, 1, 8)
 	
 	elseif crab2Type = 5
 		//Chrono Crab

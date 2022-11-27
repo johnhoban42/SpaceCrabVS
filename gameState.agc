@@ -417,14 +417,18 @@ function ShowSpecialAnimation(crabType)
 			SetSpriteDepth(i, 2)
 			SetSpriteColor(i, 220, 220, 220, 255)
 			SetSpriteSizeSquare(i, 300)	//Smaller at Brad's request
-			if crabType = 1 or crabType = 2 or crabType = 6
+			if crabType = 1 or crabType = 2 or crabType = 4 or crabType = 6
 				//This if statement is only here while not every image is in the game
 				SetSpriteImage(i, crab1attack2I - 1 + crabType)
+				if crabType = 4
+					SetSpriteSize(i, 155*5, 77*5)
+					SetSpriteColor(i, 255, 255, 255, 0)					
+				endif
 			endif
 		else
 			//Front Sprites
 			SetSpriteDepth(i, 1)
-			if crabType = 1 or crabType = 2 or crabType = 6
+			if crabType = 1 or crabType = 2 or crabType = 4 or crabType = 6
 				//This if statement is only here while not every image is in the game
 				SetSpriteImage(i, crab1attack1I - 1 + crabType)
 			endif
@@ -516,6 +520,28 @@ function ShowSpecialAnimation(crabType)
 			IncSpriteXFloat(specialSprFront2, -1.3*speed)
 			IncSpriteXFloat(specialSprBack2, 1.1*speed)
 		//endif
+		
+		if crabType = 4
+			SetSpriteMiddleScreenX(specialSprBack1)
+			SetSpriteMiddleScreenX(specialSprBack2)
+			
+			if i < iEnd*1/9
+				FadeSpriteOut(specialSprBack1, i, 0, iEnd*1/9)
+				FadeSpriteOut(specialSprBack2, i, 0, iEnd*1/9)
+			elseif i >= iEnd*28/29
+				SetSpriteColorAlpha(specialSprBack1, 0)
+				SetSpriteColorAlpha(specialSprBack2, 0)
+				
+			elseif i > iEnd*8/9
+				FadeSpriteIn(specialSprBack1, i, iEnd*8/9, iEnd)
+				FadeSpriteIn(specialSprBack2, i, iEnd*8/9, iEnd)
+			
+			else
+				SetSpriteColorAlpha(specialSprBack1, 255)
+				SetSpriteColorAlpha(specialSprBack2, 255)
+			endif
+			
+		endif
 		
 		if i < iEnd*5/7
 			GlideTextToX(specialSprFront1, w/2, 6)
