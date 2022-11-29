@@ -3,13 +3,49 @@
 
 // Whether this state has been initialized
 global resultsStateInitialized as integer = 0
+global resultsWinner as integer = 0
 
+global rc1 as ResultsController
+global rc2 as ResultsController
+
+
+// Controller that holds state data for each screen
+type ResultsController
+	
+	// Player ID (1 or 2)
+	player as integer
+	
+endtype
+
+function InitResultsController(rc ref as ResultsController)
+	
+	p as integer, f as integer
+	if rc.player = 1 then p = 1 else p = -1 // makes the position calculations easier
+	if rc.player = 1 then f = 0 else f = 1 // makes the flip calculations easier
+	
+endfunction
 
 // Initialize the results screen
-// Does nothing right now, just a placeholder
 function InitResults()
 	
 	PlayMusicOGGSP(resultsMusic, 1)
+	
+	// Determine the winner
+	if crab1Deaths = 3
+		resultsWinner = 2
+	else
+		resultsWinner = 1
+	endif
+		
+	// Init controllers
+	rc1.player = 1
+	
+	rc2.player = 2
+	
+	InitResultsController(rc1)
+	InitResultsController(rc2)
+	
+	PlayMusicOGG(resultsMusic, 1)
 	
 	resultsStateInitialized = 1
 	

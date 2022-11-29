@@ -1072,9 +1072,7 @@ function HitScene1()
 		
 	else
 		//The final death
-		
-		
-		state =  4
+		state = RESULTS
 	endif
 	
 	DrawPolar1(crab1, crab1R#, crab1Theta#)
