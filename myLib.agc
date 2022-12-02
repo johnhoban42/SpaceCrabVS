@@ -213,11 +213,16 @@ function FadeSpriteOut(spr, curT#, startT#, endT#)
 	
 endfunction
 	//SetSpriteColorAlpha(i, (specialTimerAgainst2#/(chronoCrabTimeMax/10))*255.0)
+	
+function IncSpriteColorAlpha(spr, incNum)
+	SetSpriteColorAlpha(spr, GetSpriteColorAlpha(spr) + incNum)
+endfunction
 
 //The touch variables
 global oldTouch as Integer[20]
 global newTouch as Integer[20]
 global currentTouch as Integer[1]
+global oldY as Integer[20]
 
 function ProcessMultitouch()
 	
@@ -234,20 +239,31 @@ function ProcessMultitouch()
 	next i
 	
 	//This is here incase we need to test multitouch logic
-	//for i = 1 to 20
-		//Print(newTouch[i])
-	//next i
-	//Print(9)
-	//for i = 1 to 20
-		//Print(oldTouch[i])
-	//next i
+//~	for i = 1 to 20
+//~		Print(newTouch[i])
+//~	next i
+//~	Print(9)
+//~	for i = 1 to 20
+//~		Print(oldTouch[i])
+//~	next i
 	
 	//Checking the newTouch array for any touches that weren't in the previous frame, and acting on those touches
 	for i = 1 to 20
 		if newTouch[i] <> 0 and oldTouch.find(newTouch[i]) = -1
 			//This is a new touch! This touch ID is added to the list of current touches.
 			currentTouch.insert(newTouch[i])			
+		
+		//Checking if there was a touch by the other player at the same time as a release
+		elseif oldTouch[i] <> 0 and oldY[i] > 1 and GetRawTouchCurrentY(oldTouch[i]) > 1 and ((GetRawTouchCurrentY(oldTouch[i]) > h/2 and oldY[i] < h/2) or (GetRawTouchCurrentY(oldTouch[i]) < h/2 and oldY[i] > h/2))
+			currentTouch.insert(oldTouch[i])	
+			//Print(GetRawTouchCurrentY(oldTouch[i]))
+			//Print(0)
+			//Print(oldY[i])
+			//Sync()
+			//Sleep(500)
+			//If there are problems with the multitouch, they are probably here
 		endif
+				
 	next i
 	
 	//Setting the oldTouch array to the contents of the current newTouch array
@@ -256,6 +272,9 @@ function ProcessMultitouch()
 	next i
 	oldTouch.sort()
 	
+	for i = 1 to 20
+		oldY[i] = GetRawTouchCurrentY(oldTouch[i])
+	next i
 	
 endfunction
 
@@ -400,4 +419,79 @@ function SetSpriteColorRandomBright(spr)
 	SetSpriteColorGreen(spr, g)
 	SetSpriteColorBlue(spr, b)
 	
+endfunction
+
+global pingList as Integer[0]
+global pingNum = 501
+#constant pingStart 501
+#constant pingEnd 550
+//Ping sprites - 501 through 550
+
+function Ping(x, y, size)
+	spr = 0
+	for i = pingStart to pingEnd
+		if GetSpriteExists(i) = 0
+			spr = i
+			i = pingEnd + 1
+		endif
+	next i
+
+	if spr <> 0
+		CreateSprite(spr, meteorGlowI)
+		SetSpriteSizeSquare(spr, size)
+		SetSpritePosition(spr, x - GetSpriteWidth(spr)/2, y - GetSpriteHeight(spr)/2)
+	endif
+
+endfunction
+
+function PingColor(x, y, size, red, green, blue, depth)
+	spr = 0
+	for i = pingStart to pingEnd
+		if GetSpriteExists(i) = 0
+			spr = i
+			i = pingEnd + 1
+		endif
+	next i
+
+	if spr <> 0
+		CreateSprite(spr, meteorGlowI)
+		SetSpriteSizeSquare(spr, size)
+		SetSpritePosition(spr, x - GetSpriteWidth(spr)/2, y - GetSpriteHeight(spr)/2)
+		SetSpriteColor(spr, red, green, blue, 255)
+		SetSpriteDepth(spr, depth)
+	endif
+
+endfunction
+
+function PingCrab(x, y, size)
+	spr = 0
+	for i = pingStart to pingEnd
+		if GetSpriteExists(i) = 0
+			spr = i
+			i = pingEnd + 1
+		endif
+	next i
+
+	if spr <> 0
+		CreateSprite(spr, crabpingI)
+		SetSpriteSizeSquare(spr, size)
+		SetSpriteAngle(spr, Random(1, 360))
+		SetSpritePosition(spr, x - GetSpriteWidth(spr)/2, y - GetSpriteHeight(spr)/2)
+		SetSpriteDepth(spr, 50)
+	endif
+	
+	rnd = Random(0, 4)
+	PlaySoundR(exp1S + rnd, volumeSE/10)
+
+endfunction
+
+function PingUpdate()
+	speed# = 4
+	for i = pingStart to pingEnd
+		if GetSpriteExists(i)
+			IncSpriteColorAlpha(i, -speed#*fpsr#)
+			if GetSpriteColorAlpha(i) <= 0 then DeleteSprite(i)
+		endif
+	next i
+
 endfunction

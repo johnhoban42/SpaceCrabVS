@@ -248,7 +248,7 @@ function UpdateExp()
 
 		//Collision for the first/bottom crab
 		//dis1 = GetSpriteDistance(spr, crab1)
-		if GetSpriteDistance(spr, crab1) < 40
+		if GetSpriteDistance(spr, crab1) < 50
 			IncSpritePosition(spr, -(0-(GetSpriteMiddleX(crab1)-GetSpriteX(spr)))/4.0*fpsr#, -(0-(GetSpriteMiddleY(crab1)-GetSpriteY(spr)))/4.0*fpsr#)
 			//GlideToSpot(spr, GetSpriteMiddleX(crab1), GetSpriteMiddleY(crab1), 5)
 			//Either gliding method above works, I like the way the one on top looks more
@@ -274,7 +274,7 @@ function UpdateExp()
 				
 				UpdateButtons1()	
 				
-				//For second crab, have a different kind pf exp sound
+				//For second crab, have a different kind pf exp sound //nah
 				rnd = Random(0, 4)
 				PlaySoundR(exp1S + rnd, volumeSE)
 
@@ -291,7 +291,7 @@ function UpdateExp()
 		//Collision for the second/top crab
 		//dis1 = GetSpriteDistance(spr, crab2)
 		if deleted = 0
-			if GetSpriteDistance(spr, crab2) < 40
+			if GetSpriteDistance(spr, crab2) < 50
 				IncSpritePosition(spr, -(0-(GetSpriteMiddleX(crab2)-GetSpriteX(spr)))/4.0*fpsr#, -(0-(GetSpriteMiddleY(crab2)-GetSpriteY(spr)))/4.0*fpsr#)
 				//GlideToSpot(spr, GetSpriteMiddleX(crab2), GetSpriteMiddleY(crab2), 5)
 				//Either gliding method above works, I like the way the one on top looks more

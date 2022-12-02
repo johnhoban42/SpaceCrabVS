@@ -64,9 +64,16 @@ global startTimer# = 0
 #constant specialPrice1 20
 #constant specialPrice2 20
 #constant specialPrice3 25
-#constant specialPrice4 0 //23
+#constant specialPrice4 23
 #constant specialPrice5 30
 #constant specialPrice6 18
+
+#constant frameratecrab1 10
+#constant frameratecrab2 13
+#constant frameratecrab3 10
+#constant frameratecrab4 18
+#constant frameratecrab5 10
+#constant frameratecrab6 15
 
 #constant hitSceneMax 240
 global hit1Timer# = 0
@@ -82,7 +89,7 @@ global crab1Dir# = 1		//Crab dir is a float that goes from 1 to -1, it multiplie
 global crab1Vel# = 1.28
 global crab1Accel# = .1	//Is .1 because it takes 2 to reach full reversal, and original game timer was 20
 global crab1Turning = 0 	//Is zero for when the crab isn't turning, and 1 or -1 depending on the direction it is CHANGING TO
-global crab1Type = 4
+global crab1Type = 1
 global crab1JumpD# = 0
 global crab1JumpHMax# = 5
 global crab1JumpSpeed# = 1.216
@@ -105,7 +112,7 @@ global crab2Dir# = 1
 global crab2Vel# = 1.28
 global crab2Accel# = .1
 global crab2Turning = 0
-global crab2Type = 5
+global crab2Type = 1
 global crab2JumpD# = 0
 global crab2JumpHMax# = 5
 global crab2JumpSpeed# = 1.216
@@ -333,6 +340,9 @@ global met3CD2# = 0 //400
 #constant crab1jump2I 112
 #constant crab1death1I 113
 #constant crab1death2I 114
+#constant crab1skid1I 115
+#constant crab1skid2I 116
+#constant crab1skid3I 117
 
 #constant crab2start1I 121
 #constant crab2start2I 122
@@ -348,6 +358,9 @@ global met3CD2# = 0 //400
 #constant crab2jump2I 132
 #constant crab2death1I 133
 #constant crab2death2I 134
+#constant crab2skid1I 135
+#constant crab2skid2I 136
+#constant crab2skid3I 137
 
 #constant crab4start1I 161
 #constant crab4start2I 162
@@ -363,6 +376,9 @@ global met3CD2# = 0 //400
 #constant crab4jump2I 172
 #constant crab4death1I 173
 #constant crab4death2I 174
+#constant crab4skid1I 175
+#constant crab4skid2I 176
+#constant crab4skid3I 177
 
 #constant crab6start1I 201
 #constant crab6start2I 202
@@ -378,15 +394,20 @@ global met3CD2# = 0 //400
 #constant crab6jump2I 212
 #constant crab6death1I 213
 #constant crab6death2I 214
+#constant crab6skid1I 215
+#constant crab6skid2I 216
+#constant crab6skid3I 217
 
-#constant special4s1 215
-#constant special4s2 216
-#constant special4s3 217
-#constant special4s4 218
-#constant special4s5 219
-#constant special4s6 220
-#constant special4s7 221
-#constant special4s8 222
+#constant special4s1 225
+#constant special4s2 226
+#constant special4s3 227
+#constant special4s4 228
+#constant special4s5 229
+#constant special4s6 230
+#constant special4s7 231
+#constant special4s8 232
+
+#constant crabpingI 400
 
 //Planets images are 401 to 430
 #constant planetIMax 23
@@ -500,6 +521,8 @@ SetMusicSystemVolumeOGG(volumeM)
 #constant SPR_CS_CRABS_2 490 
 #constant SPR_CS_TXT_BACK_2 489
 
+//Ping sprites - 501 through 550
+
 // Game states
 #constant START 0
 #constant CHARACTER_SELECT 1
@@ -588,6 +611,7 @@ function LoadBaseMusic()
 	SetFolder("/media/music")
 	
 	LoadMusicOGG(fightAMusic, "fightA.ogg")
+	SetMusicLoopTimesOGG(fightAMusic, 28.235, -1)
 	LoadMusicOGG(characterMusic, "character.ogg")
 	LoadMusicOGG(resultsMusic, "results.ogg")
 	SetMusicLoopTimesOGG(resultsMusic, 14.22, -1)
@@ -653,6 +677,8 @@ function LoadBaseImages()
 		LoadImage(i, "ravespprop" + str(i - special4s1 + 1) + ".png")
 	next i
 	
+	LoadImage(crabpingI, "crabPing.png")
+	
 	/*
 	LoadImage(planetVar1I, "planet1alt1.png")
 	LoadImage(planetVar2I, "planet1alt2.png")
@@ -714,6 +740,9 @@ function LoadBaseImages()
 	LoadImage(crab1jump2I, "crab1jump2.png")
 	LoadImage(crab1death1I, "crab1death1.png")
 	LoadImage(crab1death2I, "crab1death2.png")
+	LoadImage(crab1skid1I, "crab1skid1.png")
+	LoadImage(crab1skid2I, "crab1skid2.png")
+	LoadImage(crab1skid3I, "crab1skid3.png")
 	
 	LoadImage(crab2start1I, "crab2start1.png")
 	LoadImage(crab2start2I, "crab2start2.png")
@@ -729,6 +758,9 @@ function LoadBaseImages()
 	LoadImage(crab2jump2I, "crab2jump2.png")
 	LoadImage(crab2death1I, "crab2death1.png")
 	LoadImage(crab2death2I, "crab2death2.png")
+	LoadImage(crab2skid1I, "crab2skid1.png")
+	LoadImage(crab2skid2I, "crab2skid2.png")
+	LoadImage(crab2skid3I, "crab2skid3.png")
 	
 	LoadImage(crab4start1I, "crab4start1.png")
 	LoadImage(crab4start2I, "crab4start2.png")
@@ -744,6 +776,9 @@ function LoadBaseImages()
 	LoadImage(crab4jump2I, "crab4jump2.png")
 	LoadImage(crab4death1I, "crab4death1.png")
 	LoadImage(crab4death2I, "crab4death2.png")
+	LoadImage(crab4skid1I, "crab4skid1.png")
+	LoadImage(crab4skid2I, "crab4skid2.png")
+	LoadImage(crab4skid3I, "crab4skid3.png")
 	
 	LoadImage(crab6start1I, "crab6start1.png")
 	LoadImage(crab6start2I, "crab6start2.png")
@@ -759,6 +794,9 @@ function LoadBaseImages()
 	LoadImage(crab6jump2I, "crab6jump2.png")
 	LoadImage(crab6death1I, "crab6death1.png")
 	LoadImage(crab6death2I, "crab6death2.png")
+	LoadImage(crab6skid1I, "crab6skid1.png")
+	LoadImage(crab6skid2I, "crab6skid2.png")
+	LoadImage(crab6skid3I, "crab6skid3.png")
 	
 	
 	SetFolder("/media")

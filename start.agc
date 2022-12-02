@@ -53,7 +53,9 @@ function DoStart()
 	endif
 	state = START
 	
-	
+	if GetPointerPressed() and not Button(SPR_START1)
+		PingCrab(GetPointerX(), GetPointerY(), Random (100, 180))
+	endif
 	
 	SetSpriteAngle(SPR_TITLE, 90 + 320*sin(startTimer#) + 50*sin(startTimer#*3))
 	

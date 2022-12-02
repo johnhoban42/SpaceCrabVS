@@ -96,6 +96,8 @@ do
     //Print(specialTimerAgainst2#)
     
 		//Print(GetDeviceBaseName())
+		
+	PingUpdate()
     Sync()
 loop
 

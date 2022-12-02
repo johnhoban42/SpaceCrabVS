@@ -19,9 +19,10 @@ function CreateGame1()
 	SetSpriteDepth(planet1, 8)
 	
 	CreateSprite(crab1, LoadImage("crab0walk1.png"))
-	SetSpriteSize(crab1, 64, 40)
+	//SetSpriteSize(crab1, 64, 40)
+	SetSpriteSize(crab1, 119, 67)
 	SetSpriteDepth(crab1, 3)
-	SetSpriteShapeCircle(crab1, 0, 0, 24)
+	SetSpriteShapeCircle(crab1, 0, GetSpriteHeight(crab1)/5, 16)
 	crab1R# = GetCrabDefaultR(crab1)
 	
 	if GetSpriteExists(bgGame1) = 0 then CreateSprite(bgGame1, 0)
@@ -32,9 +33,10 @@ function CreateGame1()
 	crab1Theta# = 270
 	DrawPolar1(crab1, crab1R#, crab1Theta#)
 	if crab1Type = 1		//Space
-		for i = crab1start1I to crab1death2I
+		for i = crab1start1I to crab1skid3I
 			AddSpriteAnimationFrame(crab1, i)
 		next i
+		crab1framerate = frameratecrab1
 		specialCost1 = specialPrice1
 		crab1Vel# = 1.28
 		crab1Accel# = .1
@@ -43,11 +45,10 @@ function CreateGame1()
 		crab1JumpDMax = 28
 		
 	elseif crab1Type = 2	//Wizard
-		for i = crab2start1I to crab2death2I
+		for i = crab2start1I to crab2skid3I
 			AddSpriteAnimationFrame(crab1, i)
 		next i
-		SetSpriteSize(crab1, 64, 60)
-		SetSpriteShapeCircle(crab1, 0, 10, 24)
+		crab1framerate = frameratecrab2
 		specialCost1 = specialPrice2
 		crab1Vel# = 1.08
 		crab1Accel# = .13
@@ -56,9 +57,10 @@ function CreateGame1()
 		crab1JumpDMax = 40
 		
 	elseif crab1Type = 3	//Top
-		for i = crab1start1I to crab1death2I
+		for i = crab1start1I to crab1skid3I
 			AddSpriteAnimationFrame(crab1, i)
 		next i
+		crab1framerate = frameratecrab3
 		specialCost1 = specialPrice3
 		crab1Vel# = 2.48
 		crab1Accel# = .03
@@ -67,21 +69,22 @@ function CreateGame1()
 		crab1JumpDMax = 32
 		
 	elseif crab1Type = 4	//Rave
-		for i = crab4start1I to crab4death2I
+		for i = crab4start1I to crab4skid3I
 			AddSpriteAnimationFrame(crab1, i)
 		next i
+		crab1framerate = frameratecrab4
 		specialCost1 = specialPrice4
 		crab1Vel# = 1.59
 		crab1Accel# = .08
 		crab1JumpHMax# = 10
 		crab1JumpSpeed# = -1.28
 		crab1JumpDMax = 43
-		SetSpriteSize(crab1, 119, 67)
 		
 	elseif crab1Type = 5	//Chrono
-		for i = crab1start1I to crab1death2I
+		for i = crab1start1I to crab1skid3I
 			AddSpriteAnimationFrame(crab1, i)
 		next i
+		crab1framerate = frameratecrab5
 		specialCost1 = specialPrice5
 		crab1Vel# = 1.38
 		crab1Accel# = .1
@@ -90,9 +93,10 @@ function CreateGame1()
 		crab1JumpDMax = 28
 		
 	elseif crab1Type = 6	//Ninja
-		for i = crab6start1I to crab6death2I
+		for i = crab6start1I to crab6skid3I
 			AddSpriteAnimationFrame(crab1, i)
 		next i
+		crab1framerate = frameratecrab6
 		specialCost1 = specialPrice6
 		crab1Vel# = 1.5
 		crab1Accel# = .1
@@ -198,9 +202,10 @@ function DoGame1()
 		
 	//The Rave Crab special
 	if specialTimerAgainst1# > 0 and crab2Type = 4
-		for i = special2Ex1 to special2Ex4 //special2Ex5
+		for i = special2Ex1 to special2Ex5
 			SetSpriteColorByCycle(i, specialTimerAgainst1#)
 		next i
+		SetSpriteColor(special2Ex5, (GetSpriteColorRed(special2Ex5)+510)/3, (GetSpriteColorGreen(special2Ex5)+510)/3, (GetSpriteColorBlue(special2Ex5)+510)/3, 255)
 		if specialTimerAgainst1# < raveCrabTimeMax/8
 			for i = special2Ex1 to special2Ex5
 				SetSpriteColorAlpha(i, specialTimerAgainst1#*255/(raveCrabTimeMax/8))
@@ -350,8 +355,9 @@ function DoGame1()
 	//This cancels out the weird issue where the integer is sometimes infinity
 	if crab1Theta# > 10000000 then crab1Theta# = 270
 	
-	//The visual update code
+	//The visual crab update code
 	DrawPolar1(crab1, planetSize/2 + GetSpriteHeight(crab1)/3, crab1Theta#)
+	
 	//Visuals for if the crab is jumping
 	if crab1JumpD# > 0
 		DrawPolar1(crab1, planetSize/2 + GetSpriteHeight(crab1)/3 + crab1JumpHMax# * (crab1JumpD# - (crab1JumpD#^2)/crab1JumpDMax), crab1Theta#)
@@ -436,7 +442,7 @@ function DoGame1()
 	endif
 	
 	//Death is above so that the screen nudging code activates
-	hitSpr = CheckDeath1()
+	hitSpr = 0//CheckDeath1()
 	if hitSpr <> 0
 		DeleteSprite(hitSpr)
 		if getSpriteExists(hitSpr+glowS) then DeleteSprite(hitSpr + glowS)
@@ -463,23 +469,22 @@ function TurnCrab1(dir)
 	//Accelerating the crab in the specified direction
 	inc crab1Dir#, dir * crab1Accel# * fpsr#
 	
-	if crab1Dir# < 0
-		SetSpriteFlip(crab1, 1, 0)
-	else
-		SetSpriteFlip(crab1, 0, 0)
-	endif
-	
 	if Abs(crab1Dir#) > .5
-		PlaySprite(crab1, 0, 0, 2, 2)	
+		PlaySprite(crab1, 0, 0, 15, 15)	
 	else
-		PlaySprite(crab1, 0, 0, 1, 1)
+		PlaySprite(crab1, 0, 0, 17, 17)
 	endif
 	
 	//Checking if the crab is at it's maximum velocity, stopping and capping if it is
 	if Abs(crab1Dir#) > Abs(dir)
 		crab1Dir# = dir
 		crab1Turning = 0
-		PlaySprite(crab1, crab1framerate, 1, 3, 10)		
+		if crab1Dir# < 0
+			SetSpriteFlip(crab1, 1, 0)
+		else
+			SetSpriteFlip(crab1, 0, 0)
+		endif
+		PlaySprite(crab1, crab1framerate, 1, 3, 10)
 	endif
 		
 endfunction
@@ -628,6 +633,7 @@ function UpdateButtons1()
 	
 	if expTotal1 = specialCost1
 		//Bar is full
+		if GetSpriteColorAlpha(specialButton1) < 255 and hit2Timer# = 0 then PingColor(GetSpriteMiddleX(specialButton1), GetSpriteMiddleY(specialButton1), 250, 20, 255, 40, GetSpriteDepth(specialButton1)+1)
 		SetSpriteColor(expBar1, 255, 210, 50, 255)
 		PlaySprite(expBar1, 30, 1, 1, 6)
 		SetSpriteColor(specialButton1, 20, 255, 40, 255)
@@ -640,6 +646,7 @@ function UpdateButtons1()
 	
 	if expTotal1 >= meteorCost1
 		//Enabling the button
+		if GetSpriteColorAlpha(meteorButton1) < 255 and hit2Timer# = 0 then PingColor(GetSpriteMiddleX(meteorButton1), GetSpriteMiddleY(meteorButton1), 370, 30, 100, 255, GetSpriteDepth(meteorButton1)+1)
 		SetSpriteColor(meteorButton1, 30, 100, 255, 255)
 	else
 		//Disabling the button
