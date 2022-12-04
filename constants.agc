@@ -92,11 +92,16 @@ global crab1Dir# = 1		//Crab dir is a float that goes from 1 to -1, it multiplie
 global crab1Vel# = 1.28
 global crab1Accel# = .1	//Is .1 because it takes 2 to reach full reversal, and original game timer was 20
 global crab1Turning = 0 	//Is zero for when the crab isn't turning, and 1 or -1 depending on the direction it is CHANGING TO
+<<<<<<< HEAD
 global crab1Type = 1
+=======
+global crab1Type = 6
+>>>>>>> f7a05ef (Results screen mockup)
 global crab1JumpD# = 0
 global crab1JumpHMax# = 5
 global crab1JumpSpeed# = 1.216
 global crab1JumpDMax = 28	//This variable used to be in degrees, now it's in ticks
+//Original jump values: 3.5, 38
 //Original jump values: 3.5, 38
 
 global crab1Deaths = 0
@@ -115,7 +120,11 @@ global crab2Dir# = 1
 global crab2Vel# = 1.28
 global crab2Accel# = .1
 global crab2Turning = 0
+<<<<<<< HEAD
 global crab2Type = 1
+=======
+global crab2Type = 2
+>>>>>>> f7a05ef (Results screen mockup)
 global crab2JumpD# = 0
 global crab2JumpHMax# = 5
 global crab2JumpSpeed# = 1.216
@@ -584,6 +593,7 @@ SetMusicSystemVolumeOGG(volumeM)
 #constant SPR_CS_CRABS_2 490 
 #constant SPR_CS_TXT_BACK_2 489
 
+<<<<<<< HEAD
 //Ping sprites - 701 through 750
 
 //Tweens
@@ -592,6 +602,23 @@ SetMusicSystemVolumeOGG(volumeM)
 #constant tweenOnP1 2
 #constant tweenOffP2 3
 #constant tweenOnP2 4
+=======
+// Results screen sprites - player 1
+#constant TXT_R_CRAB_MSG_1 = 500
+#constant TXT_R_WIN_MSG_1 = 501
+#constant SPR_R_CRAB_WIN_1 = 502
+#constant SPR_R_CRAB_LOSE_1 = 503
+
+#constant SPR_R_REMATCH = 590
+#constant SPR_R_CRAB_SELECT = 591
+#constant SPR_R_MAIN_MENU = 592
+
+// Results screen sprites - player 2
+#constant TXT_R_CRAB_MSG_2 = 600
+#constant TXT_R_WIN_MSG_2 = 601
+#constant SPR_R_CRAB_WIN_2 = 602
+#constant SPR_R_CRAB_LOSE_2 = 603
+>>>>>>> f7a05ef (Results screen mockup)
 
 // Game states
 #constant START 0

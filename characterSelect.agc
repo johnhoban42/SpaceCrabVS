@@ -15,23 +15,7 @@ global crabNames as string[NUM_CRABS] = [
 	"CHRONO CRAB",
 	"NINJA CRAB"]
 
-global crabDescs as string[NUM_CRABS] = [
-	"",
-	"",
-	"",
-	"",
-	"",
-	"Ninja Crab is a crab ninja."]
-	
-	
-	/*[
-	"Space Crab is a crab in space.",
-	"Wizard Crab is a crab wizard.",
-	"Top Crab is a crab top.",
-	"Rave Crab is a raving crab.",
-	"Chrono Crab is a... crab with chrono?",
-	"Ninja Crab is a crab ninja."]*/
-
+global crabDescs as string[NUM_CRABS]
 
 // Controller that holds state data for each screen
 type CharacterSelectController
