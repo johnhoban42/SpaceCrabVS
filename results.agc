@@ -141,6 +141,15 @@ function DoResults()
 		InitResults()
 	endif
 	state = RESULTS
+	
+	// Check mid-screen buttons for activity
+	if Button(SPR_R_REMATCH)
+		state = GAME
+	elseif Button(SPR_R_CRAB_SELECT)
+		state = CHARACTER_SELECT
+	elseif Button(SPR_R_MAIN_MENU)
+		state = START
+	endif
 		
 	// If we are leaving the state, exit appropriately
 	// Don't write anything after this!
@@ -150,11 +159,28 @@ function DoResults()
 	
 endfunction state
 
+// Dispose of assets from a single controller
+function CleanupResultsController(rc ref as ResultsController)
+	
+	DeleteText(rc.txtCrabMsg)
+	DeleteText(rc.txtWinMsg)
+	DeleteSprite(rc.sprCrabWin)
+	DeleteSprite(rc.sprCrabLose)
+	
+endfunction
+
 
 // Cleanup upon leaving this state
 function ExitResults()
 	
 	if GetMusicPlayingOggSP(resultsMusic) then StopMusicOGGSP(resultsMusic)
+	
+	CleanupResultsController(rc1)
+	CleanupResultsController(rc2)
+	
+	DeleteSprite(SPR_R_REMATCH)
+	DeleteSprite(SPR_R_CRAB_SELECT)
+	DeleteSprite(SPR_R_MAIN_MENU)
 	
 	resultsStateInitialized = 0
 	
