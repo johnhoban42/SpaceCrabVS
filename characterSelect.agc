@@ -124,7 +124,7 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 	crabDescs[1] = "He's been hitting the books AND the gym! His" + chr(10) + "new meteor spells are a force to be reckoned with."
 	crabDescs[2] = "Started spinning one day, and never stopped!" + chr(10) + "Learned to weaponize his rotational influence."
 	crabDescs[3] = "Always ready to start a party!!" + chr(10) + "How can you say no?"
-	crabDescs[4] = "A master of time! Doesn't like to bend time," + chr(10) + "but will make an exception in a fight."
+	crabDescs[4] = "A clockwork master! Doesn't like to bend time," + chr(10) + "but will make an exception in a fight."
 	crabDescs[5] = "Lurking in black holes, opponents will" + chr(10) + "never expect his spinning-star blades!"
 	
 	// The offset mumbo-jumbo with f-coefficients is because AGK's text rendering is awful
@@ -197,8 +197,8 @@ function InitCharacterSelect()
 	InitCharacterSelectController(csc1)
 	InitCharacterSelectController(csc2)
 	
-	PlayMusicOGG(characterMusic, 1)
-	PlayMusicOGG(fireMusic, 1)
+	PlayMusicOGGSP(characterMusic, 1)
+	PlayMusicOGGSP(fireMusic, 1)
 	SetMusicVolumeOGG(fireMusic, 20)
 	
 	characterSelectStateInitialized = 1
@@ -414,6 +414,7 @@ function DoCharacterSelect()
 	
 	
 	if csc1.ready and csc2.ready
+		spActive = 0
 		state = GAME
 	endif
 	
@@ -451,8 +452,8 @@ function ExitCharacterSelect()
 	CleanupCharacterSelectController(csc1)
 	CleanupCharacterSelectController(csc2)
 	
-	if GetMusicPlayingOGG(characterMusic) then StopMusicOGG(characterMusic)
-	if GetMusicPlayingOGG(fireMusic) then StopMusicOGG(fireMusic)
+	if GetMusicPlayingOGGSP(characterMusic) then StopMusicOGGSP(characterMusic)
+	if GetMusicPlayingOGGSP(fireMusic) then StopMusicOGGSP(fireMusic)
 	
 	characterSelectStateInitialized = 0
 	

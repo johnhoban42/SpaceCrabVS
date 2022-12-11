@@ -35,7 +35,8 @@ SetVSync(1)
 
 LoadBaseImages()
 LoadBaseSounds()
-LoadBaseMusic()
+//LoadBaseMusic()
+SetFolder("/media")
 
 global fpsr#
 

@@ -23,7 +23,17 @@ function InitGame()
 	meteorTotal1 = 0
 	meteorTotal2 = 0
 	
-	PlayMusicOGG(fightAMusic, 1)	//Todo: put in a music randomizer
+	SetSpriteVisible(split, 1)
+	
+	if spActive = 0 then PlayMusicOGGSP(fightAMusic, 1)	//Todo: put in a music randomizer
+	
+	if spActive
+		songRand = Random(1, 11)
+		if songRand <= 3 then PlayMusicOGGSP(fightAMusic, 1)
+		if songRand > 3
+			PlayMusicOGGSP(retro1M + songRand - 4, 1)
+		endif
+	endif
 	
 	gameStateInitialized = 1
 	
@@ -63,6 +73,14 @@ function DoGame()
 		DisableAttackButtons()
 	endif
 	
+	if spActive
+		UpdateSPScore(0)
+		if hit1Timer# > 0 or hit2Timer# > 0
+			//The single player game is over
+			state = START
+		endif
+	endif
+	
 	//Stops the game from crashing if this number gets too high (proper range is 1000 to 2000).
 	if meteorSprNum > 1900
 		meteorSprNum = 1050
@@ -89,9 +107,20 @@ function ExitGame()
 	
 	for i = fightAMusic to fightJMusic
 		if GetMusicExistsOGG(i)
-			if GetMusicPlayingOGG(i) then StopMusicOGG(i)
+			if GetMusicPlayingOGGSP(i) then StopMusicOGGSP(i)
 		endif
 	next i
+	
+	for i = retro1M to retro8M
+		if GetMusicExistsOGG(i)
+			if GetMusicPlayingOGGSP(i) then StopMusicOGGSP(i)
+		endif
+	next i
+	
+	if spActive
+		DeleteSprite(SPR_SP_SCORE)
+		DeleteText(TXT_SP_SCORE)
+	endif
 	
 	//Game 1 (Bottom)
 	DeleteSprite(planet1)
@@ -110,7 +139,7 @@ function ExitGame()
 	for i = special2Ex1 to special2Ex5
 		DeleteSprite(i)
 	next i
-	if GetMusicPlayingOGG(raveBass2) then StopMusicOGG(raveBass2)
+	if GetMusicPlayingOGGSP(raveBass2) then StopMusicOGGSP(raveBass2)
 	
 	
 	met1CD1# = 50
@@ -156,7 +185,7 @@ function ExitGame()
 	for i = special1Ex1 to special1Ex5
 		DeleteSprite(i)
 	next i
-	if GetMusicPlayingOGG(raveBass1) then StopMusicOGG(raveBass1)
+	if GetMusicPlayingOGGSP(raveBass1) then StopMusicOGGSP(raveBass1)
 	
 	
 	met1CD2# = 50
@@ -551,6 +580,13 @@ function ShowSpecialAnimation(crabType)
 			GlideTextToX(specialSprFront2, 2000*tDir, 30)
 		endif
 		
+		//Special coloring for the letters
+		for j = specialSprFront1 to specialSprFront2 step 2
+			for k = 0 to GetTextLength(j)
+				SetTextCharColor(j, k, GetColorByCycle(i*1.1 + k*10, "r"), GetColorByCycle(i*1.1 + k*10, "g"), GetColorByCycle(i*1.1 + k*10, "b"), 255)
+			next k
+		next j
+		
 		Sync()
 	next i
 	
@@ -582,6 +618,8 @@ endfunction
 function InitParticles()
 	//This makes sure the particles are only created once
 	if GetParticlesExists(par1met1) = 0
+		
+		//SetFolder("/media")
 		
 		img = LoadImage("envi/explode.png")
 		lifeEnd# = 2.2
@@ -650,48 +688,7 @@ function ActivateMeteorParticles(mType, spr, gameNum)
  
 endfunction
 
-function SetSpriteColorByCycle(spr, numOf360)
-	//Make sure the cycleLength is divisible by 6!
-	cycleLength = 360
-	colorTime = Mod(numOf360*3, 360)
-	phaseLen = cycleLength/6
-	
-	tmpSpr = CreateSprite(0)
-	
-	//Each colorphase will last for one phaseLen
-	if colorTime <= phaseLen	//Red -> O
-		t = colorTime
-		SetSpriteColor(tmpSpr, 255, (t*127.0)/phaseLen, 0, 255)
-		
-	elseif colorTime <= phaseLen*2	//Orange -> Y
-		t = colorTime-phaseLen
-		SetSpriteColor(tmpSpr, 255, 128+(t*127.0)/phaseLen, 0, 255)
-		
-	elseif colorTime <= phaseLen*3	//Yellow -> G
-		t = colorTime-phaseLen*2
-		SetSpriteColor(tmpSpr, 255-(t*255.0/phaseLen), 255, 0, 255)
-		
-	elseif colorTime <= phaseLen*4	//Green -> B
-		t = colorTime-phaseLen*3
-		SetSpriteColor(tmpSpr, 0, 255-(t*255.0/phaseLen), (t*255.0/phaseLen), 255)
-		
-	elseif colorTime <= phaseLen*5	//Blue -> P
-		t = colorTime-phaseLen*4
-		SetSpriteColor(tmpSpr, (t*139.0/phaseLen), 0, 255, 255)
-		
-	else 	//Purple -> R
-		t = colorTime-phaseLen*5
-		SetSpriteColor(tmpSpr, 139+(t*116.0/phaseLen), 0, 255-(t*255.0/phaseLen), 255)
-		
-	endif
-	//The -255 is a remnant from SPA, to keep the color changing the same, this can be removed if desired
-	r = 255-GetSpriteColorRed(tmpSpr)
-	g = 255-GetSpriteColorGreen(tmpSpr)
-	b = 255-GetSpriteColorBlue(tmpSpr)
-	SetSpriteColor(spr, r, g, b, GetSpriteColorAlpha(spr))
-	
-	DeleteSprite(tmpSpr)
-endfunction
+
 
 function GetCrabDefaultR(spr)
 	//Returns the normal height that a crab will be at
@@ -798,4 +795,20 @@ function CreateMeteorGlow(spr)
 	SetSpriteSize(spr+glowS, GetSpriteWidth(spr)*mult#, GetSpriteHeight(spr)*mult#)
 	SetSpriteDepth(spr+glowS, 21)
 	SetSpriteColor(spr+glowS, GetSpriteColorRed(spr), GetSpriteColorGreen(spr), GetSpriteColorBlue(spr), 255)
+endfunction
+
+function UpdateSPScore(added)
+	size = GetTextSize(TXT_SP_SCORE)
+	maxSize = 95
+	SetTextColorByCycle(TXT_SP_SCORE, gameTimer#)
+	SetTextColor(TXT_SP_SCORE, (GetTextColorRed(TXT_SP_SCORE))/3 * (10+size-spScoreMinSize)/10, (GetTextColorGreen(TXT_SP_SCORE))/3* (10+size-spScoreMinSize)/10, (GetTextColorBlue(TXT_SP_SCORE))/3* (10+size-spScoreMinSize)/10, 255)
+	if added = 1 or added = 2
+		//When the score is going up
+		SetTextString(TXT_SP_SCORE, str(spScore))
+		SetTextSize(TXT_SP_SCORE, Min(size + 12, maxSize))
+	else
+		//When the score isn't going up
+		if size > spScoreMinSize then SetTextSize(TXT_SP_SCORE, size - 1*fpsr#)
+	endif
+	
 endfunction

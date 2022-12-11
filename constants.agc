@@ -153,6 +153,10 @@ global specialTimerAgainst1# = 0
 #constant meteorMult# 1.3
 #constant specialMult# 1.8
 
+global spScore = 0
+global spHighScore = 0
+#constant spScoreMinSize = 70
+
 //Input buffers
 global buffer1 = 0
 global buffer2 = 0
@@ -238,6 +242,9 @@ global met3CD2# = 0 //400
 #constant special2Ex3 148
 #constant special2Ex4 149
 #constant special2Ex5 150
+
+#constant SPR_SP_SCORE 151
+#constant TXT_SP_SCORE 151
 
 //Image Indexes
 
@@ -414,6 +421,23 @@ global met3CD2# = 0 //400
 #constant planetITotalMax 29
 global planetVarI as Integer[planetITotalMax]
 
+#constant warpI1 431
+#constant warpI2 432
+#constant warpI3 433
+#constant warpI4 434
+#constant warpI5 435
+#constant warpI6 436
+#constant warpI7 437
+#constant warpI8 438
+#constant warpI9 439
+#constant warpI10 440
+#constant warpI11 441
+#constant warpI12 442
+#constant warpI13 443
+#constant warpI14 444
+#constant warpI15 445
+#constant warpI16 446
+
 //#constant planetVar1I 51
 //#constant planetVar2I 52
 //#constant planetVar3I 53
@@ -473,6 +497,15 @@ global planetVarI as Integer[planetITotalMax]
 #constant raveBass2 122
 #constant fireMusic 123
 
+#constant retro1M 131
+#constant retro2M 132
+#constant retro3M 133
+#constant retro4M 134
+#constant retro5M 135
+#constant retro6M 136
+#constant retro7M 137
+#constant retro8M 138
+
 //Volume for music and sound effects
 global volumeM = 60
 global volumeSE = 40
@@ -487,14 +520,14 @@ SetMusicSystemVolumeOGG(volumeM)
 #constant SPR_START1P 204
 
 //Different Crab buttons for the single player mode
-#constant SPR_STARTC1 205
-#constant SPR_STARTC2 206
-#constant SPR_STARTC3 207
-#constant SPR_STARTC4 208
-#constant SPR_STARTC5 209
-#constant SPR_STARTC6 210
+#constant SPR_SP_C1 205
+#constant SPR_SP_C2 206
+#constant SPR_SP_C3 207
+#constant SPR_SP_C4 208
+#constant SPR_SP_C5 209
+#constant SPR_SP_C6 210
 
-#constant SPR_STARTMM 211
+#constant SPR_BG_SP 211
 
  
 //Character select screen sprites - player 1 
@@ -521,7 +554,7 @@ SetMusicSystemVolumeOGG(volumeM)
 #constant SPR_CS_CRABS_2 490 
 #constant SPR_CS_TXT_BACK_2 489
 
-//Ping sprites - 501 through 550
+//Ping sprites - 701 through 750
 
 // Game states
 #constant START 0
@@ -529,6 +562,7 @@ SetMusicSystemVolumeOGG(volumeM)
 #constant GAME 2
 #constant PAUSE 3
 #constant RESULTS 4
+global spActive = 0 //Single Player active
 
 #constant glowS 20000
 type meteor
@@ -607,6 +641,7 @@ function LoadBaseSounds()
 	
 endfunction
 
+/*
 function LoadBaseMusic()
 	SetFolder("/media/music")
 	
@@ -619,11 +654,75 @@ function LoadBaseMusic()
 	LoadMusicOGG(raveBass1, "raveBass.ogg")
 	LoadMusicOGG(raveBass2, "raveBass2.ogg")
 	LoadMusicOGG(fireMusic, "fire.ogg")
+	
+	LoadMusicOGG(retro1M, "retro1.ogg")
+	LoadMusicOGG(retro2M, "retro2.ogg")
+	LoadMusicOGG(retro3M, "retro3.ogg")
+	LoadMusicOGG(retro4M, "retro4.ogg")
+	LoadMusicOGG(retro5M, "retro5.ogg")
+	LoadMusicOGG(retro6M, "retro6.ogg")
+	LoadMusicOGG(retro7M, "retro7.ogg")
+	LoadMusicOGG(retro8M, "retro8.ogg")
 		
 	SetFolder("/media")
 	
 	SetMusicSystemVolumeOGG(volumeM)
 	
+endfunction
+*/
+
+function PlayMusicOGGSP(songID, loopYN)
+	
+	oldFolder$ = GetFolder()
+	SetFolder("/media/music")
+	
+	if GetMusicExistsOGG(songID) = 0
+	
+		if songID = fightAMusic
+			LoadMusicOGG(fightAMusic, "fightA.ogg")
+			SetMusicLoopTimesOGG(fightAMusic, 28.235, -1)
+		endif
+		if songID = characterMusic then LoadMusicOGG(characterMusic, "character.ogg")
+		if songID = resultsMusic
+			LoadMusicOGG(resultsMusic, "results.ogg")
+			SetMusicLoopTimesOGG(resultsMusic, 14.22, -1)
+		endif
+	
+		if songID = raveBass1 then LoadMusicOGG(raveBass1, "raveBass.ogg")
+		if songID = raveBass2 then LoadMusicOGG(raveBass2, "raveBass2.ogg")
+		if songID = fireMusic then LoadMusicOGG(fireMusic, "fire.ogg")
+		
+		if songID = retro1M then LoadMusicOGG(retro1M, "retro1.ogg")
+		if songID = retro2M then LoadMusicOGG(retro2M, "retro2.ogg")
+		if songID = retro3M then LoadMusicOGG(retro3M, "retro3.ogg")
+		if songID = retro4M then LoadMusicOGG(retro4M, "retro4.ogg")
+		if songID = retro5M then LoadMusicOGG(retro5M, "retro5.ogg")
+		if songID = retro6M then LoadMusicOGG(retro6M, "retro6.ogg")
+		if songID = retro7M then LoadMusicOGG(retro7M, "retro7.ogg")
+		if songID = retro8M then LoadMusicOGG(retro8M, "retro8.ogg")
+	
+	endif
+		
+	PlayMusicOGG(songID, loopYN)
+	SetFolder("/" + oldFolder$)
+	
+endfunction
+
+function GetMusicPlayingOGGSP(songID)
+	exist = 0
+	exist = GetMusicExistsOGG(songID)
+	if exist
+		exist = GetMusicPlayingOGG(songID)
+	endif
+endfunction exist
+
+function StopMusicOGGSP(songID)
+
+	if GetMusicExistsOGG(songID)
+		StopMusicOGG(songID)
+		DeleteMusicOGG(songID)
+	endif
+
 endfunction
 
 function LoadBaseImages()
@@ -698,6 +797,10 @@ function LoadBaseImages()
 	next i
 	for i = 1 to planetITotalMax - planetIMax
 		LoadImage(planetVarI[planetIMax + i], "legendp" + str(i) + ".png")
+	next i
+	
+	for i = 1 to 16
+		LoadImage(warpI1 - 1 + i, "hyperspacecolorized" + str(i) + ".png")
 	next i
 	
 	LoadImage(meteorI1, "meteor1.png")
@@ -797,7 +900,6 @@ function LoadBaseImages()
 	LoadImage(crab6skid1I, "crab6skid1.png")
 	LoadImage(crab6skid2I, "crab6skid2.png")
 	LoadImage(crab6skid3I, "crab6skid3.png")
-	
 	
 	SetFolder("/media")
 	

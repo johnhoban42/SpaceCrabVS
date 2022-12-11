@@ -9,7 +9,7 @@ global resultsStateInitialized as integer = 0
 // Does nothing right now, just a placeholder
 function InitResults()
 	
-	PlayMusicOGG(resultsMusic, 1)
+	PlayMusicOGGSP(resultsMusic, 1)
 	
 	resultsStateInitialized = 1
 	
@@ -39,7 +39,7 @@ endfunction state
 // Cleanup upon leaving this state
 function ExitResults()
 	
-	if GetMusicPlayingOgg(resultsMusic) then StopMusicOGG(resultsMusic)
+	if GetMusicPlayingOggSP(resultsMusic) then StopMusicOGGSP(resultsMusic)
 	
 	resultsStateInitialized = 0
 	

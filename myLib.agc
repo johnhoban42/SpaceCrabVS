@@ -94,6 +94,15 @@ function LoadSpriteExpress(spr, file$, wid, hei, x, y, depth)
 	SetSpriteDepth(spr, depth)
 endfunction
 
+function CreateTextExpress(txt, content$, size, fontI, alignment, x, y, depth)
+	CreateText(txt, content$)
+	SetTextSize(txt, size)
+	SetTextFontImage(txt, fontI)
+	SetTextAlignment(txt, alignment)
+	SetTextPosition(txt, x, y)
+	SetTextDepth(txt, depth)
+endfunction
+
 function IncSpriteX(spr, amt)
 	SetSpriteX(spr, GetSpriteX(spr)+amt)
 endfunction
@@ -388,7 +397,7 @@ function GetSoundPlayingR(sound)
 			result = GetSoundInstances(sound)
 		else
 			//The strange case for WEIRD and PSYCHO android devices
-			result = GetMusicPlayingOGG(sound)
+			result = GetMusicPlayingOGGSP(sound)
 		endif
 	endif
 	
@@ -421,10 +430,138 @@ function SetSpriteColorRandomBright(spr)
 	
 endfunction
 
+function SetSpriteColorByCycle(spr, numOf360)
+	//Make sure the cycleLength is divisible by 6!
+	cycleLength = 360
+	colorTime = Mod(numOf360*3, 360)
+	phaseLen = cycleLength/6
+	
+	tmpSpr = CreateSprite(0)
+	
+	//Each colorphase will last for one phaseLen
+	if colorTime <= phaseLen	//Red -> O
+		t = colorTime
+		SetSpriteColor(tmpSpr, 255, (t*127.0)/phaseLen, 0, 255)
+		
+	elseif colorTime <= phaseLen*2	//Orange -> Y
+		t = colorTime-phaseLen
+		SetSpriteColor(tmpSpr, 255, 128+(t*127.0)/phaseLen, 0, 255)
+		
+	elseif colorTime <= phaseLen*3	//Yellow -> G
+		t = colorTime-phaseLen*2
+		SetSpriteColor(tmpSpr, 255-(t*255.0/phaseLen), 255, 0, 255)
+		
+	elseif colorTime <= phaseLen*4	//Green -> B
+		t = colorTime-phaseLen*3
+		SetSpriteColor(tmpSpr, 0, 255-(t*255.0/phaseLen), (t*255.0/phaseLen), 255)
+		
+	elseif colorTime <= phaseLen*5	//Blue -> P
+		t = colorTime-phaseLen*4
+		SetSpriteColor(tmpSpr, (t*139.0/phaseLen), 0, 255, 255)
+		
+	else 	//Purple -> R
+		t = colorTime-phaseLen*5
+		SetSpriteColor(tmpSpr, 139+(t*116.0/phaseLen), 0, 255-(t*255.0/phaseLen), 255)
+		
+	endif
+	//The -255 is a remnant from SPA, to keep the color changing the same, this can be removed if desired
+	r = 255-GetSpriteColorRed(tmpSpr)
+	g = 255-GetSpriteColorGreen(tmpSpr)
+	b = 255-GetSpriteColorBlue(tmpSpr)
+	SetSpriteColor(spr, r, g, b, GetSpriteColorAlpha(spr))
+	
+	DeleteSprite(tmpSpr)
+endfunction
+
+function SetTextColorByCycle(txt, numOf360)
+	//Make sure the cycleLength is divisible by 6!
+	cycleLength = 360
+	colorTime = Mod(numOf360*3, 360)
+	phaseLen = cycleLength/6
+	
+	tmpSpr = CreateSprite(0)
+	
+	//Each colorphase will last for one phaseLen
+	if colorTime <= phaseLen	//Red -> O
+		t = colorTime
+		SetSpriteColor(tmpSpr, 255, (t*127.0)/phaseLen, 0, 255)
+		
+	elseif colorTime <= phaseLen*2	//Orange -> Y
+		t = colorTime-phaseLen
+		SetSpriteColor(tmpSpr, 255, 128+(t*127.0)/phaseLen, 0, 255)
+		
+	elseif colorTime <= phaseLen*3	//Yellow -> G
+		t = colorTime-phaseLen*2
+		SetSpriteColor(tmpSpr, 255-(t*255.0/phaseLen), 255, 0, 255)
+		
+	elseif colorTime <= phaseLen*4	//Green -> B
+		t = colorTime-phaseLen*3
+		SetSpriteColor(tmpSpr, 0, 255-(t*255.0/phaseLen), (t*255.0/phaseLen), 255)
+		
+	elseif colorTime <= phaseLen*5	//Blue -> P
+		t = colorTime-phaseLen*4
+		SetSpriteColor(tmpSpr, (t*139.0/phaseLen), 0, 255, 255)
+		
+	else 	//Purple -> R
+		t = colorTime-phaseLen*5
+		SetSpriteColor(tmpSpr, 139+(t*116.0/phaseLen), 0, 255-(t*255.0/phaseLen), 255)
+		
+	endif
+	//The -255 is a remnant from SPA, to keep the color changing the same, this can be removed if desired
+	r = 255-GetSpriteColorRed(tmpSpr)
+	g = 255-GetSpriteColorGreen(tmpSpr)
+	b = 255-GetSpriteColorBlue(tmpSpr)
+	SetTextColor(txt, r, g, b, GetTextColorAlpha(txt))
+	
+	DeleteSprite(tmpSpr)
+endfunction
+
+function GetColorByCycle(numOf360, rgb$)
+	cycleLength = 360
+	colorTime = Mod(numOf360*3, 360)
+	phaseLen = cycleLength/6
+	
+	tmpSpr = CreateSprite(0)
+	
+	//Each colorphase will last for one phaseLen
+	if colorTime <= phaseLen	//Red -> O
+		t = colorTime
+		SetSpriteColor(tmpSpr, 255, (t*127.0)/phaseLen, 0, 255)
+		
+	elseif colorTime <= phaseLen*2	//Orange -> Y
+		t = colorTime-phaseLen
+		SetSpriteColor(tmpSpr, 255, 128+(t*127.0)/phaseLen, 0, 255)
+		
+	elseif colorTime <= phaseLen*3	//Yellow -> G
+		t = colorTime-phaseLen*2
+		SetSpriteColor(tmpSpr, 255-(t*255.0/phaseLen), 255, 0, 255)
+		
+	elseif colorTime <= phaseLen*4	//Green -> B
+		t = colorTime-phaseLen*3
+		SetSpriteColor(tmpSpr, 0, 255-(t*255.0/phaseLen), (t*255.0/phaseLen), 255)
+		
+	elseif colorTime <= phaseLen*5	//Blue -> P
+		t = colorTime-phaseLen*4
+		SetSpriteColor(tmpSpr, (t*139.0/phaseLen), 0, 255, 255)
+		
+	else 	//Purple -> R
+		t = colorTime-phaseLen*5
+		SetSpriteColor(tmpSpr, 139+(t*116.0/phaseLen), 0, 255-(t*255.0/phaseLen), 255)
+		
+	endif
+	
+	result = 0
+	//The -255 is a remnant from SPA, to keep the color changing the same, this can be removed if desired
+	if rgb$ = "r" then result = 255-GetSpriteColorRed(tmpSpr)
+	if rgb$ = "g" then result = 255-GetSpriteColorGreen(tmpSpr)
+	if rgb$ = "b" then result = 255-GetSpriteColorBlue(tmpSpr)
+	DeleteSprite(tmpSpr)
+endfunction result
+
 global pingList as Integer[0]
-global pingNum = 501
-#constant pingStart 501
-#constant pingEnd 550
+global pingNum = 701
+#constant pingStart 701
+#constant pingEnd 750
 //Ping sprites - 501 through 550
 
 function Ping(x, y, size)
