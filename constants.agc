@@ -458,6 +458,9 @@ global planetVarI as Integer[planetITotalMax]
 #constant par2met3 7
 #constant par2spe1 8
 
+#constant par1jump 9
+#constant par2jump 10
+
 //Sound Indexes
 #constant turnS 1
 #constant jumpS 2
@@ -555,6 +558,13 @@ SetMusicSystemVolumeOGG(volumeM)
 #constant SPR_CS_TXT_BACK_2 489
 
 //Ping sprites - 701 through 750
+
+//Tweens
+#constant selectTweenTime# .4 //In seconds
+#constant tweenOffP1 1
+#constant tweenOnP1 2
+#constant tweenOffP2 3
+#constant tweenOnP2 4
 
 // Game states
 #constant START 0

@@ -16,7 +16,8 @@ function InitGame()
 	
 	CreateGame1()
 	CreateGame2()
-	InitParticles()
+	InitAttackParticles()
+	InitJumpParticles()
 	gameTimer# = 0
 	gameDifficulty1 = 1
 	gameDifficulty2 = 1
@@ -615,7 +616,7 @@ function ShowSpecialAnimation(crabType)
 	
 endfunction
 
-function InitParticles()
+function InitAttackParticles()
 	//This makes sure the particles are only created once
 	if GetParticlesExists(par1met1) = 0
 		
@@ -811,4 +812,61 @@ function UpdateSPScore(added)
 		if size > spScoreMinSize then SetTextSize(TXT_SP_SCORE, size - 1*fpsr#)
 	endif
 	
+endfunction
+
+function InitJumpParticles()
+	//This makes sure the particles are only created once
+	if GetParticlesExists(par1met1) = 0
+		
+		//SetFolder("/media")
+		
+		img = LoadImage("envi/explode.png")
+		lifeEnd# = 2.2
+		
+		for i = par1met1 to par2spe1
+			CreateParticles(i, 2000, 2000)	//This is out of range so that
+    		SetParticlesImage (i, img)
+			SetParticlesFrequency(i, 300)
+			SetParticlesLife(i, lifeEnd#)	//Time in seconds that the particles stick around
+			SetParticlesSize(i, 20)
+			SetParticlesStartZone(i, -5, -5, 5, 5) //The box that the particles can start from
+    		SetParticlesDirection(i, 30, 20)
+    		SetParticlesAngle(i, 360)
+    		SetParticlesVelocityRange (i, 0.8, 2.5 )
+    		SetParticlesMax (i, 100)
+    		SetParticlesDepth(i, 25)
+    		
+    		 if Mod(i, 4) = 1
+				AddParticlesColorKeyFrame (i, 0.0, 255, 0, 0, 255 )
+				AddParticlesColorKeyFrame (i, 0.01, 255, 255, 0, 255 )
+				AddParticlesColorKeyFrame (i, lifeEnd#, 255, 0, 0, 0 )
+			elseif Mod(i, 4) = 2
+				AddParticlesColorKeyFrame (i, 0.0, 0, 0, 0, 255 )
+				AddParticlesColorKeyFrame (i, 0.01, 239, 0, 239, 255 )
+				AddParticlesColorKeyFrame (i, lifeEnd#, 30, 50, 180, 0 )
+			elseif Mod(i, 4) = 3
+				AddParticlesColorKeyFrame (i, 0.0, 255, 0, 0, 255 )
+				AddParticlesColorKeyFrame (i, 0.01, 255, 100, 100, 255 )
+				AddParticlesColorKeyFrame (i, lifeEnd#, 255, 0, 0, 0 )
+			elseif Mod(i, 4) = 0
+				//For the special wizard sparkles
+				SetParticlesImage (i, expOrbI)
+				SetParticlesPosition (i, w/2, h*3/4 - h/2*(i/4-1))	//Places them on different screen centers
+				SetParticlesFrequency(i, 60)
+	    		SetParticlesMax(i, 0)
+				SetParticlesLife(i, lifeEnd#)	//Time in seconds that the particles stick around
+				SetParticlesSize(i, 8)
+				SetParticlesStartZone(i, -w/2, -h/4, w/2, h/4) //The box that the particles can start from
+	    		SetParticlesDirection(i, 0, 5)
+	    		SetParticlesAngle(i, 360)
+	    		SetParticlesVelocityRange (i, .1, .6)
+	    		SetParticlesDepth(i, 5)
+	    		
+	    		AddParticlesColorKeyFrame (i, 0.0, 255, 255, 100, 0 )
+				AddParticlesColorKeyFrame (i, .6, 255, 255, 100, 255 )
+				AddParticlesColorKeyFrame (i, lifeEnd#, 205, 205, 50, 0 )
+    		endif
+		next i
+	
+	endif
 endfunction

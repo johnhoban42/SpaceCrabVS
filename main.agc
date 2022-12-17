@@ -99,6 +99,7 @@ do
 		//Print(GetDeviceBaseName())
 		
 	PingUpdate()
+	UpdateAllTweens(GetFrameTime())
     Sync()
 loop
 

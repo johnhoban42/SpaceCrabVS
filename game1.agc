@@ -491,10 +491,21 @@ function TurnCrab1(dir)
 	//Accelerating the crab in the specified direction
 	inc crab1Dir#, dir * crab1Accel# * fpsr#
 	
-	if Abs(crab1Dir#) > .5
+	lastFourth = 0
+	if crab1Dir# > dir/2.0 and dir > 0 then lastFourth = 1
+	if crab1Dir# < dir/2.0 and dir < 0 then lastFourth = 1
+	
+	Print(crab1Dir#)
+	Print(lastFourth)
+	Print(dir)
+	//Sleep(100)
+	
+	if lastFourth
+		PlaySprite(crab1, 0, 0, 17, 17)	
+	elseif Abs(crab1Dir#) > .5
 		PlaySprite(crab1, 0, 0, 15, 15)	
 	else
-		PlaySprite(crab1, 0, 0, 17, 17)
+		PlaySprite(crab1, 0, 0, 16, 16)
 	endif
 	
 	//Checking if the crab is at it's maximum velocity, stopping and capping if it is

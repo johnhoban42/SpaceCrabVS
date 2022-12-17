@@ -44,6 +44,7 @@ type CharacterSelectController
 	crabSelected as integer
 	glideFrame as float
 	glideDirection as integer
+	stage as integer		//Stage is how far the player is into the
 	
 	// Sprite indices
 	sprReady as integer
@@ -62,6 +63,10 @@ endtype
 
 #constant charWid 390
 #constant charHei 357 //257
+#constant charVer 315
+#constant charVerSmall 370
+#constant charVerSmallGap 250
+#constant charHorSmallGap 250
 
 // Initialize the sprites within a CSC
 // "player" -> 1 or 2
@@ -70,6 +75,8 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 	p as integer, f as integer
 	if csc.player = 1 then p = 1 else p = -1 // makes the position calculations easier
 	if csc.player = 1 then f = 0 else f = 1 // makes the flip calculations easier
+	
+	csc.stage = 1
 	
 	LoadSprite(csc.sprReady, "ready.png")
 	SetSpriteSize(csc.sprReady, w/3, h/16)
@@ -114,11 +121,20 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 		else
 			LoadSprite(csc.sprCrabs + i, "crab1.png")
 		endif
-		SetSpriteSize(csc.sprCrabs + i, charWid, charHei)
-		SetSpriteMiddleScreenOffset(csc.sprCrabs + i, p*(i-csc.crabSelected)*w, p*335)
+		SetSpriteSize(csc.sprCrabs + i, charWid/2, charHei/2)
+		//SetSpriteMiddleScreenOffset(csc.sprCrabs + i, p*(i-csc.crabSelected)*w, p*335)	//The old way to position the sprites
 		SetSpriteFlip(csc.sprCrabs + i, f, f)
-	next i
+		
+		CreateTweenSprite(csc.sprCrabs + i, selectTweenTime#)
+		SetTweenSpriteSizeX(csc.sprCrabs + i, charWid, charWid/2, TweenOvershoot())
+		SetTweenSpriteSizeY(csc.sprCrabs + i, charHei, charHei/2, TweenOvershoot())
+		SetTweenSpriteX(csc.sprCrabs + i, w/2-charWid/2, w/2 - charWid/4 + p*charHorSmallGap*(Mod(i,3)-1), TweenOvershoot())
+		SetTweenSpriteY(csc.sprCrabs + i, h/2-charHei/2 + p*charVer, h/2 - charHei/4 + p*charVerSmall + p*charVerSmallGap*((i)/3), TweenOvershoot())
+			
+		SetSpritePosition(csc.sprCrabs + i, w/2 - GetSpriteWidth(csc.sprCrabs + i)/2 + p*charHorSmallGap*(Mod(i,3)-1), h/2 - charHei/4 + p*charVerSmall + p*charVerSmallGap*((i)/3))
 	
+	next i
+		
 	//Descriptions were moved down here to include newline characters
 	crabDescs[0] = "Known across the cosmos for his quick dodges!" + chr(10) + "Has connections in high places."
 	crabDescs[1] = "He's been hitting the books AND the gym! His" + chr(10) + "new meteor spells are a force to be reckoned with."
@@ -155,6 +171,9 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 	SetTextSpacing(csc.txtReady, -30)
 	SetTextMiddleScreenOffset(csc.txtReady, f, 0, p*7*h/16)
 	SetTextVisible(csc.txtReady, 0)
+	
+	
+	SetVisibleCharacterUI(1, csc)
 	
 endfunction
 
@@ -232,25 +251,37 @@ function ChangeCrabs(csc ref as CharacterSelectController, dir as integer, start
 		SetTextMiddleScreenX(csc.txtCrabName, f)
 		SetTextString(csc.txtCrabDesc, crabDescs[csc.crabSelected])
 		SetTextMiddleScreenX(csc.txtCrabDesc, f)
+		
+		for spr = csc.sprCrabs to csc.sprCrabs + NUM_CRABS-1
+			if GetTweenSpritePlaying(spr, spr) then StopTweenSprite(spr, spr)
+		next spr
 	endif
 	
 	cNum = csc.crabSelected
 	
+	//if GetSpriteWidth(csc.sprCrabs+csc.crabSelected) < charWid/2+1 then SetSpriteMiddleScreenX(csc.sprCrabs+csc.crabSelected)
+	
 	// Glide
 	for spr = csc.sprCrabs to csc.sprCrabs + NUM_CRABS-1
 		num = spr - csc.sprCrabs
-		GlideToX(spr, w/2 - GetSpriteWidth(spr)/2 - (cNum-num)*1000*p, 4)
 		//SnapbackToX(spr, glideMax - csc.glideFrame, glideMax, w/2 - GetSpriteWidth(spr)/2 - (cNum-num)*1000*p, -40*dir*p, 4, 5)	//Andy Version
 		//SnapbackToX(spr, csc.glideFrame, glideMax, w/2 - GetSpriteWidth(spr)/2 * cNum*1000, 30, 10)
 		//GlideToX(spr, GetSpriteX(spr) + -1*p*dir*w, 30)
 		//Print(GetSPriteX(spr))
 		
+		
+		
 		if csc.glideFrame > glideMax/2
 			SetSpriteSize(spr, charWid - 45 + (glideMax - csc.glideFrame)/glideMax*90, charHei - 30 + (glideMax - csc.glideFrame)/glideMax*60)
 			color = (glideMax - csc.glideFrame)/glideMax*110
-		SetSpriteColor(spr, 200 + color, 200 + color, 200 + color, 255)
+			SetSpriteColor(spr, 200 + color, 200 + color, 200 + color, 255)
 		endif
 		
+		
+		GlideToX(spr, w/2 - GetSpriteWidth(spr)/2 - (cNum-num)*1000*p, 4)
+		
+		if csc.player = 1 then GlideToY(spr, h/2 - GetSpriteHeight(spr)/2 + charVer, 2)
+		if csc.player = 2 then GlideToY(spr, h/2 - GetSpriteHeight(spr)/2 - charVer, 2)
 		
 	next spr
 	dec csc.glideFrame
@@ -327,21 +358,59 @@ endfunction
 function DoCharacterSelectController(csc ref as CharacterSelectController)
 
 	if not csc.ready
-		// Ready button
-		if Button(csc.sprReady)
-			PlaySoundR(chooseS, 100)
-			SelectCrab(csc)
-		// Scroll left
-		elseif (ButtonMultitouchEnabled(csc.sprLeftArrow) or (GetMultitouchPressedTopRight() and csc.player = 2) or (GetMultitouchPressedBottomLeft() and csc.player = 1)) and csc.crabSelected > 0
-			PlaySoundR(arrowS, 100)
-			ChangeCrabs(csc, -1, 1)
-		// Scroll right
-		elseif (ButtonMultitouchEnabled(csc.sprRightArrow) or (GetMultitouchPressedTopLeft() and csc.player = 2) or (GetMultitouchPressedBottomRight() and csc.player = 1)) and csc.crabSelected < NUM_CRABS-1
-			ChangeCrabs(csc, 1, 1)
-			PlaySoundR(arrowS, 100)
+		
+		//The 6-crab view
+		if csc.stage = 1
+			for i = 0 to NUM_CRABS-1
+				spr = csc.sprCrabs + i
+				if ButtonMultitouchEnabled(spr)
+					SetVisibleCharacterUI(2, csc)
+					csc.crabSelected = i-1
+					PlaySoundR(arrowS, 100)
+					ChangeCrabs(csc, 1, 1)
+					csc.stage = 2
+					i = NUM_CRABS
+				endif
+			next i
+		
+		//The 1-crab view
+		elseif csc.stage = 2
+			// Ready button
+			if Button(csc.sprReady)
+				PlaySoundR(chooseS, 100)
+				SelectCrab(csc)
+			// Scroll left
+			elseif (ButtonMultitouchEnabled(csc.sprLeftArrow) or (GetMultitouchPressedTopRight() and csc.player = 2) or (GetMultitouchPressedBottomLeft() and csc.player = 1)) and csc.crabSelected > 0
+				PlaySoundR(arrowS, 100)
+				ChangeCrabs(csc, -1, 1)
+			// Scroll right
+			elseif (ButtonMultitouchEnabled(csc.sprRightArrow) or (GetMultitouchPressedTopLeft() and csc.player = 2) or (GetMultitouchPressedBottomRight() and csc.player = 1)) and csc.crabSelected < NUM_CRABS-1
+				ChangeCrabs(csc, 1, 1)
+				PlaySoundR(arrowS, 100)
+			endif
+			
+			if csc.glideFrame <= 0
+				SetSpriteSize(csc.sprCrabs+csc.crabSelected, charWid, charHei)
+				SetSpriteX(csc.sprCrabs+csc.crabSelected, w/2 - GetSpriteWidth(csc.sprCrabs+csc.crabSelected)/2)
+				if csc.player = 1 then SetSpriteY(csc.sprCrabs+csc.crabSelected, h/2 - GetSpriteHeight(csc.sprCrabs+csc.crabSelected)/2 + charVer)
+				if csc.player = 2 then SetSpriteY(csc.sprCrabs+csc.crabSelected, h/2 - GetSpriteHeight(csc.sprCrabs+csc.crabSelected)/2 - charVer)
+			endif
+			
+			for i = 0 to NUM_CRABS-1
+				spr = csc.sprCrabs + i
+				if ButtonMultitouchEnabled(spr)
+					SetVisibleCharacterUI(1, csc)
+					for j = 0 to NUM_CRABS-1
+						PlayTweenSprite(csc.sprCrabs + j, csc.sprCrabs + j, 0)
+					next j
+					PlaySoundR(arrowS, 100)
+					csc.stage = 1
+					spr = NUM_CRABS
+				endif
+			next i
 		endif
 	endif
-	
+		
 	//Slowly lighting the backgrounds
 	SetSpriteColorAlpha(csc.sprBG, 205+abs(50*cos(90*csc.player + 80*GetMusicPositionOGG(characterMusic))))
 	IncSpriteAngle(csc.sprBGB, 6*fpsr#)
@@ -390,6 +459,7 @@ function DoCharacterSelect()
 		txt = csc1.txtCrabName
 		for i = 0 to GetTextLength(txt)
 			SetTextCharY(txt, i, -1 * (jitterNum + csc1.glideFrame) + Random(0, (jitterNum + csc1.glideFrame)*2))
+			if csc1.stage = 1 and i > 12 then SetTextCharY(csc1.txtCrabName, i, -1 * (jitterNum + csc1.glideFrame) + Random(0, (jitterNum + csc1.glideFrame)*2) + GetTextSize(txt))
 			SetTextCharAngle(txt, i, -1 * (jitterNum + csc1.glideFrame) + Random(0, jitterNum + csc1.glideFrame)*2)
 		next i
 	else
@@ -403,6 +473,7 @@ function DoCharacterSelect()
 		txt = csc2.txtCrabName
 		for i = 0 to GetTextLength(txt)
 			SetTextCharY(txt, i, -102 -1 * (jitterNum + csc2.glideFrame) + Random(0, (jitterNum + csc2.glideFrame)*2))
+			if csc2.stage = 1 and i > 12 then SetTextCharY(csc2.txtCrabName, i, -102 -1 * (jitterNum + csc2.glideFrame) + Random(0, (jitterNum + csc2.glideFrame)*2) - GetTextSize(txt))
 			SetTextCharAngle(txt, i, 180 - 1*(jitterNum + csc2.glideFrame) + Random(0, jitterNum + csc2.glideFrame)*2)
 		next i
 	else
@@ -426,6 +497,19 @@ function DoCharacterSelect()
 	
 endfunction state
 
+
+function SetVisibleCharacterUI(stage, csc ref as CharacterSelectController)
+	
+	if stage = 1 then SetTextString(csc.txtCrabName, "CHOOSE YOUR" + chr(13)+chr(10) + "CRUSTACEAN!")
+	
+	SetSpriteVisible(csc.sprReady, stage-1)
+	SetSpriteVisible(csc.sprLeftArrow, stage-1)
+	SetSpriteVisible(csc.sprRightArrow, stage-1)
+	SetTextVisible(csc.txtCrabDesc, stage-1)
+	SetSpriteVisible(csc.sprTxtBack, stage-1)
+	
+	csc.glideFrame = 0
+endfunction
 
 // Dispose of assets from a single controller
 function CleanupCharacterSelectController(csc ref as CharacterSelectController)
