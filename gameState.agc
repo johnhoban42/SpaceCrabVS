@@ -16,6 +16,7 @@ function InitGame()
 	
 	CreateGame1()
 	CreateGame2()
+	LoadJumpSounds()
 	InitAttackParticles()
 	InitJumpParticles()
 	gameTimer# = 0
@@ -620,7 +621,7 @@ function InitAttackParticles()
 	//This makes sure the particles are only created once
 	if GetParticlesExists(par1met1) = 0
 		
-		//SetFolder("/media")
+		SetFolder("/media")
 		
 		img = LoadImage("envi/explode.png")
 		lifeEnd# = 2.2
@@ -713,7 +714,7 @@ function SetBGRandomPosition(spr)
 			SetSpriteSizeSquare(spr, w*1.3)
 			SetSpriteAngle(spr, 0)
 			SetSpriteMiddleScreenX(spr)
-			SetSpriteY(spr, h*3/4 - GetSpriteHeight(spr)/2)
+			SetSpriteY(spr, h*3/4 - GetSpriteHeight(spr)/2-20)
 		endif
 		if spr = SPR_CS_BG_2
 			SetSpritePosition(spr, 0, h/2-GetSpriteHeight(spr))
@@ -723,7 +724,7 @@ function SetBGRandomPosition(spr)
 			SetSpriteSizeSquare(spr, w*1.3)
 			SetSpriteAngle(spr, 180)
 			SetSpriteMiddleScreenX(spr)
-			SetSpriteY(spr, h/4 - GetSpriteHeight(spr)/2)
+			SetSpriteY(spr, h/4 - GetSpriteHeight(spr)/2+20)
 		endif
 		//For the character selection
 	endif
@@ -815,58 +816,150 @@ function UpdateSPScore(added)
 endfunction
 
 function InitJumpParticles()
+	
+	lifeEnd# = .6
+	
 	//This makes sure the particles are only created once
-	if GetParticlesExists(par1met1) = 0
+	if GetParticlesExists(par1jump) = 0
+			
+		CreateParticles(par1jump, 2000, 2000)
+		CreateParticles(par2jump, 2000, 2000)
+				
+	endif
+	
+	for i = par1jump to par2jump
+		cType = 0
+		if i = par1jump then cType = crab1Type
+		if i = par2jump then cType = crab2Type
 		
-		//SetFolder("/media")
+		SetParticlesPosition(i, 2000, 2000)
 		
-		img = LoadImage("envi/explode.png")
-		lifeEnd# = 2.2
+		ClearParticlesColors(i)
+		SetParticlesFrequency(i, 300)
+		SetParticlesLife(i, lifeEnd#)	//Time in seconds that the particles stick around
+		SetParticlesSize(i, 10)
+		SetParticlesStartZone(i, -5, -5, 5, 5) //The box that the particles can start from
+		SetParticlesDirection(i, 100, 100)
+		SetParticlesAngle(i, 10)
+		SetParticlesVelocityRange (i, 0.8, 2.5 )
+		SetParticlesMax (i, 100)
+		SetParticlesDepth(i, 25)
 		
-		for i = par1met1 to par2spe1
-			CreateParticles(i, 2000, 2000)	//This is out of range so that
-    		SetParticlesImage (i, img)
-			SetParticlesFrequency(i, 300)
-			SetParticlesLife(i, lifeEnd#)	//Time in seconds that the particles stick around
+		if cType = 1
+			AddParticlesColorKeyFrame (i, 0.0, 255, 255, 255, 255 )
+			AddParticlesColorKeyFrame (i, lifeEnd#*2/3, 255, 255, 0, 255)
+			AddParticlesColorKeyFrame (i, lifeEnd#, 255, 255, 0, 0 )
+			SetParticlesRotationRange(i, 710, 890)
+			SetParticlesSize(i, 8)
+			SetParticlesFrequency(i, 200)
+			SetParticlesMax (i, 50)
+			SetParticlesAngle(i, 40)
+		elseif cType = 2
+			AddParticlesColorKeyFrame (i, 0.0, 255, 0, 0, 255 )
+			AddParticlesColorKeyFrame (i, lifeEnd#/2, 0, 0, 255, 255 )
+			AddParticlesColorKeyFrame (i, lifeEnd#, 120, 100, 255, 0 )
+			SetParticlesRotationRange(i, 770, 1070)
+			SetParticlesSize(i, 15)
+			SetParticlesFrequency(i, 70)
+			SetParticlesMax (i, 30)
+			SetParticlesAngle(i, 40)
+		elseif cType = 3
+			AddParticlesColorKeyFrame (i, 0.0, 255, 0, 0, 255 )
+			AddParticlesColorKeyFrame (i, lifeEnd#/3, 100, 100, 100, 255 )
+			AddParticlesColorKeyFrame (i, lifeEnd#/2, 40, 40, 40, 0 )
+			SetParticlesRotationRange(i, 10, 90)
 			SetParticlesSize(i, 20)
-			SetParticlesStartZone(i, -5, -5, 5, 5) //The box that the particles can start from
-    		SetParticlesDirection(i, 30, 20)
-    		SetParticlesAngle(i, 360)
-    		SetParticlesVelocityRange (i, 0.8, 2.5 )
-    		SetParticlesMax (i, 100)
-    		SetParticlesDepth(i, 25)
-    		
-    		 if Mod(i, 4) = 1
-				AddParticlesColorKeyFrame (i, 0.0, 255, 0, 0, 255 )
-				AddParticlesColorKeyFrame (i, 0.01, 255, 255, 0, 255 )
-				AddParticlesColorKeyFrame (i, lifeEnd#, 255, 0, 0, 0 )
-			elseif Mod(i, 4) = 2
-				AddParticlesColorKeyFrame (i, 0.0, 0, 0, 0, 255 )
-				AddParticlesColorKeyFrame (i, 0.01, 239, 0, 239, 255 )
-				AddParticlesColorKeyFrame (i, lifeEnd#, 30, 50, 180, 0 )
-			elseif Mod(i, 4) = 3
-				AddParticlesColorKeyFrame (i, 0.0, 255, 0, 0, 255 )
-				AddParticlesColorKeyFrame (i, 0.01, 255, 100, 100, 255 )
-				AddParticlesColorKeyFrame (i, lifeEnd#, 255, 0, 0, 0 )
-			elseif Mod(i, 4) = 0
-				//For the special wizard sparkles
-				SetParticlesImage (i, expOrbI)
-				SetParticlesPosition (i, w/2, h*3/4 - h/2*(i/4-1))	//Places them on different screen centers
-				SetParticlesFrequency(i, 60)
-	    		SetParticlesMax(i, 0)
-				SetParticlesLife(i, lifeEnd#)	//Time in seconds that the particles stick around
-				SetParticlesSize(i, 8)
-				SetParticlesStartZone(i, -w/2, -h/4, w/2, h/4) //The box that the particles can start from
-	    		SetParticlesDirection(i, 0, 5)
-	    		SetParticlesAngle(i, 360)
-	    		SetParticlesVelocityRange (i, .1, .6)
-	    		SetParticlesDepth(i, 5)
-	    		
-	    		AddParticlesColorKeyFrame (i, 0.0, 255, 255, 100, 0 )
-				AddParticlesColorKeyFrame (i, .6, 255, 255, 100, 255 )
-				AddParticlesColorKeyFrame (i, lifeEnd#, 205, 205, 50, 0 )
-    		endif
-		next i
+			SetParticlesFrequency(i, 300)
+			SetParticlesMax (i, 20)
+			SetParticlesAngle(i, 40)
+		elseif cType = 4
+			AddParticlesColorKeyFrame (i, 0.0, 0, 255, 0, 255 )
+			AddParticlesColorKeyFrame (i, lifeEnd#/3, 0, 255, 255, 255 )
+			AddParticlesColorKeyFrame (i, lifeEnd#*2/3, 255, 255, 0, 0 )
+			SetParticlesRotationRange(i, 470, 870)
+			SetParticlesAngle(i, 20)
+		elseif cType = 5
+			AddParticlesColorKeyFrame (i, 0.0, 80, 80, 80, 255 )
+			AddParticlesColorKeyFrame (i, lifeEnd#/2, 200, 255, 60, 255 )
+			AddParticlesColorKeyFrame (i, lifeEnd#, 255, 255, 255, 0 )
+			SetParticlesRotationRange(i, 470, 870)
+			SetParticlesSize(i, 30)
+			SetParticlesAngle(i, 360)
+			SetParticlesFrequency(i, 1000)
+			SetParticlesMax (i, 12)
+			SetParticlesVelocityRange (i, 2, 2)
+		elseif cType = 6
+			AddParticlesColorKeyFrame (i, 0.0, 150, 150, 150, 255 )
+			AddParticlesColorKeyFrame (i, lifeEnd#/3, 255, 255, 255, 120 )
+			AddParticlesColorKeyFrame (i, lifeEnd#/2, 255, 255, 255, 0 )
+			SetParticlesLife(i, lifeEnd#/2)
+			SetParticlesRotationRange(i, 10, 90)
+			SetParticlesSize(i, 30)
+			SetParticlesFrequency(i, 1000)
+			SetParticlesMax (i, 40)
+			SetParticlesAngle(i, 360)
+			SetParticlesDepth(i, 2)
+		endif
+		
+	next i
+	
+	SetParticlesImage(par1jump, jumpPartI[crab1Type])
+	SetParticlesImage(par2jump, jumpPartI[crab2Type])
+
+endfunction
+
+function ActivateJumpParticles(gameNum)
+
+	crabS = 0
+	crabType = 0
+	crabTheta# = 0
+	dir = 0
+	par = 0
+	if gameNum = 1
+		crabS = crab1
+		crabType = crab1Type
+		crabTheta# = crab1Theta#
+		if crab1Dir# > 0
+			dir = 1
+		else
+			dir = -1
+		endif
+		par = par1jump
+	elseif gameNum = 2
+		crabS = crab2
+		crabType = crab2Type
+		crabTheta# = crab2Theta#
+		if crab2Dir# > 0
+			dir = 1
+		else
+			dir = -1
+		endif
+		par = par2jump
+	endif
+
+	if par <> 0
+		
+		SetParticlesPosition(par, GetSpriteMiddleX(crabS) - GetSpriteHeight(crabS)/2*cos(crabTheta#), GetSpriteMiddleY(crabS) - GetSpriteHeight(crabS)/2*sin(crabTheta#))
+		
+		if crabType = 1
+			SetParticlesDirection(par, cos(crabTheta#-50*dir)*90, sin(crabTheta#-50*dir)*90)
+			SetParticlesPosition(par, GetSpriteMiddleX(crabS) - GetSpriteHeight(crabS)/4*cos(crabTheta#), GetSpriteMiddleY(crabS) - GetSpriteHeight(crabS)/4*sin(crabTheta#))
+		elseif crabType = 2
+			SetParticlesDirection(par, cos(crabTheta#+60*dir)*200, sin(crabTheta#+60*dir)*200)
+		elseif crabType = 3
+			SetParticlesDirection(par, cos(crabTheta#+70*dir)*170, sin(crabTheta#+70*dir)*170)
+		elseif crabType = 4
+			SetParticlesDirection(par, cos(crabTheta#)*400, sin(crabTheta#)*400)
+		elseif crabType = 5
+			SetParticlesPosition(par, GetSpriteMiddleX(crabS), GetSpriteMiddleY(crabS))
+			SetParticlesDirection(par, cos(crabTheta#)*90, sin(crabTheta#)*90)
+		elseif crabType = 6
+			SetParticlesPosition(par, GetSpriteMiddleX(crabS), GetSpriteMiddleY(crabS))
+			SetParticlesDirection(par, cos(crabTheta#)*70, sin(crabTheta#)*70)
+		endif
+		
+		ResetParticleCount(par)
 	
 	endif
+ 
 endfunction

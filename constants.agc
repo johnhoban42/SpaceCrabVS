@@ -438,6 +438,9 @@ global planetVarI as Integer[planetITotalMax]
 #constant warpI15 445
 #constant warpI16 446
 
+#constant jumpPartI1 447 //447 - 452
+global jumpPartI as Integer[6]
+
 //#constant planetVar1I 51
 //#constant planetVar2I 52
 //#constant planetVar3I 53
@@ -463,7 +466,8 @@ global planetVarI as Integer[planetITotalMax]
 
 //Sound Indexes
 #constant turnS 1
-#constant jumpS 2
+#constant jump1S 2
+#constant jump2S 11
 #constant specialS 3
 #constant specialExitS 4
 #constant explodeS 5
@@ -541,6 +545,7 @@ SetMusicSystemVolumeOGG(volumeM)
 #constant SPR_CS_BG_1B 307
 #constant TXT_CS_CRAB_NAME_1 303
 #constant TXT_CS_CRAB_DESC_1 304 
+#constant TXT_CS_CRAB_STATS_1 306
 #constant TXT_CS_READY_1 305 
 #constant SPR_CS_CRABS_1 390
 #constant SPR_CS_TXT_BACK_1 389
@@ -553,6 +558,7 @@ SetMusicSystemVolumeOGG(volumeM)
 #constant SPR_CS_BG_2B 407
 #constant TXT_CS_CRAB_NAME_2 403
 #constant TXT_CS_CRAB_DESC_2 404 
+#constant TXT_CS_CRAB_STATS_2 406
 #constant TXT_CS_READY_2 405
 #constant SPR_CS_CRABS_2 490 
 #constant SPR_CS_TXT_BACK_2 489
@@ -596,7 +602,7 @@ function LoadBaseSounds()
 	SetFolder("/media/sounds")
 	
 	LoadSoundOGG(turnS, "turn.ogg")
-	LoadSoundOGG(jumpS, "jump.ogg")
+	//LoadSoundOGG(jumpS, "jump.ogg")
 	LoadSoundOGG(specialS, "special.ogg")
 	LoadSoundOGG(specialExitS, "specialExit.ogg")
 	LoadSoundOGG(explodeS, "explode.ogg")
@@ -623,7 +629,6 @@ function LoadBaseSounds()
 	//Have to load them all in AGAIN as music, thanks dumb android sound threads ):<
 	if GetDeviceBaseName() = "android"
 		LoadMusicOGG(turnS, "turn.ogg")
-		LoadMusicOGG(jumpS, "jump.ogg")
 		LoadMusicOGG(specialS, "special.ogg")
 		LoadMusicOGG(specialExitS, "specialExit.ogg")
 		LoadMusicOGG(explodeS, "explode.ogg")
@@ -735,6 +740,15 @@ function StopMusicOGGSP(songID)
 
 endfunction
 
+function LoadJumpSounds()
+	if GetMusicExistsOGG(jump1S) then DeleteMusicOGG(jump1S)
+	if GetMusicExistsOGG(jump2S) then DeleteMusicOGG(jump2S)
+	
+	SetFolder("/media/sounds")
+	LoadMusicOGG(jump1S, "jump" + str(crab1Type) + ".ogg")
+	LoadMusicOGG(jump2S, "jump" + str(crab2Type) + ".ogg")
+endfunction
+
 function LoadBaseImages()
 	
 	SetFolder("/media/fonts")
@@ -788,6 +802,12 @@ function LoadBaseImages()
 	
 	LoadImage(crabpingI, "crabPing.png")
 	
+	for i = 1 to 6
+		jumpPartI[i] = jumpPartI1 + i - 1
+		LoadImage(jumpPartI[i], "jumpP" + str(i) + ".png")
+	next i
+	
+	
 	/*
 	LoadImage(planetVar1I, "planet1alt1.png")
 	LoadImage(planetVar2I, "planet1alt2.png")
@@ -836,6 +856,8 @@ function LoadBaseImages()
 	LoadImage(expBarI4, "expBar4.png")
 	LoadImage(expBarI5, "expBar5.png")
 	LoadImage(expBarI6, "expBar6.png")
+	
+	
 	
 	SetFolder("/media/crabs")
 	

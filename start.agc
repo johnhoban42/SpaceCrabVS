@@ -12,6 +12,8 @@ function InitStart()
 	
 	SetSpriteVisible(split, 0)
 	
+	SetFolder("/media")
+	
 	LoadSprite(SPR_TITLE, "title.png")
 	SetSpriteSize(SPR_TITLE, w*2/3, w*2/3)
 	SetSpriteMiddleScreen(SPR_TITLE)

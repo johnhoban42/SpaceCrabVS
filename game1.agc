@@ -322,7 +322,7 @@ function DoGame1()
 			if Abs(crab1Dir#) < .7 or (crab1Turning * crab1Dir# > 0) or (Abs(crab1Dir#) < 1 and specialTimerAgainst1# > 0 and crab2Type = 5) or crab1Type = 6
 				//The crab leap code
 				//crab1Turning = -1*crab1Turning	//Still not sure if you should leap forwards or backwards
-				PlaySoundR(jumpS, volumeSE)
+				PlayMusicOGG(jump1S, 0)
 				crab1JumpD# = crab1JumpDMax
 				if crab1Type <> 6
 					crab1Dir# = crab1Vel#*crab1Turning
@@ -331,6 +331,7 @@ function DoGame1()
 					crab1Dir# = -1*crab1Dir#
 					crab1Turning = 0
 				endif
+				ActivateJumpParticles(1)
 			else
 				//Crab has turned
 				PlaySoundR(turnS, volumeSE)

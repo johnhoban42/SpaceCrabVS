@@ -100,6 +100,7 @@ do
 		
 	PingUpdate()
 	UpdateAllTweens(GetFrameTime())
+	Print(GetImageMemoryUsage())
     Sync()
 loop
 

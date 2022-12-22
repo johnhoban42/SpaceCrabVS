@@ -54,6 +54,7 @@ type CharacterSelectController
 	sprBGB as integer
 	txtCrabName as integer
 	txtCrabDesc as integer
+	txtCrabStats as integer
 	txtReady as integer
 	sprTxtBack as integer
 	// Sprite index of the first crab shown on the select screen
@@ -63,7 +64,7 @@ endtype
 
 #constant charWid 390
 #constant charHei 357 //257
-#constant charVer 315
+#constant charVer 286
 #constant charVerSmall 370
 #constant charVerSmallGap 250
 #constant charHorSmallGap 250
@@ -80,7 +81,7 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 	
 	LoadSprite(csc.sprReady, "ready.png")
 	SetSpriteSize(csc.sprReady, w/3, h/16)
-	SetSpriteMiddleScreenOffset(csc.sprReady, 0, p*7*h/16)
+	SetSpriteMiddleScreenOffset(csc.sprReady, 0, p*7*h/16 + p*40)
 	SetSpriteFlip(csc.sprReady, f, f)
 	
 	LoadSprite(csc.sprLeftArrow, "leftArrow.png")
@@ -97,7 +98,8 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 	
 	//The background on the Descriptions
 	LoadSprite(csc.sprTxtBack, "charInfo.png")
-	SetSpriteSize(csc.sprTxtBack, w, 160)
+	//SetSpriteSize(csc.sprTxtBack, w, 160)
+	SetSpriteSize(csc.sprTxtBack, w, 240)
 	SetSpriteMiddleScreenOffset(csc.sprTxtBack, 0, p*3*h/8.5)
 	SetSpriteColorAlpha(csc.sprTxtBack, 160)
 	
@@ -136,7 +138,15 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 	next i
 		
 	//Descriptions were moved down here to include newline characters
-	crabDescs[0] = "Known across the cosmos for his quick dodges!" + chr(10) + "Has connections in high places."
+	/*crabDescs[0] = "Known across the cosmos for his quick dodges!" + chr(10) + "Has connections in high places."
+	crabDescs[1] = "He's been hitting the books AND the gym! His" + chr(10) + "new meteor spells are a force to be reckoned with."
+	crabDescs[2] = "Started spinning one day, and never stopped!" + chr(10) + "Learned to weaponize his rotational influence."
+	crabDescs[3] = "Always ready to start a party!!" + chr(10) + "How can you say no?"
+	crabDescs[4] = "A clockwork master! Doesn't like to bend time," + chr(10) + "but will make an exception in a fight."
+	crabDescs[5] = "Lurking in black holes, opponents will" + chr(10) + "never expect his spinning-star blades!" */
+	
+	crabDescs[0] = "Known far and wide, he's" + chr(10) + "ready to claim his fame!" + chr(10) + "Double-tap for his galaxy" + chr(10) + "famous quick-dodge move!"
+	crabDescs[0] = "Speed: {{}} Turn: {{{}" + chr(10) + "Known far and wide, he's ready to claim his fame!" + chr(10) + "Double-tap for his galaxy famous quick-dodge move!" + chr(10) + "Special: Meteor Shower"
 	crabDescs[1] = "He's been hitting the books AND the gym! His" + chr(10) + "new meteor spells are a force to be reckoned with."
 	crabDescs[2] = "Started spinning one day, and never stopped!" + chr(10) + "Learned to weaponize his rotational influence."
 	crabDescs[3] = "Always ready to start a party!!" + chr(10) + "How can you say no?"
@@ -153,15 +163,26 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 	//SetTextMiddleScreenOffset(csc.txtCrabName, f, 0, p*100)
 	SetTextAlignment(csc.txtCrabName, 1)
 	
-	CreateText(csc.txtCrabDesc, crabDescs[csc.crabSelected])
-	SetTextSize(csc.txtCrabDesc, 47)
+	//CreateText(csc.txtCrabDesc, crabDescs[csc.crabSelected])
+	CreateText(csc.txtCrabDesc, crabDescs[csc.crabSelected] )
+	SetTextSize(csc.txtCrabDesc, 40)
 	SetTextAngle(csc.txtCrabDesc, f*180)
 	SetTextFontImage(csc.txtCrabDesc, fontDescI)
-	SetTextSpacing(csc.txtCrabDesc, -15)
+	SetTextSpacing(csc.txtCrabDesc, -10)
+	SetTextMiddleScreenOffset(csc.txtCrabDesc, f, -w/5, p*3*h/8.5)
 	SetTextMiddleScreenOffset(csc.txtCrabDesc, f, 0, p*3*h/8.5)
 	//SetTextMiddleScreenOffset(csc.txtCrabDesc, f, 0, p*3*h/8)
 	SetTextAlignment(csc.txtCrabDesc, 1)
 	
+	CreateText(csc.txtCrabStats, "Speed: {{}}" + chr(10) + "Turn: {{{}" + chr(10) + "Special:" + chr(10) + "Meteor Shower")
+	SetTextSize(csc.txtCrabStats, 40)
+	SetTextAngle(csc.txtCrabStats, f*180)
+	SetTextFontImage(csc.txtCrabStats, fontDescI)
+	SetTextSpacing(csc.txtCrabStats, -10)
+	SetTextMiddleScreenOffset(csc.txtCrabStats, f, w/2-w/5, p*3*h/8.5)
+	//SetTextMiddleScreenOffset(csc.txtCrabDesc, f, 0, p*3*h/8)
+	SetTextAlignment(csc.txtCrabStats, 1)
+	SetTextVisible(csc.txtCrabStats, 0)
 	
 	
 	CreateText(csc.txtReady, "Waiting for your opponent...")
@@ -195,6 +216,7 @@ function InitCharacterSelect()
 	csc1.sprBGB = SPR_CS_BG_1B
 	csc1.txtCrabName = TXT_CS_CRAB_NAME_1
 	csc1.txtCrabDesc = TXT_CS_CRAB_DESC_1
+	csc1.txtCrabStats = TXT_CS_CRAB_STATS_1
 	csc1.txtReady = TXT_CS_READY_1
 	csc1.sprCrabs = SPR_CS_CRABS_1
 	csc1.sprTxtBack = SPR_CS_TXT_BACK_1
@@ -209,6 +231,7 @@ function InitCharacterSelect()
 	csc2.sprBGB = SPR_CS_BG_2B
 	csc2.txtCrabName = TXT_CS_CRAB_NAME_2
 	csc2.txtCrabDesc = TXT_CS_CRAB_DESC_2
+	csc2.txtCrabStats = TXT_CS_CRAB_STATS_2
 	csc2.txtReady = TXT_CS_READY_2
 	csc2.sprCrabs = SPR_CS_CRABS_2
 	csc2.sprTxtBack = SPR_CS_TXT_BACK_2
@@ -248,9 +271,9 @@ function ChangeCrabs(csc ref as CharacterSelectController, dir as integer, start
 		csc.crabSelected = csc.crabSelected + dir
 		//This is moved up so that people can see the names quicker
 		SetTextString(csc.txtCrabName, crabNames[csc.crabSelected])
-		SetTextMiddleScreenX(csc.txtCrabName, f)
+		//SetTextMiddleScreenX(csc.txtCrabName, f)
 		SetTextString(csc.txtCrabDesc, crabDescs[csc.crabSelected])
-		SetTextMiddleScreenX(csc.txtCrabDesc, f)
+		//SetTextMiddleScreenX(csc.txtCrabDesc, f)
 		
 		for spr = csc.sprCrabs to csc.sprCrabs + NUM_CRABS-1
 			if GetTweenSpritePlaying(spr, spr) then StopTweenSprite(spr, spr)
@@ -521,6 +544,7 @@ function CleanupCharacterSelectController(csc ref as CharacterSelectController)
 	DeleteSprite(csc.sprBGB)
 	DeleteText(csc.txtCrabName)
 	DeleteText(csc.txtCrabDesc)
+	DeleteText(csc.txtCrabStats)
 	DeleteText(csc.txtReady)
 	DeleteSprite(csc.sprTxtBack)
 	for spr = csc.sprCrabs to csc.sprCrabs + NUM_CRABS-1
