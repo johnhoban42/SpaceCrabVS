@@ -49,6 +49,7 @@ function DoGame()
 	// Initialize if we haven't done so
 	// Don't write anything before this!
 	if gameStateInitialized = 0
+		LoadGameImages(1)
 		initGame()
 	endif
 	state = GAME
@@ -98,6 +99,7 @@ function DoGame()
 	// If we are leaving the state, exit appropriately
 	// Don't write anything after this!
 	if state <> GAME
+		LoadGameImages(0)
 		ExitGame()
 	endif
 	
@@ -856,7 +858,8 @@ function InitJumpParticles()
 			SetParticlesAngle(i, 40)
 		elseif cType = 2
 			AddParticlesColorKeyFrame (i, 0.0, 255, 0, 0, 255 )
-			AddParticlesColorKeyFrame (i, lifeEnd#/2, 0, 0, 255, 255 )
+			AddParticlesColorKeyFrame (i, lifeEnd#/3, 0, 0, 255, 255 )
+			AddParticlesColorKeyFrame (i, lifeEnd#*2/3, 0, 255, 255, 255 )
 			AddParticlesColorKeyFrame (i, lifeEnd#, 120, 100, 255, 0 )
 			SetParticlesRotationRange(i, 770, 1070)
 			SetParticlesSize(i, 15)

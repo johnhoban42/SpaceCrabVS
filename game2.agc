@@ -492,10 +492,16 @@ function TurnCrab2(dir)
 	//Accelerating the crab in the specified direction
 	inc crab2Dir#, dir * crab2Accel# * fpsr#
 	
-	if Abs(crab2Dir#) > .5
-		PlaySprite(crab2, 0, 0, 15, 15)
+	lastFourth = 0
+	if crab2Dir# > dir/2.0 and dir > 0 then lastFourth = 1
+	if crab2Dir# < dir/2.0 and dir < 0 then lastFourth = 1
+	
+	if lastFourth
+		PlaySprite(crab2, 0, 0, 17, 17)	
+	elseif Abs(crab2Dir#) > .5
+		PlaySprite(crab2, 0, 0, 15, 15)	
 	else
-		PlaySprite(crab2, 0, 0, 17, 17)
+		PlaySprite(crab2, 0, 0, 16, 16)
 	endif
 	
 	//Checking if the crab is at it's maximum velocity, stopping and capping if it is
@@ -537,6 +543,10 @@ function UpdateMeteor2()
 					//The normal
 					meteorActive2[i].theta = meteorActive2[i].theta - 1*fpsr#
 				endif
+			else
+				//Slowing the meteors at certain angles
+				if (Abs(Mod(meteorActive2[i].theta+slowMetWidth, 90)-slowMetWidth) < slowMetWidth) then meteorActive2[i].r = meteorActive2[i].r + 1.0*met1speed/slowMetSpeedDen
+			
 			endif
 			
 		elseif cat = 2	//Rotating meteor
@@ -603,6 +613,7 @@ function UpdateMeteor2()
 				
 		DrawPolar2(spr, meteorActive2[i].r, meteorActive2[i].theta)
 		DrawPolar2(spr+glowS, meteorActive2[i].r, meteorActive2[i].theta)		//For the glow
+		SetSpriteColorAlpha(spr+glowS, 215 + cos(gameTimer#*8)*40)
 		
 		if cat = 2 then IncSpriteAngle(spr, -25)
 		if cat = 2 then IncSpriteAngle(spr+glowS, -25)

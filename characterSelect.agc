@@ -79,6 +79,8 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 	
 	csc.stage = 1
 	
+	SetFolder("/media")
+	
 	LoadSprite(csc.sprReady, "ready.png")
 	SetSpriteSize(csc.sprReady, w/3, h/16)
 	SetSpriteMiddleScreenOffset(csc.sprReady, 0, p*7*h/16 + p*40)
@@ -145,13 +147,18 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 	crabDescs[4] = "A clockwork master! Doesn't like to bend time," + chr(10) + "but will make an exception in a fight."
 	crabDescs[5] = "Lurking in black holes, opponents will" + chr(10) + "never expect his spinning-star blades!" */
 	
-	crabDescs[0] = "Known far and wide, he's" + chr(10) + "ready to claim his fame!" + chr(10) + "Double-tap for his galaxy" + chr(10) + "famous quick-dodge move!"
-	crabDescs[0] = "Speed: {{}} Turn: {{{}" + chr(10) + "Known far and wide, he's ready to claim his fame!" + chr(10) + "Double-tap for his galaxy famous quick-dodge move!" + chr(10) + "Special: Meteor Shower"
-	crabDescs[1] = "He's been hitting the books AND the gym! His" + chr(10) + "new meteor spells are a force to be reckoned with."
-	crabDescs[2] = "Started spinning one day, and never stopped!" + chr(10) + "Learned to weaponize his rotational influence."
-	crabDescs[3] = "Always ready to start a party!!" + chr(10) + "How can you say no?"
-	crabDescs[4] = "A clockwork master! Doesn't like to bend time," + chr(10) + "but will make an exception in a fight."
-	crabDescs[5] = "Lurking in black holes, opponents will" + chr(10) + "never expect his spinning-star blades!"
+	//crabDescs[0] = "Known far and wide, he's" + chr(10) + "ready to claim his fame!" + chr(10) + "Double-tap for his galaxy" + chr(10) + "famous quick-dodge move!"
+	//crabDescs[1] = "He's been hitting the books AND the gym! His" + chr(10) + "new meteor spells are a force to be reckoned with."
+	//crabDescs[2] = "Started spinning one day, and never stopped!" + chr(10) + "Learned to weaponize his rotational influence."
+	//crabDescs[3] = "Always ready to start a party!!" + chr(10) + "How can you say no?"
+	//crabDescs[4] = "A clockwork master! Doesn't like to bend time," + chr(10) + "but will make an exception in a fight."
+	//crabDescs[5] = "Lurking in black holes, opponents will" + chr(10) + "never expect his spinning-star blades!"
+	crabDescs[0] = "Speed: {{{}} Turn: {{{}}" + chr(10) + "Known far and wide, he's ready to claim his fame!" + chr(10) + "Double-tap for his galaxy famous quick-dodge!" + chr(10) + "Special Attack: Meteor Shower"
+	crabDescs[1] = "Speed: {{}}} Turn: {{{{}" + chr(10) + "The most magical being this side of the nebula." + chr(10) + "Launch into the skies with a double-tap spell!" + chr(10) + "Special Attack: Conjure Comets"
+	crabDescs[2] = "Speed: {{{{{ Turn: {}}}}" + chr(10) + "Grew up at the Rotation Station, and it shows." + chr(10) + "Very fast! Double-tap to skid & stop a sec'." + chr(10) + "Special Attack: Orbital Nightmare"
+	crabDescs[3] = "Speed: {{{{} Turn: {{}}}" + chr(10) + "Always ready to party!! How can you say no?" + chr(10) + "He'll stop and mosh when he hears a double-tap." + chr(10) + "Special Attack: Party Time!"
+	crabDescs[4] = "Speed: {{{}} Turn: {{{}}" + chr(10) + "A clockwork master! Sends his opponents forward" + chr(10) + "in time, and rewinds his clock by double-tapping." + chr(10) + "Special Attack: Fast Forward"
+	crabDescs[5] = "Speed: {{{}} Turn: {{{{{" + chr(10) + "Quieter than a rising sun, deadlier than a black" + chr(10) + "hole! Instantly turns but has no double-tap move." + chr(10) + "Special Attack: Shuri-Krustacean"
 	
 	// The offset mumbo-jumbo with f-coefficients is because AGK's text rendering is awful
 	CreateText(csc.txtCrabName, crabNames[csc.crabSelected])
@@ -239,6 +246,10 @@ function InitCharacterSelect()
 	InitCharacterSelectController(csc1)
 	InitCharacterSelectController(csc2)
 	
+	LoadSpriteExpress(SPR_MENU_BACK, "crab77walk8.png", 140, 140, 0, 0, 3)
+	SetSpriteMiddleScreen(SPR_MENU_BACK)
+	
+	
 	PlayMusicOGGSP(characterMusic, 1)
 	PlayMusicOGGSP(fireMusic, 1)
 	SetMusicVolumeOGG(fireMusic, 20)
@@ -275,9 +286,16 @@ function ChangeCrabs(csc ref as CharacterSelectController, dir as integer, start
 		SetTextString(csc.txtCrabDesc, crabDescs[csc.crabSelected])
 		//SetTextMiddleScreenX(csc.txtCrabDesc, f)
 		
-		for spr = csc.sprCrabs to csc.sprCrabs + NUM_CRABS-1
-			if GetTweenSpritePlaying(spr, spr) then StopTweenSprite(spr, spr)
-		next spr
+		space = 12
+		for i = 0 to FindString(crabDescs[csc.crabSelected], chr(10))-1
+			SetTextCharY(csc.txtCrabDesc, i, -space*p - GetTextSize(csc.txtCrabDesc)*f)
+			//SetTextCharColor(csc.txtCrabDesc, i, 255, 100, 100, 255)
+		next i
+		
+		for i = Len(crabDescs[csc.crabSelected])to FindStringReverse(crabDescs[csc.crabSelected], chr(10))-1 step -1
+			SetTextCharY(csc.txtCrabDesc, i, GetTextSize(csc.txtCrabDesc)*3*p + space*p - GetTextSize(csc.txtCrabDesc)*f)
+		next i
+		
 	endif
 	
 	cNum = csc.crabSelected
@@ -456,6 +474,7 @@ function DoCharacterSelect()
 	// Initialize if we haven't done so
 	// Don't write anything before this!
 	if characterSelectStateInitialized = 0
+		LoadCharacterSelectImages(1)
 		InitCharacterSelect()
 	endif
 	state = CHARACTER_SELECT
@@ -488,7 +507,7 @@ function DoCharacterSelect()
 	else
 		txt = csc1.txtReady
 		for i = 0 to GetTextLength(txt)
-			SetTextCharY(txt, GetTextLength(txt)-i, 48.0 - 8.0*abs(10*cos(GetMusicPositionOGG(characterMusic)*200+i*10 )))	//Code from SnowTunes
+			SetTextCharY(txt, GetTextLength(txt)-i, 58.0 - 8.0*abs(8*cos(GetMusicPositionOGG(characterMusic)*200+i*10 )))	//Code from SnowTunes
 		next i		
 	endif
 	
@@ -502,10 +521,13 @@ function DoCharacterSelect()
 	else
 		txt = csc2.txtReady
 		for i = 0 to GetTextLength(txt)
-			SetTextCharY(txt, GetTextLength(txt)-i, -130.0 + 8.0*abs(10*cos(GetMusicPositionOGG(characterMusic)*200+i*10 )))	//Code from SnowTunes
+			SetTextCharY(txt, GetTextLength(txt)-i, -140.0 + 8.0*abs(8*cos(GetMusicPositionOGG(characterMusic)*200+i*10 )))	//Code from SnowTunes
 		next i
 	endif
 	
+	if ButtonMultitouchEnabled(SPR_MENU_BACK)
+		state = START
+	endif
 	
 	if csc1.ready and csc2.ready
 		spActive = 0
@@ -516,6 +538,7 @@ function DoCharacterSelect()
 	// Don't write anything after this!
 	if state <> CHARACTER_SELECT
 		ExitCharacterSelect()
+		LoadCharacterSelectImages(0)
 	endif
 	
 endfunction state
@@ -549,6 +572,7 @@ function CleanupCharacterSelectController(csc ref as CharacterSelectController)
 	DeleteSprite(csc.sprTxtBack)
 	for spr = csc.sprCrabs to csc.sprCrabs + NUM_CRABS-1
 		DeleteSprite(spr)
+		DeleteTween(spr)
 	next spr
 	
 endfunction
@@ -559,6 +583,7 @@ function ExitCharacterSelect()
 	
 	CleanupCharacterSelectController(csc1)
 	CleanupCharacterSelectController(csc2)
+	DeleteSprite(SPR_MENU_BACK)
 	
 	if GetMusicPlayingOGGSP(characterMusic) then StopMusicOGGSP(characterMusic)
 	if GetMusicPlayingOGGSP(fireMusic) then StopMusicOGGSP(fireMusic)

@@ -495,12 +495,7 @@ function TurnCrab1(dir)
 	lastFourth = 0
 	if crab1Dir# > dir/2.0 and dir > 0 then lastFourth = 1
 	if crab1Dir# < dir/2.0 and dir < 0 then lastFourth = 1
-	
-	Print(crab1Dir#)
-	Print(lastFourth)
-	Print(dir)
-	//Sleep(100)
-	
+		
 	if lastFourth
 		PlaySprite(crab1, 0, 0, 17, 17)	
 	elseif Abs(crab1Dir#) > .5
@@ -548,6 +543,10 @@ function UpdateMeteor1()
 					//The normal
 					meteorActive1[i].theta = meteorActive1[i].theta - 1*fpsr#
 				endif
+			else
+				//Slowing the meteors at certain angles
+				if (Abs(Mod(meteorActive1[i].theta+slowMetWidth, 90)-slowMetWidth) < slowMetWidth) then meteorActive1[i].r = meteorActive1[i].r + 1.0*met1speed/slowMetSpeedDen
+			
 			endif
 		
 		elseif cat = 2	//Rotating meteor
@@ -614,6 +613,7 @@ function UpdateMeteor1()
 				
 		DrawPolar1(spr, meteorActive1[i].r, meteorActive1[i].theta)
 		DrawPolar1(spr+glowS, meteorActive1[i].r, meteorActive1[i].theta)		//For the glow
+		SetSpriteColorAlpha(spr+glowS, 215 + cos(gameTimer#*8)*40)
 		
 		if cat = 2 then IncSpriteAngle(spr, -25)
 		if cat = 2 then IncSpriteAngle(spr+glowS, -25)

@@ -190,6 +190,8 @@ global met3CD2# = 0 //400
 #constant met2speed 2.7 //SC2: 3
 #constant met3speed 18.0 //SC2: 20
 #constant diffMetMod .1 //How fast the meteors will speed up on each difficulty increase
+#constant slowMetWidth 25
+#constant slowMetSpeedDen 8
 
 //Sprite Indexes
 #constant crab1 1
@@ -467,7 +469,7 @@ global jumpPartI as Integer[6]
 //Sound Indexes
 #constant turnS 1
 #constant jump1S 2
-#constant jump2S 11
+#constant jump2S 17
 #constant specialS 3
 #constant specialExitS 4
 #constant explodeS 5
@@ -525,6 +527,8 @@ SetMusicSystemVolumeOGG(volumeM)
 #constant SPR_START2 203
 #constant SPR_BG_START 202
 #constant SPR_START1P 204
+#constant TXT_WAIT1 201
+#constant TXT_WAIT2 202
 
 //Different Crab buttons for the single player mode
 #constant SPR_SP_C1 205
@@ -549,6 +553,9 @@ SetMusicSystemVolumeOGG(volumeM)
 #constant TXT_CS_READY_1 305 
 #constant SPR_CS_CRABS_1 390
 #constant SPR_CS_TXT_BACK_1 389
+ 
+
+#constant SPR_MENU_BACK 399
  
 //Character select screen sprites - player 2
 #constant SPR_CS_READY_2 400
@@ -601,29 +608,31 @@ endtype
 function LoadBaseSounds()
 	SetFolder("/media/sounds")
 	
-	LoadSoundOGG(turnS, "turn.ogg")
-	//LoadSoundOGG(jumpS, "jump.ogg")
-	LoadSoundOGG(specialS, "special.ogg")
-	LoadSoundOGG(specialExitS, "specialExit.ogg")
-	LoadSoundOGG(explodeS, "explode.ogg")
-	LoadSoundOGG(launchS, "launch.ogg")
-	LoadSoundOGG(crackS, "crack.ogg")
-	LoadSoundOGG(flyingS, "flying.ogg")
-	LoadSoundOGG(landingS, "landing.ogg")
-	LoadSoundOGG(arrowS, "arrow.ogg")
-	LoadSoundOGG(chooseS, "choose.ogg")
-	
-	
-	LoadSoundOGG(exp1S, "exp1.ogg")
-	LoadSoundOGG(exp2S, "exp2.ogg")
-	LoadSoundOGG(exp3S, "exp3.ogg")
-	LoadSoundOGG(exp4S, "exp4.ogg")
-	LoadSoundOGG(exp5S, "exp5.ogg")
-	
-	LoadSoundOGG(ufoS, "ufo.ogg")
-	LoadSoundOGG(wizardSpell1S, "wizardSpell1.ogg")
-	LoadSoundOGG(wizardSpell2S, "wizardSpell2.ogg")
-	LoadSoundOGG(ninjaStarS, "ninjaStar.ogg")
+	if GetDeviceBaseName() <> "android"
+		LoadSoundOGG(turnS, "turn.ogg")
+		//LoadSoundOGG(jumpS, "jump.ogg")
+		LoadSoundOGG(specialS, "special.ogg")
+		LoadSoundOGG(specialExitS, "specialExit.ogg")
+		LoadSoundOGG(explodeS, "explode.ogg")
+		LoadSoundOGG(launchS, "launch.ogg")
+		LoadSoundOGG(crackS, "crack.ogg")
+		LoadSoundOGG(flyingS, "flying.ogg")
+		LoadSoundOGG(landingS, "landing.ogg")
+		LoadSoundOGG(arrowS, "arrow.ogg")
+		LoadSoundOGG(chooseS, "choose.ogg")
+		
+		
+		LoadSoundOGG(exp1S, "exp1.ogg")
+		LoadSoundOGG(exp2S, "exp2.ogg")
+		LoadSoundOGG(exp3S, "exp3.ogg")
+		LoadSoundOGG(exp4S, "exp4.ogg")
+		LoadSoundOGG(exp5S, "exp5.ogg")
+		
+		LoadSoundOGG(ufoS, "ufo.ogg")
+		LoadSoundOGG(wizardSpell1S, "wizardSpell1.ogg")
+		LoadSoundOGG(wizardSpell2S, "wizardSpell2.ogg")
+		LoadSoundOGG(ninjaStarS, "ninjaStar.ogg")
+	endif
 	
 	
 	//Have to load them all in AGAIN as music, thanks dumb android sound threads ):<
@@ -635,10 +644,9 @@ function LoadBaseSounds()
 		LoadMusicOGG(launchS, "launch.ogg")
 		LoadMusicOGG(crackS, "crack.ogg")
 		LoadMusicOGG(flyingS, "flying.ogg")
-		LoadMusicOGG(landingS, "landing.ogg")
+		LoadMusicOGG(landingS, "landing.ogg")		
 		LoadMusicOGG(arrowS, "arrow.ogg")
 		LoadMusicOGG(chooseS, "choose.ogg")
-		
 		
 		LoadMusicOGG(exp1S, "exp1.ogg")
 		LoadMusicOGG(exp2S, "exp2.ogg")
@@ -762,27 +770,6 @@ function LoadBaseImages()
 	
 	SetFolder("/media/art")
 	
-	//Loading the start screen images
-	for i = 1 to 6
-		if i = 1 or i = 2 or i = 4 or i = 6
-			for j = 1 to 6
-				LoadImage(crab1select1I - 1 + j + i*10, "crab" + str(i) + "select" + str(j) + ".png")
-			next j
-		endif
-	next i
-	
-	//LoadImage(crab1select1I, "crab1select.png")
-	//LoadImage(crab2select1I, "crab2select.png")
-	
-	LoadImage(crab1attack1I, "crab1attack1.png")
-	LoadImage(crab1attack2I, "crab1attack2.png")
-	LoadImage(crab2attack1I, "crab2attack1.png")
-	LoadImage(crab2attack2I, "crab2attack2.png")
-	LoadImage(crab4attack1I, "crab4attack1.png")
-	LoadImage(crab4attack2I, "crab4attack2.png")
-	LoadImage(crab6attack1I, "crab6attack1.png")
-	LoadImage(crab6attack2I, "crab6attack2.png")
-	
 	//The lives
 	for i = 1 to 6
 		if i = 1 or i = 2 or i = 4 or i = 6
@@ -795,6 +782,12 @@ function LoadBaseImages()
 	
 	
 	SetFolder("/media/envi")
+	
+	LoadImage(bg1I, "bg1.png")
+	LoadImage(bg2I, "bg2.png")
+	LoadImage(bg3I, "bg3.png")
+	LoadImage(bg4I, "bg4.png")
+	LoadImage(bg5I, "bg5.png")
 	
 	for i = special4s1 to special4s8
 		LoadImage(i, "ravespprop" + str(i - special4s1 + 1) + ".png")
@@ -819,31 +812,11 @@ function LoadBaseImages()
 	LoadImage(planetVar8I, "planet1alt8.png")
 	*/
 
+	//Setting up the planet image indexes for later
 	for i = 1 to planetITotalMax
 		planetVarI[i] = 400 + i
 	next i
-	for i = 1 to planetIMax
-		LoadImage(planetVarI[i], "p" + str(i) + ".png")
-	next i
-	for i = 1 to planetITotalMax - planetIMax
-		LoadImage(planetVarI[planetIMax + i], "legendp" + str(i) + ".png")
-	next i
 	
-	for i = 1 to 16
-		LoadImage(warpI1 - 1 + i, "hyperspacecolorized" + str(i) + ".png")
-	next i
-	
-	LoadImage(meteorI1, "meteor1.png")
-	LoadImage(meteorI2, "meteor2.png")
-	LoadImage(meteorI3, "meteor3.png")
-	LoadImage(meteorI4, "meteor4.png")
-	LoadImage(meteorTractorI, "tractor.png")
-	
-	LoadImage(bg1I, "bg1.png")
-	LoadImage(bg2I, "bg2.png")
-	LoadImage(bg3I, "bg3.png")
-	LoadImage(bg4I, "bg4.png")
-	LoadImage(bg5I, "bg5.png")
 	
 	SetFolder("/media")
 	
@@ -858,86 +831,274 @@ function LoadBaseImages()
 	LoadImage(expBarI6, "expBar6.png")
 	
 	
-	
-	SetFolder("/media/crabs")
-	
-	LoadImage(crab1start1I, "crab1start1.png")
-	LoadImage(crab1start2I, "crab1start2.png")
-	LoadImage(crab1walk1I, "crab1walk1.png")
-	LoadImage(crab1walk2I, "crab1walk2.png")
-	LoadImage(crab1walk3I, "crab1walk3.png")
-	LoadImage(crab1walk4I, "crab1walk4.png")
-	LoadImage(crab1walk5I, "crab1walk5.png")
-	LoadImage(crab1walk6I, "crab1walk6.png")
-	LoadImage(crab1walk7I, "crab1walk7.png")
-	LoadImage(crab1walk8I, "crab1walk8.png")
-	LoadImage(crab1jump1I, "crab1jump1.png")
-	LoadImage(crab1jump2I, "crab1jump2.png")
-	LoadImage(crab1death1I, "crab1death1.png")
-	LoadImage(crab1death2I, "crab1death2.png")
-	LoadImage(crab1skid1I, "crab1skid1.png")
-	LoadImage(crab1skid2I, "crab1skid2.png")
-	LoadImage(crab1skid3I, "crab1skid3.png")
-	
-	LoadImage(crab2start1I, "crab2start1.png")
-	LoadImage(crab2start2I, "crab2start2.png")
-	LoadImage(crab2walk1I, "crab2walk1.png")
-	LoadImage(crab2walk2I, "crab2walk2.png")
-	LoadImage(crab2walk3I, "crab2walk3.png")
-	LoadImage(crab2walk4I, "crab2walk4.png")
-	LoadImage(crab2walk5I, "crab2walk5.png")
-	LoadImage(crab2walk6I, "crab2walk6.png")
-	LoadImage(crab2walk7I, "crab2walk7.png")
-	LoadImage(crab2walk8I, "crab2walk8.png")
-	LoadImage(crab2jump1I, "crab2jump1.png")
-	LoadImage(crab2jump2I, "crab2jump2.png")
-	LoadImage(crab2death1I, "crab2death1.png")
-	LoadImage(crab2death2I, "crab2death2.png")
-	LoadImage(crab2skid1I, "crab2skid1.png")
-	LoadImage(crab2skid2I, "crab2skid2.png")
-	LoadImage(crab2skid3I, "crab2skid3.png")
-	
-	LoadImage(crab4start1I, "crab4start1.png")
-	LoadImage(crab4start2I, "crab4start2.png")
-	LoadImage(crab4walk1I, "crab4walk1.png")
-	LoadImage(crab4walk2I, "crab4walk2.png")
-	LoadImage(crab4walk3I, "crab4walk3.png")
-	LoadImage(crab4walk4I, "crab4walk4.png")
-	LoadImage(crab4walk5I, "crab4walk5.png")
-	LoadImage(crab4walk6I, "crab4walk6.png")
-	LoadImage(crab4walk7I, "crab4walk7.png")
-	LoadImage(crab4walk8I, "crab4walk8.png")
-	LoadImage(crab4jump1I, "crab4jump1.png")
-	LoadImage(crab4jump2I, "crab4jump2.png")
-	LoadImage(crab4death1I, "crab4death1.png")
-	LoadImage(crab4death2I, "crab4death2.png")
-	LoadImage(crab4skid1I, "crab4skid1.png")
-	LoadImage(crab4skid2I, "crab4skid2.png")
-	LoadImage(crab4skid3I, "crab4skid3.png")
-	
-	LoadImage(crab6start1I, "crab6start1.png")
-	LoadImage(crab6start2I, "crab6start2.png")
-	LoadImage(crab6walk1I, "crab6walk1.png")
-	LoadImage(crab6walk2I, "crab6walk2.png")
-	LoadImage(crab6walk3I, "crab6walk3.png")
-	LoadImage(crab6walk4I, "crab6walk4.png")
-	LoadImage(crab6walk5I, "crab6walk5.png")
-	LoadImage(crab6walk6I, "crab6walk6.png")
-	LoadImage(crab6walk7I, "crab6walk7.png")
-	LoadImage(crab6walk8I, "crab6walk8.png")
-	LoadImage(crab6jump1I, "crab6jump1.png")
-	LoadImage(crab6jump2I, "crab6jump2.png")
-	LoadImage(crab6death1I, "crab6death1.png")
-	LoadImage(crab6death2I, "crab6death2.png")
-	LoadImage(crab6skid1I, "crab6skid1.png")
-	LoadImage(crab6skid2I, "crab6skid2.png")
-	LoadImage(crab6skid3I, "crab6skid3.png")
-	
 	SetFolder("/media")
 	
 	LoadImage(boarderI, "boader.png")
 	LoadImage(ufoI, "spaceNed.png")
 	LoadImage(ninjaStarI, "ninjaStar.png")
+	
+endfunction
+
+function LoadStartImages(loading)
+	
+	if loading
+		//Loading all of the images
+		
+		SetFolder("/media/envi")
+		//LoadImage(bg4I, "bg4.png")
+		
+		for i = 1 to 16
+			LoadImage(warpI1 - 1 + i, "hyperspacecolorized" + str(i) + ".png")
+		next i
+		
+	else
+		//Deleting all of the images
+		
+		//DeleteImage(bg4I)
+		for i = 1 to 16
+			DeleteImage(warpI1 - 1 + i)
+		next i
+		
+	endif
+	
+endfunction
+
+function LoadCharacterSelectImages(loading)
+	
+	if loading
+		//Loading all of the images
+		
+		
+		SetFolder("/media/art")
+	
+		//Loading the start screen images
+		for i = 1 to 6
+			if i = 1 or i = 2 or i = 4 or i = 6
+				for j = 1 to 6
+					LoadImage(crab1select1I - 1 + j + i*10, "crab" + str(i) + "select" + str(j) + ".png")
+				next j
+			endif
+		next i
+		
+		SetFolder("/media/envi")
+		//LoadImage(bg5I, "bg5.png")
+		
+//~		if GetDeviceBaseName() = "android"
+//~			SetFolder("/media/sounds")
+//~			
+//~			LoadMusicOGG(arrowS, "arrow.ogg")
+//~			LoadMusicOGG(chooseS, "choose.ogg")
+//~		endif
+		
+	else
+		//Deleting all of the images
+		
+		for i = 1 to 6
+			for j = 1 to 6
+				if GetImageExists(crab1select1I - 1 + j + i*10) then DeleteImage(crab1select1I - 1 + j + i*10)
+			next j
+		next i
+		
+		//DeleteImage(bg5I)
+		
+//~		if GetDeviceBaseName() = "android"
+//~			StopMusicOGGSP(arrowS)
+//~			StopMusicOGGSP(chooseS)
+//~		endif
+		
+	endif
+	
+	
+	
+endfunction
+
+function LoadGameImages(loading)
+	
+	if loading
+		//Loading all of the images
+		
+		SetFolder("/media/envi")
+		//LoadImage(bg1I, "bg1.png")
+		//LoadImage(bg2I, "bg2.png")
+		//LoadImage(bg3I, "bg3.png")
+		
+		LoadImage(meteorI1, "meteor1.png")
+		LoadImage(meteorI2, "meteor2.png")
+		LoadImage(meteorI3, "meteor3.png")
+		LoadImage(meteorI4, "meteor4.png")
+		LoadImage(meteorTractorI, "tractor.png")
+		
+		for i = 1 to planetIMax
+			LoadImage(planetVarI[i], "p" + str(i) + ".png")
+		next i
+		for i = 1 to planetITotalMax - planetIMax
+			LoadImage(planetVarI[planetIMax + i], "legendp" + str(i) + ".png")
+		next i
+		
+		SetFolder("/media/art")
+	
+		LoadImage(crab1attack1I, "crab1attack1.png")
+		LoadImage(crab1attack2I, "crab1attack2.png")
+		LoadImage(crab2attack1I, "crab2attack1.png")
+		LoadImage(crab2attack2I, "crab2attack2.png")
+		LoadImage(crab4attack1I, "crab4attack1.png")
+		LoadImage(crab4attack2I, "crab4attack2.png")
+		LoadImage(crab6attack1I, "crab6attack1.png")
+		LoadImage(crab6attack2I, "crab6attack2.png")
+		
+//~		if GetDeviceBaseName() = "android"
+//~			SetFolder("/media/sounds")
+//~			
+//~			if crab1Type = 1 or crab2Type = 1 then LoadMusicOGG(ufoS, "ufo.ogg")
+//~			if crab1Type = 2 or crab2Type = 2
+//~				LoadMusicOGG(wizardSpell1S, "wizardSpell1.ogg")
+//~				LoadMusicOGG(wizardSpell2S, "wizardSpell2.ogg")
+//~			endif
+//~			if crab1Type = 6 or crab2Type = 6 then LoadMusicOGG(ninjaStarS, "ninjaStar.ogg")
+//~			
+//~			LoadMusicOGG(turnS, "turn.ogg")
+//~			LoadMusicOGG(specialS, "special.ogg")
+//~			LoadMusicOGG(specialExitS, "specialExit.ogg")
+//~			LoadMusicOGG(explodeS, "explode.ogg")
+//~			LoadMusicOGG(launchS, "launch.ogg")
+//~			LoadMusicOGG(crackS, "crack.ogg")
+//~			LoadMusicOGG(flyingS, "flying.ogg")
+//~			LoadMusicOGG(landingS, "landing.ogg")		
+//~		
+//~			//LoadMusicOGG(exp1S, "exp1.ogg")
+//~			//LoadMusicOGG(exp2S, "exp2.ogg")
+//~			//LoadMusicOGG(exp3S, "exp3.ogg")
+//~			//LoadMusicOGG(exp4S, "exp4.ogg")
+//~			//LoadMusicOGG(exp5S, "exp5.ogg")
+//~			
+//~		endif
+		
+		SetFolder("/media/crabs")
+		
+		//Temporary if, until there is a better crab loading system
+		if GetImageExists(crab1start1I) = 0
+			LoadImage(crab1start1I, "crab1start1.png")
+			LoadImage(crab1start2I, "crab1start2.png")
+			LoadImage(crab1walk1I, "crab1walk1.png")
+			LoadImage(crab1walk2I, "crab1walk2.png")
+			LoadImage(crab1walk3I, "crab1walk3.png")
+			LoadImage(crab1walk4I, "crab1walk4.png")
+			LoadImage(crab1walk5I, "crab1walk5.png")
+			LoadImage(crab1walk6I, "crab1walk6.png")
+			LoadImage(crab1walk7I, "crab1walk7.png")
+			LoadImage(crab1walk8I, "crab1walk8.png")
+			LoadImage(crab1jump1I, "crab1jump1.png")
+			LoadImage(crab1jump2I, "crab1jump2.png")
+			LoadImage(crab1death1I, "crab1death1.png")
+			LoadImage(crab1death2I, "crab1death2.png")
+			LoadImage(crab1skid1I, "crab1skid1.png")
+			LoadImage(crab1skid2I, "crab1skid2.png")
+			LoadImage(crab1skid3I, "crab1skid3.png")
+			
+			LoadImage(crab2start1I, "crab2start1.png")
+			LoadImage(crab2start2I, "crab2start2.png")
+			LoadImage(crab2walk1I, "crab2walk1.png")
+			LoadImage(crab2walk2I, "crab2walk2.png")
+			LoadImage(crab2walk3I, "crab2walk3.png")
+			LoadImage(crab2walk4I, "crab2walk4.png")
+			LoadImage(crab2walk5I, "crab2walk5.png")
+			LoadImage(crab2walk6I, "crab2walk6.png")
+			LoadImage(crab2walk7I, "crab2walk7.png")
+			LoadImage(crab2walk8I, "crab2walk8.png")
+			LoadImage(crab2jump1I, "crab2jump1.png")
+			LoadImage(crab2jump2I, "crab2jump2.png")
+			LoadImage(crab2death1I, "crab2death1.png")
+			LoadImage(crab2death2I, "crab2death2.png")
+			LoadImage(crab2skid1I, "crab2skid1.png")
+			LoadImage(crab2skid2I, "crab2skid2.png")
+			LoadImage(crab2skid3I, "crab2skid3.png")
+			
+			LoadImage(crab4start1I, "crab4start1.png")
+			LoadImage(crab4start2I, "crab4start2.png")
+			LoadImage(crab4walk1I, "crab4walk1.png")
+			LoadImage(crab4walk2I, "crab4walk2.png")
+			LoadImage(crab4walk3I, "crab4walk3.png")
+			LoadImage(crab4walk4I, "crab4walk4.png")
+			LoadImage(crab4walk5I, "crab4walk5.png")
+			LoadImage(crab4walk6I, "crab4walk6.png")
+			LoadImage(crab4walk7I, "crab4walk7.png")
+			LoadImage(crab4walk8I, "crab4walk8.png")
+			LoadImage(crab4jump1I, "crab4jump1.png")
+			LoadImage(crab4jump2I, "crab4jump2.png")
+			LoadImage(crab4death1I, "crab4death1.png")
+			LoadImage(crab4death2I, "crab4death2.png")
+			LoadImage(crab4skid1I, "crab4skid1.png")
+			LoadImage(crab4skid2I, "crab4skid2.png")
+			LoadImage(crab4skid3I, "crab4skid3.png")
+			
+			LoadImage(crab6start1I, "crab6start1.png")
+			LoadImage(crab6start2I, "crab6start2.png")
+			LoadImage(crab6walk1I, "crab6walk1.png")
+			LoadImage(crab6walk2I, "crab6walk2.png")
+			LoadImage(crab6walk3I, "crab6walk3.png")
+			LoadImage(crab6walk4I, "crab6walk4.png")
+			LoadImage(crab6walk5I, "crab6walk5.png")
+			LoadImage(crab6walk6I, "crab6walk6.png")
+			LoadImage(crab6walk7I, "crab6walk7.png")
+			LoadImage(crab6walk8I, "crab6walk8.png")
+			LoadImage(crab6jump1I, "crab6jump1.png")
+			LoadImage(crab6jump2I, "crab6jump2.png")
+			LoadImage(crab6death1I, "crab6death1.png")
+			LoadImage(crab6death2I, "crab6death2.png")
+			LoadImage(crab6skid1I, "crab6skid1.png")
+			LoadImage(crab6skid2I, "crab6skid2.png")
+			LoadImage(crab6skid3I, "crab6skid3.png")
+		endif
+		
+	else
+		//Deleting all of the images
+		
+		//DeleteImage(bg1I)
+		//DeleteImage(bg2I)
+		//DeleteImage(bg3I)
+		
+		DeleteImage(meteorI1)
+		DeleteImage(meteorI2)
+		DeleteImage(meteorI3)
+		DeleteImage(meteorI4)
+		DeleteImage(meteorTractorI)
+		
+		for i = 1 to planetIMax
+			DeleteImage(planetVarI[i])
+		next i
+		for i = 1 to planetITotalMax - planetIMax
+			DeleteImage(planetVarI[planetIMax + i])
+		next i
+		
+//~		if GetDeviceBaseName() = "android"
+//~			SetFolder("/media/sounds")
+//~			
+//~			StopMusicOGGSP(ufoS)
+//~			StopMusicOGGSP(wizardSpell1S)
+//~			StopMusicOGGSP(wizardSpell2S)
+//~			StopMusicOGGSP(ninjaStarS)
+//~			StopMusicOGGSP(turnS)
+//~			StopMusicOGGSP(specialS)
+//~			StopMusicOGGSP(specialExitS)
+//~			StopMusicOGGSP(explodeS)
+//~			StopMusicOGGSP(launchS)
+//~			StopMusicOGGSP(crackS)
+//~			StopMusicOGGSP(flyingS)
+//~			StopMusicOGGSP(landingS)
+//~			StopMusicOGGSP(exp1S)
+//~			StopMusicOGGSP(exp2S)
+//~			StopMusicOGGSP(exp3S)
+//~			StopMusicOGGSP(exp4S)
+//~			StopMusicOGGSP(exp5S)
+//~			
+//~		endif
+		
+	endif
+	
+endfunction
+
+function LoadResultImages(loading)
+	
 	
 endfunction
 

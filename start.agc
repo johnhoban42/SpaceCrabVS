@@ -34,6 +34,14 @@ function InitStart()
 	SetSpriteAngle(SPR_START2, 180)
 	SetSpriteDepth(SPR_START2, 75)
 	
+	CreateTextExpress(TXT_WAIT1, "Waiting for your opponent...", 86, fontDescItalI, 1, w/2, GetSpriteY(SPR_START1)+38, 3)
+	SetTextColorAlpha(TXT_WAIT1, 0)
+	SetTextSpacing(TXT_WAIT1, -30)
+	CreateTextExpress(TXT_WAIT2, "Waiting for your opponent...", 86, fontDescItalI, 1, w/2, GetSpriteY(SPR_START2)-38+GetSpriteHeight(SPR_START2), 3)
+	SetTextColorAlpha(TXT_WAIT2, 0)
+	SetTextSpacing(TXT_WAIT2, -30)
+	SetTextAngle(TXT_WAIT2, 180)
+	
 	LoadSprite(SPR_START1P, "singlePlayerButton.png")
 	SetSpriteSize(SPR_START1P, 250, 150)
 	SetSpritePosition(SPR_START1P, 520, 1130)
@@ -43,6 +51,11 @@ function InitStart()
 		LoadSprite(i, "art/chibicrab" + str(num) + ".png")
 		SetSpriteSizeSquare(i, 150)
 		SetSpritePosition(i, w/2 - GetSpriteWidth(i)/2 - 250 + 250*(Mod(num-1,3)), 980 + 250*((num-1)/3))
+		
+		//CreateTweenSprite(i, .4)
+		//SetTweenSpriteY(
+		//SetTweenSpriteSizeX(
+		//SetTweenSpriteSizeY(
 	next i
 	
 	LoadSpriteExpress(SPR_BG_START, "envi/bg4.png",h*1.5, h*1.5, 0, 0, 100)
@@ -63,9 +76,9 @@ function InitStart()
 		num = i-SPR_SP_C1+1
 		SetSpritePosition(i, w/2 - GetSpriteWidth(i)/2 - 250 + 250*(Mod(num-1,3)), 980*5 + 250*((num-1)/3))
 	next i
-		
+	
 	//This is the 'single player results screen' setup
-	if spScore > 0
+	if spActive = 1
 		
 		SetSpriteY(SPR_TITLE, -1000)
 			
@@ -81,6 +94,8 @@ function InitStart()
 	elseif spActive = 1 and crab1Deaths = 0 and crab2Deaths = 0
 	//Returning from the pause menu
 		
+		
+		
 	endif
 		
 	startStateInitialized = 1
@@ -95,6 +110,7 @@ function DoStart()
 	// Initialize if we haven't done so
 	// Don't write anything before this!
 	if startStateInitialized = 0
+		LoadStartImages(1)
 		InitStart()
 	endif
 	state = START
@@ -107,7 +123,7 @@ function DoStart()
 	if startTimer# >= 0
 		
 		//Multiplayer section
-		if GetPointerPressed() and not Button(SPR_START1) and not Button(SPR_START1) and not Button(SPR_SP_C1) and not Button(SPR_SP_C2) and not Button(SPR_SP_C3) and not Button(SPR_SP_C4) and not Button(SPR_SP_C5) and not Button(SPR_SP_C6)
+		if GetPointerPressed() and not Button(SPR_START1) and not Button(SPR_START2) and not Button(SPR_SP_C1) and not Button(SPR_SP_C2) and not Button(SPR_SP_C3) and not Button(SPR_SP_C4) and not Button(SPR_SP_C5) and not Button(SPR_SP_C6)
 			PingCrab(GetPointerX(), GetPointerY(), Random (100, 180))
 		endif
 		
@@ -115,6 +131,45 @@ function DoStart()
 		
 		// Start button pressed
 		if Button(SPR_START1) and spActive = 0
+			//spActive = 0
+			//state = CHARACTER_SELECT
+		endif
+		
+		
+		if ButtonMultitouchEnabled(SPR_START1) and spActive = 0
+			if GetSpriteColorAlpha(SPR_START1) = 255
+				//Pressing player one
+				SetSpriteColorAlpha(SPR_START1, 70)
+				SetTextColorAlpha(TXT_WAIT1, 255)
+			else
+				//Cancelling player one
+				SetSpriteColorAlpha(SPR_START1, 255)
+				SetTextColorAlpha(TXT_WAIT1, 0)
+			endif
+		endif
+		
+		if ButtonMultitouchEnabled(SPR_START2) and spActive = 0
+			if GetSpriteColorAlpha(SPR_START2) = 255
+				//Pressing player one
+				SetSpriteColorAlpha(SPR_START2, 70)
+				SetTextColorAlpha(TXT_WAIT2, 255)
+			else
+				//Cancelling player one
+				SetSpriteColorAlpha(SPR_START2, 255)
+				SetTextColorAlpha(TXT_WAIT2, 0)
+			endif
+		endif
+		
+		if spActive = 0
+			for i = 0 to GetTextLength(TXT_WAIT1)
+				SetTextCharAngle(TXT_WAIT1, GetTextLength(TXT_WAIT1)-i, -7+14*sin(9*startTimer# + i*6))	//Code from SnowTunes
+			next i		
+			for i = 0 to GetTextLength(TXT_WAIT2)
+				SetTextCharAngle(TXT_WAIT2, GetTextLength(TXT_WAIT2)-i, 180 - 7+14*sin(9*startTimer# + i*6))	//Code from SnowTunes
+			next i		
+		endif
+		
+		if GetTextColorAlpha(TXT_WAIT1) = 255 and GetTextColorAlpha(TXT_WAIT2) = 255
 			spActive = 0
 			state = CHARACTER_SELECT
 		endif
@@ -159,6 +214,11 @@ function DoStart()
 			SetSpriteColorByCycle(SPR_BG_SP, 100-round(startTimer#))
 			SetSpriteColor(SPR_BG_SP, 255-GetSpriteColorRed(SPR_BG_SP)/4, 255-GetSpriteColorGreen(SPR_BG_SP)/4, 255-GetSpriteColorBlue(SPR_BG_SP)/4, 255.0*(100.0+startTimer#)/100)
 		
+			SetSpriteVisible(SPR_START1, 0)
+			SetSpriteVisible(SPR_START2, 0)
+			SetTextVisible(TXT_WAIT1, 0)
+			SetTextVisible(TXT_WAIT2, 0)
+		
 		elseif spActive = 0
 			//Turning back into a regular menu
 			
@@ -173,6 +233,10 @@ function DoStart()
 			SetSpriteColorByCycle(SPR_BG_SP, 100-round(startTimer#))
 			SetSpriteColor(SPR_BG_SP, 255-GetSpriteColorRed(SPR_BG_SP)/4, 255-GetSpriteColorGreen(SPR_BG_SP)/4, 255-GetSpriteColorBlue(SPR_BG_SP)/4, 255.0*(0-startTimer#)/100)
 		
+			SetSpriteVisible(SPR_START1, 1)
+			SetSpriteVisible(SPR_START2, 1)
+			SetTextVisible(TXT_WAIT1, 1)
+			SetTextVisible(TXT_WAIT2, 1)
 			
 		endif
 	
@@ -182,6 +246,7 @@ function DoStart()
 	// Don't write anything after this!
 	if state <> START
 		ExitStart()
+		LoadStartImages(0)
 	endif
 	
 endfunction state
@@ -196,9 +261,12 @@ function ExitStart()
 	DeleteSprite(SPR_START1P)
 	DeleteSprite(SPR_BG_START)
 	DeleteSprite(SPR_BG_SP)
+	DeleteText(TXT_WAIT1)
+	DeleteText(TXT_WAIT2)
 	
 	for i = SPR_SP_C1 to SPR_SP_C6
 		DeleteSprite(i)
+		DeleteTween(i)
 	next i
 	
 	startTimer# = 0

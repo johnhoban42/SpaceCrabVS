@@ -376,7 +376,7 @@ function ButtonMultitouchEnabled(spr)
 endfunction returnValue
 
 function PlaySoundR(sound, vol)
-	if GetSoundExists(sound)
+	if GetSoundExists(sound) or GetMusicExistsOGG(sound)
 		if GetDeviceBaseName() <> "android"
 			//The normal case, for normal devices
 			PlaySound(sound, vol)
