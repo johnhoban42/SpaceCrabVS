@@ -11,6 +11,7 @@ crab2 - The top crab, independent of it's costume
 
 Depth List:
 
+Pause Screen buttons - 2
 Crab - 3
 Ninja stars - 4
 Planets for Lives - 5
@@ -18,6 +19,7 @@ Clock Hands - 6
 Clock - 7
 EXP - 7
 Planets - 8
+Pause button - 9
 Asteroid belt - 10
 Crab during death - 11
 Rave Crab Text Sprite - 12
@@ -79,6 +81,7 @@ global startTimer# = 0
 global hit1Timer# = 0
 global hit2Timer# = 0
 
+global firstFight = 1
 global gameTimer# = 0
 
 global crab1R# = 1
@@ -155,6 +158,7 @@ global specialTimerAgainst1# = 0
 
 global spScore = 0
 global spHighScore = 0
+global spHighCrab$ = ""
 #constant spScoreMinSize = 70
 
 //Input buffers
@@ -203,6 +207,10 @@ global met3CD2# = 0 //400
 #constant bgHit1 6
 #constant bgHit2 7
 
+#constant pauseButton 8
+#constant playButton 9
+#constant exitButton 10
+
 #constant planet1 101
 #constant planet2 102
 
@@ -247,6 +255,9 @@ global met3CD2# = 0 //400
 
 #constant SPR_SP_SCORE 151
 #constant TXT_SP_SCORE 151
+
+#constant TXT_INTRO1 152
+#constant TXT_INTRO2 153
 
 //Image Indexes
 
@@ -469,22 +480,23 @@ global jumpPartI as Integer[6]
 //Sound Indexes
 #constant turnS 1
 #constant jump1S 2
-#constant jump2S 17
-#constant specialS 3
-#constant specialExitS 4
-#constant explodeS 5
-#constant launchS 6
-#constant crackS 7
-#constant flyingS 8
-#constant landingS 9
-#constant arrowS 10
-#constant chooseS 16
+#constant jump2S 3
+#constant specialS 4
+#constant specialExitS 5
+#constant explodeS 6
+#constant launchS 7
+#constant crackS 8
+#constant flyingS 9
+#constant landingS 10
+#constant arrowS 11
+#constant chooseS 12
+#constant gongS 13
 
-#constant exp1S 11
-#constant exp2S 12
-#constant exp3S 13
-#constant exp4S 14
-#constant exp5S 15
+#constant exp1S 16
+#constant exp2S 17
+#constant exp3S 18
+#constant exp4S 19
+#constant exp5S 20
 
 #constant ufoS 21
 #constant wizardSpell1S 22
@@ -501,6 +513,7 @@ global jumpPartI as Integer[6]
 #constant fightAMusic 104	//Andy's fight song
 #constant fightBMusic 105	//Brad's fight song
 #constant fightJMusic 106	//John's fight song
+#constant tutorialMusic 107	//The tutorial song
 
 #constant raveBass1 121
 #constant raveBass2 122
@@ -529,6 +542,7 @@ SetMusicSystemVolumeOGG(volumeM)
 #constant SPR_START1P 204
 #constant TXT_WAIT1 201
 #constant TXT_WAIT2 202
+#constant TXT_HIGHSCORE 203
 
 //Different Crab buttons for the single player mode
 #constant SPR_SP_C1 205
@@ -586,6 +600,7 @@ SetMusicSystemVolumeOGG(volumeM)
 #constant PAUSE 3
 #constant RESULTS 4
 global spActive = 0 //Single Player active
+global paused = 0	//Game is currently paused
 
 #constant glowS 20000
 type meteor
@@ -620,6 +635,7 @@ function LoadBaseSounds()
 		LoadSoundOGG(landingS, "landing.ogg")
 		LoadSoundOGG(arrowS, "arrow.ogg")
 		LoadSoundOGG(chooseS, "choose.ogg")
+		LoadSoundOGG(gongS, "gong.ogg")
 		
 		
 		LoadSoundOGG(exp1S, "exp1.ogg")
@@ -647,6 +663,7 @@ function LoadBaseSounds()
 		LoadMusicOGG(landingS, "landing.ogg")		
 		LoadMusicOGG(arrowS, "arrow.ogg")
 		LoadMusicOGG(chooseS, "choose.ogg")
+		LoadMusicOGG(gongS, "gong.ogg")
 		
 		LoadMusicOGG(exp1S, "exp1.ogg")
 		LoadMusicOGG(exp2S, "exp2.ogg")
@@ -705,6 +722,7 @@ function PlayMusicOGGSP(songID, loopYN)
 			LoadMusicOGG(fightAMusic, "fightA.ogg")
 			SetMusicLoopTimesOGG(fightAMusic, 28.235, -1)
 		endif
+		if songID = tutorialMusic then LoadMusicOGG(tutorialMusic, "fightD.ogg")
 		if songID = characterMusic then LoadMusicOGG(characterMusic, "character.ogg")
 		if songID = resultsMusic
 			LoadMusicOGG(resultsMusic, "results.ogg")
@@ -935,16 +953,7 @@ function LoadGameImages(loading)
 			LoadImage(planetVarI[planetIMax + i], "legendp" + str(i) + ".png")
 		next i
 		
-		SetFolder("/media/art")
-	
-		LoadImage(crab1attack1I, "crab1attack1.png")
-		LoadImage(crab1attack2I, "crab1attack2.png")
-		LoadImage(crab2attack1I, "crab2attack1.png")
-		LoadImage(crab2attack2I, "crab2attack2.png")
-		LoadImage(crab4attack1I, "crab4attack1.png")
-		LoadImage(crab4attack2I, "crab4attack2.png")
-		LoadImage(crab6attack1I, "crab6attack1.png")
-		LoadImage(crab6attack2I, "crab6attack2.png")
+		
 		
 //~		if GetDeviceBaseName() = "android"
 //~			SetFolder("/media/sounds")
@@ -1048,6 +1057,17 @@ function LoadGameImages(loading)
 			LoadImage(crab6skid1I, "crab6skid1.png")
 			LoadImage(crab6skid2I, "crab6skid2.png")
 			LoadImage(crab6skid3I, "crab6skid3.png")
+			
+			SetFolder("/media/art")
+	
+			LoadImage(crab1attack1I, "crab1attack1.png")
+			LoadImage(crab1attack2I, "crab1attack2.png")
+			LoadImage(crab2attack1I, "crab2attack1.png")
+			LoadImage(crab2attack2I, "crab2attack2.png")
+			LoadImage(crab4attack1I, "crab4attack1.png")
+			LoadImage(crab4attack2I, "crab4attack2.png")
+			LoadImage(crab6attack1I, "crab6attack1.png")
+			LoadImage(crab6attack2I, "crab6attack2.png")
 		endif
 		
 	else

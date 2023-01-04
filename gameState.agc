@@ -27,18 +27,28 @@ function InitGame()
 	
 	SetSpriteVisible(split, 1)
 	
-	if spActive = 0 then PlayMusicOGGSP(fightAMusic, 1)	//Todo: put in a music randomizer
+	if spActive = 0 then PlayOpeningScene()
 	
-	if spActive
-		songRand = Random(1, 11)
-		if songRand <= 3 then PlayMusicOGGSP(fightAMusic, 1)
-		if songRand > 3
-			PlayMusicOGGSP(retro1M + songRand - 4, 1)
-		endif
-	endif
+	//The pause button
+	SetFolder("/media")
+	LoadSpriteExpress(pauseButton, "pause.png", 100, 100, 0, 0, 9)
+	SetSpriteMiddleScreen(pauseButton)
+	if spActive then SetSpritePosition(pauseButton, 30, 30)
+	
+	LoadSpriteExpress(playButton, "rightArrow.png", 100, 100, 0, 0, 1)
+	SetSpriteMiddleScreen(playButton)
+	IncSpriteX(playButton, -200)
+	SetSpriteVisible(playButton, 0)
+	
+	LoadSpriteExpress(exitButton, "leftArrow.png", 100, 100, 0, 0, 1)
+	SetSpriteMiddleScreen(exitButton)
+	IncSpriteX(exitButton, 200)
+	SetSpriteVisible(exitButton, 0)
+	
+	if spActive = 1 then StartGameMusic()
 	
 	gameStateInitialized = 1
-	
+		
 endfunction
 
 
@@ -54,47 +64,99 @@ function DoGame()
 	endif
 	state = GAME
 	
-	// Game execution loops
-	if hit1Timer# > 0
-		//This is the case for getting hit
-		state1 = HitScene1()
-	else
-		//This is the case for normal gameplay
-		state1 = DoGame1()
-	endif
-	if hit2Timer# > 0
-		//This is the case for getting hit
-		state2 = HitScene2()
-	else
-		//This is the case for normal gameplay
-		state2 = DoGame2()
-	endif
-	UpdateExp()
-	inc gameTimer#, fpsr#
+	if paused = 0
 	
-	if hit1Timer# > 0 or hit2Timer# > 0
-		DisableAttackButtons()
-	endif
-	
-	if spActive
-		UpdateSPScore(0)
-		if hit1Timer# > 0 or hit2Timer# > 0
-			//The single player game is over
-			state = START
+		//Dispersing the 'SURVIVE!' text after the opening
+		if GetTextExists(TXT_INTRO1)
+			if gameTimer# < 50
+				for i = TXT_INTRO1 to TXT_INTRO2
+					SetTextSpacing(i, gameTimer#/6 - 20)
+					for j = 0 to GetTextLength(i)
+						SetTextCharY(i, j, -1 * 2 + Random(0, 4) - GetTextSize(i)*(i-TXT_INTRO1))
+						SetTextCharAngle(i, j, -1 * 2 + Random(0, 4) + 180*(i-TXT_INTRO1))
+					next j
+				next i
+			else
+				//The music should only start once
+				if GetTextColorAlpha(TXT_INTRO1) = 255 then StartGameMusic()
+				for i = TXT_INTRO1 to TXT_INTRO2
+					SetTextSpacing(i, gameTimer#/2 - 36)
+					SetTextColorAlpha(i, 255-(gameTimer#-49)*3)
+					for j = 0 to GetTextLength(i)
+						SetTextCharY(i, j, -1 * (gameTimer#-49)/2 + Random(0, (gameTimer#-49)) - GetTextSize(i)*(i-TXT_INTRO1))
+						SetTextCharAngle(i, j, -1 * (gameTimer#-49)/2 + Random(0, gameTimer#-49) + 180*(i-TXT_INTRO1))
+					next j
+				next i
+				if GetTextColorAlpha(TXT_INTRO1) < 10
+					DeleteText(TXT_INTRO1)
+					DeleteText(TXT_INTRO2)
+				endif
+			endif
 		endif
+		
+		// Game execution loops
+		if hit1Timer# > 0
+			//This is the case for getting hit
+			state1 = HitScene1()
+		else
+			//This is the case for normal gameplay
+			state1 = DoGame1()
+		endif
+		if hit2Timer# > 0
+			//This is the case for getting hit
+			state2 = HitScene2()
+		else
+			//This is the case for normal gameplay
+			state2 = DoGame2()
+		endif
+		UpdateExp()
+		inc gameTimer#, fpsr#
+		
+		if hit1Timer# > 0 or hit2Timer# > 0
+			DisableAttackButtons()
+		endif
+		
+		if spActive
+			UpdateSPScore(0)
+			if hit1Timer# > 0 or hit2Timer# > 0
+				//The single player game is over
+				state = START
+			endif
+		endif
+		
+		//Stops the game from crashing if this number gets too high (proper range is 1000 to 2000).
+		if meteorSprNum > 1900
+			meteorSprNum = 1050
+		endif
+	
+		if ButtonMultitouchEnabled(pauseButton)
+			paused = 1
+			PauseGame()
+		endif
+		
+		// Check for state updates (pausing, losing). Sorry Player 2, Player 1 gets checked first.
+		if state1 <> GAME
+			state = state1
+		elseif state2 <> GAME
+			state = state2
+		endif
+	
+	else
+		//The case where the game is paused
+		
+		if ButtonMultitouchEnabled(playButton)
+			paused = 0
+			UnpauseGame()
+		endif
+		
+		if ButtonMultitouchEnabled(exitButton)
+			state = CHARACTER_SELECT
+			if spActive then state = START
+		endif
+		
 	endif
 	
-	//Stops the game from crashing if this number gets too high (proper range is 1000 to 2000).
-	if meteorSprNum > 1900
-		meteorSprNum = 1050
-	endif
 	
-	// Check for state updates (pausing, losing). Sorry Player 2, Player 1 gets checked first.
-	if state1 <> GAME
-		state = state1
-	elseif state2 <> GAME
-		state = state2
-	endif
 	
 	// If we are leaving the state, exit appropriately
 	// Don't write anything after this!
@@ -108,6 +170,25 @@ endfunction state
 
 // Cleanup upon leaving this state
 function ExitGame()
+	
+	//Updating the scores for the single player game
+	if spActive
+		if spHighScore < spScore
+			spHighScore = spScore
+			if crab1Type = 1 then spHighCrab$ = "Space Crab"
+			if crab1Type = 2 then spHighCrab$ = "Ladder Wizard"
+			if crab1Type = 3 then spHighCrab$ = "Top Crab"
+			if crab1Type = 4 then spHighCrab$ = "Rave Crab"
+			if crab1Type = 5 then spHighCrab$ = "Chrono Crab"
+			if crab1Type = 6 then spHighCrab$ = "Ninja Crab"
+			SaveGame()
+		endif
+	endif
+	
+	if GetSpriteExists(999) then DeleteSprite(999)	//The pause menu curtain
+	if GetTextExists(TXT_INTRO1) then DeleteText(TXT_INTRO1)
+	if GetTextExists(TXT_INTRO2) then DeleteText(TXT_INTRO2)
+	paused = 0
 	
 	for i = fightAMusic to fightJMusic
 		if GetMusicExistsOGG(i)
@@ -224,8 +305,38 @@ function ExitGame()
 	if GetSpriteExists(bgHit1) then DeleteSprite(bgHit1)
 	if GetSpriteExists(bgHit2) then DeleteSprite(bgHit2)
 	
+	DeleteSprite(pauseButton)
+	DeleteSprite(playButton)
+	DeleteSprite(exitButton)
+	
 	// Whatever we do for something like ExitGame1() and ExitGame2() will go here
 	gameStateInitialized = 0
+	
+	ClearMultiTouch()
+	
+endfunction
+
+function PauseGame()
+	curtain = 999
+	CreateSpriteExpress(curtain, w, h, 0, 0, 2)
+	SetSpriteColor(curtain, 0, 0, 0, 255)
+	
+	SetSpriteVisible(pauseButton, 0)
+	SetSpriteVisible(playButton, 1)
+	SetSpriteVisible(exitButton, 1)
+	
+endfunction
+
+function UnpauseGame()
+	curtain = 999
+	
+	SetSpriteVisible(pauseButton, 1)
+	SetSpriteVisible(playButton, 0)
+	SetSpriteVisible(exitButton, 0)
+	
+	DeleteSprite(curtain)
+	
+	ClearMultiTouch()
 	
 endfunction
 
@@ -912,7 +1023,7 @@ function InitJumpParticles()
 endfunction
 
 function ActivateJumpParticles(gameNum)
-
+	
 	crabS = 0
 	crabType = 0
 	crabTheta# = 0
@@ -965,4 +1076,247 @@ function ActivateJumpParticles(gameNum)
 	
 	endif
  
+endfunction
+
+function StartGameMusic()
+	
+	
+	if spActive = 0 then PlayMusicOGGSP(fightAMusic, 1)	//Todo: put in a music randomizer
+	
+	if spActive
+		songRand = Random(1, 11)
+		if songRand <= 3 then PlayMusicOGGSP(fightAMusic, 1)
+		if songRand > 3
+			PlayMusicOGGSP(retro1M + songRand - 4, 1)
+		endif
+	endif
+endfunction
+
+function PlayOpeningScene()
+	
+	curtain = 999
+	CreateSpriteExpress(curtain, w, h, 0, 0, 8)
+	SetSpriteColor(curtain, 0, 0, 0, 200)
+	
+	phase = 0
+	oMax# = 1000.0
+	if firstFight = 0 then oMax# = 62
+	oTimer# = oMax#
+	
+	PlayMusicOGGSP(tutorialMusic, 0)
+	
+	if firstFight = 1
+	
+		CreateTextExpress(TXT_INTRO1, "1. Dodge meteors -" + chr(10) + "collect their power.", 70, fontCrabI, 1, w/2, h/2 + 80, 3)
+		SetTextSpacing(TXT_INTRO1, -19)
+		
+		SetSpritePosition(crab1, 9999, 9999)
+		SetSpritePosition(crab2, 9999, 9999)
+		
+		CreateMeteor(1, 1, 0)
+		met1S = meteorActive1[1].spr
+		SetSpriteSize(met1S, GetSpriteWidth(met1S)*1.3, GetSpriteHeight(met1S)*1.3)
+		SetSpriteMiddleScreenX(met1S)
+		SetSpriteY(met1S, h/2 + 220)
+		SetSpriteAngle(met1S, 270)
+		SetSpriteVisible(met1S, 0)
+		SetSpriteDepth(met1S, 1)
+		for i = expBar1 to specialButton1
+			IncSpriteY(i, -200)
+			SetSpriteVisible(i, 0)
+			SetSpriteDepth(i, GetSpriteDepth(i) - 11)
+		next i
+		SetParticlesDepth(par1met1, 8)
+		
+		for i = 1 to 3
+			SetSpriteDepth(crab1PlanetS[i], GetSpriteDepth(crab1PlanetS[i]) + 10)
+		next i
+		
+		CreateTextExpress(TXT_INTRO2, GetTextString(TXT_INTRO1), 70, fontCrabI, 1, w/2, h/2 - 80, 3)
+		SetTextSpacing(TXT_INTRO2, -19)
+		SetTextAngle(TXT_INTRO2, 180)
+		
+		CreateMeteor(2, 1, 0)
+		met2S = meteorActive2[1].spr
+		SetSpriteSize(met2S, GetSpriteWidth(met2S)*1.3, GetSpriteHeight(met2S)*1.3)
+		SetSpriteMiddleScreenX(met2S)
+		SetSpriteY(met2S, h/2 - 220 - GetSpriteHeight(met2S))
+		SetSpriteAngle(met2S, 90)
+		SetSpriteVisible(met2S, 0)
+		SetSpriteDepth(met2S, 1)
+		for i = expBar2 to specialButton2
+			IncSpriteY(i, 200)
+			SetSpriteVisible(i, 0)
+			SetSpriteDepth(i, GetSpriteDepth(i) - 11)
+		next i
+		SetParticlesDepth(par2met1, 8)
+		
+		for i = 1 to 3
+			SetSpriteDepth(crab2PlanetS[i], GetSpriteDepth(crab2PlanetS[i]) + 10)
+		next i
+		
+		phase = 1
+		
+		while oTimer# > 0
+			fpsr# = 60.0/ScreenFPS()
+			
+			if oTimer# < oMax#*9/10 and GetSpriteExists(met1S) = 1
+				SetSpriteVisible(met1S, 1)
+				SetSpriteVisible(met2S, 1)
+				//SetSpriteVisible(met1S+glowS, 1)	//This stays invisible because I couldn't get the Y positioning right, lol
+			endif
+			
+			if oTimer# < oMax#*8/10 and GetSpriteExists(met1S) = 1
+				ActivateMeteorParticles(1, met1S, 1)
+				CreateExp(met1S, 2, 1)		
+				DeleteSprite(met1S)
+				if GetSpriteExists(met1S+glowS) then DeleteSprite(met1S + glowS)
+				meteorActive1.remove(1)
+				
+				ActivateMeteorParticles(1, met2S, 2)
+				CreateExp(met2S, 2, 1)		
+				DeleteSprite(met2S)
+				if GetSpriteExists(met2S+glowS) then DeleteSprite(met2S + glowS)
+				meteorActive2.remove(1)
+				
+				PlaySoundR(explodeS, volumeSE)
+			endif
+			
+			
+			if oTimer# < oMax#*7/10 and phase = 1
+				//The one time stuff
+				phase = 2
+				SetTextString(TXT_INTRO1, GetTextString(TXT_INTRO1) + chr(10) + chr(10) + chr(10) + "2. Power your bar" + chr(10) + "and fight back.")
+				SetTextString(TXT_INTRO2, GetTextString(TXT_INTRO1))	
+				
+				for i = expBar1 to specialButton1
+					SetSpriteVisible(i, 1)
+				next i
+				for i = expBar2 to specialButton2
+					SetSpriteVisible(i, 1)
+				next i
+			endif
+			
+			if oTimer# < oMax#*6/10 and expTotal1 < specialCost1
+				expTotal1 = Min(-1*(oTimer#-(oMax#*6/10))/8, specialCost1)
+			endif
+			
+			if oTimer# < oMax#*6/10 and expTotal2 < specialCost2
+				expTotal2 = Min(-1*(oTimer#-(oMax#*6/10))/8, specialCost2)
+			endif
+			
+			if phase = 2 and oTimer# < oMax#*3/10
+				phase = 3
+				
+				SetTextString(TXT_INTRO1, GetTextString(TXT_INTRO1) + chr(10) + chr(10) + chr(10) + "3. And most importantly...")
+				SetTextString(TXT_INTRO2, GetTextString(TXT_INTRO1))
+				
+			endif
+			
+			if oTimer# < oMax#*3/10
+				SetMusicVolumeOGG(tutorialMusic, Max(oTimer#/3, 0))
+			endif
+			
+			if GetPointerPressed()
+				inc oTimer#, -oMax#/5
+				PingFF()
+			endif
+			
+			dec oTimer#, fpsr#
+			UpdateButtons1()
+			UpdateButtons2()
+			PingUpdate()
+			UpdateExp()
+			Sync()
+		endwhile
+		
+		expTotal1 = 0
+		expTotal2 = 0
+		
+		for i = expBar1 to specialButton1
+			IncSpriteY(i, 200)
+			SetSpriteDepth(i, GetSpriteDepth(i) + 11)
+		next i
+		for i = expBar2 to specialButton2
+			IncSpriteY(i, -200)
+			SetSpriteDepth(i, GetSpriteDepth(i) + 11)
+		next i
+		for i = 1 to 3
+			SetSpriteDepth(crab1PlanetS[i], GetSpriteDepth(crab1PlanetS[i]) - 10)
+			SetSpriteDepth(crab2PlanetS[i], GetSpriteDepth(crab2PlanetS[i]) - 10)
+		next i
+		SetParticlesDepth(par1met1, 25)
+		SetParticlesDepth(par2met1, 25)
+		
+		DeleteHalfExp(1)
+		DeleteHalfExp(2)
+		UpdateButtons1()
+		UpdateButtons2()
+		
+		firstFight = 0
+		
+		StopMusicOGGSP(tutorialMusic)
+
+	else
+		//The repeated cutscene
+		
+		CreateTextExpress(TXT_INTRO1, "Three...", 90, fontCrabI, 1, w/2, h*3/4 + 30, 3)
+		SetTextSpacing(TXT_INTRO1, -22)
+		
+		CreateTextExpress(TXT_INTRO2, "Three...", 90, fontCrabI, 1, w/2, h/4 - GetTextSize(TXT_INTRO1), 3)
+		SetTextSpacing(TXT_INTRO2, -22)
+		SetTextAngle(TXT_INTRO2, 180)
+		
+		phase = 1
+		
+		while oTimer# > 0
+			
+			if oTimer# < oMax#*2/3 and phase = 1
+				phase = 2
+				for i = TXT_INTRO1 to TXT_INTRO2
+					SetTextString(i, "Two...")
+					SetTextAngle(i, (i-TXT_INTRO1)*180 - 10 + Random(0, 20))
+					SetTextSize(i, 95)
+				next i
+			endif
+			
+			if oTimer# < oMax#/3 and phase = 2
+				phase = 3
+				for i = TXT_INTRO1 to TXT_INTRO2
+					SetTextString(i, "One...")
+					SetTextAngle(i, (i-TXT_INTRO1)*180 - 15 + Random(0, 30))
+					SetTextSize(i, 100)
+				next i
+			endif
+			
+			if oTimer# < oMax#/6 and phase = 3
+				phase = 4
+				StopMusicOGGSP(tutorialMusic)
+			endif
+			
+			dec oTimer#, fpsr#
+			Sync()
+		endwhile
+		
+		
+		
+	endif
+	
+	DeleteSprite(curtain)
+	
+	ClearMultiTouch()
+	
+	PlaySoundR(gongS, volumeSE)
+	
+	for i = TXT_INTRO1 to TXT_INTRO2
+		SetTextString(i, "SURVIVE!")
+		SetTextSize(i, 110)
+		SetTextAngle(i, (i-TXT_INTRO1)*180)
+		SetTextSpacing(i, -30)
+		SetTextY(i, h*3/4  - h/2*(i-TXT_INTRO1))
+		SetTextDepth(i, 3)
+	next i	
+	
+	
+	
 endfunction

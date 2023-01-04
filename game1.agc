@@ -300,9 +300,9 @@ function DoGame1()
 	true1 = 0
 	if (deviceType = DESKTOP and ((GetPointerPressed() and (GetPointerY() > GetSpriteY(split) + GetSpriteHeight(split))) or (GetRawKeyPressed(32) or GetRawKeyPressed(49))) and Hover(meteorButton1) = 0 and Hover(specialButton1) = 0) then true1 = 1
 	true2 = 0
-	if (GetMulitouchPressedButton(meteorButton1) = 0 and GetMulitouchPressedButton(specialButton1) = 0 and GetMultitouchPressedBottom() and deviceType = MOBILE) then true2 = 1
+	if (GetMulitouchPressedButton(split) = 0 and GetMulitouchPressedButton(meteorButton1) = 0 and GetMulitouchPressedButton(specialButton1) = 0 and GetMultitouchPressedBottom() and deviceType = MOBILE) then true2 = 1
 	true3 = 0
-	if spActive = 1 and (GetMultitouchPressedTop() or GetMultitouchPressedBottom()) and deviceType = MOBILE then true3 = 1
+	if spActive = 1 and (GetMultitouchPressedTop() or GetMultitouchPressedBottom()) and deviceType = MOBILE and not ButtonMultitouchEnabled(pauseButton) then true3 = 1
 	//Activating the crab turn at an input
 	if (true2 or buffer1 or true1 or true3) and crab1JumpD# = 0
 		

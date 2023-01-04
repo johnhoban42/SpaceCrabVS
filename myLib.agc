@@ -375,6 +375,19 @@ function ButtonMultitouchEnabled(spr)
     endif
 endfunction returnValue
 
+function ClearMultiTouch()
+	//Clearing the currentTouch array to reset it for this frame
+	for j = 1 to 2
+		for i = 1 to currentTouch.length
+			currentTouch.remove()
+		next
+		currentTouch.length = 0
+		
+		Sync()
+		ProcessMultitouch()
+	next j
+endfunction
+
 function PlaySoundR(sound, vol)
 	if GetSoundExists(sound) or GetMusicExistsOGG(sound)
 		if GetDeviceBaseName() <> "android"
@@ -391,7 +404,7 @@ endfunction
 function GetSoundPlayingR(sound)
 	result = 0
 	
-	if GetSoundExists(sound)
+	if GetSoundExists(sound) or GetMusicExistsOGG(sound)
 		if GetDeviceBaseName() <> "android"
 			//The normal case, for normal devices
 			result = GetSoundInstances(sound)
@@ -615,6 +628,51 @@ function PingCrab(x, y, size)
 		SetSpriteAngle(spr, Random(1, 360))
 		SetSpritePosition(spr, x - GetSpriteWidth(spr)/2, y - GetSpriteHeight(spr)/2)
 		SetSpriteDepth(spr, 50)
+	endif
+	
+	rnd = Random(0, 4)
+	PlaySoundR(exp1S + rnd, volumeSE/10)
+
+endfunction
+
+function PingFF()
+	
+	SetFolder("/media")
+	
+	spr = 0
+	for i = pingStart to pingEnd
+		if GetSpriteExists(i) = 0
+			spr = i
+			i = pingEnd + 1
+		endif
+	next i
+
+	if spr <> 0
+		LoadSprite(spr, "ff.png")
+		SetSpriteSizeSquare(spr, 150)
+		SetSpriteMiddleScreenX(spr)
+		SetSpriteY(spr, h*3/4 - GetSpriteHeight(spr)/2)
+		SetSpriteDepth(spr, 1)
+		SetSpriteColorAlpha(spr, 180)
+	endif
+	
+	//For the top screen
+	spr = 0
+	for i = pingStart to pingEnd
+		if GetSpriteExists(i) = 0
+			spr = i
+			i = pingEnd + 1
+		endif
+	next i
+
+	if spr <> 0
+		LoadSprite(spr, "ff.png")
+		SetSpriteSizeSquare(spr, 150)
+		SetSpriteMiddleScreenX(spr)
+		SetSpriteY(spr, h/4 - GetSpriteHeight(spr)/2)
+		SetSpriteAngle(spr, 180)
+		SetSpriteDepth(spr, 1)
+		SetSpriteColorAlpha(spr, 180)
 	endif
 	
 	rnd = Random(0, 4)

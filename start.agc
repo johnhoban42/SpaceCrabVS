@@ -52,11 +52,13 @@ function InitStart()
 		SetSpriteSizeSquare(i, 150)
 		SetSpritePosition(i, w/2 - GetSpriteWidth(i)/2 - 250 + 250*(Mod(num-1,3)), 980 + 250*((num-1)/3))
 		
-		//CreateTweenSprite(i, .4)
-		//SetTweenSpriteY(
-		//SetTweenSpriteSizeX(
-		//SetTweenSpriteSizeY(
+		CreateTweenSprite(i, .7)
+		SetTweenSpriteY(i, h + 20, 980 + 250*((num-1)/3), TweenBounce())
 	next i
+	
+	CreateTextExpress(TXT_HIGHSCORE, "High Score: " + str(spHighScore) + chr(10) + "with " + spHighCrab$, 90, fontCrabI, 1, w/2, 300, 5)
+	SetTextSpacing(TXT_HIGHSCORE, -26)
+	SetTextVisible(TXT_HIGHSCORE, 0)
 	
 	LoadSpriteExpress(SPR_BG_START, "envi/bg4.png",h*1.5, h*1.5, 0, 0, 100)
 	SetSpriteMiddleScreen(SPR_BG_START)
@@ -87,7 +89,14 @@ function InitStart()
 			SetSpriteY(i, 980 + 250*((num-1)/3))
 		next i
 		//SetSpriteColorByCycle(SPR_BG_SP, 100-round(startTimer#))
-		SetSpriteColorAlpha(SPR_BG_SP, 255)
+		//SetSpriteColorAlpha(SPR_BG_SP, 255)
+		
+		SetTextVisible(TXT_HIGHSCORE, 1)
+		
+		SetSpriteVisible(SPR_START1, 0)
+		SetSpriteVisible(SPR_START2, 0)
+		SetTextVisible(TXT_WAIT1, 0)
+		SetTextVisible(TXT_WAIT2, 0)
 		
 		
 		spScore = 0
@@ -123,7 +132,7 @@ function DoStart()
 	if startTimer# >= 0
 		
 		//Multiplayer section
-		if GetPointerPressed() and not Button(SPR_START1) and not Button(SPR_START2) and not Button(SPR_SP_C1) and not Button(SPR_SP_C2) and not Button(SPR_SP_C3) and not Button(SPR_SP_C4) and not Button(SPR_SP_C5) and not Button(SPR_SP_C6)
+		if GetPointerPressed() and not Button(SPR_START1) and not Button(SPR_START2) and not Button(SPR_START1P) and not Button(SPR_SP_C1) and not Button(SPR_SP_C2) and not Button(SPR_SP_C3) and not Button(SPR_SP_C4) and not Button(SPR_SP_C5) and not Button(SPR_SP_C6)
 			PingCrab(GetPointerX(), GetPointerY(), Random (100, 180))
 		endif
 		
@@ -203,21 +212,28 @@ function DoStart()
 	else
 		if spActive = 1
 			
+		startTimer# = 0
+		
 			
 		SetSpriteAngle(SPR_TITLE, 90 + 320*sin(startTimer#)*(100+startTimer#)/20.0)
-		GlideToY(SPR_TITLE, -1000, 10)
+		//GlideToY(SPR_TITLE, -1000, 10)
+		SetSpriteY(SPR_TITLE, -1000)
 			
 			for i = SPR_SP_C1 to SPR_SP_C6
-				num = i-SPR_SP_C1+1
-				GlideToY(i, 980 + 250*((num-1)/3), 3+num)
+				//num = i-SPR_SP_C1+1
+				//GlideToY(i, 980 + 250*((num-1)/3), 3+num)
+				
+				PlayTweenSprite(i,  i, (i-SPR_SP_C1)*.06)
+				
 			next i
-			SetSpriteColorByCycle(SPR_BG_SP, 100-round(startTimer#))
-			SetSpriteColor(SPR_BG_SP, 255-GetSpriteColorRed(SPR_BG_SP)/4, 255-GetSpriteColorGreen(SPR_BG_SP)/4, 255-GetSpriteColorBlue(SPR_BG_SP)/4, 255.0*(100.0+startTimer#)/100)
+			//SetSpriteColorByCycle(SPR_BG_SP, 100-round(startTimer#))
+			//SetSpriteColor(SPR_BG_SP, 255-GetSpriteColorRed(SPR_BG_SP)/4, 255-GetSpriteColorGreen(SPR_BG_SP)/4, 255-GetSpriteColorBlue(SPR_BG_SP)/4, 255.0*(100.0+startTimer#)/100)
 		
 			SetSpriteVisible(SPR_START1, 0)
 			SetSpriteVisible(SPR_START2, 0)
 			SetTextVisible(TXT_WAIT1, 0)
 			SetTextVisible(TXT_WAIT2, 0)
+			SetTextVisible(TXT_HIGHSCORE, 1)
 		
 		elseif spActive = 0
 			//Turning back into a regular menu
@@ -230,13 +246,14 @@ function DoStart()
 				GlideToY(i, 980*5 + 250*((num-1)/3), 3+num)
 			next i
 			
-			SetSpriteColorByCycle(SPR_BG_SP, 100-round(startTimer#))
-			SetSpriteColor(SPR_BG_SP, 255-GetSpriteColorRed(SPR_BG_SP)/4, 255-GetSpriteColorGreen(SPR_BG_SP)/4, 255-GetSpriteColorBlue(SPR_BG_SP)/4, 255.0*(0-startTimer#)/100)
+			//SetSpriteColorByCycle(SPR_BG_SP, 100-round(startTimer#))
+			//SetSpriteColor(SPR_BG_SP, 255-GetSpriteColorRed(SPR_BG_SP)/4, 255-GetSpriteColorGreen(SPR_BG_SP)/4, 255-GetSpriteColorBlue(SPR_BG_SP)/4, 255.0*(0-startTimer#)/100)
 		
 			SetSpriteVisible(SPR_START1, 1)
 			SetSpriteVisible(SPR_START2, 1)
 			SetTextVisible(TXT_WAIT1, 1)
 			SetTextVisible(TXT_WAIT2, 1)
+			SetTextVisible(TXT_HIGHSCORE, 0)
 			
 		endif
 	
@@ -263,6 +280,7 @@ function ExitStart()
 	DeleteSprite(SPR_BG_SP)
 	DeleteText(TXT_WAIT1)
 	DeleteText(TXT_WAIT2)
+	DeleteText(TXT_HIGHSCORE)
 	
 	for i = SPR_SP_C1 to SPR_SP_C6
 		DeleteSprite(i)

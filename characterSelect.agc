@@ -590,4 +590,6 @@ function ExitCharacterSelect()
 	
 	characterSelectStateInitialized = 0
 	
+	ClearMultiTouch()
+	
 endfunction

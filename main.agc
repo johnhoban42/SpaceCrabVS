@@ -4,6 +4,7 @@
 #include "start.agc"
 #include "characterSelect.agc"
 #include "results.agc"
+#company_name "rondovo"
 
 // Project: SpaceCrabVS 
 // Created: 22-03-03
@@ -64,6 +65,29 @@ SetSpriteMiddleScreenY(split)
 global appState = START
 
 gameTime# = 0
+
+function SaveGame()
+	SetFolder("/media")
+	OpenToWrite(1, "save.txt")
+	
+	WriteInteger(1, spHighScore)
+	WriteString(1, spHighCrab$)
+	
+	CloseFile(1)
+endfunction
+
+function LoadGame()
+	SetFolder("/media")
+	if GetFileExists("save.txt") = 0 then SaveGame()
+	OpenToRead(1, "save.txt")
+	
+	spHighScore = ReadInteger(1)
+	spHighCrab$ = ReadString(1)
+	
+	CloseFile(1)
+endfunction
+
+LoadGame()
 
 do
 	fpsr# = 60.0/ScreenFPS()
