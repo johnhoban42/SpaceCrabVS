@@ -18,12 +18,16 @@ type ResultsController
 	
 	// Game state
 	isWinner as integer // 0 if false, 1 if true
+	frame as integer // frame data for animations
 	
 	// Sprites
 	txtCrabMsg as integer
 	txtWinMsg as integer
 	sprCrabWin as integer
 	sprCrabLose as integer
+	
+	// Tweens
+	twnWinMsg as integer
 	
 endtype
 
@@ -42,6 +46,8 @@ function InitResultsController(rc ref as ResultsController)
 		loserCrab = crab1Type
 	endif
 	
+	rc.frame = 0
+	
 	// The offset mumbo-jumbo with f-coefficients is because AGK's text rendering is awful
 	CreateText(rc.txtCrabMsg, "Unique crab message")
 	SetTextSize(rc.txtCrabMsg, 48)
@@ -50,6 +56,7 @@ function InitResultsController(rc ref as ResultsController)
 	SetTextSpacing(rc.txtCrabMsg, -15)
 	SetTextMiddleScreenOffset(rc.txtCrabMsg, f, 0, p*150)
 	SetTextAlignment(rc.txtCrabMsg, 1)
+	SetTextVisible(rc.txtCrabMsg, 0)
 	
 	winMsg as string
 	if rc.isWinner
@@ -62,20 +69,29 @@ function InitResultsController(rc ref as ResultsController)
 	SetTextAngle(rc.txtWinMsg, f*180)
 	SetTextFontImage(rc.txtWinMsg, fontCrabI)
 	SetTextSpacing(rc.txtWinMsg, -22)
-	SetTextMiddleScreenOffset(rc.txtWinMsg, f, 0, p*725)
+	SetTextMiddleScreenOffset(rc.txtWinMsg, f, 0, p*400)
 	SetTextAlignment(rc.txtWinMsg, 1)
+	SetTextColorAlpha(rc.txtWinMsg, 0)
+	
+	CreateTweenText(rc.twnWinMsg, 1.5)
+	SetTweenTextY(rc.twnWinMsg, GetTextY(rc.txtWinMsg), GetTextY(rc.txtWinMsg) + p*325, TweenSmooth2())
 	
 	sprCrabLose$ = "/media/art/crab" + Str(loserCrab) + "attack1.png"
 	LoadSprite(rc.sprCrabLose, sprCrabLose$)
 	SetSpriteSize(rc.sprCrabLose, 195, 195)
 	SetSpriteMiddleScreenOffset(rc.sprCrabLose, p*-1*w/4, p*375)
 	SetSpriteFlip(rc.sprCrabLose, f, f)
+	SetSpriteVisible(rc.sprCrabLose, 0)
 	
 	sprCrabWin$ = "/media/art/crab" + Str(winnerCrab) + "select1.png"
 	LoadSprite(rc.sprCrabWin, sprCrabWin$)
 	SetSpriteSize(rc.sprCrabWin, 425, 425)
 	SetSpriteMiddleScreenOffset(rc.sprCrabWin, p*w/8, p*450)
 	SetSpriteFlip(rc.sprCrabWin, f, f)
+	SetSpriteVisible(rc.sprCrabWin, 0)
+	
+	// Kick off the controller's tweens
+	PlayTweenText(rc.twnWinMsg, rc.txtWinMsg, 2)
 	
 endfunction
 
@@ -101,12 +117,14 @@ function InitResults()
 	rc1.txtWinMsg = TXT_R_WIN_MSG_1
 	rc1.sprCrabWin = SPR_R_CRAB_WIN_1
 	rc1.sprCrabLose = SPR_R_CRAB_LOSE_1
+	rc1.twnWinMsg = TWN_R_WIN_MSG_1
 	
 	rc2.player = 2
 	rc2.txtCrabMsg = TXT_R_CRAB_MSG_2
 	rc2.txtWinMsg = TXT_R_WIN_MSG_2
 	rc2.sprCrabWin = SPR_R_CRAB_WIN_2
 	rc2.sprCrabLose = SPR_R_CRAB_LOSE_2
+	rc2.twnWinMsg = TWN_R_WIN_MSG_2
 	
 	InitResultsController(rc1)
 	InitResultsController(rc2)
@@ -131,6 +149,32 @@ function InitResults()
 endfunction
 
 
+// Results loop for a single screen
+function DoResultsController(rc ref as ResultsController)
+	
+	// Win message fade in
+	// Max alpha = 255
+	FRAMES_WIN_MSG = 17
+	if rc.frame <= FRAMES_WIN_MSG
+		SetTextColorAlpha(rc.txtWinMsg, rc.frame * 15) 
+	endif
+	print(rc.frame)
+	
+	// Make the rest of the UI appear in sync with the song
+	FRAMES_SHOW_UI = 190
+	if rc.frame = FRAMES_SHOW_UI
+		SetSpriteVisible(rc.sprCrabWin, 1)
+		SetSpriteVisible(rc.sprCrabLose, 1)
+		SetTextVisible(rc.txtCrabMsg, 1)
+		PlaySoundR(chooseS, volumeSE)
+	endif
+		
+	// Increment the frame
+	rc.frame = rc.frame + 1
+
+endfunction
+
+
 // Results screen execution loop
 // Each time this loop exits, return the next state to enter into
 function DoResults()
@@ -141,6 +185,9 @@ function DoResults()
 		InitResults()
 	endif
 	state = RESULTS
+	
+	DoResultsController(rc1)
+	DoResultsController(rc2)
 	
 	// Check mid-screen buttons for activity
 	if Button(SPR_R_REMATCH)
