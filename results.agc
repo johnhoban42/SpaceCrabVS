@@ -9,6 +9,8 @@ global resultsWinner as integer = 0
 global rc1 as ResultsController
 global rc2 as ResultsController
 
+global winText as string[NUM_CRABS]
+global loseText as string[NUM_CRABS]
 
 // Controller that holds state data for each screen
 type ResultsController
@@ -49,12 +51,16 @@ function InitResultsController(rc ref as ResultsController)
 	rc.frame = 0
 	
 	// The offset mumbo-jumbo with f-coefficients is because AGK's text rendering is awful
-	CreateText(rc.txtCrabMsg, "Unique crab message")
+	if rc.isWinner
+		CreateText(rc.txtCrabMsg, loseText[winnerCrab - 1])
+	else
+		CreateText(rc.txtCrabMsg, loseText[loserCrab - 1])
+	endif
 	SetTextSize(rc.txtCrabMsg, 48)
 	SetTextAngle(rc.txtCrabMsg, f*180)
 	SetTextFontImage(rc.txtCrabMsg, fontCrabI)
 	SetTextSpacing(rc.txtCrabMsg, -15)
-	SetTextMiddleScreenOffset(rc.txtCrabMsg, f, 0, p*150)
+	SetTextMiddleScreenOffset(rc.txtCrabMsg, f, 0, p*190)
 	SetTextAlignment(rc.txtCrabMsg, 1)
 	SetTextVisible(rc.txtCrabMsg, 0)
 	
@@ -76,14 +82,14 @@ function InitResultsController(rc ref as ResultsController)
 	CreateTweenText(rc.twnWinMsg, 1.5)
 	SetTweenTextY(rc.twnWinMsg, GetTextY(rc.txtWinMsg), GetTextY(rc.txtWinMsg) + p*325, TweenSmooth2())
 	
-	sprCrabLose$ = "/media/art/crab" + Str(loserCrab) + "attack1.png"
+	sprCrabLose$ = "/media/art/crab" + Str(loserCrab) + "resultsLose.png"
 	LoadSprite(rc.sprCrabLose, sprCrabLose$)
 	SetSpriteSize(rc.sprCrabLose, 195, 195)
 	SetSpriteMiddleScreenOffset(rc.sprCrabLose, p*-1*w/4, p*375)
 	SetSpriteFlip(rc.sprCrabLose, f, f)
 	SetSpriteVisible(rc.sprCrabLose, 0)
 	
-	sprCrabWin$ = "/media/art/crab" + Str(winnerCrab) + "select1.png"
+	sprCrabWin$ = "/media/art/crab" + Str(winnerCrab) + "resultsWin.png"
 	LoadSprite(rc.sprCrabWin, sprCrabWin$)
 	SetSpriteSize(rc.sprCrabWin, 425, 425)
 	SetSpriteMiddleScreenOffset(rc.sprCrabWin, p*w/8, p*450)
@@ -99,6 +105,22 @@ endfunction
 function InitResults()
 	
 	PlayMusicOGGSP(resultsMusic, 1)
+	
+	// Initialize the win/loss text
+	// AGK doesn't allow string concatenation in the global namespace (?!)
+	winText[0] = "Space Crab wins!"
+	winText[1] = "Ladder Wizard wins!"
+	winText[2] = "Top Crab's dizzying, dazzling display" + chr(10) + "ran circles around the competition!"
+	winText[3] = "Rave Crab wins!"
+	winText[4] = "Chrono Crab wins!"
+	winText[5] = "Ninja Crab wins!"
+	
+	loseText[0] = "Space Crab's orbital ordnance was" + chr(10) + "overpowered by a mightier opponent..."
+	loseText[1] = "Ladder Wizard was vexed, hexed," + chr(10) + "and wrecked in this battle..."
+	loseText[2] = "Top Crab was toppled by" + chr(10) + "a far more balanced opponent..."
+	loseText[3] = "Rave Crab partied too hard" + chr(10) + "and paid the price..."
+	loseText[4] = "Chrono Crab must accept that" + chr(10) + "time has passed him by..."
+	loseText[5] = "Ninja Crab has been sent back" + chr(10) + "to the shadows in shame..."
 	
 	// Determine the winner
 	if crab1Deaths = 3
@@ -141,6 +163,13 @@ function InitResults()
 	LoadSprite(SPR_R_MAIN_MENU, "mainMenuButton.png")
 	SetSpriteSize(SPR_R_MAIN_MENU, 160, 160)
 	SetSpriteMiddleScreenOffset(SPR_R_MAIN_MENU, w/3, 0)
+	
+	// Background
+	SetFolder("/media/envi")
+	LoadSprite(SPR_R_BACKGROUND, "bg3.png")
+	SetSpriteSize(SPR_R_BACKGROUND, w, h)
+	SetSpriteDepth(SPR_R_BACKGROUND, 1000)
+	SetFolder("/media/art")
 	
 	PlayMusicOGG(resultsMusic, 1)
 	

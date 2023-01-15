@@ -92,7 +92,7 @@ global crab1Dir# = 1		//Crab dir is a float that goes from 1 to -1, it multiplie
 global crab1Vel# = 1.28
 global crab1Accel# = .1	//Is .1 because it takes 2 to reach full reversal, and original game timer was 20
 global crab1Turning = 0 	//Is zero for when the crab isn't turning, and 1 or -1 depending on the direction it is CHANGING TO
-global crab1Type = 1
+global crab1Type = 2
 global crab1JumpD# = 0
 global crab1JumpHMax# = 5
 global crab1JumpSpeed# = 1.216
@@ -605,6 +605,7 @@ SetMusicSystemVolumeOGG(volumeM)
 #constant SPR_R_REMATCH = 590
 #constant SPR_R_CRAB_SELECT = 591
 #constant SPR_R_MAIN_MENU = 592
+#constant SPR_R_BACKGROUND = 593
 
 // Results screen sprites - player 2
 #constant TXT_R_CRAB_MSG_2 = 600
