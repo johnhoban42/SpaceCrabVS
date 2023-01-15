@@ -12,6 +12,9 @@ global rc2 as ResultsController
 global winText as string[NUM_CRABS]
 global loseText as string[NUM_CRABS]
 
+global FRAMES_WIN_MSG = 17
+global FRAMES_SHOW_UI = 185
+
 // Controller that holds state data for each screen
 type ResultsController
 	
@@ -155,14 +158,17 @@ function InitResults()
 	LoadSprite(SPR_R_REMATCH, "rematchButton.png")
 	SetSpriteSize(SPR_R_REMATCH, 210, 210)
 	SetSpriteMiddleScreen(SPR_R_REMATCH)
+	SetSpriteVisible(SPR_R_REMATCH, 0)
 	
 	LoadSprite(SPR_R_CRAB_SELECT, "crabSelectButton.png")
 	SetSpriteSize(SPR_R_CRAB_SELECT, 175, 175)
 	SetSpriteMiddleScreenOffset(SPR_R_CRAB_SELECT, -1*w/3, 0)
+	SetSpriteVisible(SPR_R_CRAB_SELECT, 0)
 	
 	LoadSprite(SPR_R_MAIN_MENU, "mainMenuButton.png")
 	SetSpriteSize(SPR_R_MAIN_MENU, 160, 160)
 	SetSpriteMiddleScreenOffset(SPR_R_MAIN_MENU, w/3, 0)
+	SetSpriteVisible(SPR_R_MAIN_MENU, 0)
 	
 	// Background
 	SetFolder("/media/envi")
@@ -183,14 +189,12 @@ function DoResultsController(rc ref as ResultsController)
 	
 	// Win message fade in
 	// Max alpha = 255
-	FRAMES_WIN_MSG = 17
 	if rc.frame <= FRAMES_WIN_MSG
-		SetTextColorAlpha(rc.txtWinMsg, rc.frame * 15) 
+		SetTextColorAlpha(rc.txtWinMsg, rc.frame * (255 / FRAMES_WIN_MSG)) 
 	endif
 	print(rc.frame)
 	
 	// Make the rest of the UI appear in sync with the song
-	FRAMES_SHOW_UI = 190
 	if rc.frame = FRAMES_SHOW_UI
 		SetSpriteVisible(rc.sprCrabWin, 1)
 		SetSpriteVisible(rc.sprCrabLose, 1)
@@ -217,6 +221,18 @@ function DoResults()
 	
 	DoResultsController(rc1)
 	DoResultsController(rc2)
+	
+	// Show and animate mid-screen buttons
+	if rc1.frame = FRAMES_SHOW_UI
+		SetSpriteVisible(SPR_R_MAIN_MENU, 1)
+		SetSpriteVisible(SPR_R_CRAB_SELECT, 1)
+		SetSpriteVisible(SPR_R_REMATCH, 1)
+	endif
+	if rc1.frame >= FRAMES_SHOW_UI
+		SetSpriteAngle(SPR_R_MAIN_MENU, GetSpriteAngle(SPR_R_MAIN_MENU) - fpsr#)
+		SetSpriteAngle(SPR_R_CRAB_SELECT, GetSpriteAngle(SPR_R_CRAB_SELECT) - fpsr#)
+		SetSpriteAngle(SPR_R_REMATCH, GetSpriteAngle(SPR_R_REMATCH) + fpsr#)
+	endif
 	
 	// Check mid-screen buttons for activity
 	if Button(SPR_R_REMATCH)

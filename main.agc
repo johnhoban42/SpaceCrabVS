@@ -62,7 +62,7 @@ SetSpriteColor(split, 200, 200, 200, 255)
 SetSpriteMiddleScreenX(split)
 SetSpriteMiddleScreenY(split)
 
-global appState = RESULTS
+global appState = START
 
 gameTime# = 0
 
