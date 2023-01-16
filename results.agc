@@ -55,7 +55,7 @@ function InitResultsController(rc ref as ResultsController)
 	
 	// The offset mumbo-jumbo with f-coefficients is because AGK's text rendering is awful
 	if rc.isWinner
-		CreateText(rc.txtCrabMsg, loseText[winnerCrab - 1])
+		CreateText(rc.txtCrabMsg, winText[winnerCrab - 1])
 	else
 		CreateText(rc.txtCrabMsg, loseText[loserCrab - 1])
 	endif
@@ -258,6 +258,7 @@ function CleanupResultsController(rc ref as ResultsController)
 	DeleteText(rc.txtWinMsg)
 	DeleteSprite(rc.sprCrabWin)
 	DeleteSprite(rc.sprCrabLose)
+	DeleteTween(rc.twnWinMsg)
 	
 endfunction
 
@@ -273,6 +274,7 @@ function ExitResults()
 	DeleteSprite(SPR_R_REMATCH)
 	DeleteSprite(SPR_R_CRAB_SELECT)
 	DeleteSprite(SPR_R_MAIN_MENU)
+	DeleteSprite(SPR_R_BACKGROUND)
 	
 	resultsStateInitialized = 0
 	
