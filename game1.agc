@@ -304,6 +304,10 @@ function DoGame1()
 	true3 = 0
 	if spActive = 1 and (GetMultitouchPressedTop() or GetMultitouchPressedBottom()) and deviceType = MOBILE and not ButtonMultitouchEnabled(pauseButton) then true3 = 1
 	//Activating the crab turn at an input
+	
+	//Space left for the AI stuff in game 2
+	//More space
+	
 	if (true2 or buffer1 or true1 or true3) and crab1JumpD# = 0
 		
 		buffer1 = 0
@@ -342,6 +346,7 @@ function DoGame1()
 	
 	//The jumping movement code
 	if crab1JumpD# > 0
+		//if true1 or true2 or true3 and crab1JumpD# < crab1JumpDMax/5.0 then buffer1 = 1
 		
 		if crab1JumpD# > crab1JumpDMax*7/8
 			PlaySprite(crab1, 0, 0, 11, 11)	

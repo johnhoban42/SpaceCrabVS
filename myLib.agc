@@ -590,6 +590,7 @@ function Ping(x, y, size)
 		CreateSprite(spr, meteorGlowI)
 		SetSpriteSizeSquare(spr, size)
 		SetSpritePosition(spr, x - GetSpriteWidth(spr)/2, y - GetSpriteHeight(spr)/2)
+		SetSpriteDepth(spr, 50)
 	endif
 
 endfunction
@@ -681,7 +682,7 @@ function PingFF()
 endfunction
 
 function PingUpdate()
-	speed# = 4
+	speed# = 6
 	for i = pingStart to pingEnd
 		if GetSpriteExists(i)
 			IncSpriteColorAlpha(i, -speed#*fpsr#)
