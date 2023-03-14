@@ -1110,7 +1110,7 @@ endfunction
 
 function PredictHit(framesAhead#)
 	// return flag
-	collisionPredicted = false
+	collisionPredicted = 0
 	// calculate crab's future theta
 	futureCrab2Theta# = crab2Theta# + crab2Vel# * framesAhead#
 	// loop through each active meteor
@@ -1118,27 +1118,29 @@ function PredictHit(framesAhead#)
 		// vars for holding a meteor's future radius and theta
 		futureMeteorR# = meteorActive2[i].r
 		futureMeteorTheta# = meteorActive2[i].theta
+		cat = meteorActive2[i].cat
 		// perform future radius/theta calcs based on type of meteor and passed number of frames ahead we are looking
 		if cat = 1	//Normal meteor
 			futureMeteorR# = meteorActive2[i].r - met1speed*(1 + (gameDifficulty2-1)*diffMetMod)*framesAhead#
-			endif
+			
 		elseif cat = 2 //Rotating meteor
 			futureMeteorR# = meteorActive2[i].r - met2speed*(1 + (gameDifficulty2-1)*diffMetMod)*framesAhead#
-			futureMeteorTheta# = meteorActive2[i].theta + 1*framesAhead#		
-			endif
+			futureMeteorTheta# = meteorActive2[i].theta + 1*framesAhead#	
+				
 		elseif cat = 3
-			futureMeteorR# = meteorActive2[i].r - met3speed*(1 + (gameDifficulty2-1)*diffMetMod)*framesAhead#			
-			endif
+			futureMeteorR# = meteorActive2[i].r - met3speed*(1 + (gameDifficulty2-1)*diffMetMod)*framesAhead#		
+		endif
+			
 		// check if crab and meteor are close in theta
 		if Abs(futureCrab2Theta# - futureMeteorTheta#) < 5
 			// check if crab and meteor are close in theta
 			if Abs(crab2R# - futureMeteorR#) < 5
-				collisionPredicted = true
-				endif
+				collisionPredicted = 1
 			endif
+		endif
 		// collision predicted, abort loop
 		if collisionPredicted
-			Break
+			exit
+		endif
 	next i
-endfunction
-return collisionPredicted
+endfunction collisionPredicted
