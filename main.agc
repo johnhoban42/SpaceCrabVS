@@ -4,6 +4,7 @@
 #include "start.agc"
 #include "characterSelect.agc"
 #include "results.agc"
+#include "ai.agc"
 #company_name "rondovo"
 
 // Project: SpaceCrabVS 

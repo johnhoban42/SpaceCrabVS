@@ -304,7 +304,11 @@ function DoGame2()
 	true3 = 0
 	if spActive = 1 and (GetMultitouchPressedTop() or GetMultitouchPressedBottom()) and deviceType = MOBILE and not ButtonMultitouchEnabled(pauseButton) then true3 = 1
 	//Activating the crab turn at an input
-	if (true2 or buffer2 or true1 or true3) and crab2JumpD# = 0
+	
+	aiTrue = 0
+	if aiActive = 1 then aiTrue = AITurn()
+	
+	if (((true2 or buffer2 or true1 or true3) and aiActive = 0) or aiTrue = 1) and crab2JumpD# = 0
 		
 		buffer2 = 0
 		if crab2Turning = 0 and crab2Type <> 6
@@ -342,6 +346,7 @@ function DoGame2()
 	
 	//The jumping movement code
 	if crab2JumpD# > 0
+		//if true1 or true2 or true3 and crab2JumpD# < crab2JumpDMax/5.0 then buffer2 = 1
 		
 		if crab2JumpD# > crab2JumpDMax*7/8
 			PlaySprite(crab2, 0, 0, 11, 11)	
@@ -984,6 +989,7 @@ function HitScene2()
 			
 			//The one time changes:
 			if GetSpriteColorAlpha(crab2) = 255
+				
 				PlaySoundR(flyingS,100)
 				SetSpriteColorAlpha(crab2, 254)
 				SetBGRandomPosition(bgGame2)

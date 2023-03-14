@@ -515,6 +515,7 @@ global jumpPartI as Integer[6]
 #constant fightBMusic 105	//Brad's fight song
 #constant fightJMusic 106	//John's fight song
 #constant tutorialMusic 107	//The tutorial song
+#constant spMusic 108		//Mirror Music 
 
 #constant raveBass1 121
 #constant raveBass2 122
@@ -544,6 +545,7 @@ SetMusicSystemVolumeOGG(volumeM)
 #constant TXT_WAIT1 201
 #constant TXT_WAIT2 202
 #constant TXT_HIGHSCORE 203
+#constant SPR_STARTAI 212
 
 //Different Crab buttons for the single player mode
 #constant SPR_SP_C1 205
@@ -622,6 +624,7 @@ SetMusicSystemVolumeOGG(volumeM)
 #constant PAUSE 3
 #constant RESULTS 4
 global spActive = 0 //Single Player active
+global aiActive = 0 //VS AI active
 global paused = 0	//Game is currently paused
 
 #constant glowS 20000
@@ -739,6 +742,8 @@ function PlayMusicOGGSP(songID, loopYN)
 	SetFolder("/media/music")
 	
 	if GetMusicExistsOGG(songID) = 0
+		
+		if songID = titleMusic then LoadMusicOGG(titleMusic, "title.ogg")
 	
 		if songID = fightAMusic
 			LoadMusicOGG(fightAMusic, "fightA.ogg")
@@ -750,7 +755,11 @@ function PlayMusicOGGSP(songID, loopYN)
 			LoadMusicOGG(resultsMusic, "results.ogg")
 			SetMusicLoopTimesOGG(resultsMusic, 14.22, -1)
 		endif
-	
+		if songID = spMusic
+			LoadMusicOGG(spMusic, "spMusic.ogg")
+			SetMusicLoopTimesOGG(spMusic, .769, 25.384)
+		endif
+		
 		if songID = raveBass1 then LoadMusicOGG(raveBass1, "raveBass.ogg")
 		if songID = raveBass2 then LoadMusicOGG(raveBass2, "raveBass2.ogg")
 		if songID = fireMusic then LoadMusicOGG(fireMusic, "fire.ogg")

@@ -46,6 +46,10 @@ function InitStart()
 	SetSpriteSize(SPR_START1P, 250, 150)
 	SetSpritePosition(SPR_START1P, 520, 1130)
 	
+	LoadSprite(SPR_STARTAI, "vsAI.png")
+	SetSpriteSize(SPR_STARTAI, 250, 150)
+	SetSpritePosition(SPR_STARTAI, 50, 1130)
+	
 	for i = SPR_SP_C1 to SPR_SP_C6
 		num = i-SPR_SP_C1+1
 		LoadSprite(i, "art/chibicrab" + str(num) + ".png")
@@ -106,6 +110,8 @@ function InitStart()
 		
 		
 	endif
+		
+	if spActive = 0 then PlayMusicOGGSP(titleMusic, 1)
 		
 	startStateInitialized = 1
 	
@@ -175,11 +181,16 @@ function DoStart()
 			next i		
 			for i = 0 to GetTextLength(TXT_WAIT2)
 				SetTextCharAngle(TXT_WAIT2, GetTextLength(TXT_WAIT2)-i, 180 - 7+14*sin(9*startTimer# + i*6))	//Code from SnowTunes
-			next i		
+			next i
+			for i = SPR_SP_C1 to SPR_SP_C6
+				//if GetTweenSpritePlaying(i, i) then UpdateTweenCustom(i, 0-GetFrameTime()*2)
+			next i
+			
 		endif
 		
 		if GetTextColorAlpha(TXT_WAIT1) = 255 and GetTextColorAlpha(TXT_WAIT2) = 255
 			spActive = 0
+			aiActive = 0
 			state = CHARACTER_SELECT
 		endif
 		
@@ -207,17 +218,29 @@ function DoStart()
 			endif
 		next i
 		
+		//Starting an AI game
+		if Button(SPR_STARTAI) and GetSpriteVisible(SPR_STARTAI)
+			aiActive = 1
+			firstFight = 0
+			//To do: take this to the character selection screen, figure out if first fight should play
+			crab1Type = 1
+			crab2Type = 1
+			state = GAME
+		endif
 		
 	//if the single player screen is in a transitionary state
 	else
 		if spActive = 1
 			
-		startTimer# = 0
-		
+			startTimer# = 0
 			
-		SetSpriteAngle(SPR_TITLE, 90 + 320*sin(startTimer#)*(100+startTimer#)/20.0)
-		//GlideToY(SPR_TITLE, -1000, 10)
-		SetSpriteY(SPR_TITLE, -1000)
+				
+			SetSpriteAngle(SPR_TITLE, 90 + 320*sin(startTimer#)*(100+startTimer#)/20.0)
+			//GlideToY(SPR_TITLE, -1000, 10)
+			SetSpriteY(SPR_TITLE, -1000)
+			
+			StopMusicOGGSP(titleMusic)
+			PlayMusicOGGSP(spMusic, 1)
 			
 			for i = SPR_SP_C1 to SPR_SP_C6
 				//num = i-SPR_SP_C1+1
@@ -231,6 +254,7 @@ function DoStart()
 		
 			SetSpriteVisible(SPR_START1, 0)
 			SetSpriteVisible(SPR_START2, 0)
+			SetSpriteVisible(SPR_STARTAI, 0)
 			SetTextVisible(TXT_WAIT1, 0)
 			SetTextVisible(TXT_WAIT2, 0)
 			SetTextVisible(TXT_HIGHSCORE, 1)
@@ -238,12 +262,21 @@ function DoStart()
 		elseif spActive = 0
 			//Turning back into a regular menu
 			
-			GlideToY(SPR_TITLE, h/2-GetSpriteWidth(SPR_TITLE)/2, 15)
-			SetSpriteAngle(SPR_TITLE, 90 + 320*sin(startTimer#) + 50*sin(startTimer#*3))
+			startTimer# = 0
+			
+			StopMusicOGGSP(spMusic)
+			PlayMusicOGGSP(titleMusic, 1)
+			
+			SetSpriteY(SPR_TITLE, h/2-GetSpriteWidth(SPR_TITLE)/2)
+			//GlideToY(SPR_TITLE, h/2-GetSpriteWidth(SPR_TITLE)/2, 15)
+			//SetSpriteAngle(SPR_TITLE, 90 + 320*sin(startTimer#) + 50*sin(startTimer#*3))
 			
 			for i = SPR_SP_C1 to SPR_SP_C6
-				num = i-SPR_SP_C1+1
-				GlideToY(i, 980*5 + 250*((num-1)/3), 3+num)
+				//num = i-SPR_SP_C1+1
+				//GlideToY(i, 980*5 + 250*((num-1)/3), 3+num)
+				//PlayTweenSprite(i,  i, 0)
+				StopTweenSprite(i, i)
+				SetSpriteY(i, 2000)
 			next i
 			
 			//SetSpriteColorByCycle(SPR_BG_SP, 100-round(startTimer#))
@@ -251,6 +284,7 @@ function DoStart()
 		
 			SetSpriteVisible(SPR_START1, 1)
 			SetSpriteVisible(SPR_START2, 1)
+			SetSpriteVisible(SPR_STARTAI, 1)
 			SetTextVisible(TXT_WAIT1, 1)
 			SetTextVisible(TXT_WAIT2, 1)
 			SetTextVisible(TXT_HIGHSCORE, 0)
@@ -264,6 +298,7 @@ function DoStart()
 	if state <> START
 		ExitStart()
 		LoadStartImages(0)
+		if spActive then PlaySoundR(specialS, volumeSE)
 	endif
 	
 endfunction state
@@ -276,17 +311,20 @@ function ExitStart()
 	DeleteSprite(SPR_START1)
 	DeleteSprite(SPR_START2)
 	DeleteSprite(SPR_START1P)
+	DeleteSprite(SPR_STARTAI)
 	DeleteSprite(SPR_BG_START)
 	DeleteSprite(SPR_BG_SP)
 	DeleteText(TXT_WAIT1)
 	DeleteText(TXT_WAIT2)
 	DeleteText(TXT_HIGHSCORE)
 	
+	StopMusicOGGSP(titleMusic)
+	
 	for i = SPR_SP_C1 to SPR_SP_C6
 		DeleteSprite(i)
 		DeleteTween(i)
 	next i
-	
+		
 	startTimer# = 0
 	
 	startStateInitialized = 0

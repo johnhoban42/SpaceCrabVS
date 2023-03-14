@@ -112,6 +112,7 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 		SetSpriteSize(csc.sprCrabs + i, charWid/2, charHei/2)
 		//SetSpriteMiddleScreenOffset(csc.sprCrabs + i, p*(i-csc.crabSelected)*w, p*335)	//The old way to position the sprites
 		SetSpriteFlip(csc.sprCrabs + i, f, f)
+		SetSpriteDepth(csc.sprCrabs, 40)
 		
 		CreateTweenSprite(csc.sprCrabs + i, selectTweenTime#)
 		SetTweenSpriteSizeX(csc.sprCrabs + i, charWid, charWid/2, TweenOvershoot())
@@ -389,6 +390,9 @@ function DoCharacterSelectController(csc ref as CharacterSelectController)
 			for i = 0 to NUM_CRABS-1
 				spr = csc.sprCrabs + i
 				if ButtonMultitouchEnabled(spr)
+					for j = 0 to NUM_CRABS-1
+						StopTweenSprite(csc.sprCrabs + j, csc.sprCrabs + j)
+					next j
 					SetVisibleCharacterUI(2, csc)
 					csc.crabSelected = i-1
 					PlaySoundR(arrowS, 100)
@@ -404,6 +408,7 @@ function DoCharacterSelectController(csc ref as CharacterSelectController)
 			if Button(csc.sprReady)
 				PlaySoundR(chooseS, 100)
 				SelectCrab(csc)
+				//PingColor(GetSpriteMiddleX(csc.sprCrabs+csc.crabSelected), GetSpriteMiddleY(csc.sprCrabs+csc.crabSelected), 400, 255, 100, 100, 50)
 			// Scroll left
 			elseif (ButtonMultitouchEnabled(csc.sprLeftArrow) or (GetMultitouchPressedTopRight() and csc.player = 2) or (GetMultitouchPressedBottomLeft() and csc.player = 1)) and csc.crabSelected > 0
 				PlaySoundR(arrowS, 100)

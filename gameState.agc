@@ -45,6 +45,7 @@ function InitGame()
 	IncSpriteX(exitButton, 200)
 	SetSpriteVisible(exitButton, 0)
 	
+	//For multiplayer mode, the music is started in a different place
 	if spActive = 1 then StartGameMusic()
 	
 	gameStateInitialized = 1
@@ -195,7 +196,7 @@ function ExitGame()
 			if GetMusicPlayingOGGSP(i) then StopMusicOGGSP(i)
 		endif
 	next i
-	
+	if GetMusicPlayingOGGSP(spMusic) then StopMusicOGGSP(spMusic)
 	for i = retro1M to retro8M
 		if GetMusicExistsOGG(i)
 			if GetMusicPlayingOGGSP(i) then StopMusicOGGSP(i)
@@ -1083,13 +1084,16 @@ function StartGameMusic()
 	
 	if spActive = 0 then PlayMusicOGGSP(fightAMusic, 1)	//Todo: put in a music randomizer
 	
-	if spActive
-		songRand = Random(1, 11)
+	if spActive and GetMusicPlayingOGGSP(spMusic) = 0
+		songRand = Random(1, 12)
 		if songRand <= 3 then PlayMusicOGGSP(fightAMusic, 1)
-		if songRand > 3
-			PlayMusicOGGSP(retro1M + songRand - 4, 1)
+		if songRand = 4 then PlayMusicOGGSP(spMusic, 1)
+		if songRand > 4
+			PlayMusicOGGSP(retro1M + songRand - 5, 1)
 		endif
 	endif
+	if GetMusicExistsOGG(spMusic) then SetMusicLoopTimesOGG(spMusic, 6.932, -1)
+	
 endfunction
 
 function PlayOpeningScene()
@@ -1099,7 +1103,7 @@ function PlayOpeningScene()
 	SetSpriteColor(curtain, 0, 0, 0, 200)
 	
 	phase = 0
-	oMax# = 1000.0
+	oMax# = 800.0
 	if firstFight = 0 then oMax# = 62
 	oTimer# = oMax#
 	
