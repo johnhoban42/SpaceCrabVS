@@ -323,7 +323,7 @@ function DoGame2()
 			crab2Turning = -1*crab2Turning
 			
 			//This checks that either the crab1Dir is small enough, or that it is right at the start of the process
-			if Abs(crab2Dir#) < .7 or (crab2Turning * crab2Dir# > 0) or (Abs(crab2Dir#) < 1 and specialTimerAgainst2# > 0 and crab1Type = 5) or crab2Type = 6
+			if  aiTrue = 0 and (Abs(crab2Dir#) < .7 or (crab2Turning * crab2Dir# > 0) or (Abs(crab2Dir#) < 1 and specialTimerAgainst2# > 0 and crab1Type = 5) or crab2Type = 6)
 				//The crab leap code
 				//crab1Turning = -1*crab1Turning	//Still not sure if you should leap forwards or backwards
 				if spActive = 0 then PlayMusicOGG(jump2S, 0)
@@ -1113,40 +1113,3 @@ function NudgeScreen2()
 		endif
 	endif
 endfunction
-
-function PredictHit(framesAhead#)
-	// return flag
-	collisionPredicted = 0
-	// calculate crab's future theta
-	futureCrab2Theta# = crab2Theta# + crab2Vel# * framesAhead#
-	// loop through each active meteor
-	for i = 1 to meteorActive2.length
-		// vars for holding a meteor's future radius and theta
-		futureMeteorR# = meteorActive2[i].r
-		futureMeteorTheta# = meteorActive2[i].theta
-		cat = meteorActive2[i].cat
-		// perform future radius/theta calcs based on type of meteor and passed number of frames ahead we are looking
-		if cat = 1	//Normal meteor
-			futureMeteorR# = meteorActive2[i].r - met1speed*(1 + (gameDifficulty2-1)*diffMetMod)*framesAhead#
-			
-		elseif cat = 2 //Rotating meteor
-			futureMeteorR# = meteorActive2[i].r - met2speed*(1 + (gameDifficulty2-1)*diffMetMod)*framesAhead#
-			futureMeteorTheta# = meteorActive2[i].theta + 1*framesAhead#	
-				
-		elseif cat = 3
-			futureMeteorR# = meteorActive2[i].r - met3speed*(1 + (gameDifficulty2-1)*diffMetMod)*framesAhead#		
-		endif
-			
-		// check if crab and meteor are close in theta
-		if Abs(futureCrab2Theta# - futureMeteorTheta#) < 5
-			// check if crab and meteor are close in theta
-			if Abs(crab2R# - futureMeteorR#) < 5
-				collisionPredicted = 1
-			endif
-		endif
-		// collision predicted, abort loop
-		if collisionPredicted
-			exit
-		endif
-	next i
-endfunction collisionPredicted
