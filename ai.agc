@@ -7,7 +7,7 @@ global turnCooldown# = 0
 function AITurn()
 	doTurn = 0
 	if turnCooldown# < 1
-		doTurn = PredictHit(0)
+		doTurn = PredictHit(ScreenFPS() / 2.0) // half a second when adjusted via fpsr 
 	else
 		inc turnCooldown#, -1
 	endif
@@ -26,11 +26,12 @@ function AITurn()
 endfunction doTurn
 
 function PredictHit(framesAhead#)
+	timeAhead# = framesAhead# * fpsr#
 	//Print("Inside PredictHit")
 	// return flag
 	collisionPredicted = 0
 	// calculate crab's future theta
-	futureCrab2Theta# = crab2Theta# + crab2Vel# * framesAhead#
+	futureCrab2Theta# = crab2Theta# + crab2Vel# * crab2Dir# * timeAhead# 
 	//Print("Future Crab Radius")
 	//Print(crab2R#)
 	//Print("Future Crab Theta")
@@ -50,14 +51,14 @@ function PredictHit(framesAhead#)
 		// perform future radius/theta calcs based on type of meteor and passed number of frames ahead we are looking
 		if cat = 1	//Normal meteor
 			Print("Normal Meteor")
-			futureMeteorR# = meteorActive2[i].r - met1speed*(1 + (gameDifficulty2-1)*diffMetMod)*framesAhead#
+			futureMeteorR# = meteorActive2[i].r - met1speed*(1 + (gameDifficulty2-1)*diffMetMod)*timeAhead#
 		elseif cat = 2 //Rotating meteor
 			Print("Rotating Meteor")
-			futureMeteorR# = meteorActive2[i].r - met2speed*(1 + (gameDifficulty2-1)*diffMetMod)*framesAhead#
-			futureMeteorTheta# = meteorActive2[i].theta + 1*framesAhead#	
+			futureMeteorR# = meteorActive2[i].r - met2speed*(1 + (gameDifficulty2-1)*diffMetMod)*timeAhead#
+			futureMeteorTheta# = meteorActive2[i].theta + 1*timeAhead#
 		elseif cat = 3 // fast meteor
 			Print("Fast Meteor")
-			futureMeteorR# = meteorActive2[i].r - met3speed*(1 + (gameDifficulty2-1)*diffMetMod)*framesAhead#		
+			futureMeteorR# = meteorActive2[i].r - met3speed*(1 + (gameDifficulty2-1)*diffMetMod)*timeAhead#		
 		endif
 		//Print("Future Meteor Radius")
 		//Print(futureMeteorR#)
@@ -67,36 +68,10 @@ function PredictHit(framesAhead#)
 		distance# = sqrt( crab2R# * crab2R# + futureMeteorR# * futureMeteorR# - 2 * crab2R# * futureMeteorR# * cos( futureCrab2Theta# - futureMeteorTheta# ) )
 		//Print("Distance between crab and a meteor")
 		//Print(distance#)
-		if distance# < 150
+		if distance# < 50
 			Print("Danger Close")
-			// extra checks to see if crab is already moving away from meteor when a dangerously close one is detected
-			movingAway = 0
-			// make sure we're working with a proper theta value for the meteor first
-			if futureMeteorTheta# > 360
-				while futureMeteorTheta# > 360 
-					inc futureMeteorTheta#, -360
-				endwhile
-			endif
-			// handle edge cases where a dangerous proximity is detected between crab and meteor on either side of the 0/360 divide
-			// this assumes that the distance check is small enough that danger is never detected from a meteor more than 90 degrees away from the crab
-			if abs(futureMeteorTheta# - futureCrab2Theta#) > 90
-				// take the higher value and make it negative
-				if futureCrab2Theta# > futureMeteorTheta#
-					inc futureCrab2Theta#, -360
-				else
-					inc futureMeteorTheta#, -360
-				endif
-			endif
-			// if crab is more clockwise rotated than meteor and will continue to rotate clockwise 
-			// OR crab is less clockwise rotated than meteor and will continue to rotate counterclockwise
-			// OR meteor is rotating clockwise, crab is rotating counterclockwise, and the distance is still great enough that a true collision isn't actually imminent
-			if (futureCrab2Theta# > futureMeteorTheta# and crab2Dir# > 0) or ((futureCrab2Theta# < futureMeteorTheta# and crab2Dir# < 0)) or (cat = 2 and crab2Dir# < 0 and distance# > 100)
-				movingAway = 1
-			endif
-			if not movingAway
-				collisionPredicted = 1
-				exit
-			endif
+			collisionPredicted = 1
+			exit
 		endif
 	next i
 	//Print("No collision detected")
