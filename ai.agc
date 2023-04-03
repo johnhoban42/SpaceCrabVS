@@ -3,11 +3,18 @@
 //#include "game2.agc"
 
 global turnCooldown# = 0
+global randomThinkChance = 999 // chance out of 1000 that the crab will calculate what to do this tick
+global randomTurnChance = 100 // chance out of 100 that the crab will turn when not thinking
 
 function AITurn()
 	doTurn = 0
 	if turnCooldown# < 1
-		doTurn = PredictHit(ScreenFPS() / 2.0) // half a second when adjusted via fpsr 
+		if Random(1, 1000) <= randomThinkChance
+			doTurn = PredictHit(ScreenFPS() / 2.0) // half a second when adjusted via fpsr 
+		elseif Random(1, 100) <= randomTurnChance
+			Print("Not thinking, but turning!")
+			doTurn = 1
+		endif
 	else
 		inc turnCooldown#, -1
 	endif
