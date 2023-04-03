@@ -3,31 +3,40 @@
 //#include "game2.agc"
 
 global turnCooldown# = 0
-global randomThinkChance = 999 // chance out of 1000 that the crab will calculate what to do this tick
-global randomTurnChance = 100 // chance out of 100 that the crab will turn when not thinking
+global thinkCooldown# = 0
+global turnCooldownMax# = 120 // number of ticks (1/60 of a second) after a turn during which the AI does not think
+global thinkCooldownMax# = 180 // number of ticks before the AI can think again after failing
+global randomThinkTicks# = 600 // average number of ticks between failed attempts to think
+global randomTurnPercent# = 100 // chance out of 100 that the crab will turn when not thinking
 
 function AITurn()
 	doTurn = 0
-	if turnCooldown# < 1
-		if Random(1, 1000) <= randomThinkChance
-			doTurn = PredictHit(ScreenFPS() / 2.0) // half a second when adjusted via fpsr 
-		elseif Random(1, 100) <= randomTurnChance
-			Print("Not thinking, but turning!")
-			doTurn = 1
+	if turnCooldown# < 1 and thinkCooldown# < 1
+		if Random(1, randomThinkTicks#) > 1
+			doTurn = PredictHit(ScreenFPS() / 2.0) // half a second when adjusted via fpsr
+		else
+			thinkCooldown# = thinkCooldownMax#
+			if Random(1, 100) <= randomTurnPercent#
+				//Print("Not thinking, but turning!")
+				doTurn = 1
+			endif
 		endif
 	else
 		inc turnCooldown#, -1
+		inc thinkCooldown#, -1
 	endif
 	
 	Print("Turn timer")
 	Print(turnCooldown#)
+	Print("Think timer")
+	Print(thinkCooldown#)
 	
 	//Logic for the AI turn is processed here
 	//If doing a turn, then doTurn is set to 1 (it is the return variable)
 	
 	if doTurn
 		Print("Starting Turn Cooldown")
-		turnCooldown# = 144
+		turnCooldown# = turnCooldownMax#
 	endif
 	
 endfunction doTurn
