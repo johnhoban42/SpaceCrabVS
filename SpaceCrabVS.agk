@@ -63,10 +63,10 @@ FILE_8=results.agc;-1
 FILE_9=start.agc;-1
 
 [files]
-FILE_NAME_0=1;ai.agc;244;0
-FILE_NAME_1=0;constants.agc;4829;5
-FILE_NAME_2=0;game1.agc;17267;1
-FILE_NAME_3=0;game2.agc;13055;2
+FILE_NAME_0=1;ai.agc;1427;0
+FILE_NAME_1=0;constants.agc;11853;5
+FILE_NAME_2=0;game1.agc;29648;1
+FILE_NAME_3=0;game2.agc;169;2
 FILE_NAME_4=0;gameState.agc;0;4
 FILE_NAME_5=0;main.agc;1976;3
 

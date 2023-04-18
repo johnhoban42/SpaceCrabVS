@@ -10,18 +10,24 @@ global randomThinkTicks# = 600 // average number of ticks between failed attempt
 global randomTurnPercent# = 100 // chance out of 100 that the crab will turn when not thinking
 
 function AITurn()
+	// return var
 	doTurn = 0
+	// need to not be turning and ready to think
 	if turnCooldown# < 1 and thinkCooldown# < 1
+		// 1/randomThinkTicks chance to not perform an accurate hit prediction
 		if Random(1, randomThinkTicks#) > 1
 			doTurn = PredictHit(ScreenFPS() / 2.0) // half a second when adjusted via fpsr
 		else
+			// stop thinking for a bit
 			thinkCooldown# = thinkCooldownMax#
+			// randomly turn sometimes when starting to not think
 			if Random(1, 100) <= randomTurnPercent#
 				//Print("Not thinking, but turning!")
 				doTurn = 1
 			endif
 		endif
 	else
+		// decrement the cooldowns
 		inc turnCooldown#, -1
 		inc thinkCooldown#, -1
 	endif
@@ -34,6 +40,7 @@ function AITurn()
 	//Logic for the AI turn is processed here
 	//If doing a turn, then doTurn is set to 1 (it is the return variable)
 	
+	// prevent chain-turning for a bit when a turn is about to occur
 	if doTurn
 		Print("Starting Turn Cooldown")
 		turnCooldown# = turnCooldownMax#
@@ -42,12 +49,13 @@ function AITurn()
 endfunction doTurn
 
 function PredictHit(framesAhead#)
+	// translate frames into a time based value to work with speed vars
 	timeAhead# = framesAhead# * fpsr#
 	//Print("Inside PredictHit")
 	// return flag
 	collisionPredicted = 0
 	// calculate crab's future theta
-	futureCrab2Theta# = crab2Theta# + crab2Vel# * crab2Dir# * timeAhead# 
+	futureCrab2Theta# = crab2Theta# + crab2Vel# * crab2Dir# * timeAhead# + planet2RotSpeed#
 	//Print("Future Crab Radius")
 	//Print(crab2R#)
 	//Print("Future Crab Theta")
@@ -61,6 +69,7 @@ function PredictHit(framesAhead#)
 		//Print(futureMeteorR#)
 		//Print("Meteor Theta")
 		//Print(futureMeteorTheta#)
+		// meteor's categoy
 		cat = meteorActive2[i].cat
 		//Print("Meteor Category")
 		//Print(cat)
@@ -84,11 +93,34 @@ function PredictHit(framesAhead#)
 		distance# = sqrt( crab2R# * crab2R# + futureMeteorR# * futureMeteorR# - 2 * crab2R# * futureMeteorR# * cos( futureCrab2Theta# - futureMeteorTheta# ) )
 		//Print("Distance between crab and a meteor")
 		//Print(distance#)
+		// check for closeness
 		if distance# < 50
 			Print("Danger Close")
 			collisionPredicted = 1
 			exit
 		endif
 	next i
+	// suplementary checks against ninja stars
+	if crab1Type = 6 and specialTimerAgainst2# > 0 and not collisionPredicted
+		// translate to planar
+		futureCrab2X# = crab2R#* cos(futureCrab2Theta#) + w / 2
+		futureCrab2Y# = crab2R# * sin(futureCrab2Theta#) + ( h/4 - GetSpriteHeight(split)/4 )
+		// iterate through throwing stars
+		for i = special1Ex1 to special1Ex3
+			// make sure the star exists
+			if GetSpriteExists(i)
+				// calculate future star position
+				futureStarY# = GetSpriteMiddleY(i) + -5.5 * timeAhead#
+				// calculate distance
+				distance# = sqrt( pow(GetSpriteMiddleX(i) - futureCrab2X#, 2) + pow(futureStarY# - futureCrab2Y#, 2) )
+				// check for closeness
+				if distance# < 50
+					Print("Danger Close")
+					collisionPredicted = 1
+					exit
+				endif
+			endif
+		next i
+	endif
 	//Print("No collision detected")
 endfunction collisionPredicted
