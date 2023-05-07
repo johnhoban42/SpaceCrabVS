@@ -90,6 +90,8 @@ endfunction
 
 LoadGame()
 
+
+
 do
 	fpsr# = 60.0/ScreenFPS()
 	
@@ -126,8 +128,73 @@ do
 	PingUpdate()
 	UpdateAllTweens(GetFrameTime())
 	Print(GetImageMemoryUsage())
+    Print(GetImageExists(101))
     Sync()
 loop
+
+function TransitionStart()
+	
+	//Making the particles for the first time
+	if GetParticlesExists(11) = 0
+		lifeEnd# = .7
+		for i = 11 to 13
+			CreateParticles(i, 0, 0)
+			SetParticlesImage (i, LoadImage("starParticle.png"))
+			SetParticlesFrequency(i, 300)
+			SetParticlesLife(i, lifeEnd#)	//Time in seconds that the particles stick around
+			SetParticlesSize(i, 240)
+			SetParticlesStartZone(i, -GetParticlesSize(i), 0, -GetParticlesSize(i), h) //The box that the particles can start from
+			SetParticlesDirection(i, 50, 0)
+			SetParticlesAngle(i, 0)
+			SetParticlesRotationRange(i, 400, 800)
+			SetParticlesVelocityRange (i, 30, 60)
+			SetParticlesMax (i, 200)
+			SetParticlesDepth(i, 1)
+		next i
+		
+		AddParticlesColorKeyFrame (11, 0.0, 0, 255, 255, 255)
+		AddParticlesColorKeyFrame (11, lifeEnd#/8, 0, 255, 102, 255)
+		AddParticlesColorKeyFrame (11, lifeEnd#/4, 0, 255, 102, 255)
+		AddParticlesColorKeyFrame (11, lifeEnd#*3/8, 0, 255, 255, 255)
+		
+		SetParticlesSize(12, 180)
+		SetParticlesMax (12, 250)
+		SetParticlesVelocityRange (12, 40, 70)
+		AddParticlesColorKeyFrame (12, 0.0, 121, 255, 0, 255)
+		AddParticlesColorKeyFrame (12, lifeEnd#/8, 255, 255, 0, 255)
+		AddParticlesColorKeyFrame (12, lifeEnd#/4, 121, 255, 0, 255)
+		AddParticlesColorKeyFrame (12, lifeEnd#*3/8, 255, 255, 0, 255)
+		
+		SetParticlesSize(13, 120)
+		SetParticlesMax (13, 300)
+		SetParticlesVelocityRange (13, 50, 80)
+		AddParticlesColorKeyFrame (13, 0.0, 255, 0, 0, 255)
+		AddParticlesColorKeyFrame (13, lifeEnd#/8, 255, 15, 171, 255)
+		AddParticlesColorKeyFrame (13, lifeEnd#/4, 255, 0, 0, 255)
+		AddParticlesColorKeyFrame (13, lifeEnd#*3/8, 255, 15, 171, 255)
+		
+	else
+		//If the particles are already made, then just resetting them
+		for i = 11 to 13
+			ResetParticleCount(i)
+		next i
+	endif
+	
+	iEnd = 21/fpsr#
+	for i = 1 to iEnd
+		//Sync()
+	next i
+	
+	//#constant parStar1 11
+//#constant parStar2 12
+//#constant parStar3 13
+	
+endfunction
+
+function TransitionEnd()
+	
+	
+endfunction
 
 /*
 THE GRAVEYARD OF THE METEOR QUEUE

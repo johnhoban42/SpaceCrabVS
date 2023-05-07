@@ -213,10 +213,9 @@ function ExitGame()
 	DeleteSprite(crab1)
 	DeleteSprite(bgGame1)
 	DeleteSprite(expHolder1)
-	DeleteSprite(expBar1)
-	DeleteSprite(meteorButton1)
+	DeleteAnimatedSprite(meteorButton1)
 	DeleteSprite(meteorMarker1)
-	DeleteSprite(specialButton1)
+	DeleteAnimatedSprite(specialButton1)
 	DeleteSprite(crab1PlanetS[1])
 	DeleteSprite(crab1PlanetS[2])
 	DeleteSprite(crab1PlanetS[3])
@@ -260,9 +259,9 @@ function ExitGame()
 	DeleteSprite(bgGame2)
 	DeleteSprite(expHolder2)
 	DeleteSprite(expBar2)
-	DeleteSprite(meteorButton2)
+	DeleteAnimatedSprite(meteorButton2)
 	DeleteSprite(meteorMarker2)
-	DeleteSprite(specialButton2)
+	DeleteAnimatedSprite(specialButton2)
 	DeleteSprite(crab2PlanetS[1])
 	DeleteSprite(crab2PlanetS[2])
 	DeleteSprite(crab2PlanetS[3])
@@ -287,6 +286,9 @@ function ExitGame()
 		meteorActive2.remove()
 	next
 	meteorActive2.length = 0
+	
+	//Deleting the animated game1 sprites that were referenced in game 2
+	DeleteAnimatedSprite(expBar1)
 	
 	crab2Theta# = 270
 	crab2Dir# = 1
@@ -410,11 +412,6 @@ function UpdateExp()
 
 				if expTotal1 < specialCost1
 					inc expTotal1, 1
-					if expTotal1 = specialCost1
-						SetSpriteColor(expBar1, 255, 210, 50, 255)
-						PlaySprite(expBar1, 30, 1, 1, 6)	//Faster than when it's not filled
-						//Base color: SetSpriteColor(expBar1, 255, 160, 0, 255)
-					endif
 				endif
 				
 				UpdateButtons1()	
@@ -453,11 +450,6 @@ function UpdateExp()
 	
 					if expTotal2 < specialCost2
 						inc expTotal2, 1
-						if expTotal2 = specialCost2
-							SetSpriteColor(expBar2, 255, 210, 50, 255)
-							PlaySprite(expBar2, 30, 1, 1, 6)	//Faster than when it's not filled
-							//Base color: SetSpriteColor(expBar1, 255, 160, 0, 255)
-						endif
 					endif
 					
 					UpdateButtons2()	
@@ -554,34 +546,43 @@ function ShowSpecialAnimation(crabType)
 	
 	wid = 400
 	hei = 400
+	specSize = 600
+	
 	for i = specialSprFront1 to specialSprBack2
 		CreateSprite(i, 0)
-		SetSpriteSizeSquare(i, 400)
+		SetSpriteSizeSquare(i, specSize)
+		//SetSpriteSizeSquare(i, 400)
 		if Mod(i, 2) = 0
 			//Back Sprites
 			SetSpriteDepth(i, 2)
 			SetSpriteColor(i, 220, 220, 220, 255)
-			SetSpriteSizeSquare(i, 300)	//Smaller at Brad's request
-			if crabType = 1 or crabType = 2 or crabType = 4 or crabType = 6
-				//This if statement is only here while not every image is in the game
-				SetSpriteImage(i, crab1attack2I - 1 + crabType)
-				if crabType = 4
-					SetSpriteSize(i, 155*5, 77*5)
-					SetSpriteColor(i, 255, 255, 255, 0)					
-				endif
+			SetSpriteSizeSquare(i, specSize)
+			//SetSpriteSizeSquare(i, 300)	//Smaller at Brad's request
+			SetSpriteImage(i, crab1attack2I - 1 + crabType)
+			if crabType = 4
+				SetSpriteSize(i, 155*5, 77*5)
+				SetSpriteColor(i, 255, 255, 255, 0)					
 			endif
 		else
 			//Front Sprites
 			SetSpriteDepth(i, 1)
-			if crabType = 1 or crabType = 2 or crabType = 4 or crabType = 6
-				//This if statement is only here while not every image is in the game
-				SetSpriteImage(i, crab1attack1I - 1 + crabType)
-			endif
+			SetSpriteImage(i, crab1attack1I - 1 + crabType)
 		endif
 		
 		if i >= specialSprFront2 then SetSpriteAngle(i, 180)
 		
 	next i
+	
+	if crabType = 3 or crabType = 5
+		SetFolder("/media/art")
+		LoadSprite(specialSprBacker1, "crab" + str(crabType) + "attack3.png")
+		LoadSprite(specialSprBacker2, "crab" + str(crabType) + "attack3.png")
+		SetSpriteAngle(specialSprBacker2, 180)
+		SetSpriteDepth(specialSprBacker1, 3)
+		SetSpriteDepth(specialSprBacker2, 3)
+		SetSpriteSizeSquare(specialSprBacker1, specSize)
+		SetSpriteSizeSquare(specialSprBacker2, specSize)
+	endif
 	
 	offsetY = 30
 	
@@ -598,14 +599,14 @@ function ShowSpecialAnimation(crabType)
 	//For Wizard crab only (actually, this is now for every crab!)
 	//if crabType = 2
 		//Goes from right to left on bottom
-		SetSpritePosition(specialSprFront1, -100 - wid, h - 500 - offsetY)
+		SetSpritePosition(specialSprFront1, -100 - specSize, h - 500 - offsetY)
 		//Goes from left to right on bottom
 		SetSpritePosition(specialSprBack1, w + 100, h - 650 - offsetY)
 		
 		//Goes from right to left on top
 		SetSpritePosition(specialSprFront2, w + 100, 100 + offsetY)
 		//Goes from left to right on top
-		SetSpritePosition(specialSprBack2, -100 - wid, 250 + offsetY)
+		SetSpritePosition(specialSprBack2, -100 - specSize, 250 + offsetY)
 	//endif
 	
 	//The text for the special
@@ -652,19 +653,21 @@ function ShowSpecialAnimation(crabType)
 		
 		if i = iEnd*2/3 then PlaySoundR(specialExitS, volumeSE)
 		
-		/*
-		if crabType <> 2
-			IncSpriteXFloat(specialSprFront1, -1.2*speed)
-			IncSpriteXFloat(specialSprBack1, 1*speed)
-			IncSpriteXFloat(specialSprFront2, 1.2*speed)
-			IncSpriteXFloat(specialSprBack2, -1*speed)
-		else */
-			//For wizard crab's positioning
-			IncSpriteXFloat(specialSprFront1, 1.3*speed)
-			IncSpriteXFloat(specialSprBack1, -1.1*speed)
-			IncSpriteXFloat(specialSprFront2, -1.3*speed)
-			IncSpriteXFloat(specialSprBack2, 1.1*speed)
-		//endif
+		if crabType = 1 or crabType = 2 or crabType = 4 or crabType = 6
+			/*
+			if crabType <> 2
+				IncSpriteXFloat(specialSprFront1, -1.2*speed)
+				IncSpriteXFloat(specialSprBack1, 1*speed)
+				IncSpriteXFloat(specialSprFront2, 1.2*speed)
+				IncSpriteXFloat(specialSprBack2, -1*speed)
+			else */
+				//For wizard crab's positioning
+				IncSpriteXFloat(specialSprFront1, 1.3*speed)
+				IncSpriteXFloat(specialSprBack1, -1.1*speed)
+				IncSpriteXFloat(specialSprFront2, -1.3*speed)
+				IncSpriteXFloat(specialSprBack2, 1.1*speed)
+			//endif
+		endif
 		
 		if crabType = 4
 			SetSpriteMiddleScreenX(specialSprBack1)
@@ -688,6 +691,43 @@ function ShowSpecialAnimation(crabType)
 			
 		endif
 		
+		//Top crab
+		if crabType = 3 or crabType = 5
+			if i = 1
+				DrawPolar1(specialSprFront1, 0, 270)
+				DrawPolar1(specialSprBack1, 0, 270)
+				DrawPolar1(specialSprBacker1, 0, 270)
+				DrawPolar2(specialSprFront2, 0, 90)
+				DrawPolar2(specialSprBack2, 0, 90)
+				DrawPolar2(specialSprBacker2, 0, 90)
+			endif
+				
+			for j = specialSprFront1 to specialSprBacker2
+				if i < iEnd*1/9
+					FadeSpriteOut(j, i, 0, iEnd*1/9)
+					FadeSpriteOut(j, i, 0, iEnd*1/9)
+				elseif i >= iEnd*28/29
+					SetSpriteColorAlpha(j, 0)
+					SetSpriteColorAlpha(j, 0)
+					
+				elseif i > iEnd*8/9
+					FadeSpriteIn(j, i, iEnd*8/9, iEnd)
+					FadeSpriteIn(j, i, iEnd*8/9, iEnd)
+				
+				else
+					SetSpriteColorAlpha(j, 255)
+					SetSpriteColorAlpha(j, 255)
+				endif	
+			next j
+			
+			IncSpriteAngle(specialSprFront1, -1*fpsr# - i/(15.0*fpsr#))
+			IncSpriteAngle(specialSprFront2, -1*fpsr# - i/(15.0*fpsr#))
+			IncSpriteAngle(specialSprBack1, 1.5*fpsr# + i/(15.0*fpsr#))
+			IncSpriteAngle(specialSprBack2, 1.5*fpsr# + i/(15.0*fpsr#))
+			
+		endif
+		
+		
 		if i < iEnd*5/7
 			GlideTextToX(specialSprFront1, w/2, 6)
 			GlideTextToX(specialSprFront2, w/2, 6)
@@ -709,8 +749,8 @@ function ShowSpecialAnimation(crabType)
 
 	
 	
-	for i = specialBG to specialSprBack2
-		DeleteSprite(i)
+	for i = specialBG to specialSprBacker2
+		if GetSpriteExists(i) then DeleteSprite(i)
 	next i
 	
 	//Resuming the current animations
@@ -729,6 +769,8 @@ function ShowSpecialAnimation(crabType)
 		DeleteText(i)
 	next i
 	
+	SetFolder("/media")
+	
 endfunction
 
 function InitAttackParticles()
@@ -738,7 +780,8 @@ function InitAttackParticles()
 		SetFolder("/media")
 		
 		img = LoadImage("envi/explode.png")
-		lifeEnd# = 2.2
+		lifeEnd# = 1.2
+		//lifeEnd# = 2.2
 		
 		for i = par1met1 to par2spe1
 			CreateParticles(i, 2000, 2000)	//This is out of range so that
@@ -746,19 +789,21 @@ function InitAttackParticles()
 			SetParticlesFrequency(i, 300)
 			SetParticlesLife(i, lifeEnd#)	//Time in seconds that the particles stick around
 			SetParticlesSize(i, 20)
-			SetParticlesStartZone(i, -5, -5, 5, 5) //The box that the particles can start from
+			SetParticlesStartZone(i, -metSizeX/4, -metSizeX/4, metSizeX/4, metSizeX/4) //The box that the particles can start from
+			//SetParticlesStartZone(i, -5, -5, 5, 5) //The box that the particles can start from
     		SetParticlesDirection(i, 30, 20)
     		SetParticlesAngle(i, 360)
+    		//SetParticlesVelocityRange (i, 1.8, 3.5 )
     		SetParticlesVelocityRange (i, 0.8, 2.5 )
     		SetParticlesMax (i, 100)
     		SetParticlesDepth(i, 25)
     		
     		 if Mod(i, 4) = 1
-				AddParticlesColorKeyFrame (i, 0.0, 255, 0, 0, 255 )
+				AddParticlesColorKeyFrame (i, 0.0, 255, 255, 255, 255 )
 				AddParticlesColorKeyFrame (i, 0.01, 255, 255, 0, 255 )
 				AddParticlesColorKeyFrame (i, lifeEnd#, 255, 0, 0, 0 )
 			elseif Mod(i, 4) = 2
-				AddParticlesColorKeyFrame (i, 0.0, 0, 0, 0, 255 )
+				AddParticlesColorKeyFrame (i, 0.0, 0, 0, 239, 255 )
 				AddParticlesColorKeyFrame (i, 0.01, 239, 0, 239, 255 )
 				AddParticlesColorKeyFrame (i, lifeEnd#, 30, 50, 180, 0 )
 			elseif Mod(i, 4) = 3

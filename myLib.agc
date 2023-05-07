@@ -17,6 +17,56 @@ function min(num1, num2)
 	endif
 endfunction ret
 
+global imageA as Integer[0]
+
+function LoadAnimatedSprite(spr, imgBase$, frameTotal)
+	CreateSprite(spr, 0)
+	
+	//The image array inserts the sprite ID first, then the amount of frames, then images at the positions afterwards
+	imageA.insert(spr)
+	imageA.insert(frameTotal)
+	for i = 1 to frameTotal
+		if GetFileExists(imgBase$ + str(i) + ".png")
+			imageA.insert(LoadImage(imgBase$ + str(i) + ".png"))
+		else
+			imageA.insert(LoadImage(imgBase$ + "0" + str(i) + ".png"))
+		endif
+		
+		AddSpriteAnimationFrame(spr, imageA[imageA.length])
+	next i
+endfunction
+
+function CreateSpriteExistingAnimation(spr, refSpr)
+	CreateSprite(spr, 0)
+	
+	//index = imageA.find(refSpr)
+	index = ArrayFind(imageA, refSpr)
+	
+	for i = 1 to imageA[index+1]
+		AddSpriteAnimationFrame(spr, imageA[index+1+i])
+	next i
+endfunction
+
+function DeleteAnimatedSprite(spr)
+	DeleteSprite(spr)
+	//index = imageA.find(spr)
+	index = ArrayFind(imageA, spr)
+	
+	//Checking we got a sprite ID and not an imageID
+	//if Abs(imageA[index] - imageA[index+1]) < 3 then //Find the next one, IDK
+		
+	size = imageA[index+1] + 2
+	for i = 1 to size
+		//Print(index)
+		//Sync()
+		//Sleep(400)
+		if i > 1 then DeleteImage(imageA[index])
+		imageA.remove(index)
+	next i
+	
+	//Check that the number after the current number is less than 30, to not accidentally find an image ID as an index
+endfunction
+
 function GetSpriteMiddleX(spr)
 	ret = GetSpriteX(spr) + GetSpriteWidth(spr)/2
 endfunction ret
@@ -415,6 +465,13 @@ function GetSoundPlayingR(sound)
 	endif
 	
 endfunction result
+
+function ArrayFind(array as integer[], var)
+	index = -1
+	for i = 0 to array.length
+		if array[i] = var then index = i
+	next i
+endfunction index
 
 function SetSpriteColorRandomBright(spr)
 	//Recoloring!

@@ -12,7 +12,7 @@ function InitStart()
 	
 	SetSpriteVisible(split, 0)
 	
-	SetFolder("/media")
+	SetFolder("/media/ui")
 	
 	LoadSprite(SPR_TITLE, "title.png")
 	SetSpriteSize(SPR_TITLE, w*2/3, w*2/3)
@@ -50,10 +50,12 @@ function InitStart()
 	SetSpriteSize(SPR_STARTAI, 250, 150)
 	SetSpritePosition(SPR_STARTAI, 50, 1130)
 	
+	SetFolder("/media")
+	
 	for i = SPR_SP_C1 to SPR_SP_C6
 		num = i-SPR_SP_C1+1
 		LoadSprite(i, "art/chibicrab" + str(num) + ".png")
-		SetSpriteSizeSquare(i, 150)
+		SetSpriteSize(i, 406/1.3, 275/1.3)
 		SetSpritePosition(i, w/2 - GetSpriteWidth(i)/2 - 250 + 250*(Mod(num-1,3)), 980 + 250*((num-1)/3))
 		
 		CreateTweenSprite(i, .7)
@@ -71,7 +73,7 @@ function InitStart()
 	//SetSpriteOffset(SPR_BG_SP, GetSpriteWidth(SPR_BG_SP)/2, GetSpriteHeight(SPR_BG_SP)/2-34)
 	SetSpriteMiddleScreen(SPR_BG_SP)
 	for i = warpI1 to warpI16
-		AddSpriteAnimationFrame(SPR_BG_SP, i)
+		//AddSpriteAnimationFrame(SPR_BG_SP, i)
 	next i
 	PlaySprite(SPR_BG_SP, 20, 1, 1, 16)
 		
@@ -296,8 +298,14 @@ function DoStart()
 	// If we are leaving the state, exit appropriately
 	// Don't write anything after this!
 	if state <> START
+		TransitionStart()
+		if state = CHARACTER_SELECT
+			appState = CHARACTER_SELECT
+			LoadStartImages(1)
+			DoCharacterSelect()
+		endif
 		ExitStart()
-		LoadStartImages(0)
+		
 		if spActive then PlaySoundR(specialS, volumeSE)
 	endif
 	
