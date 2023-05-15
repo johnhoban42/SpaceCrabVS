@@ -8,6 +8,10 @@ global turnCooldownMax# = 120 // number of ticks (1/60 of a second) after a turn
 global thinkCooldownMax# = 180 // number of ticks before the AI can think again after failing
 global randomThinkTicks# = 600 // average number of ticks between failed attempts to think
 global randomTurnPercent# = 100 // chance out of 100 that the crab will turn when not thinking
+global specialInterval# = 60 // number of ticks between attempts to use special / meteor attack
+global specialTimer# = 0 // timer used to perform special attacks
+global meteorsPerSpecial# = 2 // number of times meteor attack will be used before using special attack
+global meteorsUsed# = 0 // number of meteor attacks used since last special attack
 
 function AITurn()
 	// return var
@@ -124,3 +128,27 @@ function PredictHit(framesAhead#)
 	endif
 	//Print("No collision detected")
 endfunction collisionPredicted
+
+//Attempt to peform special attacks, regardless of whether doing so is actually possible
+//Return 0 - No attack, 1 - Meteor attack, 2 - Special attack
+function AISpecial()
+	specialAttack = 0
+	if specialTimer# > specialInterval#
+	    if meteorsUsed# < meteorsPerSpecial#
+			specialAttack = 1
+		else
+			specialAttack = 2
+		endif
+		specialTimer# = 0
+	endif
+	inc specialTimer#
+endfunction specialAttack
+
+//Reset Special Attack behavior after a special attack actually occurs
+function AIResetSpecial(specialType#)
+	if specialType# = 1
+		inc meteorsUsed#
+	elseif specialType# = 2
+		meteorsUsed# = 0
+	endif
+endfunction
