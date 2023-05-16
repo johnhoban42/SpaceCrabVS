@@ -55,6 +55,11 @@ endfunction doTurn
 function PredictHit(framesAhead#)
 	// translate frames into a time based value to work with speed vars
 	timeAhead# = framesAhead# * fpsr#
+	// cut down prediction timing when under effects of chrono and rave specials
+	if (crab1Type = 4 or crab1Type = 5) and specialTimerAgainst2# > 0
+		timeAhead# = timeAhead# / 2
+	endif
+		
 	//Print("Inside PredictHit")
 	// return flag
 	collisionPredicted = 0
@@ -95,8 +100,8 @@ function PredictHit(framesAhead#)
 		//Print(futureMeteorTheta#)
 		// calculate distance between future crab and future meteor to determine if a collision would be imminent
 		distance# = sqrt( crab2R# * crab2R# + futureMeteorR# * futureMeteorR# - 2 * crab2R# * futureMeteorR# * cos( futureCrab2Theta# - futureMeteorTheta# ) )
-		//Print("Distance between crab and a meteor")
-		//Print(distance#)
+		Print("Distance between crab and a meteor")
+		Print(distance#)
 		// check for closeness
 		if distance# < 50
 			Print("Danger Close")
