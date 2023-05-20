@@ -324,7 +324,7 @@ function DoGame2()
 			crab2Turning = -1*crab2Turning
 			
 			//This checks that either the crab1Dir is small enough, or that it is right at the start of the process
-			if  aiTurn = 0 and (Abs(crab2Dir#) < .7 or (crab2Turning * crab2Dir# > 0) or (Abs(crab2Dir#) < 1 and specialTimerAgainst2# > 0 and crab1Type = 5) or crab2Type = 6)
+			if  Abs(crab2Dir#) < .7 or (crab2Turning * crab2Dir# > 0) or (Abs(crab2Dir#) < 1 and specialTimerAgainst2# > 0 and crab1Type = 5) or crab2Type = 6
 				//The crab leap code
 				//crab1Turning = -1*crab1Turning	//Still not sure if you should leap forwards or backwards
 				if spActive = 0 then PlayMusicOGG(jump2S, 0)

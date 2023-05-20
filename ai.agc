@@ -12,15 +12,27 @@ global specialInterval# = 60 // number of ticks between attempts to use special 
 global specialTimer# = 0 // timer used to perform special attacks
 global meteorsPerSpecial# = 2 // number of times meteor attack will be used before using special attack
 global meteorsUsed# = 0 // number of meteor attacks used since last special attack
+global doJump = 0 // flag set when crab should "double tap" the turn input in order to perform a jump action instead
+global randomJumpPercent# = 30 // chance out of 100 that the crab will jump when given the opportunity to
 
 function AITurn()
+	// jump case, reset the flag then force a tap input that should trigger a jump, since all doJump flag set cases are preceded by a doTurn
+	if doJump
+		doJump = 0
+		exitFunction 1
+	endif
 	// return var
 	doTurn = 0
+	
 	// need to not be turning and ready to think
 	if turnCooldown# < 1 and thinkCooldown# < 1
 		// 1/randomThinkTicks chance to not perform an accurate hit prediction
 		if Random(1, randomThinkTicks#) > 1
 			doTurn = PredictHit(ScreenFPS() / 2.0) // half a second when adjusted via fpsr
+			// if not normal crab, sometimes queue a jump instead of just a turn
+			if doTurn and not crab2Type = 1 and Random(1, 100) <= randomJumpPercent#
+				doJump = 1
+			endif
 		else
 			// stop thinking for a bit
 			thinkCooldown# = thinkCooldownMax#
@@ -30,10 +42,15 @@ function AITurn()
 				doTurn = 1
 			endif
 		endif
+		// normal crab should jump to gain distance and grab more pellets often, so have it jump randomly outside of the unthinking case, but only if not set to turn already
+		if crab2Type = 1 and not doTurn and Random(1, 100) <= randomJumpPercent#
+			doTurn = 1
+			doJump = 1
+		endif
 	else
 		// decrement the cooldowns
 		inc turnCooldown#, -1
-		inc thinkCooldown#, -1
+		inc thinkCooldown#, -1	
 	endif
 	
 	Print("Turn timer")

@@ -63,13 +63,13 @@ FILE_8=results.agc;-1
 FILE_9=start.agc;-1
 
 [files]
-FILE_NAME_0=0;ai.agc;2183;0
+FILE_NAME_0=1;ai.agc;2814;0
 FILE_NAME_1=0;constants.agc;11853;5
-FILE_NAME_2=0;game1.agc;9035;1
-FILE_NAME_3=0;game2.agc;11037;2
+FILE_NAME_2=0;game1.agc;11705;1
+FILE_NAME_3=0;game2.agc;11597;2
 FILE_NAME_4=0;gameState.agc;0;4
 FILE_NAME_5=0;main.agc;1976;3
-FILE_NAME_6=1;start.agc;7059;6
+FILE_NAME_6=0;start.agc;4079;6
 
 [watchvariables]
 watch_variable=@Version;
