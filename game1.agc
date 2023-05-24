@@ -57,7 +57,7 @@ function CreateGame1()
 		crab1JumpDMax = 40
 		
 	elseif crab1Type = 3	//Top
-		for i = crab1start1I to crab1skid3I
+		for i = crab3start1I to crab3skid3I
 			AddSpriteAnimationFrame(crab1, i)
 		next i
 		crab1framerate = frameratecrab3
@@ -81,7 +81,7 @@ function CreateGame1()
 		crab1JumpDMax = 43
 		
 	elseif crab1Type = 5	//Chrono
-		for i = crab1start1I to crab1skid3I
+		for i = crab5start1I to crab5skid3I
 			AddSpriteAnimationFrame(crab1, i)
 		next i
 		crab1framerate = frameratecrab5
@@ -121,25 +121,23 @@ function CreateGame1()
 	SetSpriteDepth(expHolder1, 18)
 	SetSpriteColor(expHolder1, 150, 150, 150, 200)
 
-	CreateSprite(expBar1, 0)
+	SetFolder("/media/ui")
+	LoadAnimatedSprite(expBar1, "expbar", 12)
 	SetSpriteSize(expBar1, 0, 26)
 	SetSpritePosition(expBar1, GetSpriteX(expHolder1) + 10, GetSpriteY(expHolder1) + 7)
 	SetSpriteDepth(expBar1, 18)
-	SetSpriteColor(expBar1, 255, 160, 0, 255)
-	AddSpriteAnimationFrame(expBar1, expBarI1)
-	AddSpriteAnimationFrame(expBar1, expBarI2)
-	AddSpriteAnimationFrame(expBar1, expBarI3)
-	AddSpriteAnimationFrame(expBar1, expBarI4)
-	AddSpriteAnimationFrame(expBar1, expBarI5)
-	AddSpriteAnimationFrame(expBar1, expBarI6)
+	//SetSpriteColor(expBar1, 255, 160, 0, 255)
 	//Current EXP bar animation is a temp one, this is just the framework
-	PlaySprite(expBar1, 20, 1, 1, 6)
+	PlaySprite(expBar1, 20, 1, 1, 12)
+	//Placeholder for game 2 angle
 	
-	CreateSprite(meteorButton1, 0)
+	LoadAnimatedSprite(meteorButton1, "attackE", 5)
+	PlaySprite(meteorButton1, 0, 0, 5, 5)
 	SetSpriteSize(meteorButton1, 90, 90)
 	SetSpritePosition(meteorButton1, GetSpriteX(expHolder1)-10-GetSpriteWidth(meteorButton1), h-10-GetSpriteHeight(meteorButton1))
 	SetSpriteDepth(meteorButton1, 15)
-	SetSpriteColor(meteorButton1, 30, 100, 255, 100)
+	//SetSpriteColor(meteorButton1, 30, 100, 255, 100)
+	//Placeholder for game 2 angle
 	//Might want to make the Y based on the sxp bar holder instead of the screen height
 	
 	CreateSpriteExpress(meteorMarker1, 4, GetSpriteHeight(expHolder1)+4, 0, GetSpriteY(expHolder1)-2, 14)
@@ -147,11 +145,14 @@ function CreateGame1()
 	SetSpriteX(meteorMarker1, GetSpriteX(expHolder1) + 1.0*(GetSpriteWidth(expHolder1)-20)*meteorCost1/specialCost1 - 4)
 	SetSpriteColor(meteorMarker1, 30, 100, 255, 255)
 	
-	CreateSprite(specialButton1, 0)
+	LoadAnimatedSprite(specialButton1, "crab" + str(crab1Type)+ "special", 5)
+	SetSpriteFrame(specialButton1, 5)
 	SetSpriteSize(specialButton1, 100, 100)
 	SetSpritePosition(specialButton1, GetSpriteX(expHolder1) + GetSpriteWidth(expHolder1) + 7, h-20-GetSpriteHeight(meteorButton1))
 	SetSpriteDepth(specialButton1, 15)
-	SetSpriteColor(specialButton1, 20, 255, 40, 100)
+	//SetSpriteColor(specialButton1, 20, 255, 40, 100)
+	SetSpriteColorAlpha(specialButton1, 100)
+	//Placeholder for game 2 angle
 	
 	crab1PlanetS[1] = 116
 	crab1PlanetS[2] = 117
@@ -159,7 +160,7 @@ function CreateGame1()
 	//The planet UI that shows how many lives are left
 	for i = 1 to 3
 		CreateSpriteExpress(crab1PlanetS[i], planetIconSize, planetIconSize, w/2 - planetIconSize/2 + (i-2)*planetIconSize*1.5, h/2 + 80, 5)
-		if crab1Type = 1 or crab1Type = 2 or crab1Type = 4 or crab1Type = 6 then SetSpriteImage(crab1PlanetS[i], crab1life1I - 1 + (crab1Type-1)*3 + i)
+		SetSpriteImage(crab1PlanetS[i], crab1life1I - 1 + (crab1Type-1)*3 + i)
 		if i > 1 then SetSpriteSize(crab1PlanetS[i], planetIconSize/4, planetIconSize/4)
 		DrawPolar1(crab1PlanetS[i], 300, 270 + (i-2)*20)
 		SetSpriteAngle(crab1PlanetS[i], 0)
@@ -678,23 +679,27 @@ function UpdateButtons1()
 	if expTotal1 = specialCost1
 		//Bar is full
 		if GetSpriteColorAlpha(specialButton1) < 255 and hit2Timer# = 0 then PingColor(GetSpriteMiddleX(specialButton1), GetSpriteMiddleY(specialButton1), 250, 20, 255, 40, GetSpriteDepth(specialButton1)+1)
-		SetSpriteColor(expBar1, 255, 210, 50, 255)
-		PlaySprite(expBar1, 30, 1, 1, 6)
-		SetSpriteColor(specialButton1, 20, 255, 40, 255)
+		//SetSpriteColor(expBar1, 255, 210, 50, 255)
+		PlaySprite(expBar1, 30, 1, 1, 12)
+		SetSpriteColorAlpha(specialButton1, 255)
+		PlaySprite(specialButton1, 15, 1, 1, 4)
 	else
 		//Bar is not full
-		SetSpriteColor(expBar1, 255, 160, 0, 255)
-		PlaySprite(expBar1, 20, 1, 1, 6)
-		SetSpriteColor(specialButton1, 20, 255, 40, 100)
+		//SetSpriteColor(expBar1, 255, 160, 0, 255)
+		PlaySprite(expBar1, 20, 1, 1, 12)
+		SetSpriteColorAlpha(specialButton1, 100)
+		PlaySprite(specialButton1, 0, 0, 5, 5)
 	endif
 	
 	if expTotal1 >= meteorCost1
 		//Enabling the button
 		if GetSpriteColorAlpha(meteorButton1) < 255 and hit2Timer# = 0 then PingColor(GetSpriteMiddleX(meteorButton1), GetSpriteMiddleY(meteorButton1), 370, 30, 100, 255, GetSpriteDepth(meteorButton1)+1)
-		SetSpriteColor(meteorButton1, 30, 100, 255, 255)
+		SetSpriteColorAlpha(meteorButton1, 255)
+		PlaySprite(meteorButton1, 15, 1, 1, 4)
 	else
 		//Disabling the button
-		SetSpriteColor(meteorButton1, 30, 100, 255, 100)
+		SetSpriteColorAlpha(meteorButton1, 100)
+		PlaySprite(meteorButton1, 0, 0, 5, 5)
 	endif
 	
 	SetSpriteX(meteorMarker1, GetSpriteX(expHolder1) + 1.0*(GetSpriteWidth(expHolder1)-20)*meteorCost1/specialCost1 - 4)
@@ -989,6 +994,7 @@ function HitScene1()
 			
 			//The one time changes:
 			if GetSpriteColorAlpha(crab1) = 255
+				
 				PlaySoundR(flyingS,100)
 				SetSpriteColorAlpha(crab1, 254)
 				SetBGRandomPosition(bgGame1)

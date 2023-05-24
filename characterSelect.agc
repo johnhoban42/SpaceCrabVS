@@ -70,13 +70,21 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 	SetSpriteMiddleScreenOffset(csc.sprReady, 0, p*7*h/16 + p*40)
 	SetSpriteFlip(csc.sprReady, f, f)
 	
-	LoadSprite(csc.sprLeftArrow, "leftArrow.png")
+	SetFolder("/media/ui")
+	
+	LoadAnimatedSprite(csc.sprLeftArrow, "lr", 22)
+	PlaySprite(csc.sprLeftArrow, 12, 1, 1, 22)
+	//LoadSprite(csc.sprLeftArrow, "leftArrow.png")
 	SetSpriteSize(csc.sprLeftArrow, 100, 100)
 	SetSpriteMiddleScreenOffset(csc.sprLeftArrow, p*-3*w/8, p*3*h/16)
 	SetSpriteFlip(csc.sprLeftArrow, f, f)
+	SetSpriteAngle(csc.sprLeftArrow, 180)
 	if csc.crabSelected = 0 then SetSpriteVisible(csc.sprLeftArrow, 0)
 	
-	LoadSprite(csc.sprRightArrow, "rightArrow.png")
+	SetFolder("/media")
+	
+	CreateSpriteExistingAnimation(csc.sprRightArrow, csc.sprLeftArrow)
+	PlaySprite(csc.sprRightArrow, 13, 1, 1, 22)
 	SetSpriteSize(csc.sprRightArrow, 100, 100)
 	SetSpriteMiddleScreenOffset(csc.sprRightArrow, p*3*w/8, p*3*h/16)
 	SetSpriteFlip(csc.sprRightArrow, f, f)
@@ -99,24 +107,26 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 	SetSpriteColorAlpha(csc.sprBGB, 255) 
 	
 	for i = 0 to NUM_CRABS-1
-		if i = 0 or i = 1 or i = 3 or i = 5
+		Sync()
+		//if i = 0 or i = 1 or i = 3 or i = 5
 			CreateSprite(csc.sprCrabs + i, 0)
 			for j = 1 to 6
 				AddSpriteAnimationFrame(csc.sprCrabs + i, crab1select1I - 1 + j + (i+1)*10)
 			next j
 			PlaySprite(csc.sprCrabs + i, 18, 1, 1, 6)
 			
-		else
-			LoadSprite(csc.sprCrabs + i, "crab1.png")
-		endif
-		SetSpriteSize(csc.sprCrabs + i, charWid/2, charHei/2)
+		//else
+		//	LoadSprite(csc.sprCrabs + i, "crab1.png")
+		//endif
+		SetSpriteSize(csc.sprCrabs + i, charWid*3/5, charHei*3/5)
+		//SetSpriteSize(csc.sprCrabs + i, charWid*4/7, charHei*4/7) //Slightly bigger crab size
 		//SetSpriteMiddleScreenOffset(csc.sprCrabs + i, p*(i-csc.crabSelected)*w, p*335)	//The old way to position the sprites
 		SetSpriteFlip(csc.sprCrabs + i, f, f)
 		SetSpriteDepth(csc.sprCrabs, 40)
 		
 		CreateTweenSprite(csc.sprCrabs + i, selectTweenTime#)
-		SetTweenSpriteSizeX(csc.sprCrabs + i, charWid, charWid/2, TweenOvershoot())
-		SetTweenSpriteSizeY(csc.sprCrabs + i, charHei, charHei/2, TweenOvershoot())
+		SetTweenSpriteSizeX(csc.sprCrabs + i, charWid, charWid*3/5, TweenOvershoot())
+		SetTweenSpriteSizeY(csc.sprCrabs + i, charHei, charHei*3/5, TweenOvershoot())
 		SetTweenSpriteX(csc.sprCrabs + i, w/2-charWid/2, w/2 - charWid/4 + p*charHorSmallGap*(Mod(i,3)-1), TweenOvershoot())
 		SetTweenSpriteY(csc.sprCrabs + i, h/2-charHei/2 + p*charVer, h/2 - charHei/4 + p*charVerSmall + p*charVerSmallGap*((i)/3), TweenOvershoot())
 			
@@ -231,7 +241,8 @@ function InitCharacterSelect()
 	InitCharacterSelectController(csc1)
 	InitCharacterSelectController(csc2)
 	
-	LoadSpriteExpress(SPR_MENU_BACK, "crab77walk8.png", 140, 140, 0, 0, 3)
+	
+	LoadSpriteExpress(SPR_MENU_BACK, "ui/mainmenu.png", 140, 140, 0, 0, 3)
 	SetSpriteMiddleScreen(SPR_MENU_BACK)
 	
 	
@@ -514,6 +525,9 @@ function DoCharacterSelect()
 		next i
 	endif
 	
+	//Spinning the main menu button
+	IncSpriteAngle(SPR_MENU_BACK, 1*fpsr#)
+	
 	if ButtonMultitouchEnabled(SPR_MENU_BACK)
 		state = START
 	endif
@@ -550,8 +564,8 @@ endfunction
 function CleanupCharacterSelectController(csc ref as CharacterSelectController)
 	
 	DeleteSprite(csc.sprReady)
-	DeleteSprite(csc.sprLeftArrow)
 	DeleteSprite(csc.sprRightArrow)
+	DeleteAnimatedSprite(csc.sprLeftArrow)
 	DeleteSprite(csc.sprBG)
 	DeleteSprite(csc.sprBGB)
 	DeleteText(csc.txtCrabName)

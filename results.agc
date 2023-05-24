@@ -85,19 +85,26 @@ function InitResultsController(rc ref as ResultsController)
 	CreateTweenText(rc.twnWinMsg, 1.5)
 	SetTweenTextY(rc.twnWinMsg, GetTextY(rc.txtWinMsg), GetTextY(rc.txtWinMsg) + p*325, TweenSmooth2())
 	
-	sprCrabLose$ = "/media/art/crab" + Str(loserCrab) + "resultsLose.png"
+	sprCrabLose$ = "/media/art/crab" + Str(loserCrab) + "rLose.png"
 	LoadSprite(rc.sprCrabLose, sprCrabLose$)
 	SetSpriteSize(rc.sprCrabLose, 195, 195)
 	SetSpriteMiddleScreenOffset(rc.sprCrabLose, p*-1*w/4, p*375)
 	SetSpriteFlip(rc.sprCrabLose, f, f)
 	SetSpriteVisible(rc.sprCrabLose, 0)
 	
-	sprCrabWin$ = "/media/art/crab" + Str(winnerCrab) + "resultsWin.png"
+	sprCrabWin$ = "/media/art/crab" + Str(winnerCrab) + "rWin.png"
 	LoadSprite(rc.sprCrabWin, sprCrabWin$)
 	SetSpriteSize(rc.sprCrabWin, 425, 425)
 	SetSpriteMiddleScreenOffset(rc.sprCrabWin, p*w/8, p*450)
 	SetSpriteFlip(rc.sprCrabWin, f, f)
 	SetSpriteVisible(rc.sprCrabWin, 0)
+	
+	//Making the crab that isn't yours a bit darker
+	if (rc.player = 1 and resultsWinner = 1) or (rc.player = 2 and resultsWinner = 2)
+		SetSpriteColor(rc.sprCrabLose, 160, 160, 160, 255)
+	else
+		SetSpriteColor(rc.sprCrabWin, 160, 160, 160, 255)
+	endif
 	
 	// Kick off the controller's tweens
 	PlayTweenText(rc.twnWinMsg, rc.txtWinMsg, 2)
@@ -155,17 +162,18 @@ function InitResults()
 	InitResultsController(rc2)
 	
 	// Create mid-screen buttons
-	LoadSprite(SPR_R_REMATCH, "rematchButton.png")
+	SetFolder("/media/ui")
+	LoadSprite(SPR_R_REMATCH, "restart.png")
 	SetSpriteSize(SPR_R_REMATCH, 210, 210)
 	SetSpriteMiddleScreen(SPR_R_REMATCH)
 	SetSpriteVisible(SPR_R_REMATCH, 0)
 	
-	LoadSprite(SPR_R_CRAB_SELECT, "crabSelectButton.png")
+	LoadSprite(SPR_R_CRAB_SELECT, "crabselect.png")
 	SetSpriteSize(SPR_R_CRAB_SELECT, 175, 175)
 	SetSpriteMiddleScreenOffset(SPR_R_CRAB_SELECT, -1*w/3, 0)
 	SetSpriteVisible(SPR_R_CRAB_SELECT, 0)
 	
-	LoadSprite(SPR_R_MAIN_MENU, "mainMenuButton.png")
+	LoadSprite(SPR_R_MAIN_MENU, "mainmenu.png")
 	SetSpriteSize(SPR_R_MAIN_MENU, 160, 160)
 	SetSpriteMiddleScreenOffset(SPR_R_MAIN_MENU, w/3, 0)
 	SetSpriteVisible(SPR_R_MAIN_MENU, 0)
