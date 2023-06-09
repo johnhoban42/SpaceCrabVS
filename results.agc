@@ -118,11 +118,11 @@ function InitResults()
 	
 	// Initialize the win/loss text
 	// AGK doesn't allow string concatenation in the global namespace (?!)
-	winText[0] = "Space Crab wins!"
+	winText[0] = "Space Crab clenches the win!"
 	winText[1] = "Ladder Wizard wins!"
 	winText[2] = "Top Crab's dizzying, dazzling display" + chr(10) + "ran circles around the competition!"
 	winText[3] = "Rave Crab wins!"
-	winText[4] = "Chrono Crab wins!"
+	winText[4] = "Chrono Crab bent time and the results" + chr(10) + "of the battle to his favor!"
 	winText[5] = "Ninja Crab wins!"
 	
 	loseText[0] = "Space Crab's orbital ordnance was" + chr(10) + "overpowered by a mightier opponent..."

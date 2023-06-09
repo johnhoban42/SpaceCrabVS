@@ -14,25 +14,33 @@ function InitStart()
 	
 	SetFolder("/media/ui")
 	
-	LoadSprite(SPR_TITLE, "title.png")
+	if demo
+		LoadSprite(SPR_TITLE, "titleDemo.png")
+	else
+		LoadSprite(SPR_TITLE, "title.png")
+	endif
 	SetSpriteSize(SPR_TITLE, w*2/3, w*2/3)
 	SetSpriteMiddleScreen(SPR_TITLE)
 	//IncSpriteX(SPR_TITLE, 150)
 	SetSpriteAngle(SPR_TITLE, 90)
 	
-	LoadSprite(SPR_START1, "start.png")
-	SetSpriteSize(SPR_START1, 600, 160)
+	LoadAnimatedSprite(SPR_START1, "ready", 22)
+	PlaySprite(SPR_START1, 10, 1, 7, 14)
+	SetSpriteSize(SPR_START1, 842*.7, 317*.7)
 	SetSpriteMiddleScreenX(SPR_START1)
-	SetSpriteY(SPR_START1, h/2 + 550)
+	SetSpriteY(SPR_START1, h/2 + 520)
 	SetSpriteAngle(SPR_START1, 0)
 	SetSpriteDepth(SPR_START1, 75)
+	AddButton(SPR_START1)
 	
-	LoadSprite(SPR_START2, "start.png")
-	SetSpriteSize(SPR_START2, 600, 160)
+	CreateSpriteExistingAnimation(SPR_START2, SPR_START1)
+	PlaySprite(SPR_START2, 11, 1, 15, 22)
+	SetSpriteSize(SPR_START2, 842*.7, 317*.7)
 	SetSpriteMiddleScreenX(SPR_START2)
-	SetSpriteY(SPR_START2, h/2 - 550 - GetSpriteHeight(SPR_START2))
+	SetSpriteY(SPR_START2, h/2 - 520 - GetSpriteHeight(SPR_START2))
 	SetSpriteAngle(SPR_START2, 180)
 	SetSpriteDepth(SPR_START2, 75)
+	AddButton(SPR_START2)
 	
 	CreateTextExpress(TXT_WAIT1, "Waiting for your opponent...", 86, fontDescItalI, 1, w/2, GetSpriteY(SPR_START1)+38, 3)
 	SetTextColorAlpha(TXT_WAIT1, 0)
@@ -45,10 +53,12 @@ function InitStart()
 	LoadSprite(SPR_START1P, "singlePlayerButton.png")
 	SetSpriteSize(SPR_START1P, 250, 150)
 	SetSpritePosition(SPR_START1P, 520, 1130)
+	AddButton(SPR_START1P)
 	
 	LoadSprite(SPR_STARTAI, "vsAI.png")
 	SetSpriteSize(SPR_STARTAI, 250, 150)
 	SetSpritePosition(SPR_STARTAI, 50, 1130)
+	AddButton(SPR_STARTAI)
 	
 	SetFolder("/media")
 	
@@ -60,6 +70,7 @@ function InitStart()
 		
 		CreateTweenSprite(i, .7)
 		SetTweenSpriteY(i, h + 20, 980 + 250*((num-1)/3), TweenBounce())
+		AddButton(i)
 	next i
 	
 	CreateTextExpress(TXT_HIGHSCORE, "High Score: " + str(spHighScore) + chr(10) + "with " + spHighCrab$, 90, fontCrabI, 1, w/2, 300, 5)
@@ -132,7 +143,6 @@ function DoStart()
 	endif
 	state = START
 	
-	
 	inc startTimer#, fpsr#
 	if startTimer# > 360 then startTimer# = 0
 	
@@ -156,24 +166,28 @@ function DoStart()
 		if ButtonMultitouchEnabled(SPR_START1) and spActive = 0
 			if GetSpriteColorAlpha(SPR_START1) = 255
 				//Pressing player one
-				SetSpriteColorAlpha(SPR_START1, 70)
-				SetTextColorAlpha(TXT_WAIT1, 255)
+				SetSpriteColorAlpha(SPR_START1, 140)
+				SetTextColorAlpha(TXT_WAIT1, 255)				
+				PlaySprite(SPR_START1, 12, 1, 1, 6)
 			else
 				//Cancelling player one
 				SetSpriteColorAlpha(SPR_START1, 255)
 				SetTextColorAlpha(TXT_WAIT1, 0)
+				PlaySprite(SPR_START1, 10, 1, 7, 14)
 			endif
 		endif
 		
 		if ButtonMultitouchEnabled(SPR_START2) and spActive = 0
 			if GetSpriteColorAlpha(SPR_START2) = 255
-				//Pressing player one
-				SetSpriteColorAlpha(SPR_START2, 70)
-				SetTextColorAlpha(TXT_WAIT2, 255)
+				//Pressing player two
+				SetSpriteColorAlpha(SPR_START2, 140)
+				SetTextColorAlpha(TXT_WAIT2, 255)		
+				PlaySprite(SPR_START2, 12, 1, 1, 6)
 			else
-				//Cancelling player one
+				//Cancelling player two
 				SetSpriteColorAlpha(SPR_START2, 255)
 				SetTextColorAlpha(TXT_WAIT2, 0)
+				PlaySprite(SPR_START2, 11, 1, 15, 22)
 			endif
 		endif
 		
@@ -298,11 +312,11 @@ function DoStart()
 	// If we are leaving the state, exit appropriately
 	// Don't write anything after this!
 	if state <> START
-		TransitionStart()
+		TransitionStart(Random(1,2))
 		if state = CHARACTER_SELECT
-			appState = CHARACTER_SELECT
-			LoadStartImages(1)
-			DoCharacterSelect()
+			//appState = CHARACTER_SELECT
+			//LoadStartImages(1)
+			//DoCharacterSelect()
 		endif
 		ExitStart()
 		
@@ -316,8 +330,8 @@ endfunction state
 function ExitStart()
 	
 	DeleteSprite(SPR_TITLE)
-	DeleteSprite(SPR_START1)
 	DeleteSprite(SPR_START2)
+	DeleteAnimatedSprite(SPR_START1)
 	DeleteSprite(SPR_START1P)
 	DeleteSprite(SPR_STARTAI)
 	DeleteSprite(SPR_BG_START)

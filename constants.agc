@@ -198,6 +198,12 @@ global met3CD2# = 0 //400
 #constant slowMetWidth 25
 #constant slowMetSpeedDen 8
 
+//Text Indexes
+#constant pauseTitle1 6
+#constant pauseTitle2 7
+#constant pauseDesc1 8
+#constant pauseDesc2 9
+
 //Sprite Indexes
 #constant crab1 1
 #constant crab2 2
@@ -268,6 +274,8 @@ global met3CD2# = 0 //400
 #constant fontDescI 2	//Tahoma
 #constant fontDescItalI 4	//Tahoma (Italicized)
 #constant fontCrabI 3	//Somerset Barnyard
+
+#constant starParticleI 11
 
 //The indexs are reserved, but no constants are needed
 #constant crab1select1I 301
@@ -540,6 +548,7 @@ global jumpPartI as Integer[6]
 #constant arrowS 11
 #constant chooseS 12
 #constant gongS 13
+#constant buttonSound 14
 
 #constant exp1S 16
 #constant exp2S 17
@@ -643,6 +652,8 @@ SetMusicSystemVolumeOGG(volumeM)
 #constant tweenOnP1 2
 #constant tweenOffP2 3
 #constant tweenOnP2 4
+//global tweenButton = 5
+//tweenButton lasts until 25
 
 // Results screen sprites - player 1
 #constant TXT_R_CRAB_MSG_1 = 500
@@ -709,6 +720,7 @@ function LoadBaseSounds()
 		LoadSoundOGG(arrowS, "arrow.ogg")
 		LoadSoundOGG(chooseS, "choose.ogg")
 		LoadSoundOGG(gongS, "gong.ogg")
+		LoadSoundOGG(buttonSound, "select.ogg")
 		
 		
 		LoadSoundOGG(exp1S, "exp1.ogg")
@@ -737,6 +749,7 @@ function LoadBaseSounds()
 		LoadMusicOGG(arrowS, "arrow.ogg")
 		LoadMusicOGG(chooseS, "choose.ogg")
 		LoadMusicOGG(gongS, "gong.ogg")
+		LoadMusicOGG(buttonSound, "select.ogg")
 		
 		LoadMusicOGG(exp1S, "exp1.ogg")
 		LoadMusicOGG(exp2S, "exp2.ogg")
@@ -893,6 +906,8 @@ function LoadBaseImages()
 	LoadImage(bg4I, "bg4.png")
 	LoadImage(bg5I, "bg5.png")
 	
+	LoadImage(starParticleI, "starParticle.png")
+	
 	for i = special4s1 to special4s8
 		LoadImage(i, "ravespprop" + str(i - special4s1 + 1) + ".png")
 	next i
@@ -980,7 +995,7 @@ function LoadCharacterSelectImages(loading)
 			//if i = 1 or i = 2 or i = 4 or i = 6
 				for j = 1 to 6
 					LoadImage(crab1select1I - 1 + j + i*10, "crab" + str(i) + "select" + str(j) + ".png")
-					Sync() //This is here so that the particles can keep on moving
+					SyncG() //This is here so that the particles can keep on moving
 				next j
 				//Sync() //This is here so that the particles can keep on moving
 			//endif

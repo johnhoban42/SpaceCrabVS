@@ -1,4 +1,11 @@
 //Core functions that are used in the app, and possible future apps
+function SyncG()
+	PingUpdate()
+	ButtonsUpdate()
+	UpdateAllTweens(GetFrameTime())
+    Sync()
+endfunction
+
 function max(num1, num2)
 	ret = 0	
 	if num1 > num2
@@ -57,9 +64,6 @@ function DeleteAnimatedSprite(spr)
 		
 	size = imageA[index+1] + 2
 	for i = 1 to size
-		//Print(index)
-		//Sync()
-		//Sleep(400)
 		if i > 1 then DeleteImage(imageA[index])
 		imageA.remove(index)
 	next i
@@ -177,6 +181,25 @@ function IncSpriteAngle(spr, amt#)
 	SetSpriteAngle(spr, GetSpriteAngle(spr) + amt#)
 endfunction
 
+
+function IncSpriteSizeCentered(spr, amt#)
+	//The regular amt is for X
+	amtY# = amt# * GetSpriteHeight(spr)/GetSpriteWidth(spr)
+	SetSpritePosition(spr, GetSpriteX(spr)-amt#/2, GetSpriteY(spr)-amtY#/2)
+	SetSpriteSize(spr, GetSpriteWidth(spr)+amt#, GetSpriteHeight(spr)+amtY#)
+endfunction
+
+function IncSpriteSizeCenteredMult(spr, ratio#)
+	amt# = ratio#
+	SetSpritePosition(spr, GetSpriteMiddleX(spr)-(GetSpriteWidth(spr)*amt#)/2, GetSpriteMiddleY(spr)-(GetSpriteHeight(spr)*amt#)/2)
+	SetSpriteSize(spr, GetSpriteWidth(spr)*amt#, GetSpriteHeight(spr)*amt#)
+endfunction
+
+function SetSpriteSizeCentered(spr, newWid, newHei)
+	SetSpritePosition(spr, GetSpriteMiddleX(spr) - newWid, GetSpriteMiddleY(spr) - newHei)
+	SetSpriteSize(spr, newWid, newHei)
+endfunction
+
 function GlideToSpot(spr, x, y, denom)
 	SetSpritePosition(spr, (((GetSpriteX(spr)-x)*((denom-1)^fpsr#))/(denom)^fpsr#)+x, (((GetSpriteY(spr)-y)*((denom-1)^fpsr#))/(denom)^fpsr#)+y)
 endfunction
@@ -191,6 +214,14 @@ endfunction
 
 function GlideToWidth(spr, wid, denom)
 	SetSpriteSize(spr, (((GetSpriteWidth(spr)-wid)*((denom-1)^fpsr#))/(denom)^fpsr#)+wid, GetSpriteHeight(spr))
+endfunction
+
+function GlideToScissorX_L(spr, cutX, denom)
+	SetSpriteScissor(spr, (((cutX)*((denom-1)^fpsr#))/(denom)^fpsr#), 0, w, h)
+endfunction
+
+function GlideToScissorX_R(spr, cutX, denom)
+	SetSpriteScissor(spr, 0, 0, (((cutX)*((denom-1)^fpsr#))/(denom)^fpsr#), h)
 endfunction
 
 function GlideTextToSpot(txt, x, y, denom)
@@ -433,7 +464,7 @@ function ClearMultiTouch()
 		next
 		currentTouch.length = 0
 		
-		Sync()
+		SyncG()
 		ProcessMultitouch()
 	next j
 endfunction
@@ -747,4 +778,53 @@ function PingUpdate()
 		endif
 	next i
 
+endfunction
+
+global buttons as Integer[0]
+global tweenButton = 5
+global tweenButtonOld = 6
+//tweenButton lasts until 25
+function ButtonsUpdate()
+	for i = 0 to buttons.length
+		if GetSpriteExists(buttons[i])
+			spr = buttons[i]
+			if (GetMulitouchPressedButton(spr) or Button(spr)) and GetSpriteVisible(spr)
+				
+				//Skips the current tween on an existing sprite, if still playing
+				skip = 0
+				for i = 5 to 25
+					if GetTweenSpritePlaying(i, spr) then skip = 1
+				next i
+				
+				//The case for playing the tween; no matter what, playing the sound
+				if skip = 0
+					if GetTweenExists(tweenButton) = 0 then CreateTweenSprite(tweenButton, .3)
+					//GetTween
+					impact# = 1.2
+					SetTweenSpriteSizeX(tweenButton, GetSpriteWidth(spr)*impact#, GetSpriteWidth(spr), TweenOvershoot())
+					SetTweenSpriteSizeY(tweenButton, GetSpriteHeight(spr)*impact#, GetSpriteHeight(spr), TweenOvershoot())
+					SetTweenSpriteX(tweenButton, GetSpriteMiddleX(spr)-(GetSpriteWidth(spr)*impact#)/2, GetSpriteX(spr), TweenOvershoot())
+					SetTweenSpriteY(tweenButton, GetSpriteMiddleY(spr)-(GetSpriteHeight(spr)*impact#)/2, GetSpriteY(spr), TweenOvershoot())
+					PlayTweenSprite(tweenButton, spr, 0)
+					
+					tweenButtonOld = tweenButton
+					inc tweenButton, 1
+					if tweenButton > 25 then tweenButton = 5
+				endif
+				
+				PlaySoundR(buttonSound, 100)
+				
+			endif
+			
+		endif
+	next i
+endfunction
+
+function AddButton(spr)
+	//buttons.sort()
+	index = buttons.find(spr)
+	if index = -1
+		buttons.insertsorted(spr)
+	endif
+	
 endfunction

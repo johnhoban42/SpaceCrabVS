@@ -30,7 +30,7 @@ function InitGame()
 	if spActive = 0 then PlayOpeningScene()
 	
 	//The pause button
-	SetFolder("/media")
+	SetFolder("/media/ui")
 	LoadSpriteExpress(pauseButton, "pause.png", 100, 100, 0, 0, 9)
 	SetSpriteMiddleScreen(pauseButton)
 	if spActive then SetSpritePosition(pauseButton, 30, 30)
@@ -44,6 +44,12 @@ function InitGame()
 	SetSpriteMiddleScreen(exitButton)
 	IncSpriteX(exitButton, 200)
 	SetSpriteVisible(exitButton, 0)
+	
+	AddButton(pauseButton)
+	AddButton(playButton)
+	AddButton(exitButton)
+	
+	SetFolder("/media")
 	
 	//For multiplayer mode, the music is started in a different place
 	if spActive = 1 then StartGameMusic()
@@ -96,19 +102,27 @@ function DoGame()
 		endif
 		
 		// Game execution loops
-		if hit1Timer# > 0
-			//This is the case for getting hit
-			state1 = HitScene1()
+		if crab2Deaths <> 3
+			if hit1Timer# > 0
+				//This is the case for getting hit
+				state1 = HitScene1()
+			else
+				//This is the case for normal gameplay
+				state1 = DoGame1()
+			endif
 		else
-			//This is the case for normal gameplay
-			state1 = DoGame1()
+			state = GAME
 		endif
-		if hit2Timer# > 0
-			//This is the case for getting hit
-			state2 = HitScene2()
+		if crab1Deaths <> 3
+			if hit2Timer# > 0
+				//This is the case for getting hit
+				state2 = HitScene2()
+			else
+				//This is the case for normal gameplay
+				state2 = DoGame2()
+			endif
 		else
-			//This is the case for normal gameplay
-			state2 = DoGame2()
+			state = GAME
 		endif
 		UpdateExp()
 		inc gameTimer#, fpsr#
@@ -157,6 +171,9 @@ function DoGame()
 		
 	endif
 	
+	if state = RESULTS
+		EndGameScene()
+	endif
 	
 	
 	// If we are leaving the state, exit appropriately
@@ -168,6 +185,47 @@ function DoGame()
 	
 endfunction state
 
+function EndGameScene()
+	
+	hitTimer# = hitSceneMax/3
+	
+	while hitTimer# > 0
+	
+		inc hit1Timer#, -1*fpsr#
+		
+		//First bit, crab is hit once
+		if hitTimer# >= hitSceneMax*2/9
+		
+			range = 20-(hitSceneMax*2/9-hitTimer#)
+			IncSpritePosition(crab1, Random(-range, range), Random(-range, range))		
+			PlaySoundR(crackS, 100)
+			PlaySoundR(explodeS, 100)
+			inc crab1R#, -20
+			LoadSprite(bgHit1, "envi/bg0.png")
+			SetSpriteSizeSquare(bgHit1, w)
+			DrawPolar1(bgHit1, 0, crab1Theta#)
+			SetSpriteColorAlpha(bgGame1, 80)
+			for i = 1 to meteorActive1.length
+				StopSprite(meteorActive1[i].spr)
+			next i
+			
+			
+		//Crab is hit second time
+		elseif hitTimer# >= hitSceneMax/9
+			
+		//Crab flies towards screen
+		elseif hitTimer# > 0
+			
+			if GetSpriteExists(bgHit1) then DeleteSprite(bgHit1)
+			
+		//Cleaning up before the end of the game
+		elseif hitTimer# <= 0
+			
+			
+		endif
+	endwhile
+		
+endfunction
 
 // Cleanup upon leaving this state
 function ExitGame()
@@ -212,7 +270,6 @@ function ExitGame()
 	DeleteSprite(planet1)
 	DeleteSprite(crab1)
 	DeleteSprite(bgGame1)
-	DeleteSprite(expHolder1)
 	DeleteAnimatedSprite(meteorButton1)
 	DeleteSprite(meteorMarker1)
 	DeleteAnimatedSprite(specialButton1)
@@ -289,6 +346,7 @@ function ExitGame()
 	
 	//Deleting the animated game1 sprites that were referenced in game 2
 	DeleteAnimatedSprite(expBar1)
+	DeleteAnimatedSprite(expHolder1)
 	
 	crab2Theta# = 270
 	crab2Dir# = 1
@@ -328,6 +386,27 @@ function PauseGame()
 	SetSpriteVisible(playButton, 1)
 	SetSpriteVisible(exitButton, 1)
 	
+	for i = pauseTitle1 to pauseDesc2
+		CreateText(i, "")
+		SetTextAlignment(i, 1)
+		//The titles
+		if i <= 7
+			SetTextFontImage(i, fontCrabI)
+			SetTextSize(i, 60)
+		else //The descriptions
+			SetTextFontImage(i, fontDescI)
+			SetTextSize(i, 30)
+		endif
+		//The bottom (game 1)
+		if Mod(i, 2) = 0
+			
+		else //The top (game 2)
+			SetTextAngle(i, 180)
+		endif
+		
+		
+	next i
+	
 endfunction
 
 function UnpauseGame()
@@ -338,6 +417,10 @@ function UnpauseGame()
 	SetSpriteVisible(exitButton, 0)
 	
 	DeleteSprite(curtain)
+	
+	for i = pauseTitle1 to pauseDesc2
+		DeleteText(i)
+	next i
 	
 	ClearMultiTouch()
 	
@@ -363,7 +446,7 @@ function CreateExp(metSpr, metType, planetNum)
 	if metType = 3 then iEnd = 3 + planetNum
 
 	for i = 1 to iEnd
-		CreateSprite(expSprNum, expOrbI)
+		CreateSprite(expSprNum, starParticleI)
 		SetSpriteSize(expSprNum, 16, 16)
 		SetSpritePosition(expSprNum, GetSpriteMiddleX(metSpr) - GetSpriteWidth(expSprNum)/2, GetSpriteMiddleY(metSpr) - GetSpriteHeight(expSprNum)/2)
 		SetSpriteColor(expSprNum, 255, 255, 0, 5)
@@ -471,9 +554,28 @@ function UpdateExp()
 
 	next i
 
-	GlideToWidth(expBar1, (GetSpriteWidth(expHolder1)-20)*(1.0*expTotal1/specialCost1), 2)
-	GlideToWidth(expBar2, (GetSpriteWidth(expHolder2)-20)*(1.0*expTotal2/specialCost2), 2)
-	SetSpriteX(expBar2, GetSpriteX(expHolder2) + GetSpriteWidth(expHolder2) - GetSpriteWidth(expBar2)-10)
+	//Player 1 EXP
+	SetSpriteScissor(expBar1, 0, 0, GetSpriteWidth(expHolder1)+GetSpriteX(expHolder1), h)
+	GlideToX(expBar1, GetSpriteX(expHolder1) + (GetSpriteWidth(expHolder1))*(1.0*expTotal1/specialCost1), 2)
+	
+	if (GetSpriteX(expBar1) + .116*GetSpriteWidth(expHolder1)*2/3) >= GetSpriteX(specialButton1) and expTotal1 <> specialCost1
+		expTotal1 = specialCost1
+		UpdateButtons1()
+	endif
+	
+	//Player 2 EXP
+	SetSpriteScissor(expBar2, GetSpriteX(expHolder1), 0, w, h)
+	GlideToX(expBar2, GetSpriteX(expHolder2) - (GetSpriteWidth(expHolder2))*(1.0*expTotal2/specialCost2), 2)
+	
+	//SetSpriteX(expBar2, GetSpriteX(expHolder2) + GetSpriteWidth(expHolder2) - GetSpriteWidth(expBar2)-10)
+	
+	if (GetSpriteX(expBar2) - .116*GetSpriteWidth(expHolder2)*2/3) + GetSpriteWidth(expHolder2) <= GetSpriteX(specialButton2) + GetSpriteWidth(specialButton2) and expTotal2 <> specialCost2
+		expTotal2 = specialCost2
+		UpdateButtons2()
+	endif
+	
+	Print("EXP Total: " + str(expTotal1))
+	Print("My X: " + str(GetSpriteX(expHolder1) + (GetSpriteWidth(expHolder1))*(1.0*expTotal1/specialCost1)))
 
 	if deleted > 0
 		expList.remove(deleted)
@@ -560,8 +662,8 @@ function ShowSpecialAnimation(crabType)
 			//SetSpriteSizeSquare(i, 300)	//Smaller at Brad's request
 			SetSpriteImage(i, crab1attack2I - 1 + crabType)
 			if crabType = 4
-				SetSpriteSize(i, 155*5, 77*5)
-				SetSpriteColor(i, 255, 255, 255, 0)					
+				SetSpriteSizeSquare(i, specSize*1.4)
+				SetSpriteColor(i, 255, 255, 255, 0)
 			endif
 		else
 			//Front Sprites
@@ -577,6 +679,7 @@ function ShowSpecialAnimation(crabType)
 		SetFolder("/media/art")
 		LoadSprite(specialSprBacker1, "crab" + str(crabType) + "attack3.png")
 		LoadSprite(specialSprBacker2, "crab" + str(crabType) + "attack3.png")
+		SetSpriteAngle(specialSprBacker1, 180)
 		SetSpriteAngle(specialSprBacker2, 180)
 		SetSpriteDepth(specialSprBacker1, 3)
 		SetSpriteDepth(specialSprBacker2, 3)
@@ -584,30 +687,33 @@ function ShowSpecialAnimation(crabType)
 		SetSpriteSizeSquare(specialSprBacker2, specSize)
 	endif
 	
+	//Offsetting the clock hands so that they rotate properly
+	if crabType = 5
+		SetSpriteOffset(specialSprFront1, specSize*700/1356.0, specSize*932/1356.0)
+		SetSpriteOffset(specialSprBack1, specSize*700/1356.0, specSize*932/1356.0)
+		SetSpriteOffset(specialSprFront2, specSize*700/1356.0, specSize*932/1356.0)
+		SetSpriteOffset(specialSprBack2, specSize*700/1356.0, specSize*932/1356.0)
+	endif
 	offsetY = 30
 	
+	//For crab specials that move: 1, 2, 4, 6
 	//Goes from right to left on bottom
-	//SetSpritePosition(specialSprFront1, w + 100, h - 500 - offsetY)
+	SetSpritePosition(specialSprFront1, -100 - specSize, h - 700 - offsetY)
 	//Goes from left to right on bottom
-	//SetSpritePosition(specialSprBack1, -100 - wid, h - 650 - offsetY)
+	SetSpritePosition(specialSprBack1, w + 100, h - 700 - offsetY)
+	//SetSpritePosition(specialSprBack1, w + 100, h - 650 - offsetY)
 	
 	//Goes from right to left on top
-	//SetSpritePosition(specialSprFront2, -100 - wid, 100 + offsetY)
+	SetSpritePosition(specialSprFront2, w + 100, 100 + offsetY)
 	//Goes from left to right on top
-	//SetSpritePosition(specialSprBack2, w + 100, 250 + offsetY)
+	SetSpritePosition(specialSprBack2, -100 - specSize, 100 + offsetY)
+	//SetSpritePosition(specialSprBack2, -100 - specSize, 250 + offsetY)
 	
-	//For Wizard crab only (actually, this is now for every crab!)
-	//if crabType = 2
-		//Goes from right to left on bottom
-		SetSpritePosition(specialSprFront1, -100 - specSize, h - 500 - offsetY)
-		//Goes from left to right on bottom
-		SetSpritePosition(specialSprBack1, w + 100, h - 650 - offsetY)
-		
-		//Goes from right to left on top
-		SetSpritePosition(specialSprFront2, w + 100, 100 + offsetY)
-		//Goes from left to right on top
-		SetSpritePosition(specialSprBack2, -100 - specSize, 250 + offsetY)
-	//endif
+	if crabType = 4
+		SetSpritePosition(specialSprBack2, -100 - specSize, 100 + offsetY - specSize*0.4)
+		SetSpritePosition(specialSprFront2, w + 100, 30 + offsetY)
+	SetSpritePosition(specialSprFront1, -100 - specSize, h - 700 - offsetY + 70)
+	endif
 	
 	//The text for the special
 	
@@ -618,10 +724,10 @@ function ShowSpecialAnimation(crabType)
 		SetTextFontImage(i, fontSpecialI)
 		SetTextAlignment(i, 1)
 		SetTextSize(i, 106)
-		SetTextPosition(i, 2000*tDir, 1440)
+		SetTextPosition(i, 2000*tDir, 1490)
 		if i = specialSprFront2
 			SetTextX(i, -2000*tDir)
-			SetTextY(i, h - 1440 )
+			SetTextY(i, h - 1490 )
 			SetTextAngle(i, 180)
 		endif
 		SetTextDepth(i, 1)
@@ -663,9 +769,9 @@ function ShowSpecialAnimation(crabType)
 			else */
 				//For wizard crab's positioning
 				IncSpriteXFloat(specialSprFront1, 1.3*speed)
-				IncSpriteXFloat(specialSprBack1, -1.1*speed)
+				IncSpriteXFloat(specialSprBack1, -1.4*speed)
 				IncSpriteXFloat(specialSprFront2, -1.3*speed)
-				IncSpriteXFloat(specialSprBack2, 1.1*speed)
+				IncSpriteXFloat(specialSprBack2, 1.4*speed)
 			//endif
 		endif
 		
@@ -700,6 +806,11 @@ function ShowSpecialAnimation(crabType)
 				DrawPolar2(specialSprFront2, 0, 90)
 				DrawPolar2(specialSprBack2, 0, 90)
 				DrawPolar2(specialSprBacker2, 0, 90)
+				
+				if crabType = 5
+					IncSpritePosition(specialSprFront2, -2*(specSize*700/1356.0 - specSize/2), -2*(specSize*932/1356.0 - specSize/2))
+					IncSpritePosition(specialSprBack2, -2*(specSize*700/1356.0 - specSize/2), -2*(specSize*932/1356.0 - specSize/2))
+				endif
 			endif
 				
 			for j = specialSprFront1 to specialSprBacker2
@@ -720,10 +831,25 @@ function ShowSpecialAnimation(crabType)
 				endif	
 			next j
 			
-			IncSpriteAngle(specialSprFront1, -1*fpsr# - i/(15.0*fpsr#))
-			IncSpriteAngle(specialSprFront2, -1*fpsr# - i/(15.0*fpsr#))
-			IncSpriteAngle(specialSprBack1, 1.5*fpsr# + i/(15.0*fpsr#))
-			IncSpriteAngle(specialSprBack2, 1.5*fpsr# + i/(15.0*fpsr#))
+			//Making the components bigger, and also repositioning the top
+			IncSpriteSizeCentered(specialSprBacker1, 1*fpsr#)
+			IncSpriteSizeCentered(specialSprBacker2, 1*fpsr#)
+			IncSpriteSizeCentered(specialSprBack1, 1*fpsr#)
+			IncSpriteSizeCentered(specialSprBack2, 1*fpsr#)
+			IncSpriteSizeCentered(specialSprFront1, 1*fpsr#)
+			IncSpriteSizeCentered(specialSprFront2, 1*fpsr#)
+			if crabType = 5
+				IncSpritePosition(specialSprFront2, -.125*fpsr#, -.25*fpsr#)
+				IncSpritePosition(specialSprBack2, -.125*fpsr#, -.25*fpsr#)
+			endif
+			
+			//Goes around once for top, 3 times for chrono
+			for j = 3 to crabType
+				IncSpriteAngle(specialSprFront1, -1*fpsr# - i/(25.0*fpsr#))
+				IncSpriteAngle(specialSprFront2, -1*fpsr# - i/(25.0*fpsr#))
+				IncSpriteAngle(specialSprBack1, 1.5*fpsr# + i/(25.0*fpsr#))
+				IncSpriteAngle(specialSprBack2, 1.5*fpsr# + i/(25.0*fpsr#))
+			next j
 			
 		endif
 		
@@ -743,7 +869,7 @@ function ShowSpecialAnimation(crabType)
 			next k
 		next j
 		
-		Sync()
+		SyncG()
 	next i
 	
 
@@ -891,10 +1017,10 @@ function SetBGRandomPosition(spr)
 endfunction
 
 function DisableAttackButtons()
-	SetSpriteColorAlpha(meteorButton1, 100)
-	SetSpriteColorAlpha(specialButton1, 100)
-	SetSpriteColorAlpha(meteorButton2, 100)
-	SetSpriteColorAlpha(specialButton2, 100)
+	SetSpriteColor(meteorButton1, 100, 100, 100, 255)
+	SetSpriteColor(specialButton1, 100, 100, 100, 255)
+	SetSpriteColor(meteorButton2, 100, 100, 100, 255)
+	SetSpriteColor(specialButton2, 100, 100, 100, 255)
 endfunction
 
 function EnableAttackButtons()
@@ -1276,7 +1402,7 @@ function PlayOpeningScene()
 			UpdateButtons2()
 			PingUpdate()
 			UpdateExp()
-			Sync()
+			SyncG()
 		endwhile
 		
 		expTotal1 = 0
@@ -1344,7 +1470,7 @@ function PlayOpeningScene()
 			endif
 			
 			dec oTimer#, fpsr#
-			Sync()
+			SyncG()
 		endwhile
 		
 		

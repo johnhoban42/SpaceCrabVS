@@ -62,15 +62,14 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 	if csc.player = 1 then f = 0 else f = 1 // makes the flip calculations easier
 	
 	csc.stage = 1
+		
+	SetFolder("/media/ui")
 	
-	SetFolder("/media")
-	
-	LoadSprite(csc.sprReady, "ready.png")
+	LoadAnimatedSprite(csc.sprReady, "ready", 22)
+	PlaySprite(csc.sprReady, 9+csc.player, 1, 7+8*(csc.player-1), 14+8*(csc.player-1))
 	SetSpriteSize(csc.sprReady, w/3, h/16)
 	SetSpriteMiddleScreenOffset(csc.sprReady, 0, p*7*h/16 + p*40)
 	SetSpriteFlip(csc.sprReady, f, f)
-	
-	SetFolder("/media/ui")
 	
 	LoadAnimatedSprite(csc.sprLeftArrow, "lr", 22)
 	PlaySprite(csc.sprLeftArrow, 12, 1, 1, 22)
@@ -107,7 +106,7 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 	SetSpriteColorAlpha(csc.sprBGB, 255) 
 	
 	for i = 0 to NUM_CRABS-1
-		Sync()
+		SyncG()
 		//if i = 0 or i = 1 or i = 3 or i = 5
 			CreateSprite(csc.sprCrabs + i, 0)
 			for j = 1 to 6
@@ -454,7 +453,8 @@ function DoCharacterSelectController(csc ref as CharacterSelectController)
 		
 	//Slowly lighting the backgrounds
 	SetSpriteColorAlpha(csc.sprBG, 205+abs(50*cos(90*csc.player + 80*GetMusicPositionOGG(characterMusic))))
-	IncSpriteAngle(csc.sprBGB, 6*fpsr#)
+	IncSpriteAngle(csc.sprBGB, 1.8*fpsr#)
+	//IncSpriteAngle(csc.sprBGB, 6*fpsr#)
 	
 	// Continue an existing glide
 	if csc.glideFrame > 0
@@ -563,7 +563,7 @@ endfunction
 // Dispose of assets from a single controller
 function CleanupCharacterSelectController(csc ref as CharacterSelectController)
 	
-	DeleteSprite(csc.sprReady)
+	DeleteAnimatedSprite(csc.sprReady)
 	DeleteSprite(csc.sprRightArrow)
 	DeleteAnimatedSprite(csc.sprLeftArrow)
 	DeleteSprite(csc.sprBG)

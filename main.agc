@@ -52,6 +52,8 @@ if device$ = "android" or device$ = "ios" then deviceType = MOBILE
 if deviceType = MOBILE then SetScissor(0, 0, w, h)
 SetImmersiveMode(1)
 
+global demo = 1
+
 //SetPhysicsDebugOn()
 
 //RIP Sheep
@@ -62,7 +64,6 @@ SetSpriteSize(split, w, 120)
 SetSpriteColor(split, 200, 200, 200, 255)
 SetSpriteMiddleScreenX(split)
 SetSpriteMiddleScreenY(split)
-
 global appState = START
 
 gameTime# = 0
@@ -124,22 +125,20 @@ do
     //Print(specialTimerAgainst2#)
     
 		//Print(GetDeviceBaseName())
-		
-	PingUpdate()
-	UpdateAllTweens(GetFrameTime())
 	Print(GetImageMemoryUsage())
     Print(GetImageExists(101))
-    Sync()
+    SyncG()
 loop
 
-function TransitionStart()
+function TransitionStart(tranType)
 	
 	//Making the particles for the first time
-	if GetParticlesExists(11) = 0
+	//if GetParticlesExists(11) = 0
 		lifeEnd# = .7
 		for i = 11 to 13
+			DeleteParticles(i)
 			CreateParticles(i, 0, 0)
-			SetParticlesImage (i, LoadImage("starParticle.png"))
+			SetParticlesImage (i, starParticleI)	//Load this image in seperatly!
 			SetParticlesFrequency(i, 300)
 			SetParticlesLife(i, lifeEnd#)	//Time in seconds that the particles stick around
 			SetParticlesSize(i, 240)
@@ -151,38 +150,89 @@ function TransitionStart()
 			SetParticlesMax (i, 200)
 			SetParticlesDepth(i, 1)
 		next i
+		SetParticlesSize(12, 180)
+		SetParticlesMax (12, 250)
+		
+		SetParticlesSize(13, 120)
+		SetParticlesMax (13, 300)
+		
+	//else
+		//If the particles are already made, then just resetting them
+		//for i = 11 to 13
+		//	ResetParticleCount(i)
+			
+		//next i
+	//endif
+	
+	if tranType = 1
+		//The star swipe
+		for i = 11 to 13
+			SetParticlesStartZone(i, -GetParticlesSize(i), 0, -GetParticlesSize(i), h) //The box that the particles can start from
+			SetParticlesDirection(i, 50, 0)
+			SetParticlesRotationRange(i, 400, 800)
+			SetParticlesVelocityRange (i, 30, 60)
+			ClearParticlesColors(i)
+		next i
 		
 		AddParticlesColorKeyFrame (11, 0.0, 0, 255, 255, 255)
 		AddParticlesColorKeyFrame (11, lifeEnd#/8, 0, 255, 102, 255)
 		AddParticlesColorKeyFrame (11, lifeEnd#/4, 0, 255, 102, 255)
 		AddParticlesColorKeyFrame (11, lifeEnd#*3/8, 0, 255, 255, 255)
+		SetParticlesMax (11, 225)
 		
-		SetParticlesSize(12, 180)
-		SetParticlesMax (12, 250)
 		SetParticlesVelocityRange (12, 40, 70)
 		AddParticlesColorKeyFrame (12, 0.0, 121, 255, 0, 255)
 		AddParticlesColorKeyFrame (12, lifeEnd#/8, 255, 255, 0, 255)
 		AddParticlesColorKeyFrame (12, lifeEnd#/4, 121, 255, 0, 255)
 		AddParticlesColorKeyFrame (12, lifeEnd#*3/8, 255, 255, 0, 255)
-		
-		SetParticlesSize(13, 120)
-		SetParticlesMax (13, 300)
+		SetParticlesMax (12, 275)
+
 		SetParticlesVelocityRange (13, 50, 80)
 		AddParticlesColorKeyFrame (13, 0.0, 255, 0, 0, 255)
 		AddParticlesColorKeyFrame (13, lifeEnd#/8, 255, 15, 171, 255)
 		AddParticlesColorKeyFrame (13, lifeEnd#/4, 255, 0, 0, 255)
 		AddParticlesColorKeyFrame (13, lifeEnd#*3/8, 255, 15, 171, 255)
-		
-	else
-		//If the particles are already made, then just resetting them
+		SetParticlesMax (13, 325)
+	elseif tranType = 2
+		//The star boil
 		for i = 11 to 13
-			ResetParticleCount(i)
+			SetParticlesStartZone(i, 0, 0, w, h) //The box that the particles can start from
+			SetParticlesDirection(i, 0, -5)
+			SetParticlesRotationRange(i, 600, 900)
+			SetParticlesVelocityRange (i, 30, 60)
+			ClearParticlesColors(i)
 		next i
+		
+		AddParticlesColorKeyFrame (11, 0.0, 0, 255, 255, 0)
+		AddParticlesColorKeyFrame (11, lifeEnd#/8, 0, 255, 102, 255)
+		AddParticlesColorKeyFrame (11, lifeEnd#/4, 0, 255, 102, 255)
+		AddParticlesColorKeyFrame (11, lifeEnd#*3/8, 0, 255, 255, 0)
+		//AddParticlesScaleKeyFrame(11, 0.0, 
+		SetParticlesMax (11, 250)
+		
+		SetParticlesVelocityRange (12, 40, 70)
+		AddParticlesColorKeyFrame (12, 0.0, 121, 255, 0, 0)
+		AddParticlesColorKeyFrame (12, lifeEnd#/8, 255, 255, 0, 255)
+		AddParticlesColorKeyFrame (12, lifeEnd#/4, 121, 255, 0, 255)
+		AddParticlesColorKeyFrame (12, lifeEnd#*3/8, 255, 255, 0, 0)
+		SetParticlesMax (12, 300)
+
+		SetParticlesVelocityRange (13, 50, 80)
+		AddParticlesColorKeyFrame (13, 0.0, 255, 0, 0, 0)
+		AddParticlesColorKeyFrame (13, lifeEnd#/8, 255, 15, 171, 255)
+		AddParticlesColorKeyFrame (13, lifeEnd#/4, 255, 0, 0, 255)
+		AddParticlesColorKeyFrame (13, lifeEnd#*3/8, 255, 15, 171, 0)
+		SetParticlesMax (13, 450)
+		
 	endif
+	
+	PlaySoundR(specialS, 100)
+	PlaySoundR(gongS, 40)
+	PlaySoundR(launchS, 60)
 	
 	iEnd = 21/fpsr#
 	for i = 1 to iEnd
-		//Sync()
+		SyncG()
 	next i
 	
 	//#constant parStar1 11
