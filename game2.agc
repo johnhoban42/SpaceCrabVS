@@ -120,7 +120,7 @@ function CreateGame2()
 	SetSpriteMiddleScreenX(expHolder2)
 	SetSpriteY(expHolder2, 10)
 	SetSpriteDepth(expHolder2, 18)
-	PlaySprite(expHolder2, 20, 1, 1, 12)
+	PlaySprite(expHolder2, 20, 0, 1, 1)
 	SetSpriteAngle(expHolder2, 180)
 
 	CreateSpriteExistingAnimation(expbar2, expBar1)
@@ -139,10 +139,11 @@ function CreateGame2()
 	SetSpriteAngle(meteorButton2, 180)
 	//Might want to make the Y based on the sxp bar holder instead of the screen height
 	
-	CreateSpriteExpress(meteorMarker2, 4, GetSpriteHeight(expHolder2)+4, 0, GetSpriteY(expHolder2)-2, 14)
+	LoadSpriteExpress(meteorMarker2, "meteormark.png", 8, GetSpriteHeight(expHolder2)+4, 0, GetSpriteY(expHolder2)-2, 14)
 	//The X is on a seperate line because it is long
 	SetSpriteX(meteorMarker2, GetSpriteX(expHolder2) + GetSpriteWidth(expHolder2) - 1.0*(GetSpriteWidth(expHolder2)-20)*meteorCost2/specialCost2 + 4 + .116*GetSpriteWidth(expHolder1))
 	SetSpriteColor(meteorMarker2, 30, 100, 255, 255)
+	SetSpriteAngle(meteorMarker2, 180)
 	
 	LoadAnimatedSprite(specialButton2, "crab" + str(crab2Type)+ "special", 5)
 	SetSpriteFrame(specialButton2, 5)
@@ -166,6 +167,7 @@ function CreateGame2()
 	
 	//Setting gameplay parameters to their proper values
 	crab2Deaths = 0
+	special0Used = 0
 	
 	if spActive
 		for i = 1 to 3
@@ -713,12 +715,15 @@ function SendMeteorFrom2()
 	meteorCost2 = meteorCost2*meteorMult#
 	if meteorCost2 > specialCost2-1 then meteorCost2 = specialCost2-1
 	
+	SetSpriteX(expBar2, GetSpriteX(expHolder2) + GetSpriteWidth(expHolder2))
+	
 	UpdateButtons2()
 endfunction
 
 function SendSpecial2()
 	
-	ShowSpecialAnimation(crab2Type)
+	ShowSpecialAnimation(crab2Type, special2Used)
+	special2Used = 1
 	
 	newMetS as meteor
 	
@@ -826,6 +831,7 @@ function SendSpecial2()
 		size = 160
 		
 		SetSpriteSize(special2Ex1, size, h/2)
+		SetSpritePosition(special2Ex1, 0, 0)
 		
 		SetSpriteSize(special2Ex2, size, h/2)
 		SetSpriteFlip(special2Ex2, 1, 0)

@@ -12,8 +12,8 @@ global rc2 as ResultsController
 global winText as string[NUM_CRABS]
 global loseText as string[NUM_CRABS]
 
-global FRAMES_WIN_MSG = 17
-global FRAMES_SHOW_UI = 185
+global FRAMES_WIN_MSG# = 17
+global FRAMES_SHOW_UI# = 185
 
 // Controller that holds state data for each screen
 type ResultsController
@@ -23,7 +23,7 @@ type ResultsController
 	
 	// Game state
 	isWinner as integer // 0 if false, 1 if true
-	frame as integer // frame data for animations
+	frame as float // frame data for animations
 	
 	// Sprites
 	txtCrabMsg as integer
@@ -33,6 +33,7 @@ type ResultsController
 	
 	// Tweens
 	twnWinMsg as integer
+	twnMyCrab as integer
 	
 endtype
 
@@ -74,15 +75,17 @@ function InitResultsController(rc ref as ResultsController)
 		winMsg = "Loser XD"
 	endif
 	CreateText(rc.txtWinMsg, winMsg)
-	SetTextSize(rc.txtWinMsg, 96)
+	SetTextSize(rc.txtWinMsg, 120)
 	SetTextAngle(rc.txtWinMsg, f*180)
 	SetTextFontImage(rc.txtWinMsg, fontCrabI)
-	SetTextSpacing(rc.txtWinMsg, -22)
+	SetTextSpacing(rc.txtWinMsg, -28)
 	SetTextMiddleScreenOffset(rc.txtWinMsg, f, 0, p*400)
 	SetTextAlignment(rc.txtWinMsg, 1)
 	SetTextColorAlpha(rc.txtWinMsg, 0)
 	
 	CreateTweenText(rc.twnWinMsg, 1.5)
+	SetTweenTextSize(rc.twnWinMsg, 120, 96, TweenSmooth2())
+	SetTweenTextSpacing(rc.twnWinMsg, -28, -22, TweenSmooth2())
 	SetTweenTextY(rc.twnWinMsg, GetTextY(rc.txtWinMsg), GetTextY(rc.txtWinMsg) + p*325, TweenSmooth2())
 	
 	sprCrabLose$ = "/media/art/crab" + Str(loserCrab) + "rLose.png"
@@ -102,28 +105,36 @@ function InitResultsController(rc ref as ResultsController)
 	//Making the crab that isn't yours a bit darker
 	if (rc.player = 1 and resultsWinner = 1) or (rc.player = 2 and resultsWinner = 2)
 		SetSpriteColor(rc.sprCrabLose, 160, 160, 160, 255)
+		rc.twnMyCrab = rc.sprCrabWin
 	else
 		SetSpriteColor(rc.sprCrabWin, 160, 160, 160, 255)
+		rc.twnMyCrab = rc.sprCrabLose
 	endif
 	
+	CreateTweenSprite(rc.twnMyCrab, 1)
+	SetTweenSpriteSizeX(rc.twnMyCrab, GetSpriteWidth(rc.twnMyCrab)/1.4, GetSpriteWidth(rc.twnMyCrab), TweenOvershoot())
+	SetTweenSpriteSizeY(rc.twnMyCrab, GetSpriteHeight(rc.twnMyCrab)/1.4, GetSpriteHeight(rc.twnMyCrab), TweenOvershoot())
+	SetTweenSpriteX(rc.twnMyCrab, GetSpriteMiddleX(rc.twnMyCrab)-(GetSpriteWidth(rc.twnMyCrab)/1.4)/2, GetSpriteX(rc.twnMyCrab), TweenOvershoot())
+	SetTweenSpriteY(rc.twnMyCrab, GetSpriteMiddleY(rc.twnMyCrab)-(GetSpriteHeight(rc.twnMyCrab)/1.4)/2, GetSpriteY(rc.twnMyCrab), TweenOvershoot())
+	
 	// Kick off the controller's tweens
-	PlayTweenText(rc.twnWinMsg, rc.txtWinMsg, 2)
+	PlayTweenText(rc.twnWinMsg, rc.txtWinMsg, .8)
 	
 endfunction
 
 // Initialize the results screen
 function InitResults()
 	
-	PlayMusicOGGSP(resultsMusic, 1)
+	//PlayMusicOGGSP(resultsMusic, 1)
 	
 	// Initialize the win/loss text
 	// AGK doesn't allow string concatenation in the global namespace (?!)
-	winText[0] = "Space Crab clenches the win!"
-	winText[1] = "Ladder Wizard wins!"
+	winText[0] = "Space Crab once again has earned his" + chr(10) + "place as the one and only SPACE CRAB!"
+	winText[1] = "Ladder Wizard, calm and calculated," + chr(10) + "smote his combatant! Alakazam!"
 	winText[2] = "Top Crab's dizzying, dazzling display" + chr(10) + "ran circles around the competition!"
-	winText[3] = "Rave Crab wins!"
+	winText[3] = "Rave Crab moshed and never let up," + chr(10) + "and barely noticed that he won!"
 	winText[4] = "Chrono Crab bent time and the results" + chr(10) + "of the battle to his favor!"
-	winText[5] = "Ninja Crab wins!"
+	winText[5] = "As swift as a nightime breeze, Ninja" + chr(10) + "Crab has downed his worthless foe."
 	
 	loseText[0] = "Space Crab's orbital ordnance was" + chr(10) + "overpowered by a mightier opponent..."
 	loseText[1] = "Ladder Wizard was vexed, hexed," + chr(10) + "and wrecked in this battle..."
@@ -178,6 +189,10 @@ function InitResults()
 	SetSpriteMiddleScreenOffset(SPR_R_MAIN_MENU, w/3, 0)
 	SetSpriteVisible(SPR_R_MAIN_MENU, 0)
 	
+	AddButton(SPR_R_REMATCH)
+	AddButton(SPR_R_CRAB_SELECT)
+	AddButton(SPR_R_MAIN_MENU)
+	
 	// Background
 	SetFolder("/media/envi")
 	LoadSprite(SPR_R_BACKGROUND, "bg3.png")
@@ -185,7 +200,10 @@ function InitResults()
 	SetSpriteDepth(SPR_R_BACKGROUND, 1000)
 	SetFolder("/media/art")
 	
-	PlayMusicOGG(resultsMusic, 1)
+	if GetMusicPlayingOGGSP(resultsMusic) = 0 then PlayMusicOGGSP(resultsMusic, 1)
+	
+	FRAMES_WIN_MSG# = 20 //* fpsr#
+	FRAMES_SHOW_UI# = 100 //*60/75.0 * fpsr#
 	
 	resultsStateInitialized = 1
 	
@@ -197,21 +215,24 @@ function DoResultsController(rc ref as ResultsController)
 	
 	// Win message fade in
 	// Max alpha = 255
-	if rc.frame <= FRAMES_WIN_MSG
-		SetTextColorAlpha(rc.txtWinMsg, rc.frame * (255 / FRAMES_WIN_MSG)) 
+	if rc.frame <= FRAMES_WIN_MSG#
+		SetTextColorAlpha(rc.txtWinMsg, rc.frame * (255 / FRAMES_WIN_MSG#)) 
+		SetSpriteColorAlpha(coverS, 255 - rc.frame * (255 / FRAMES_WIN_MSG#))
 	endif
 	print(rc.frame)
 	
 	// Make the rest of the UI appear in sync with the song
-	if rc.frame = FRAMES_SHOW_UI
+	if GetMusicPositionOGG(resultsMusic) >= 3.117 and GetSpriteVisible(rc.sprCrabWin) = 0 //rc.frame => FRAMES_SHOW_UI# 
 		SetSpriteVisible(rc.sprCrabWin, 1)
 		SetSpriteVisible(rc.sprCrabLose, 1)
 		SetTextVisible(rc.txtCrabMsg, 1)
+		PlayTweenSprite(rc.twnMyCrab, rc.twnMyCrab, 0)
 		PlaySoundR(chooseS, volumeSE)
+		if GetSpriteExists(coverS) then DeleteSprite(coverS)
 	endif
 		
 	// Increment the frame
-	rc.frame = rc.frame + 1
+	rc.frame = rc.frame + fpsr#
 
 endfunction
 
@@ -231,12 +252,12 @@ function DoResults()
 	DoResultsController(rc2)
 	
 	// Show and animate mid-screen buttons
-	if rc1.frame = FRAMES_SHOW_UI
+	if GetMusicPositionOGG(resultsMusic) >= 3.117 and GetSpriteVisible(SPR_R_MAIN_MENU) = 0
 		SetSpriteVisible(SPR_R_MAIN_MENU, 1)
 		SetSpriteVisible(SPR_R_CRAB_SELECT, 1)
 		SetSpriteVisible(SPR_R_REMATCH, 1)
 	endif
-	if rc1.frame >= FRAMES_SHOW_UI
+	if GetMusicPositionOGG(resultsMusic) >= 3.117
 		SetSpriteAngle(SPR_R_MAIN_MENU, GetSpriteAngle(SPR_R_MAIN_MENU) - fpsr#)
 		SetSpriteAngle(SPR_R_CRAB_SELECT, GetSpriteAngle(SPR_R_CRAB_SELECT) - fpsr#)
 		SetSpriteAngle(SPR_R_REMATCH, GetSpriteAngle(SPR_R_REMATCH) + fpsr#)
@@ -245,10 +266,13 @@ function DoResults()
 	// Check mid-screen buttons for activity
 	if Button(SPR_R_REMATCH)
 		state = GAME
+		TransitionStart(Random(1,2))
 	elseif Button(SPR_R_CRAB_SELECT)
 		state = CHARACTER_SELECT
+		TransitionStart(Random(1,2))
 	elseif Button(SPR_R_MAIN_MENU)
 		state = START
+		TransitionStart(Random(1,2))
 	endif
 		
 	// If we are leaving the state, exit appropriately
@@ -267,6 +291,7 @@ function CleanupResultsController(rc ref as ResultsController)
 	DeleteSprite(rc.sprCrabWin)
 	DeleteSprite(rc.sprCrabLose)
 	DeleteTween(rc.twnWinMsg)
+	DeleteTween(rc.twnMyCrab)
 	
 endfunction
 

@@ -139,10 +139,11 @@ function CreateGame1()
 	//Placeholder for game 2 angle
 	//Might want to make the Y based on the sxp bar holder instead of the screen height
 	
-	CreateSpriteExpress(meteorMarker1, 4, GetSpriteHeight(expHolder1)+4, 0, GetSpriteY(expHolder1)-2, 14)
+	LoadSpriteExpress(meteorMarker1, "meteormark.png", 8, GetSpriteHeight(expHolder1)+4, 0, GetSpriteY(expHolder1)-2, 14)
 	//The X is on a seperate line because it is long
 	SetSpriteX(meteorMarker1, GetSpriteX(expHolder1) + 1.0*(GetSpriteWidth(expHolder1)-20)*meteorCost1/specialCost1 - 4 + .116*GetSpriteWidth(expHolder1))
 	SetSpriteColor(meteorMarker1, 30, 100, 255, 255)
+	//Placeholder for game 2 angle
 	
 	LoadAnimatedSprite(specialButton1, "crab" + str(crab1Type)+ "special", 5)
 	SetSpriteFrame(specialButton1, 5)
@@ -166,6 +167,7 @@ function CreateGame1()
 	
 	//Setting gameplay parameters to their proper values
 	crab1Deaths = 0
+	special1Used = 0
 		
 	if spActive
 		for i = 1 to 3
@@ -713,12 +715,15 @@ function SendMeteorFrom1()
 	meteorCost1 = meteorCost1*meteorMult#
 	if meteorCost1> specialCost1-1 then meteorCost1 = specialCost1-1
 	
+	SetSpriteX(expBar1, GetSpriteX(expHolder1))
+	
 	UpdateButtons1()
 endfunction
 
 function SendSpecial1()
 	
-	ShowSpecialAnimation(crab1Type)
+	ShowSpecialAnimation(crab1Type, special1Used)
+	special1Used = 1
 	
 	newMetS as meteor
 	
@@ -826,6 +831,7 @@ function SendSpecial1()
 		size = 160
 		
 		SetSpriteSize(special1Ex1, size, h/2)
+		//Placeholder for Game 2 repositioning
 		
 		SetSpriteSize(special1Ex2, size, h/2)
 		SetSpriteFlip(special1Ex2, 1, 0)

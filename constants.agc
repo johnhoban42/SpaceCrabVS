@@ -157,6 +157,10 @@ global specialTimerAgainst1# = 0
 #constant meteorMult# 1.3
 #constant specialMult# 1.8
 
+//The in game check to see if a special has been used once that game
+global special1Used = 0
+global special2Used = 0
+
 global spScore = 0
 global spHighScore = 0
 global spHighCrab$ = ""
@@ -217,6 +221,9 @@ global met3CD2# = 0 //400
 #constant pauseButton 8
 #constant playButton 9
 #constant exitButton 10
+
+//Just a sheet for when things need to be covered up
+#constant coverS 11
 
 #constant planet1 101
 #constant planet2 102

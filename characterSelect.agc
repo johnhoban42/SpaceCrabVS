@@ -243,6 +243,7 @@ function InitCharacterSelect()
 	
 	LoadSpriteExpress(SPR_MENU_BACK, "ui/mainmenu.png", 140, 140, 0, 0, 3)
 	SetSpriteMiddleScreen(SPR_MENU_BACK)
+	AddButton(SPR_MENU_BACK)
 	
 	
 	PlayMusicOGGSP(characterMusic, 1)
@@ -483,8 +484,14 @@ function DoCharacterSelect()
 	DoCharacterSelectController(csc2)
 		
 	//Unselects the crab if the screen is touched again (only works on mobile for testing)
-	if csc1.ready = 1 and GetMultitouchPressedBottom() then UnselectCrab(csc1)
-	if csc2.ready = 1 and GetMultitouchPressedTop() then UnselectCrab(csc2)
+	if csc1.ready = 1 and GetMultitouchPressedBottom()
+		UnselectCrab(csc1)
+		ClearMultiTouch()
+	endif
+	if csc2.ready = 1 and GetMultitouchPressedTop()
+		UnselectCrab(csc2)
+		ClearMultiTouch()
+	endif
 	
 	doJit = 0
 	inc TextJitterTimer#, GetFrameTime()
@@ -530,11 +537,13 @@ function DoCharacterSelect()
 	
 	if ButtonMultitouchEnabled(SPR_MENU_BACK)
 		state = START
+		TransitionStart(Random(1,2))
 	endif
 	
 	if csc1.ready and csc2.ready
 		spActive = 0
 		state = GAME
+		TransitionStart(Random(1,2))
 	endif
 	
 	// If we are leaving the state, exit appropriately

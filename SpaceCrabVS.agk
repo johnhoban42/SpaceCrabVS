@@ -8,7 +8,7 @@ app_type=1
 game_circle_api_key=
 keystore_path=
 orientation=1
-output_path=C:\\Users\\andre\\Dropbox\\SCVSA5.apk
+output_path=C:\\Users\\andre\\Dropbox\\SCVSA7.apk
 ouya_icon_path=
 package_name=com.rondovo.SpaceCrabVSa
 permission_flags=4
@@ -61,15 +61,15 @@ FILE_9=start.agc;-1
 
 [files]
 FILE_NAME_0=0;ai.agc;0;0
-FILE_NAME_1=0;characterSelect.agc;65;1
-FILE_NAME_2=1;constants.agc;65;2
-FILE_NAME_3=0;game1.agc;136;3
-FILE_NAME_4=0;game2.agc;963;4
-FILE_NAME_5=0;gameState.agc;718;5
-FILE_NAME_6=0;main.agc;111;6
-FILE_NAME_7=0;myLib.agc;26;7
-FILE_NAME_8=0;results.agc;16;8
-FILE_NAME_9=0;start.agc;69;9
+FILE_NAME_1=0;characterSelect.agc;538;1
+FILE_NAME_2=0;constants.agc;166;2
+FILE_NAME_3=0;game1.agc;310;3
+FILE_NAME_4=0;game2.agc;128;4
+FILE_NAME_5=1;gameState.agc;280;5
+FILE_NAME_6=0;main.agc;35;6
+FILE_NAME_7=0;myLib.agc;398;7
+FILE_NAME_8=0;results.agc;250;8
+FILE_NAME_9=0;start.agc;33;9
 
 [watchvariables]
 watch_variable=@Version;

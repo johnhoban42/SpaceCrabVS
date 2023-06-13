@@ -59,6 +59,7 @@ function InitStart()
 	SetSpriteSize(SPR_STARTAI, 250, 150)
 	SetSpritePosition(SPR_STARTAI, 50, 1130)
 	AddButton(SPR_STARTAI)
+	if demo then SetSpriteVisible(SPR_STARTAI, 0)
 	
 	SetFolder("/media")
 	

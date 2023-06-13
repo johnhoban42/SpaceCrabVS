@@ -102,27 +102,19 @@ function DoGame()
 		endif
 		
 		// Game execution loops
-		if crab2Deaths <> 3
-			if hit1Timer# > 0
-				//This is the case for getting hit
-				state1 = HitScene1()
-			else
-				//This is the case for normal gameplay
-				state1 = DoGame1()
-			endif
+		if hit1Timer# > 0
+			//This is the case for getting hit
+			state1 = HitScene1()
 		else
-			state = GAME
+			//This is the case for normal gameplay
+			state1 = DoGame1()
 		endif
-		if crab1Deaths <> 3
-			if hit2Timer# > 0
-				//This is the case for getting hit
-				state2 = HitScene2()
-			else
-				//This is the case for normal gameplay
-				state2 = DoGame2()
-			endif
+		if hit2Timer# > 0
+			//This is the case for getting hit
+			state2 = HitScene2()
 		else
-			state = GAME
+			//This is the case for normal gameplay
+			state2 = DoGame2()
 		endif
 		UpdateExp()
 		inc gameTimer#, fpsr#
@@ -187,44 +179,212 @@ endfunction state
 
 function EndGameScene()
 	
-	hitTimer# = hitSceneMax/3
+	endSceneMax = hitSceneMax*4/5
+	hitTimer# = endSceneMax
+	crabS = crab1
+	crabSR# = crab1R# - 22
+	crabSTheta# = crab1Theta#
+	if crab2Deaths = 3	//Show the death on 1 by default; on 2 if they have lost all 3 lives
+		crabS = crab2
+		crabSR# = crab2R# - 22
+		crabSTheta# = crab2Theta#
+	endif
+	
+	endStage = 0
+	
+	//Setup for the scene
+	LoadSprite(bgHit1, "envi/bg0.png")
+	SetSpriteSizeSquare(bgHit1, w)
+	if crab1Deaths = 3
+		DrawPolar1(bgHit1, 0, crab1Theta#)
+	else
+		DrawPolar2(bgHit1, 0, crab2Theta#)
+	endif
+	
+	StopSprite(crab1)
+	StopSprite(crab2)
+	for i = 1 to meteorActive1.length
+		StopSprite(meteorActive1[i].spr)
+	next i
+	for i = 1 to meteorActive2.length
+		StopSprite(meteorActive2[i].spr)
+	next i
+	if GetSpriteExists(expBar1) then DeleteGameUI()
+	
+	//Getting rid of the music
+	for i = fightAMusic to fightJMusic
+		if GetMusicExistsOGG(i)
+			if GetMusicPlayingOGGSP(i) then StopMusicOGGSP(i)
+		endif
+	next i
+	if GetMusicPlayingOGGSP(spMusic) then StopMusicOGGSP(spMusic)
+	for i = retro1M to retro8M
+		if GetMusicExistsOGG(i)
+			if GetMusicPlayingOGGSP(i) then StopMusicOGGSP(i)
+		endif
+	next i
 	
 	while hitTimer# > 0
 	
-		inc hit1Timer#, -1*fpsr#
+		inc hitTimer#, -1*fpsr#
 		
 		//First bit, crab is hit once
-		if hitTimer# >= hitSceneMax*2/9
-		
-			range = 20-(hitSceneMax*2/9-hitTimer#)
-			IncSpritePosition(crab1, Random(-range, range), Random(-range, range))		
-			PlaySoundR(crackS, 100)
-			PlaySoundR(explodeS, 100)
-			inc crab1R#, -20
-			LoadSprite(bgHit1, "envi/bg0.png")
-			SetSpriteSizeSquare(bgHit1, w)
-			DrawPolar1(bgHit1, 0, crab1Theta#)
+		if hitTimer# >= endSceneMax*3/4
+			
+			if endStage = 0
+				PlaySoundR(crackS, 100)
+				PlaySoundR(explodeS, 100)
+				endStage = 1
+			endif
+			
+			//Changing where the crab is drawn, based on the game that won
+			if crab1Deaths = 3
+				DrawPolar1(crabS, crabSR#, crabSTheta#)
+			else
+				DrawPolar2(crabS, crabSR#, crabSTheta#)
+			endif
+			range = (hitTimer#-endSceneMax*3/4)/2
+			IncSpritePosition(crabS, Random(-range, range), Random(-range, range))	
 			SetSpriteColorAlpha(bgGame1, 80)
-			for i = 1 to meteorActive1.length
-				StopSprite(meteorActive1[i].spr)
-			next i
 			
 			
 		//Crab is hit second time
-		elseif hitTimer# >= hitSceneMax/9
+		elseif hitTimer# >= endSceneMax*2/4
+			
+			if endStage = 1
+				
+				PlaySoundR(crackS, 100)
+				PlaySoundR(explodeS, 100)
+				SetViewZoom(1.25)
+				SetViewOffset(GetSpriteMiddleX(crabS)/8, GetSpriteMiddleY(crabS)/8)
+				endStage = 2
+			endif
+			
+			
+			//Changing where the crab is drawn, based on the game that won
+			if crab1Deaths = 3
+				DrawPolar1(crabS, crabSR#, crabSTheta#)
+			else
+				DrawPolar2(crabS, crabSR#, crabSTheta#)
+			endif
+			range = (hitTimer#-endSceneMax*2/4)/2
+			IncSpritePosition(crabS, Random(-range, range), Random(-range, range))	
+			SetSpriteColorAlpha(bgGame1, 80)
+			
+		//Crab is hit third time
+		elseif hitTimer# >= endSceneMax/4
+			
+			if endStage = 2
+					
+				PlaySoundR(crackS, 100)
+				PlaySoundR(crackS, 50)
+				PlaySoundR(explodeS, 100)
+				
+				SetViewZoom(2)
+				SetViewOffset(GetSpriteMiddleX(crabS)/2, GetSpriteMiddleY(crabS)/2)
+				endStage = 3
+			endif
+			
+			
+			//Changing where the crab is drawn, based on the game that won
+			if crab1Deaths = 3
+				DrawPolar1(crabS, crabSR#, crabSTheta#)
+			else
+				DrawPolar2(crabS, crabSR#, crabSTheta#)
+			endif
+			range = 20-(endSceneMax*1/4-hitTimer#)/2
+			IncSpritePosition(crabS, Random(-range, range), Random(-range, range))	
 			
 		//Crab flies towards screen
 		elseif hitTimer# > 0
 			
-			if GetSpriteExists(bgHit1) then DeleteSprite(bgHit1)
+			if endStage = 3
+				CreateSpriteExpress(coverS, w, h, 0, 0, 1)
+				SetSpriteColor(coverS, 255, 255, 255, 0)
+				SetViewOffset(0, 0)
+				SetViewZoom(1)
+				
+				endStage = 4
+				PlaySoundR(launchS, 100)
+				PlayMusicOGGSP(resultsMusic, 1)
+				
+				if GetSpriteExists(bgHit1) then DeleteSprite(bgHit1)
+			endif
+			
+			SetSpriteColorAlpha(coverS, 255*((endSceneMax/4) - hitTimer#)/(endSceneMax/4))
+			SetSpriteSize(crabS, GetSpriteWidth(crabS)*1.05, GetSpriteHeight(crabS)*1.05)
+			//Changing where the crab is drawn, based on the game that won
+			if crab1Deaths = 3
+				DrawPolar1(crabS, crabSR#, crabSTheta#)
+			else
+				DrawPolar2(crabS, crabSR#, crabSTheta#)
+			endif
+			SetSpriteAngle(crabS, 76*hitTimer#)
+			//if hitTimer# > endSceneMax/8
+			//	SetSpriteColorAlpha(crabS, 255 - (endSceneMax/8 - hitTimer#)
+			//endif
 			
 		//Cleaning up before the end of the game
 		elseif hitTimer# <= 0
 			
+			for i = 1 to endSceneMax/5
+				SyncG()
+			next i
 			
+			InitResults()
 		endif
+		
+		SyncG()
+		
 	endwhile
 		
+endfunction
+
+function DeleteGameUI()
+	StopSprite(expHolder1)
+	StopSprite(expHolder2)
+	StopSprite(expBar1)
+	StopSprite(expBar2)
+	
+	//Game 1 (Bottom)
+	DeleteAnimatedSprite(meteorButton1)
+	DeleteSprite(meteorMarker1)
+	DeleteAnimatedSprite(specialButton1)
+	DeleteSprite(crab1PlanetS[1])
+	DeleteSprite(crab1PlanetS[2])
+	DeleteSprite(crab1PlanetS[3])
+	
+	for i = special2Ex1 to special2Ex5
+		DeleteSprite(i)
+	next i
+	if GetMusicPlayingOGGSP(raveBass2) then StopMusicOGGSP(raveBass2)
+		
+	//Game 2 (Top)
+	DeleteSprite(expHolder2)
+	DeleteSprite(expBar2)
+	DeleteAnimatedSprite(meteorButton2)
+	DeleteSprite(meteorMarker2)
+	DeleteAnimatedSprite(specialButton2)
+	DeleteSprite(crab2PlanetS[1])
+	DeleteSprite(crab2PlanetS[2])
+	DeleteSprite(crab2PlanetS[3])
+	
+	for i = special1Ex1 to special1Ex5
+		DeleteSprite(i)
+	next i
+	if GetMusicPlayingOGGSP(raveBass1) then StopMusicOGGSP(raveBass1)
+	
+	//Deleting the animated game1 sprites that were referenced in game 2
+	DeleteAnimatedSprite(expBar1)
+	DeleteAnimatedSprite(expHolder1)
+	
+	//Extra (both)
+	DeleteHalfExp(1)
+	DeleteHalfExp(2)
+	
+	DeleteSprite(pauseButton)
+	DeleteSprite(playButton)
+	DeleteSprite(exitButton)
 endfunction
 
 // Cleanup upon leaving this state
@@ -266,24 +426,17 @@ function ExitGame()
 		DeleteText(TXT_SP_SCORE)
 	endif
 	
+	//This is called if the end cutscene for the game never plays
+	if GetSpriteExists(expBar1)
+		DeleteGameUI()
+	endif
+	
 	//Game 1 (Bottom)
 	DeleteSprite(planet1)
 	DeleteSprite(crab1)
 	DeleteSprite(bgGame1)
-	DeleteAnimatedSprite(meteorButton1)
-	DeleteSprite(meteorMarker1)
-	DeleteAnimatedSprite(specialButton1)
-	DeleteSprite(crab1PlanetS[1])
-	DeleteSprite(crab1PlanetS[2])
-	DeleteSprite(crab1PlanetS[3])
 	specialTimerAgainst1# = 0
-	
-	for i = special2Ex1 to special2Ex5
-		DeleteSprite(i)
-	next i
-	if GetMusicPlayingOGGSP(raveBass2) then StopMusicOGGSP(raveBass2)
-	
-	
+		
 	met1CD1# = 50
 	met2CD1# = 0
 	met3CD1# = 0 
@@ -314,22 +467,8 @@ function ExitGame()
 	DeleteSprite(planet2)
 	DeleteSprite(crab2)
 	DeleteSprite(bgGame2)
-	DeleteSprite(expHolder2)
-	DeleteSprite(expBar2)
-	DeleteAnimatedSprite(meteorButton2)
-	DeleteSprite(meteorMarker2)
-	DeleteAnimatedSprite(specialButton2)
-	DeleteSprite(crab2PlanetS[1])
-	DeleteSprite(crab2PlanetS[2])
-	DeleteSprite(crab2PlanetS[3])
 	specialTimerAgainst2# = 0
-	
-	for i = special1Ex1 to special1Ex5
-		DeleteSprite(i)
-	next i
-	if GetMusicPlayingOGGSP(raveBass1) then StopMusicOGGSP(raveBass1)
-	
-	
+		
 	met1CD2# = 50
 	met2CD2# = 0
 	met3CD2# = 0 
@@ -343,11 +482,7 @@ function ExitGame()
 		meteorActive2.remove()
 	next
 	meteorActive2.length = 0
-	
-	//Deleting the animated game1 sprites that were referenced in game 2
-	DeleteAnimatedSprite(expBar1)
-	DeleteAnimatedSprite(expHolder1)
-	
+		
 	crab2Theta# = 270
 	crab2Dir# = 1
 	crab2Turning = 0
@@ -361,14 +496,8 @@ function ExitGame()
 	hit2Timer# = 0
 	
 	//Extra (both)
-	DeleteHalfExp(1)
-	DeleteHalfExp(2)
 	if GetSpriteExists(bgHit1) then DeleteSprite(bgHit1)
 	if GetSpriteExists(bgHit2) then DeleteSprite(bgHit2)
-	
-	DeleteSprite(pauseButton)
-	DeleteSprite(playButton)
-	DeleteSprite(exitButton)
 	
 	// Whatever we do for something like ExitGame1() and ExitGame2() will go here
 	gameStateInitialized = 0
@@ -567,19 +696,14 @@ function UpdateExp()
 	SetSpriteScissor(expBar2, GetSpriteX(expHolder1), 0, w, h)
 	GlideToX(expBar2, GetSpriteX(expHolder2) - (GetSpriteWidth(expHolder2))*(1.0*expTotal2/specialCost2), 2)
 	
-	//SetSpriteX(expBar2, GetSpriteX(expHolder2) + GetSpriteWidth(expHolder2) - GetSpriteWidth(expBar2)-10)
-	
 	if (GetSpriteX(expBar2) - .116*GetSpriteWidth(expHolder2)*2/3) + GetSpriteWidth(expHolder2) <= GetSpriteX(specialButton2) + GetSpriteWidth(specialButton2) and expTotal2 <> specialCost2
 		expTotal2 = specialCost2
 		UpdateButtons2()
 	endif
 	
-	Print("EXP Total: " + str(expTotal1))
-	Print("My X: " + str(GetSpriteX(expHolder1) + (GetSpriteWidth(expHolder1))*(1.0*expTotal1/specialCost1)))
 
 	if deleted > 0
 		expList.remove(deleted)
-
 	endif
 
 endfunction
@@ -621,7 +745,7 @@ function DeleteHalfExp(gameNum)
 	endwhile
 endfunction
 
-function ShowSpecialAnimation(crabType)
+function ShowSpecialAnimation(crabType, fast)
 	
 	fpsr# = 60.0/ScreenFPS()
 	
@@ -741,20 +865,32 @@ function ShowSpecialAnimation(crabType)
 	next i
 	
 	iEnd = 120/fpsr#
+	if fast
+		iEnd = 80/fpsr#
+		fastM# = 1.5 //This makes the animations multiplicable
+	else
+		fastM# = 1
+	endif
+	
 	for i = 1 to iEnd
 		
 		if i <= iEnd*1/4 and i > 2
-			if GetPointerPressed() and GetPointerY() > h/2 then buffer1 = 1
-			if GetPointerPressed() and GetPointerY() < h/2 then buffer2 = 1
+			/*if deviceType = DESKTOP
+				if GetPointerPressed() and GetPointerY() > h/2 then buffer1 = 1
+				if GetPointerPressed() and GetPointerY() < h/2 then buffer2 = 1
+			elseif deviceType = MOBILE
+				if GetMultitouchPressedBottom() then buffer1 = 1
+				if GetMultitouchPressedTop() then buffer2 = 1
+			endif*/
 		endif
 		
 		//Setting the speed of the images based on the progress through the loop
 		if i <= iEnd*1/9
-			speed = 25*fpsr#*75/60
+			speed = 25*fpsr#*75/60 * fastM#
 		elseif i <= iEnd*6/9
-			speed = 3*fpsr#*75/60
+			speed = 3*fpsr#*75/60 * fastM#
 		else
-			speed = 5+(i-iEnd*6/9)*fpsr#*75/60
+			speed = 5+(i-iEnd*6/9)*fpsr#*75/60 * fastM#
 		endif
 		
 		if i = iEnd*2/3 then PlaySoundR(specialExitS, volumeSE)
@@ -881,12 +1017,12 @@ function ShowSpecialAnimation(crabType)
 	
 	//Resuming the current animations
 	ResumeSprite(crab1)
-	//ResumeSprite(crab2)
+	ResumeSprite(crab2)
 	for i = 1 to meteorActive1.length
 		ResumeSprite(meteorActive1[i].spr)
 	next i
 	for i = 1 to meteorActive2.length
-		//ResumeSprite(meteorActive2[i].spr)
+		ResumeSprite(meteorActive2[i].spr)
 	next i
 	for i = par1met1 to par2spe1
 		SetParticlesActive(i, 1)
@@ -894,6 +1030,8 @@ function ShowSpecialAnimation(crabType)
 	for i = specialSprFront1 to specialSprFront2 step 2
 		DeleteText(i)
 	next i
+	
+	ClearMultiTouch()
 	
 	SetFolder("/media")
 	
