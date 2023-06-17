@@ -1,16 +1,16 @@
 
 [apk_settings]
 alias=
-app_icon_path=D:\\Pictures\\Space Crab Twitter\\man.png
+app_icon_path=D:\\Documents\\AGK Projects\\SpaceCrabVS\\media\\art\\crab5life3.png
 notif_icon_path=
-app_name=Space Crab VS Alpha
+app_name=Space Crab VS Beta
 app_type=1
 game_circle_api_key=
 keystore_path=
 orientation=1
-output_path=C:\\Users\\andre\\Dropbox\\SCVSA7.apk
+output_path=C:\\Users\\andre\\Dropbox\\SCVSB.apk
 ouya_icon_path=
-package_name=com.rondovo.SpaceCrabVSa
+package_name=com.rondovo.SpaceCrabVSb
 permission_flags=4
 play_app_id=
 admob_app_id=
@@ -61,15 +61,15 @@ FILE_9=start.agc;-1
 
 [files]
 FILE_NAME_0=0;ai.agc;0;0
-FILE_NAME_1=0;characterSelect.agc;538;1
-FILE_NAME_2=0;constants.agc;166;2
-FILE_NAME_3=0;game1.agc;310;3
-FILE_NAME_4=0;game2.agc;128;4
-FILE_NAME_5=1;gameState.agc;280;5
-FILE_NAME_6=0;main.agc;35;6
-FILE_NAME_7=0;myLib.agc;398;7
-FILE_NAME_8=0;results.agc;250;8
-FILE_NAME_9=0;start.agc;33;9
+FILE_NAME_1=0;characterSelect.agc;9;1
+FILE_NAME_2=0;constants.agc;1268;2
+FILE_NAME_3=0;game1.agc;125;3
+FILE_NAME_4=0;game2.agc;850;4
+FILE_NAME_5=1;gameState.agc;32;5
+FILE_NAME_6=0;main.agc;240;6
+FILE_NAME_7=0;myLib.agc;813;7
+FILE_NAME_8=0;results.agc;50;8
+FILE_NAME_9=0;start.agc;186;9
 
 [watchvariables]
 watch_variable=@Version;

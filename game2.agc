@@ -182,7 +182,11 @@ function CreateGame2()
 	
 	
 	
+	
 		//Empty space to line up with single player graphics (text and text-holding sprite
+	
+	
+	
 	
 	
 	
@@ -668,7 +672,7 @@ function UpdateMeteor2()
 		inc meteorTotal2, 1
 		
 		//Updating the difficulty
-		if Mod(meteorTotal2, difficultyBar) = 0 and gameDifficulty2 < 7
+		if Mod(meteorTotal2, difficultyBar) = 0 and gameDifficulty2 < difficultyMax
 			inc gameDifficulty2, 1
 		endif
 	endif

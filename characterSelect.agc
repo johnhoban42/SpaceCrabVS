@@ -8,6 +8,7 @@ global csc1 as CharacterSelectController
 global csc2 as CharacterSelectController
 
 global crabNames as string[NUM_CRABS] = [
+	"NULL CRAB",
 	"SPACE CRAB",
 	"LADDER WIZARD",
 	"TOP CRAB",
@@ -68,7 +69,7 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 	LoadAnimatedSprite(csc.sprReady, "ready", 22)
 	PlaySprite(csc.sprReady, 9+csc.player, 1, 7+8*(csc.player-1), 14+8*(csc.player-1))
 	SetSpriteSize(csc.sprReady, w/3, h/16)
-	SetSpriteMiddleScreenOffset(csc.sprReady, 0, p*7*h/16 + p*40)
+	SetSpriteMiddleScreenOffset(csc.sprReady, 0, p*7*h/16 + p*32)
 	SetSpriteFlip(csc.sprReady, f, f)
 	
 	LoadAnimatedSprite(csc.sprLeftArrow, "lr", 22)
@@ -155,7 +156,7 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 	crabDescs[5] = "Speed: {{{}} Turn: {{{{{" + chr(10) + "Quieter than a rising sun, deadlier than a black" + chr(10) + "hole! Instantly turns but has no double-tap move." + chr(10) + "Special Attack: Shuri-Krustacean"
 	
 	// The offset mumbo-jumbo with f-coefficients is because AGK's text rendering is awful
-	CreateText(csc.txtCrabName, crabNames[csc.crabSelected])
+	CreateText(csc.txtCrabName, crabNames[csc.crabSelected+1])
 	SetTextSize(csc.txtCrabName, 96)
 	SetTextAngle(csc.txtCrabName, f*180)
 	SetTextFontImage(csc.txtCrabName, fontCrabI)
@@ -277,7 +278,7 @@ function ChangeCrabs(csc ref as CharacterSelectController, dir as integer, start
 		//The change of the crab is done up here to make the glide work
 		csc.crabSelected = csc.crabSelected + dir
 		//This is moved up so that people can see the names quicker
-		SetTextString(csc.txtCrabName, crabNames[csc.crabSelected])
+		SetTextString(csc.txtCrabName, crabNames[csc.crabSelected+1])
 		//SetTextMiddleScreenX(csc.txtCrabName, f)
 		SetTextString(csc.txtCrabDesc, crabDescs[csc.crabSelected])
 		//SetTextMiddleScreenX(csc.txtCrabDesc, f)
@@ -477,6 +478,7 @@ function DoCharacterSelect()
 	if characterSelectStateInitialized = 0
 		LoadCharacterSelectImages(1)
 		InitCharacterSelect()
+		TransitionEnd()
 	endif
 	state = CHARACTER_SELECT
 	
@@ -537,13 +539,13 @@ function DoCharacterSelect()
 	
 	if ButtonMultitouchEnabled(SPR_MENU_BACK)
 		state = START
-		TransitionStart(Random(1,2))
+		TransitionStart(Random(1,lastTranType))
 	endif
 	
 	if csc1.ready and csc2.ready
 		spActive = 0
 		state = GAME
-		TransitionStart(Random(1,2))
+		TransitionStart(Random(1,lastTranType))
 	endif
 	
 	// If we are leaving the state, exit appropriately

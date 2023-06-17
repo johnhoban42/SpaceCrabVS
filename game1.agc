@@ -180,13 +180,26 @@ function CreateGame1()
 		SetSpriteVisible(specialButton1, 0)
 		//Extra line for crab2theta
 			
-		CreateSpriteExpress(SPR_SP_SCORE, 100, 100, 0, 0, 3)
-		SetSpriteMiddleScreen(SPR_SP_SCORE)
+		//CreateSpriteExpress(SPR_SP_SCORE, 100, 100, 0, 0, 4)
+		//SetSpriteMiddleScreen(SPR_SP_SCORE)
+		//IncSpriteX(SPR_SP_SCORE, -200)
+		//SetSpriteVisible(SPR_SP_SCORE, 0)
 		
-		CreateTextExpress(TXT_SP_SCORE, "0", spScoreMinSize, fontCrabI, 1, 0, 0, 2)
+		CreateTextExpress(TXT_SP_SCORE, "Score: 0", spScoreMinSize, fontScoreI, 0, 0, 0, 3)
 		SetTextMiddleScreen(TXT_SP_SCORE, 0)
-		SetTextColor(TXT_SP_SCORE, 20, 20, 20, 255)
-		SetTextSpacing(TXT_SP_SCORE, -18)
+		SetTextAlignment(TXT_SP_SCORE, 0)
+		SetTextColor(TXT_SP_SCORE, 255, 255, 255, 255)
+		SetTextSpacing(TXT_SP_SCORE, -13)
+		IncTextX(TXT_SP_SCORE, -364)
+		IncTextY(TXT_SP_SCORE, -4)
+		
+		CreateTextExpress(TXT_SP_DANGER, "Danger: " + str(gameDifficulty1), spScoreMinSize, fontScoreI, 0, 0, 0, 3)
+		SetTextMiddleScreen(TXT_SP_DANGER, 0)
+		SetTextAlignment(TXT_SP_DANGER, 1)
+		SetTextColor(TXT_SP_DANGER, 255, 255, 255, 255)
+		SetTextSpacing(TXT_SP_DANGER, -13)
+		IncTextX(TXT_SP_DANGER, 230)
+		IncTextY(TXT_SP_DANGER, -4)
 	endif
 		
 endfunction
@@ -668,7 +681,7 @@ function UpdateMeteor1()
 		if nonSpecMet = 1 then inc meteorTotal1, 1	//Only want real meteors to increase the difficulty
 		
 		//Updating the difficulty
-		if Mod(meteorTotal1, difficultyBar) = 0 and gameDifficulty1 < 7
+		if Mod(meteorTotal1, difficultyBar) = 0 and gameDifficulty1 < difficultyMax
 			inc gameDifficulty1, 1
 		endif
 	endif

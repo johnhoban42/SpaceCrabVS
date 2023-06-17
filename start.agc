@@ -10,6 +10,8 @@ global startStateInitialized as integer = 0
 // Does nothing right now, just a placeholder
 function InitStart()
 	
+	SetCrabStrings()
+	
 	SetSpriteVisible(split, 0)
 	
 	SetFolder("/media/ui")
@@ -23,12 +25,13 @@ function InitStart()
 	SetSpriteMiddleScreen(SPR_TITLE)
 	//IncSpriteX(SPR_TITLE, 150)
 	SetSpriteAngle(SPR_TITLE, 90)
+	SetSpriteDepth(SPR_TITLE, 5)
 	
 	LoadAnimatedSprite(SPR_START1, "ready", 22)
 	PlaySprite(SPR_START1, 10, 1, 7, 14)
 	SetSpriteSize(SPR_START1, 842*.7, 317*.7)
 	SetSpriteMiddleScreenX(SPR_START1)
-	SetSpriteY(SPR_START1, h/2 + 520)
+	SetSpriteY(SPR_START1, h/2 + 480)
 	SetSpriteAngle(SPR_START1, 0)
 	SetSpriteDepth(SPR_START1, 75)
 	AddButton(SPR_START1)
@@ -37,7 +40,7 @@ function InitStart()
 	PlaySprite(SPR_START2, 11, 1, 15, 22)
 	SetSpriteSize(SPR_START2, 842*.7, 317*.7)
 	SetSpriteMiddleScreenX(SPR_START2)
-	SetSpriteY(SPR_START2, h/2 - 520 - GetSpriteHeight(SPR_START2))
+	SetSpriteY(SPR_START2, h/2 - 480 - GetSpriteHeight(SPR_START2))
 	SetSpriteAngle(SPR_START2, 180)
 	SetSpriteDepth(SPR_START2, 75)
 	AddButton(SPR_START2)
@@ -52,7 +55,8 @@ function InitStart()
 	
 	LoadSprite(SPR_START1P, "singlePlayerButton.png")
 	SetSpriteSize(SPR_START1P, 250, 150)
-	SetSpritePosition(SPR_START1P, 520, 1130)
+	SetSpritePosition(SPR_START1P, 520, 1030)
+	SetSpriteDepth(SPR_START1P, 10)
 	AddButton(SPR_START1P)
 	
 	LoadSprite(SPR_STARTAI, "vsAI.png")
@@ -67,16 +71,21 @@ function InitStart()
 		num = i-SPR_SP_C1+1
 		LoadSprite(i, "art/chibicrab" + str(num) + ".png")
 		SetSpriteSize(i, 406/1.3, 275/1.3)
-		SetSpritePosition(i, w/2 - GetSpriteWidth(i)/2 - 250 + 250*(Mod(num-1,3)), 980 + 250*((num-1)/3))
+		SetSpritePosition(i, w/2 - GetSpriteWidth(i)/2 - 250 + 250*(Mod(num-1,3)), 1080 + 250*((num-1)/3))
 		
 		CreateTweenSprite(i, .7)
-		SetTweenSpriteY(i, h + 20, 980 + 250*((num-1)/3), TweenBounce())
+		SetTweenSpriteY(i, h + 20, 1080 + 250*((num-1)/3), TweenBounce())
 		AddButton(i)
 	next i
 	
-	CreateTextExpress(TXT_HIGHSCORE, "High Score: " + str(spHighScore) + chr(10) + "with " + spHighCrab$, 90, fontCrabI, 1, w/2, 300, 5)
+	CreateTextExpress(TXT_HIGHSCORE, "High Score: " + str(spHighScore) + chr(10) + "with " + spHighCrab$, 90, fontDescI, 1, w/2, 700, 5)
 	SetTextSpacing(TXT_HIGHSCORE, -26)
 	SetTextVisible(TXT_HIGHSCORE, 0)
+	
+	CreateTextExpress(TXT_SP_DESC, "WARNING: Magic mirror ahead." + chr(10) + "Soul split is likely." + chr(10) + "Keep both halves safe to survive.", 59, fontDescI, 1, w/2, 300, 5)
+	SetTextSpacing(TXT_SP_DESC, -17)
+	SetTextVisible(TXT_SP_DESC, 0)
+
 	
 	LoadSpriteExpress(SPR_BG_START, "envi/bg4.png",h*1.5, h*1.5, 0, 0, 100)
 	SetSpriteMiddleScreen(SPR_BG_START)
@@ -94,7 +103,7 @@ function InitStart()
 	SetSpriteColorAlpha(SPR_BG_SP, 0)
 	for i = SPR_SP_C1 to SPR_SP_C6
 		num = i-SPR_SP_C1+1
-		SetSpritePosition(i, w/2 - GetSpriteWidth(i)/2 - 250 + 250*(Mod(num-1,3)), 980*5 + 250*((num-1)/3))
+		SetSpritePosition(i, w/2 - GetSpriteWidth(i)/2 - 250 + 250*(Mod(num-1,3)), 1080*5 + 250*((num-1)/3))
 	next i
 	
 	//This is the 'single player results screen' setup
@@ -104,12 +113,13 @@ function InitStart()
 			
 		for i = SPR_SP_C1 to SPR_SP_C6
 			num = i-SPR_SP_C1+1
-			SetSpriteY(i, 980 + 250*((num-1)/3))
+			SetSpriteY(i, 1080 + 250*((num-1)/3))
 		next i
 		//SetSpriteColorByCycle(SPR_BG_SP, 100-round(startTimer#))
 		//SetSpriteColorAlpha(SPR_BG_SP, 255)
 		
 		SetTextVisible(TXT_HIGHSCORE, 1)
+		SetTextVisible(TXT_SP_DESC, 1)
 		
 		SetSpriteVisible(SPR_START1, 0)
 		SetSpriteVisible(SPR_START2, 0)
@@ -141,6 +151,7 @@ function DoStart()
 	if startStateInitialized = 0
 		LoadStartImages(1)
 		InitStart()
+		TransitionEnd()
 	endif
 	state = START
 	
@@ -224,6 +235,12 @@ function DoStart()
 		//SetSpriteColor(SPR_BG_SP, GetSpriteColorRed(SPR_BG_SP)*3/4, GetSpriteColorGreen(SPR_BG_SP)*3/4, GetSpriteColorBlue(SPR_BG_SP)*3/4, 255)
 		//SetSpriteAngle(SPR_BG_SP, startTimer#)
 	
+		for i = 0 to 7
+			SetTextCharColor(TXT_SP_DESC, i, 255, 90+90.0*sin(startTimer#*10), 90+90.0*sin(startTimer#*10), 255)
+		next i
+		for i = 29 to 38
+			SetTextCharColor(TXT_SP_DESC, i, GetColorByCycle(360-startTimer# + i*10,"r"), GetColorByCycle(360-startTimer# + i*10,"g"), GetColorByCycle(360-startTimer# + i*10,"b"), 255)
+		next i
 	
 		//Starting a single player game
 		for i = 1 to 6
@@ -275,6 +292,7 @@ function DoStart()
 			SetTextVisible(TXT_WAIT1, 0)
 			SetTextVisible(TXT_WAIT2, 0)
 			SetTextVisible(TXT_HIGHSCORE, 1)
+			SetTextVisible(TXT_SP_DESC, 1)
 		
 		elseif spActive = 0
 			//Turning back into a regular menu
@@ -301,10 +319,11 @@ function DoStart()
 		
 			SetSpriteVisible(SPR_START1, 1)
 			SetSpriteVisible(SPR_START2, 1)
-			SetSpriteVisible(SPR_STARTAI, 1)
+			if demo = 0 then SetSpriteVisible(SPR_STARTAI, 1)
 			SetTextVisible(TXT_WAIT1, 1)
 			SetTextVisible(TXT_WAIT2, 1)
 			SetTextVisible(TXT_HIGHSCORE, 0)
+			SetTextVisible(TXT_SP_DESC, 0)
 			
 		endif
 	
@@ -313,7 +332,11 @@ function DoStart()
 	// If we are leaving the state, exit appropriately
 	// Don't write anything after this!
 	if state <> START
-		TransitionStart(Random(1,2))
+		if spActive = 0
+			TransitionStart(Random(1,lastTranType))
+		else
+			TransitionStart(Random(1,lastTranType))
+		endif
 		if state = CHARACTER_SELECT
 			//appState = CHARACTER_SELECT
 			//LoadStartImages(1)
@@ -340,6 +363,7 @@ function ExitStart()
 	DeleteText(TXT_WAIT1)
 	DeleteText(TXT_WAIT2)
 	DeleteText(TXT_HIGHSCORE)
+	DeleteText(TXT_SP_DESC)
 	
 	StopMusicOGGSP(titleMusic)
 	

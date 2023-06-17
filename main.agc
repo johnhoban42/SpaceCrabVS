@@ -126,7 +126,7 @@ do
     
 		//Print(GetDeviceBaseName())
 	Print(GetImageMemoryUsage())
-    Print(GetImageExists(101))
+    Print(GetImageExists(5))
     SyncG()
 loop
 
@@ -147,16 +147,18 @@ function TransitionStart(tranType)
 			SetParticlesAngle(i, 0)
 			SetParticlesRotationRange(i, 400, 800)
 			SetParticlesVelocityRange (i, 30, 60)
-			SetParticlesMax (i, 200)
+			//SetParticlesMax (i, 200)
+			SetParticlesMax (i, -1)
 			SetParticlesDepth(i, 1)
 		next i
 		SetParticlesSize(12, 180)
-		SetParticlesMax (12, 250)
+		//SetParticlesMax (12, 250)
+		//SetParticlesMax (12, -1)
 		
 		SetParticlesSize(13, 120)
-		SetParticlesMax (13, 300)
-		
-	//else
+		//SetParticlesMax (13, 300)
+		//SetParticlesMax (13, -1)
+		 	//else
 		//If the particles are already made, then just resetting them
 		//for i = 11 to 13
 		//	ResetParticleCount(i)
@@ -178,21 +180,21 @@ function TransitionStart(tranType)
 		AddParticlesColorKeyFrame (11, lifeEnd#/8, 0, 255, 102, 255)
 		AddParticlesColorKeyFrame (11, lifeEnd#/4, 0, 255, 102, 255)
 		AddParticlesColorKeyFrame (11, lifeEnd#*3/8, 0, 255, 255, 255)
-		SetParticlesMax (11, 225)
+		//SetParticlesMax (11, 225)
 		
 		SetParticlesVelocityRange (12, 40, 70)
 		AddParticlesColorKeyFrame (12, 0.0, 121, 255, 0, 255)
 		AddParticlesColorKeyFrame (12, lifeEnd#/8, 255, 255, 0, 255)
 		AddParticlesColorKeyFrame (12, lifeEnd#/4, 121, 255, 0, 255)
 		AddParticlesColorKeyFrame (12, lifeEnd#*3/8, 255, 255, 0, 255)
-		SetParticlesMax (12, 275)
+		//SetParticlesMax (12, 275)
 
 		SetParticlesVelocityRange (13, 50, 80)
 		AddParticlesColorKeyFrame (13, 0.0, 255, 0, 0, 255)
 		AddParticlesColorKeyFrame (13, lifeEnd#/8, 255, 15, 171, 255)
 		AddParticlesColorKeyFrame (13, lifeEnd#/4, 255, 0, 0, 255)
 		AddParticlesColorKeyFrame (13, lifeEnd#*3/8, 255, 15, 171, 255)
-		SetParticlesMax (13, 325)
+		//SetParticlesMax (13, 325)
 	elseif tranType = 2
 		//The star boil
 		for i = 11 to 13
@@ -208,22 +210,49 @@ function TransitionStart(tranType)
 		AddParticlesColorKeyFrame (11, lifeEnd#/4, 0, 255, 102, 255)
 		AddParticlesColorKeyFrame (11, lifeEnd#*3/8, 0, 255, 255, 0)
 		//AddParticlesScaleKeyFrame(11, 0.0, 
-		SetParticlesMax (11, 250)
+		//SetParticlesMax (11, 250)
 		
 		SetParticlesVelocityRange (12, 40, 70)
 		AddParticlesColorKeyFrame (12, 0.0, 121, 255, 0, 0)
 		AddParticlesColorKeyFrame (12, lifeEnd#/8, 255, 255, 0, 255)
 		AddParticlesColorKeyFrame (12, lifeEnd#/4, 121, 255, 0, 255)
 		AddParticlesColorKeyFrame (12, lifeEnd#*3/8, 255, 255, 0, 0)
-		SetParticlesMax (12, 300)
+		//SetParticlesMax (12, 300)
 
 		SetParticlesVelocityRange (13, 50, 80)
 		AddParticlesColorKeyFrame (13, 0.0, 255, 0, 0, 0)
 		AddParticlesColorKeyFrame (13, lifeEnd#/8, 255, 15, 171, 255)
 		AddParticlesColorKeyFrame (13, lifeEnd#/4, 255, 0, 0, 255)
 		AddParticlesColorKeyFrame (13, lifeEnd#*3/8, 255, 15, 171, 0)
-		SetParticlesMax (13, 450)
+		//SetParticlesMax (13, 450)
 		
+	elseif tranType = 11
+		//The transition for Mirror mode
+		lifeEnd# = lifeEnd#
+		DeleteParticles(11)
+		CreateParticles(11, 0, 0)
+		SetParticlesImage (11, starParticleI)	//Load this image in seperatly!
+		SetParticlesFrequency(11, 40)
+		SetParticlesLife(11, lifeEnd#)	//Time in seconds that the particles stick around
+		SetParticlesSize(11, 240)
+		SetParticlesStartZone(11, w/2, h/2, w/2, h/2) //The box that the particles can start from
+		SetParticlesDirection(11, 0, 0)
+		SetParticlesAngle(11, 0)
+		SetParticlesRotationRange(11, 400, 800)
+		SetParticlesVelocityRange (11, 0, 0)
+		//SetParticlesMax (11, 10)
+		SetParticlesDepth(11, 1)
+		
+		AddParticlesColorKeyFrame (11, 0.0, 0, 255, 255, 0)
+		AddParticlesColorKeyFrame (11, lifeEnd#/4, 0, 255, 102, 255)
+		AddParticlesColorKeyFrame (11, lifeEnd#/2, 0, 255, 102, 255)
+		AddParticlesColorKeyFrame (11, lifeEnd#*3/4, 0, 255, 255, 255)
+		AddParticlesScaleKeyFrame (11, 0.0, .01)
+		AddParticlesScaleKeyFrame (11, lifeEnd#/8, 2)
+		AddParticlesScaleKeyFrame (11, lifeEnd#, 14)
+		//SetParticlesMax (12, 0)
+		//SetParticlesMax (13, 0)
+	
 	endif
 	
 	PlaySoundR(specialS, 100)
@@ -242,7 +271,9 @@ function TransitionStart(tranType)
 endfunction
 
 function TransitionEnd()
-	
+	for i = 11 to 13
+		if GetParticlesExists(i) then SetParticlesMax(i, 1)
+	next i
 	
 endfunction
 

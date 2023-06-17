@@ -258,21 +258,21 @@ function DoResults()
 		SetSpriteVisible(SPR_R_REMATCH, 1)
 	endif
 	if GetMusicPositionOGG(resultsMusic) >= 3.117
-		SetSpriteAngle(SPR_R_MAIN_MENU, GetSpriteAngle(SPR_R_MAIN_MENU) - fpsr#)
-		SetSpriteAngle(SPR_R_CRAB_SELECT, GetSpriteAngle(SPR_R_CRAB_SELECT) - fpsr#)
-		SetSpriteAngle(SPR_R_REMATCH, GetSpriteAngle(SPR_R_REMATCH) + fpsr#)
+		IncSpriteAngle(SPR_R_MAIN_MENU, -fpsr#)
+		IncSpriteAngle(SPR_R_CRAB_SELECT, -fpsr#)
+		IncSpriteAngle(SPR_R_REMATCH, fpsr#)
 	endif
 	
 	// Check mid-screen buttons for activity
 	if Button(SPR_R_REMATCH)
 		state = GAME
-		TransitionStart(Random(1,2))
+		TransitionStart(Random(1,lastTranType))
 	elseif Button(SPR_R_CRAB_SELECT)
 		state = CHARACTER_SELECT
-		TransitionStart(Random(1,2))
+		TransitionStart(Random(1,lastTranType))
 	elseif Button(SPR_R_MAIN_MENU)
 		state = START
-		TransitionStart(Random(1,2))
+		TransitionStart(Random(1,lastTranType))
 	endif
 		
 	// If we are leaving the state, exit appropriately

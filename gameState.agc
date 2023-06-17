@@ -14,18 +14,20 @@ global gameStateInitialized as integer = 0
 // Initialize the game
 function InitGame()
 	
+	
+	gameDifficulty1 = 1
+	gameDifficulty2 = 1
 	CreateGame1()
 	CreateGame2()
 	LoadJumpSounds()
 	InitAttackParticles()
 	InitJumpParticles()
 	gameTimer# = 0
-	gameDifficulty1 = 1
-	gameDifficulty2 = 1
 	meteorTotal1 = 0
 	meteorTotal2 = 0
 	
 	SetSpriteVisible(split, 1)
+	TransitionEnd()
 	
 	if spActive = 0 then PlayOpeningScene()
 	
@@ -33,21 +35,26 @@ function InitGame()
 	SetFolder("/media/ui")
 	LoadSpriteExpress(pauseButton, "pause.png", 100, 100, 0, 0, 9)
 	SetSpriteMiddleScreen(pauseButton)
-	if spActive then SetSpritePosition(pauseButton, 30, 30)
+	//if spActive then SetSpritePosition(pauseButton, 30, 30)
 	
-	LoadSpriteExpress(playButton, "rightArrow.png", 100, 100, 0, 0, 1)
+	LoadSpriteExpress(playButton, "rightArrow.png", 185, 185, 0, 0, 1)
 	SetSpriteMiddleScreen(playButton)
-	IncSpriteX(playButton, -200)
 	SetSpriteVisible(playButton, 0)
 	
-	LoadSpriteExpress(exitButton, "leftArrow.png", 100, 100, 0, 0, 1)
+	LoadSpriteExpress(exitButton, "crabselect.png", 140, 140, 0, 0, 1)
 	SetSpriteMiddleScreen(exitButton)
-	IncSpriteX(exitButton, 200)
+	IncSpriteX(exitButton, 270)
 	SetSpriteVisible(exitButton, 0)
+	
+	LoadSpriteExpress(mainmenuButton, "mainmenu.png", 140, 140, 0, 0, 1)
+	SetSpriteMiddleScreen(mainmenuButton)
+	IncSpriteX(mainmenuButton, -270)
+	SetSpriteVisible(mainmenuButton, 0)
 	
 	AddButton(pauseButton)
 	AddButton(playButton)
 	AddButton(exitButton)
+	AddButton(mainmenuButton)
 	
 	SetFolder("/media")
 	
@@ -68,6 +75,7 @@ function DoGame()
 	if gameStateInitialized = 0
 		LoadGameImages(1)
 		initGame()
+		TransitionEnd()
 	endif
 	state = GAME
 	
@@ -151,14 +159,31 @@ function DoGame()
 	else
 		//The case where the game is paused
 		
+		inc pauseTimer#, fpsr#/3
+		if pauseTimer# > 360 then dec pauseTimer#, 360
+		
+		SetSpriteX(curtainB, w/2 - GetSpriteWidth(curtainB)/2 + w/4*sin(pauseTimer#))
+		IncSpriteAngle(exitButton, -fpsr#)
+		IncSpriteAngle(mainmenuButton, -fpsr#)
+		IncSpriteAngle(playButton, fpsr#)
+		
 		if ButtonMultitouchEnabled(playButton)
 			paused = 0
 			UnpauseGame()
 		endif
 		
-		if ButtonMultitouchEnabled(exitButton)
+		if ButtonMultitouchEnabled(exitButton) and GetSpriteVisible(exitButton)
+			TransitionStart(Random(1,lastTranType))
 			state = CHARACTER_SELECT
 			if spActive then state = START
+			UnpauseGame()
+		endif
+		
+		if ButtonMultitouchEnabled(mainmenuButton) and GetSpriteVisible(mainmenuButton)
+			TransitionStart(Random(1,lastTranType))
+			state = START
+			if spActive then state = START
+			UnpauseGame()
 		endif
 		
 	endif
@@ -385,6 +410,7 @@ function DeleteGameUI()
 	DeleteSprite(pauseButton)
 	DeleteSprite(playButton)
 	DeleteSprite(exitButton)
+	DeleteSprite(mainmenuButton)
 endfunction
 
 // Cleanup upon leaving this state
@@ -424,6 +450,7 @@ function ExitGame()
 	if spActive
 		DeleteSprite(SPR_SP_SCORE)
 		DeleteText(TXT_SP_SCORE)
+		DeleteText(TXT_SP_DANGER)
 	endif
 	
 	//This is called if the end cutscene for the game never plays
@@ -507,24 +534,45 @@ function ExitGame()
 endfunction
 
 function PauseGame()
-	curtain = 999
+	
+	PlaySoundR(buttonSound, 100)
+	
+	CreateSpriteExpress(curtainB, h, h, 0, 0, 2)
+	SetSpriteImage(curtainB, bg3I)
+	
 	CreateSpriteExpress(curtain, w, h, 0, 0, 2)
-	SetSpriteColor(curtain, 0, 0, 0, 255)
+	SetSpriteImage(curtain, bgPI)
 	
 	SetSpriteVisible(pauseButton, 0)
 	SetSpriteVisible(playButton, 1)
 	SetSpriteVisible(exitButton, 1)
+	if spActive = 0 then SetSpriteVisible(mainmenuButton, 1)
+	
+	pauseTimer# = Random(0, 359)
+	SetSpriteX(curtainB, w/2 - GetSpriteWidth(curtainB)/2 + w/4*sin(pauseTimer#))
+	
+	iEnd = 5/fpsr#
+	for i = 1 to iEnd
+		SetSpriteColorAlpha(curtain, 255.0*i/iEnd)
+		SetSpriteColorAlpha(curtainB, 255.0*i/iEnd)
+		SyncG()
+	next i
 	
 	for i = pauseTitle1 to pauseDesc2
 		CreateText(i, "")
 		SetTextAlignment(i, 1)
+		SetTextDepth(i, 2)
 		//The titles
 		if i <= 7
 			SetTextFontImage(i, fontCrabI)
-			SetTextSize(i, 60)
+			SetTextSize(i, 100)
+			SetTextSpacing(i, -22)
+			SetTextPosition(i, w/2, 980)
 		else //The descriptions
 			SetTextFontImage(i, fontDescI)
-			SetTextSize(i, 30)
+			SetTextSize(i, 55)
+			SetTextSpacing(i, -15)
+			SetTextPosition(i, w/2, 1115)
 		endif
 		//The bottom (game 1)
 		if Mod(i, 2) = 0
@@ -536,20 +584,64 @@ function PauseGame()
 		
 	next i
 	
+	
+	//Making the crab title and description
+	SetTextString(pauseTitle1, crabNames[crab1Type])
+	SetTextString(pauseDesc1, crabPause1[crab1Type])
+	if spActive = 0 then SetTextString(pauseDesc1, GetTextString(pauseDesc1) + chr(10) + chr(10) + crabPause2[crab1Type])
+	
+	if spActive = 0 and aiActive = 0
+		//For a multiplayer game
+		SetTextY(pauseTitle2, h/2 - (GetTextY(pauseTitle1)-h/2))
+		SetTextY(pauseDesc2, h/2 - (GetTextY(pauseDesc1)-h/2))
+		SetTextString(pauseTitle2, crabNames[crab2Type])
+		SetTextString(pauseDesc2, crabPause1[crab2Type] + chr(10) + chr(10) + crabPause2[crab2Type])
+	endif
+	
+	//The single player special text
+	if spActive = 1
+		SetTextString(pauseTitle2, "Mirror Mode")
+		SetTextString(pauseDesc2, "A mysterious reflective surface split our" + chr(10) + "hero into two! Souls split across space," + chr(10) + "the crab still acts as one. Prove" + chr(10) + "that you can live to fight another day!")
+		
+		IncTextY(pauseTitle1, 100)
+		IncTextY(pauseDesc1, 120)
+		
+		SetTextAngle(pauseTitle2, 0)
+		SetTextAngle(pauseDesc2, 0)
+		
+		SetTextY(pauseTitle2, 180)
+		SetTextSize(pauseTitle2, 120)
+		SetTextY(pauseDesc2, 380)
+		SetTextSize(pauseDesc2, 50)
+	
+	endif
+	
 endfunction
 
 function UnpauseGame()
-	curtain = 999
+	
+	//Only playing the button sound if the game wasn't exited
+	if GetParticlesExists(11) = 0 then PlaySoundR(buttonSound, 100)
 	
 	SetSpriteVisible(pauseButton, 1)
 	SetSpriteVisible(playButton, 0)
 	SetSpriteVisible(exitButton, 0)
+	SetSpriteVisible(mainmenuButton, 0)
 	
-	DeleteSprite(curtain)
 	
 	for i = pauseTitle1 to pauseDesc2
 		DeleteText(i)
 	next i
+	
+	iEnd = 5/fpsr#
+	for i = iEnd to 1 step -1
+		SetSpriteColorAlpha(curtain, 255.0*i/iEnd)
+		SetSpriteColorAlpha(curtainB, 255.0*i/iEnd)
+		SyncG()
+	next i
+	
+	DeleteSprite(curtain)
+	DeleteSprite(curtainB)
 	
 	ClearMultiTouch()
 	
@@ -1225,16 +1317,50 @@ endfunction
 function UpdateSPScore(added)
 	size = GetTextSize(TXT_SP_SCORE)
 	maxSize = 95
-	SetTextColorByCycle(TXT_SP_SCORE, gameTimer#)
-	SetTextColor(TXT_SP_SCORE, (GetTextColorRed(TXT_SP_SCORE))/3 * (10+size-spScoreMinSize)/10, (GetTextColorGreen(TXT_SP_SCORE))/3* (10+size-spScoreMinSize)/10, (GetTextColorBlue(TXT_SP_SCORE))/3* (10+size-spScoreMinSize)/10, 255)
+	//The rainbows if the score is high enough
+	if spScore > 24
+		
+		speed = 2
+		if spScore > 49 then speed = 3
+		if spScore > 74 then speed = 4
+		if spScore > 99 then speed = 5
+		if spScore > 124 then speed = 6
+		if spScore > 149 then speed = 7
+		if spScore > 174 then speed = 8
+		if spScore > 199 then speed =90
+		
+		for i = 0 to Len(GetTextString(TXT_SP_SCORE))
+			SetTextCharColor(TXT_SP_SCORE, i, GetColorByCycle(gameTimer#*(speed/2) - i*speed, "r"), GetColorByCycle(gameTimer#*(speed/2) - i*speed, "g"), GetColorByCycle(gameTimer#*(speed/2) - i*speed, "b"), 255)
+			SetTextCharColor(TXT_SP_SCORE, i, (GetTextCharColorRed(TXT_SP_SCORE, i))*2/3 + 85, (GetTextCharColorGreen(TXT_SP_SCORE, i))*2/3 + 85, (GetTextCharColorBlue(TXT_SP_SCORE, i))*2/3 + 85, 255)
+		next i
+		
+		
+	
+	endif
+	//SetTextColorByCycle(TXT_SP_SCORE, gameTimer#)
+	//SetTextColor(TXT_SP_SCORE, (GetTextColorRed(TXT_SP_SCORE))/3 * (10+size-spScoreMinSize)/10, (GetTextColorGreen(TXT_SP_SCORE))/3* (10+size-spScoreMinSize)/10, (GetTextColorBlue(TXT_SP_SCORE))/3* (10+size-spScoreMinSize)/10, 255)
 	if added = 1 or added = 2
 		//When the score is going up
-		SetTextString(TXT_SP_SCORE, str(spScore))
-		SetTextSize(TXT_SP_SCORE, Min(size + 12, maxSize))
-	else
-		//When the score isn't going up
-		if size > spScoreMinSize then SetTextSize(TXT_SP_SCORE, size - 1*fpsr#)
+		SetTextString(TXT_SP_SCORE, "Score: " + str(spScore))
+		SetTextString(TXT_SP_DANGER, "Danger: " + str(gameDifficulty1))
+		
+		//SetTextColor(TXT_SP_DANGER, 255, 255-(gameDifficulty1-1)*240/7.0, 255-(gameDifficulty1-1)*240/7.0, 255)
+		if gameDifficulty1 = difficultyMax
+			SetTextString(TXT_SP_DANGER, "MAX DANGER")
+			SetTextSize(TXT_SP_DANGER, 58)
+			SetTextY(TXT_SP_DANGER, h/2 - GetTextSize(TXT_SP_DANGER)/2)
+			SetTextX(TXT_SP_DANGER, 622)
+		endif
+		
+		if spScore > spHighScore
+			
+		endif
 	endif
+	
+	if GetRawKeyPressed(38) then inc gameDifficulty1, 1
+	
+	//The flashing warning text
+	SetTextColor(TXT_SP_DANGER, 255, 160 - 10*(gameDifficulty1) + (0.0+10*gameDifficulty1)*sin(gameTimer#*(5+gameDifficulty1)), 160 - 10*(gameDifficulty1) + (0.0+10*gameDifficulty1)*sin(gameTimer#*(5+gameDifficulty1)), 255)
 	
 endfunction
 
@@ -1407,7 +1533,6 @@ endfunction
 
 function PlayOpeningScene()
 	
-	curtain = 999
 	CreateSpriteExpress(curtain, w, h, 0, 0, 8)
 	SetSpriteColor(curtain, 0, 0, 0, 200)
 	
@@ -1433,6 +1558,7 @@ function PlayOpeningScene()
 		SetSpriteY(met1S, h/2 + 220)
 		SetSpriteAngle(met1S, 270)
 		SetSpriteVisible(met1S, 0)
+		SetSpriteVisible(met1S+glowS, 0)
 		SetSpriteDepth(met1S, 1)
 		for i = expBar1 to specialButton1
 			IncSpriteY(i, -200)
@@ -1456,6 +1582,7 @@ function PlayOpeningScene()
 		SetSpriteY(met2S, h/2 - 220 - GetSpriteHeight(met2S))
 		SetSpriteAngle(met2S, 90)
 		SetSpriteVisible(met2S, 0)
+		SetSpriteVisible(met2S+glowS, 0)
 		SetSpriteDepth(met2S, 1)
 		for i = expBar2 to specialButton2
 			IncSpriteY(i, 200)

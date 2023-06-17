@@ -77,6 +77,8 @@ global startTimer# = 0
 #constant frameratecrab5 10
 #constant frameratecrab6 15
 
+#constant lastTranType 2
+
 #constant hitSceneMax 240
 global hit1Timer# = 0
 global hit2Timer# = 0
@@ -131,6 +133,7 @@ global nudge2Theta# = 0
 global gameDifficulty1 = 1
 global gameDifficulty2 = 1
 global difficultyBar = 10	//The amount of meteors it takes to make the difficulty go up
+#constant difficultyMax 7
 
 global meteorTotal1 = 0
 global meteorTotal2 = 0
@@ -221,9 +224,12 @@ global met3CD2# = 0 //400
 #constant pauseButton 8
 #constant playButton 9
 #constant exitButton 10
+#constant mainmenuButton 14
 
 //Just a sheet for when things need to be covered up
 #constant coverS 11
+#constant curtain 12
+#constant curtainB 13
 
 #constant planet1 101
 #constant planet2 102
@@ -271,6 +277,7 @@ global met3CD2# = 0 //400
 
 #constant SPR_SP_SCORE 151
 #constant TXT_SP_SCORE 151
+#constant TXT_SP_DANGER 154
 
 #constant TXT_INTRO1 152
 #constant TXT_INTRO2 153
@@ -281,6 +288,7 @@ global met3CD2# = 0 //400
 #constant fontDescI 2	//Tahoma
 #constant fontDescItalI 4	//Tahoma (Italicized)
 #constant fontCrabI 3	//Somerset Barnyard
+#constant fontScoreI 1001	//SnowTunes UI Font
 
 #constant starParticleI 11
 
@@ -365,6 +373,7 @@ global met3CD2# = 0 //400
 #constant bg3I 83
 #constant bg4I 84
 #constant bg5I 85
+#constant bgPI 87 	//Pause foreground
 
 #constant meteorGlowI 86
 
@@ -609,7 +618,9 @@ SetMusicSystemVolumeOGG(volumeM)
 #constant TXT_WAIT1 201
 #constant TXT_WAIT2 202
 #constant TXT_HIGHSCORE 203
+#constant TXT_SP_DESC 204
 #constant SPR_STARTAI 212
+
 
 //Different Crab buttons for the single player mode
 #constant SPR_SP_C1 205
@@ -692,6 +703,7 @@ SetMusicSystemVolumeOGG(volumeM)
 global spActive = 0 //Single Player active
 global aiActive = 0 //VS AI active
 global paused = 0	//Game is currently paused
+global pauseTimer# = 0
 
 #constant glowS 20000
 type meteor
@@ -882,6 +894,7 @@ function LoadBaseImages()
 	LoadImage(fontDescI, "fontDesc.png")
 	LoadImage(fontDescItalI, "fontDescItal.png")
 	LoadImage(fontCrabI, "fontCrab.png")
+	LoadImage(fontScoreI, "ScoreFont.png")
 	
 	//#constant fontDesc 2
 	
@@ -912,6 +925,7 @@ function LoadBaseImages()
 	LoadImage(bg3I, "bg3.png")
 	LoadImage(bg4I, "bg4.png")
 	LoadImage(bg5I, "bg5.png")
+	LoadImage(bgPI, "pauseForeground.png")
 	
 	LoadImage(starParticleI, "starParticle.png")
 	
@@ -982,7 +996,7 @@ function LoadStartImages(loading)
 		
 		//DeleteImage(bg4I)
 		for i = 1 to 16
-			DeleteImage(warpI1 - 1 + i)
+			//DeleteImage(warpI1 - 1 + i)
 		next i
 		
 	endif
@@ -1255,6 +1269,28 @@ function LoadResultImages(loading)
 	
 	
 endfunction
+
+
+global crabPause1 as string[6]
+global crabPause2 as string[6]
+
+function SetCrabStrings()
+	crabPause1[1] = "Speed: {{{}} Turn: {{{}}" + chr(10) + "Double-tap: Roll Forward"
+	crabPause1[2] = "Speed: {{}}} Turn: {{{{}" + chr(10) + "Double-tap: Launch Forward"
+	crabPause1[3] = "Speed: {{{{{ Turn: {}}}}" + chr(10) + "Double-tap: Quick Brake"
+	crabPause1[4] = "Speed: {{{{} Turn: {{}}}" + chr(10) + "Double-tap: Launch Up"
+	crabPause1[5] = "Speed: {{{}} Turn: {{{}}" + chr(10) + "Double-tap: Roll Back"
+	crabPause1[6] = "Speed: {{{}} Turn: {{{{{" + chr(10) + "Tap: Instant Turn"
+	
+	crabPause2[1] = "Special: Meteor Shower" + chr(10) + "Call Space Ned to rain down" + chr(10) + "fast meteors on your opponent."
+	crabPause2[2] = "Special: Conjure Comets" + chr(10) + "Materialize three waves of" + chr(10) + "comets on the opposite screen."
+	crabPause2[3] = "Special: Orbital Nightmare" + chr(10) + "Make everything (planets, meteors," + chr(10) + "crabs) on the other screen spin."
+	crabPause2[4] = "Special: Party Time!" + chr(10) + "Obscure your opponent's vision" + chr(10) + "with intense rave lights."
+	crabPause2[5] = "Special: Fast Forward" + chr(10) + "Speed up your enemy's" + chr(10) + "game for a short while."
+	crabPause2[6] = "Special: Shuri-Krustacean" + chr(10) + "Fling deadly projecticles" + chr(10) + "directly up the screen."
+endfunction
+
+
 
 /*
 The Code Graveyard

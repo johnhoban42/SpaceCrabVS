@@ -195,6 +195,14 @@ function IncSpriteSizeCenteredMult(spr, ratio#)
 	SetSpriteSize(spr, GetSpriteWidth(spr)*amt#, GetSpriteHeight(spr)*amt#)
 endfunction
 
+function IncTextX(txt, amt)
+	SetTextX(txt, GetTextX(txt) + amt)
+endfunction
+
+function IncTextY(txt, amt)
+	SetTextY(txt, GetTextY(txt) + amt)
+endfunction
+
 function SetSpriteSizeCentered(spr, newWid, newHei)
 	SetSpritePosition(spr, GetSpriteMiddleX(spr) - newWid, GetSpriteMiddleY(spr) - newHei)
 	SetSpriteSize(spr, newWid, newHei)
