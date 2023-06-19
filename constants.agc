@@ -43,9 +43,6 @@ Crab types (internal):
 
 */
 
-#constant MOBILE 1
-#constant DESKTOP 2
-
 //The timer for the starting screen
 global startTimer# = 0
 
@@ -133,7 +130,7 @@ global nudge2Theta# = 0
 global gameDifficulty1 = 1
 global gameDifficulty2 = 1
 global difficultyBar = 10	//The amount of meteors it takes to make the difficulty go up
-#constant difficultyMax 7
+global difficultyMax = 7
 
 global meteorTotal1 = 0
 global meteorTotal2 = 0
@@ -167,7 +164,13 @@ global special2Used = 0
 global spScore = 0
 global spHighScore = 0
 global spHighCrab$ = ""
+global spHighScoreClassic = 0
+global spHighCrabClassic$ = ""
 #constant spScoreMinSize = 70
+
+global spType = 0
+#constant MIRRORMODE 1
+#constant CLASSIC 2
 
 //Input buffers
 global buffer1 = 0
@@ -374,6 +377,7 @@ global met3CD2# = 0 //400
 #constant bg4I 84
 #constant bg5I 85
 #constant bgPI 87 	//Pause foreground
+#constant bgRainSwipeI 88
 
 #constant meteorGlowI 86
 
@@ -523,6 +527,9 @@ global planetVarI as Integer[planetITotalMax]
 #constant jumpPartI1 447 //447 - 452
 global jumpPartI as Integer[6]
 
+#constant attackPartI 453
+#constant attackPartInvertI 454
+
 //#constant planetVar1I 51
 //#constant planetVar2I 52
 //#constant planetVar3I 53
@@ -549,6 +556,8 @@ global jumpPartI as Integer[6]
 #constant parStar1 11
 #constant parStar2 12
 #constant parStar3 13
+
+#constant parAttack 21
 
 //Sound Indexes
 #constant turnS 1
@@ -577,12 +586,15 @@ global jumpPartI as Integer[6]
 #constant wizardSpell2S 23
 #constant ninjaStarS 24
 
+#constant mirrorBreakS 25
+
 
 
 //Music Indexes
 #constant titleMusic 101
 #constant characterMusic 102
 #constant resultsMusic 103
+#constant loserMusic 109
 
 #constant fightAMusic 104	//Andy's fight song
 #constant fightBMusic 105	//Brad's fight song
@@ -620,6 +632,9 @@ SetMusicSystemVolumeOGG(volumeM)
 #constant TXT_HIGHSCORE 203
 #constant TXT_SP_DESC 204
 #constant SPR_STARTAI 212
+#constant SPR_LOGO_HORIZ 213
+#constant SPR_LEADERBOARD 214
+#constant SPR_CLASSIC 215
 
 
 //Different Crab buttons for the single player mode
@@ -629,9 +644,6 @@ SetMusicSystemVolumeOGG(volumeM)
 #constant SPR_SP_C4 208
 #constant SPR_SP_C5 209
 #constant SPR_SP_C6 210
-
-#constant SPR_BG_SP 211
-
  
 //Character select screen sprites - player 1 
 #constant SPR_CS_READY_1 300 
@@ -740,6 +752,7 @@ function LoadBaseSounds()
 		LoadSoundOGG(chooseS, "choose.ogg")
 		LoadSoundOGG(gongS, "gong.ogg")
 		LoadSoundOGG(buttonSound, "select.ogg")
+		LoadSoundOGG(mirrorBreakS, "mirrorBreak.ogg")
 		
 		
 		LoadSoundOGG(exp1S, "exp1.ogg")
@@ -769,6 +782,7 @@ function LoadBaseSounds()
 		LoadMusicOGG(chooseS, "choose.ogg")
 		LoadMusicOGG(gongS, "gong.ogg")
 		LoadMusicOGG(buttonSound, "select.ogg")
+		LoadMusicOGG(mirrorBreakS, "mirrorBreak.ogg")
 		
 		LoadMusicOGG(exp1S, "exp1.ogg")
 		LoadMusicOGG(exp2S, "exp2.ogg")
@@ -835,6 +849,7 @@ function PlayMusicOGGSP(songID, loopYN)
 			LoadMusicOGG(resultsMusic, "results.ogg")
 			SetMusicLoopTimesOGG(resultsMusic, 14.22, -1)
 		endif
+		if songID = loserMusic then LoadMusicOGG(loserMusic, "loser.ogg")
 		if songID = spMusic
 			LoadMusicOGG(spMusic, "spMusic.ogg")
 			SetMusicLoopTimesOGG(spMusic, .769, 25.384)
@@ -926,6 +941,7 @@ function LoadBaseImages()
 	LoadImage(bg4I, "bg4.png")
 	LoadImage(bg5I, "bg5.png")
 	LoadImage(bgPI, "pauseForeground.png")
+	LoadImage(bgRainSwipeI, "rainbowSwipe.png")
 	
 	LoadImage(starParticleI, "starParticle.png")
 	
@@ -940,6 +956,8 @@ function LoadBaseImages()
 		LoadImage(jumpPartI[i], "jumpP" + str(i) + ".png")
 	next i
 	
+	LoadImage(attackPartI, "attackParticle.png")
+	LoadImage(attackPartInvertI, "attackParticleInvert.png")
 	
 	/*
 	LoadImage(planetVar1I, "planet1alt1.png")

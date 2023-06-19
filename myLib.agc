@@ -117,6 +117,14 @@ function SetSpriteSizeSquare(spr, size)
 	SetSpriteSize(spr, size, size)
 endfunction
 
+function MatchSpriteSize(spr, sprOrigin)
+	SetSpriteSize(spr, GetSpriteWidth(sprOrigin), GetSpriteHeight(sprOrigin))
+endfunction
+
+function MatchSpritePosition(spr, sprOrigin)
+	SetSpritePosition(spr, GetSpriteX(sprOrigin), GetSpriteY(sprOrigin))
+endfunction
+
 function Hover(sprite) 
 	if GetSpriteExists(sprite) = 0 then exitfunction 0	//Added in to make sure bad buttons aren't targeted
 	returnValue = GetSpriteHitTest(sprite, GetPointerX(), GetPointerY())
@@ -789,9 +797,9 @@ function PingUpdate()
 endfunction
 
 global buttons as Integer[0]
-global tweenButton = 5
-global tweenButtonOld = 6
-//tweenButton lasts until 25
+global tweenButton = 15
+global tweenButtonOld = 16
+//tweenButton lasts until 35
 function ButtonsUpdate()
 	for i = 0 to buttons.length
 		if GetSpriteExists(buttons[i])
@@ -800,7 +808,7 @@ function ButtonsUpdate()
 				
 				//Skips the current tween on an existing sprite, if still playing
 				skip = 0
-				for i = 5 to 25
+				for i = 15 to 35
 					if GetTweenSpritePlaying(i, spr) then skip = 1
 				next i
 				
@@ -817,7 +825,7 @@ function ButtonsUpdate()
 					
 					tweenButtonOld = tweenButton
 					inc tweenButton, 1
-					if tweenButton > 25 then tweenButton = 5
+					if tweenButton > 35 then tweenButton = 15
 				endif
 				
 				PlaySoundR(buttonSound, 100)

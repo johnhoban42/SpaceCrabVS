@@ -545,6 +545,8 @@ function DoCharacterSelect()
 	if csc1.ready and csc2.ready
 		spActive = 0
 		state = GAME
+		SetTextVisible(csc1.txtReady, 0)
+		SetTextVisible(csc2.txtReady, 0)
 		TransitionStart(Random(1,lastTranType))
 	endif
 	

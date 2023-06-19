@@ -5,6 +5,7 @@ function DrawPolar1(spr, rNum, theta#)
 	if GetSpriteExists(spr)
 		cenX = w/2
 		cenY = h*3/4 + GetSpriteHeight(split)/4
+		if spType = CLASSIC then cenY = h/2
 		SetSpritePosition(spr, rNum*cos(theta#) + cenX - GetSpriteWidth(spr)/2, rNum*sin(theta#) + cenY - GetSpriteHeight(spr)/2)
 		SetSpriteAngle(spr, theta#+90)
 	endif
@@ -179,12 +180,7 @@ function CreateGame1()
 		SetSpriteVisible(meteorMarker1, 0)
 		SetSpriteVisible(specialButton1, 0)
 		//Extra line for crab2theta
-			
-		//CreateSpriteExpress(SPR_SP_SCORE, 100, 100, 0, 0, 4)
-		//SetSpriteMiddleScreen(SPR_SP_SCORE)
-		//IncSpriteX(SPR_SP_SCORE, -200)
-		//SetSpriteVisible(SPR_SP_SCORE, 0)
-		
+					
 		CreateTextExpress(TXT_SP_SCORE, "Score: 0", spScoreMinSize, fontScoreI, 0, 0, 0, 3)
 		SetTextMiddleScreen(TXT_SP_SCORE, 0)
 		SetTextAlignment(TXT_SP_SCORE, 0)
@@ -198,8 +194,9 @@ function CreateGame1()
 		SetTextAlignment(TXT_SP_DANGER, 1)
 		SetTextColor(TXT_SP_DANGER, 255, 255, 255, 255)
 		SetTextSpacing(TXT_SP_DANGER, -13)
-		IncTextX(TXT_SP_DANGER, 230)
+		IncTextX(TXT_SP_DANGER, 227)
 		IncTextY(TXT_SP_DANGER, -4)
+		
 	endif
 		
 endfunction
@@ -566,7 +563,7 @@ function UpdateMeteor1()
 			else
 				//Slowing the meteors at certain angles
 				if (Abs(Mod(meteorActive1[i].theta+slowMetWidth, 90)-slowMetWidth) < slowMetWidth) then meteorActive1[i].r = meteorActive1[i].r + 1.0*met1speed/slowMetSpeedDen
-			
+				if spType = CLASSIC and (Abs(Mod(meteorActive1[i].theta+slowMetWidth + 90, 180)-slowMetWidth) < slowMetWidth) then meteorActive1[i].r = meteorActive1[i].r - 1.8*met1speed/slowMetSpeedDen	//Extra classic mode trickery
 			endif
 		
 		elseif cat = 2	//Rotating meteor
@@ -620,7 +617,7 @@ function UpdateMeteor1()
 			endif
 			
 			//The lazy but working way of how the warning light doesn't go too high
-			if GetSpriteCollision(ospr, split)
+			if GetSpriteCollision(ospr, split) and spType <> CLASSIC
 				while GetSpriteCollision(ospr, split)
 					SetSpriteSize(ospr, GetSpriteWidth(ospr), GetSpriteHeight(ospr)-1)
 					DrawPolar1(ospr, GetSpriteHeight(ospr)/2, meteorActive1[i].theta)
@@ -640,7 +637,7 @@ function UpdateMeteor1()
 		if GetSpriteY(spr) > h/2 - GetSpriteHeight(spr)/2
 			SetSpriteVisible(spr, 1)
 			SetSpriteVisible(spr+glowS, 1)
-		else
+		elseif spType <> CLASSIC
 			SetSpriteVisible(spr, 0)
 			SetSpriteVisible(spr+glowS, 0)
 		endif
@@ -716,7 +713,7 @@ function UpdateButtons1()
 		StopSprite(meteorButton1)
 	endif
 	
-	SetSpriteX(meteorMarker1, GetSpriteX(expHolder1) + 1.0*(GetSpriteWidth(expHolder1)-20)*meteorCost1/specialCost1 - 4 + .116*GetSpriteWidth(expHolder1))
+	SetSpriteX(meteorMarker1, Min(GetSpriteX(expHolder1) + 1.0*(GetSpriteWidth(expHolder1)-20)*meteorCost1/specialCost1 - 4 + .116*GetSpriteWidth(expHolder1), GetSpriteX(specialButton1)-10))
 endfunction
 
 function SendMeteorFrom1()
@@ -727,6 +724,11 @@ function SendMeteorFrom1()
 	
 	meteorCost1 = meteorCost1*meteorMult#
 	if meteorCost1> specialCost1-1 then meteorCost1 = specialCost1-1
+	
+	SetParticlesDirection(parAttack, 0, -1)
+	SetParticlesPosition(parAttack, GetSpriteMiddleX(meteorButton1), GetSpriteMiddleY(meteorButton1))
+	SetParticlesImage (parAttack, attackPartI)
+	ResetParticleCount(parAttack)
 	
 	SetSpriteX(expBar1, GetSpriteX(expHolder1))
 	

@@ -21,8 +21,29 @@ SetWindowTitle( "SpaceCrabVS" )
 SetWindowSize( 700, 1400, 0 )
 SetWindowAllowResize( 1 ) // allow the user to resize the window
 
+if GetGameCenterExists() = 1 // This checks to see if Game Center/Game Services exist on the device
+	GameCenterSetup()
+endif
+GameCenterLogin()
+
+//The resolution/device setup
+#constant MOBILE 1
+#constant DESKTOP 2
+
+#constant APPLE 1
+#constant ANDROID 2
+
+device$ = GetDeviceBaseName()
+global deviceType = DESKTOP
+global mPlatform = APPLE
+
+if device$ = "android" or device$ = "ios" then deviceType = MOBILE
+if device$ = "android" then mPlatform = ANDROID
+
 #constant w 800
 #constant h 1600
+
+
 
 SetAntialiasMode( 1 )
 
@@ -35,6 +56,9 @@ UseNewDefaultFonts( 1 )
 
 SetVSync(1)
 
+if deviceType = MOBILE then SetScissor(0, 0, w, h)
+SetImmersiveMode(1)
+
 LoadBaseImages()
 LoadBaseSounds()
 //LoadBaseMusic()
@@ -43,14 +67,6 @@ SetFolder("/media")
 global fpsr#
 
 global gameTime#
-
-device$ = GetDeviceBaseName()
-global deviceType = DESKTOP
-
-if device$ = "android" or device$ = "ios" then deviceType = MOBILE
-
-if deviceType = MOBILE then SetScissor(0, 0, w, h)
-SetImmersiveMode(1)
 
 global demo = 1
 
@@ -74,6 +90,8 @@ function SaveGame()
 	
 	WriteInteger(1, spHighScore)
 	WriteString(1, spHighCrab$)
+	WriteInteger(1, spHighScoreClassic)
+	WriteString(1, spHighCrabClassic$)
 	
 	CloseFile(1)
 endfunction
@@ -85,6 +103,8 @@ function LoadGame()
 	
 	spHighScore = ReadInteger(1)
 	spHighCrab$ = ReadString(1)
+	spHighScoreClassic = ReadInteger(1)
+	spHighCrabClassic$ = ReadString(1)
 	
 	CloseFile(1)
 endfunction
@@ -126,7 +146,6 @@ do
     
 		//Print(GetDeviceBaseName())
 	Print(GetImageMemoryUsage())
-    Print(GetImageExists(5))
     SyncG()
 loop
 
@@ -261,6 +280,7 @@ function TransitionStart(tranType)
 	
 	iEnd = 21/fpsr#
 	for i = 1 to iEnd
+		if appState = START then UpdateStartElements()
 		SyncG()
 	next i
 	
@@ -275,6 +295,42 @@ function TransitionEnd()
 		if GetParticlesExists(i) then SetParticlesMax(i, 1)
 	next i
 	
+endfunction
+
+
+function ShowLeaderBoard(num)
+	
+	if mPlatform = APPLE
+		boardM$ = "scvs.mirrormode"
+		boardC$ = "scvs.classic"
+	elseif mPlatform = ANDROID
+		boardM$ = ""
+		boardC$ = ""
+	endif
+	
+	board$ = ""
+	if num = 1 then board$ = boardM$ 	//Mirror Mode
+	if num = 2 then board$ = boardC$ 	//Classic
+	
+	/*
+	Apple Codes
+	Mirror: scvs.mirrormode
+	Classic: scvs.classic
+	
+	Android Codes
+	Mirror:
+	Classic:	
+	*/
+	
+	if GetGameCenterLoggedIn()
+		
+		GameCenterSubmitScore(spHighScore, "")
+		GameCenterSubmitScore(0, "")
+		
+		GameCenterShowLeaderBoard(board$)
+	else
+		GameCenterLogin()
+	endif
 endfunction
 
 /*

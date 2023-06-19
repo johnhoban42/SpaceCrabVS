@@ -5,6 +5,8 @@ function DrawPolar2(spr, rNum, theta#)
 	if GetSpriteExists(spr)
 		cenX = w/2
 		cenY = h/4 - GetSpriteHeight(split)/4
+		if spType = CLASSIC then cenY = 10000
+		//Placeholder for Classic SP game
 		SetSpritePosition(spr, rNum*cos(theta#) + cenX - GetSpriteWidth(spr)/2, rNum*sin(theta#) + cenY - GetSpriteHeight(spr)/2)
 		SetSpriteAngle(spr, theta#+90)
 	endif
@@ -28,7 +30,7 @@ function CreateGame2()
 	if GetSpriteExists(bgGame2) = 0 then CreateSprite(bgGame2, 0)
 	SetSpriteImage(bgGame2, bg1I)
 	SetBGRandomPosition(bgGame2)
-	SetSpriteDepth(bgGame2, 100)
+	SetSpriteDepth(bgGame2, 101)
 	
 	crab2Theta# = 90
 	DrawPolar2(crab2, crab2R#, crab2Theta#)
@@ -184,6 +186,10 @@ function CreateGame2()
 	
 	
 		//Empty space to line up with single player graphics (text and text-holding sprite
+	
+	
+	
+	
 	
 	
 	
@@ -707,7 +713,7 @@ function UpdateButtons2()
 		StopSprite(meteorButton2)
 	endif
 	
-	SetSpriteX(meteorMarker2, GetSpriteX(expHolder2) + GetSpriteWidth(expHolder2) - 1.0*(GetSpriteWidth(expHolder2)-20)*meteorCost2/specialCost2 + 4 - .116*GetSpriteWidth(expHolder1))
+	SetSpriteX(meteorMarker2, Max(GetSpriteX(expHolder2) + GetSpriteWidth(expHolder2) - 1.0*(GetSpriteWidth(expHolder2)-20)*meteorCost2/specialCost2 + 4 - .116*GetSpriteWidth(expHolder1), GetSpriteX(specialButton2)+GetSpriteWidth(specialButton2)+10))
 endfunction
 
 function SendMeteorFrom2()
@@ -718,6 +724,11 @@ function SendMeteorFrom2()
 	
 	meteorCost2 = meteorCost2*meteorMult#
 	if meteorCost2 > specialCost2-1 then meteorCost2 = specialCost2-1
+	
+	SetParticlesDirection(parAttack, 0, 1)
+	SetParticlesPosition(parAttack, GetSpriteMiddleX(meteorButton2), GetSpriteMiddleY(meteorButton2))
+	SetParticlesImage (parAttack, attackPartInvertI)
+	ResetParticleCount(parAttack)
 	
 	SetSpriteX(expBar2, GetSpriteX(expHolder2) + GetSpriteWidth(expHolder2))
 	
