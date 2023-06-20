@@ -7,13 +7,13 @@ global thinkCooldown# = 0
 global turnCooldownMax# = 120 // number of ticks (1/60 of a second) after a turn during which the AI does not think
 global thinkCooldownMax# = 180 // number of ticks before the AI can think again after failing
 global randomThinkTicks# = 600 // average number of ticks between failed attempts to think
-global randomTurnPercent# = 100 // chance out of 100 that the crab will turn when not thinking
+global randomTurnPercent# = 50 // chance out of 100 that the crab will turn when not thinking
 global specialInterval# = 60 // number of ticks between attempts to use special / meteor attack
 global specialTimer# = 0 // timer used to perform special attacks
 global meteorsPerSpecial# = 2 // number of times meteor attack will be used before using special attack
 global meteorsUsed# = 0 // number of meteor attacks used since last special attack
 global doJump = 0 // flag set when crab should "double tap" the turn input in order to perform a jump action instead
-global randomJumpPercent# = 30 // chance out of 100 that the crab will jump when given the opportunity to
+global randomJumpPercent# = 50 // chance out of 100 that the crab will jump when given the opportunity to
 
 function AITurn()
 	// jump case, reset the flag then force a tap input that should trigger a jump, since all doJump flag set cases are preceded by a doTurn
@@ -41,11 +41,11 @@ function AITurn()
 				//Print("Not thinking, but turning!")
 				doTurn = 1
 			endif
-		endif
-		// normal crab should jump to gain distance and grab more pellets often, so have it jump randomly outside of the unthinking case, but only if not set to turn already
-		if crab2Type = 1 and not doTurn and Random(1, 100) <= randomJumpPercent#
-			doTurn = 1
-			doJump = 1
+			// normal crab should jump to gain distance and grab more pellets often, so have it jump randomly outside of the unthinking case, but only if not set to turn already
+			if crab2Type = 1 and not doTurn and Random(1, 100) <= randomJumpPercent#
+				doTurn = 1
+				doJump = 1
+			endif
 		endif
 	else
 		// decrement the cooldowns
