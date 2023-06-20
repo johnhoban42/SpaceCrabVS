@@ -1,4 +1,11 @@
 //Core functions that are used in the app, and possible future apps
+function SyncG()
+	PingUpdate()
+	ButtonsUpdate()
+	UpdateAllTweens(GetFrameTime())
+    Sync()
+endfunction
+
 function max(num1, num2)
 	ret = 0	
 	if num1 > num2
@@ -16,6 +23,53 @@ function min(num1, num2)
 		ret = num2
 	endif
 endfunction ret
+
+global imageA as Integer[0]
+
+function LoadAnimatedSprite(spr, imgBase$, frameTotal)
+	CreateSprite(spr, 0)
+	
+	//The image array inserts the sprite ID first, then the amount of frames, then images at the positions afterwards
+	imageA.insert(spr)
+	imageA.insert(frameTotal)
+	for i = 1 to frameTotal
+		if GetFileExists(imgBase$ + str(i) + ".png")
+			imageA.insert(LoadImage(imgBase$ + str(i) + ".png"))
+		else
+			imageA.insert(LoadImage(imgBase$ + "0" + str(i) + ".png"))
+		endif
+		
+		AddSpriteAnimationFrame(spr, imageA[imageA.length])
+	next i
+endfunction
+
+function CreateSpriteExistingAnimation(spr, refSpr)
+	CreateSprite(spr, 0)
+	
+	//index = imageA.find(refSpr)
+	index = ArrayFind(imageA, refSpr)
+	
+	for i = 1 to imageA[index+1]
+		AddSpriteAnimationFrame(spr, imageA[index+1+i])
+	next i
+endfunction
+
+function DeleteAnimatedSprite(spr)
+	DeleteSprite(spr)
+	//index = imageA.find(spr)
+	index = ArrayFind(imageA, spr)
+	
+	//Checking we got a sprite ID and not an imageID
+	//if Abs(imageA[index] - imageA[index+1]) < 3 then //Find the next one, IDK
+		
+	size = imageA[index+1] + 2
+	for i = 1 to size
+		if i > 1 then DeleteImage(imageA[index])
+		imageA.remove(index)
+	next i
+	
+	//Check that the number after the current number is less than 30, to not accidentally find an image ID as an index
+endfunction
 
 function GetSpriteMiddleX(spr)
 	ret = GetSpriteX(spr) + GetSpriteWidth(spr)/2
@@ -61,6 +115,14 @@ endfunction
 
 function SetSpriteSizeSquare(spr, size)
 	SetSpriteSize(spr, size, size)
+endfunction
+
+function MatchSpriteSize(spr, sprOrigin)
+	SetSpriteSize(spr, GetSpriteWidth(sprOrigin), GetSpriteHeight(sprOrigin))
+endfunction
+
+function MatchSpritePosition(spr, sprOrigin)
+	SetSpritePosition(spr, GetSpriteX(sprOrigin), GetSpriteY(sprOrigin))
 endfunction
 
 function Hover(sprite) 
@@ -127,6 +189,33 @@ function IncSpriteAngle(spr, amt#)
 	SetSpriteAngle(spr, GetSpriteAngle(spr) + amt#)
 endfunction
 
+
+function IncSpriteSizeCentered(spr, amt#)
+	//The regular amt is for X
+	amtY# = amt# * GetSpriteHeight(spr)/GetSpriteWidth(spr)
+	SetSpritePosition(spr, GetSpriteX(spr)-amt#/2, GetSpriteY(spr)-amtY#/2)
+	SetSpriteSize(spr, GetSpriteWidth(spr)+amt#, GetSpriteHeight(spr)+amtY#)
+endfunction
+
+function IncSpriteSizeCenteredMult(spr, ratio#)
+	amt# = ratio#
+	SetSpritePosition(spr, GetSpriteMiddleX(spr)-(GetSpriteWidth(spr)*amt#)/2, GetSpriteMiddleY(spr)-(GetSpriteHeight(spr)*amt#)/2)
+	SetSpriteSize(spr, GetSpriteWidth(spr)*amt#, GetSpriteHeight(spr)*amt#)
+endfunction
+
+function IncTextX(txt, amt)
+	SetTextX(txt, GetTextX(txt) + amt)
+endfunction
+
+function IncTextY(txt, amt)
+	SetTextY(txt, GetTextY(txt) + amt)
+endfunction
+
+function SetSpriteSizeCentered(spr, newWid, newHei)
+	SetSpritePosition(spr, GetSpriteMiddleX(spr) - newWid, GetSpriteMiddleY(spr) - newHei)
+	SetSpriteSize(spr, newWid, newHei)
+endfunction
+
 function GlideToSpot(spr, x, y, denom)
 	SetSpritePosition(spr, (((GetSpriteX(spr)-x)*((denom-1)^fpsr#))/(denom)^fpsr#)+x, (((GetSpriteY(spr)-y)*((denom-1)^fpsr#))/(denom)^fpsr#)+y)
 endfunction
@@ -141,6 +230,14 @@ endfunction
 
 function GlideToWidth(spr, wid, denom)
 	SetSpriteSize(spr, (((GetSpriteWidth(spr)-wid)*((denom-1)^fpsr#))/(denom)^fpsr#)+wid, GetSpriteHeight(spr))
+endfunction
+
+function GlideToScissorX_L(spr, cutX, denom)
+	SetSpriteScissor(spr, (((cutX)*((denom-1)^fpsr#))/(denom)^fpsr#), 0, w, h)
+endfunction
+
+function GlideToScissorX_R(spr, cutX, denom)
+	SetSpriteScissor(spr, 0, 0, (((cutX)*((denom-1)^fpsr#))/(denom)^fpsr#), h)
 endfunction
 
 function GlideTextToSpot(txt, x, y, denom)
@@ -383,7 +480,7 @@ function ClearMultiTouch()
 		next
 		currentTouch.length = 0
 		
-		Sync()
+		SyncG()
 		ProcessMultitouch()
 	next j
 endfunction
@@ -415,6 +512,13 @@ function GetSoundPlayingR(sound)
 	endif
 	
 endfunction result
+
+function ArrayFind(array as integer[], var)
+	index = -1
+	for i = 0 to array.length
+		if array[i] = var then index = i
+	next i
+endfunction index
 
 function SetSpriteColorRandomBright(spr)
 	//Recoloring!
@@ -690,4 +794,53 @@ function PingUpdate()
 		endif
 	next i
 
+endfunction
+
+global buttons as Integer[0]
+global tweenButton = 15
+global tweenButtonOld = 16
+//tweenButton lasts until 35
+function ButtonsUpdate()
+	for i = 0 to buttons.length
+		if GetSpriteExists(buttons[i])
+			spr = buttons[i]
+			if (GetMulitouchPressedButton(spr) or Button(spr)) and GetSpriteVisible(spr)
+				
+				//Skips the current tween on an existing sprite, if still playing
+				skip = 0
+				for i = 15 to 35
+					if GetTweenSpritePlaying(i, spr) then skip = 1
+				next i
+				
+				//The case for playing the tween; no matter what, playing the sound
+				if skip = 0
+					if GetTweenExists(tweenButton) = 0 then CreateTweenSprite(tweenButton, .3)
+					//GetTween
+					impact# = 1.2
+					SetTweenSpriteSizeX(tweenButton, GetSpriteWidth(spr)*impact#, GetSpriteWidth(spr), TweenOvershoot())
+					SetTweenSpriteSizeY(tweenButton, GetSpriteHeight(spr)*impact#, GetSpriteHeight(spr), TweenOvershoot())
+					SetTweenSpriteX(tweenButton, GetSpriteMiddleX(spr)-(GetSpriteWidth(spr)*impact#)/2, GetSpriteX(spr), TweenOvershoot())
+					SetTweenSpriteY(tweenButton, GetSpriteMiddleY(spr)-(GetSpriteHeight(spr)*impact#)/2, GetSpriteY(spr), TweenOvershoot())
+					PlayTweenSprite(tweenButton, spr, 0)
+					
+					tweenButtonOld = tweenButton
+					inc tweenButton, 1
+					if tweenButton > 35 then tweenButton = 15
+				endif
+				
+				PlaySoundR(buttonSound, 100)
+				
+			endif
+			
+		endif
+	next i
+endfunction
+
+function AddButton(spr)
+	//buttons.sort()
+	index = buttons.find(spr)
+	if index = -1
+		buttons.insertsorted(spr)
+	endif
+	
 endfunction

@@ -43,9 +43,6 @@ Crab types (internal):
 
 */
 
-#constant MOBILE 1
-#constant DESKTOP 2
-
 //The timer for the starting screen
 global startTimer# = 0
 
@@ -76,6 +73,8 @@ global startTimer# = 0
 #constant frameratecrab4 18
 #constant frameratecrab5 10
 #constant frameratecrab6 15
+
+#constant lastTranType 2
 
 #constant hitSceneMax 240
 global hit1Timer# = 0
@@ -131,6 +130,7 @@ global nudge2Theta# = 0
 global gameDifficulty1 = 1
 global gameDifficulty2 = 1
 global difficultyBar = 10	//The amount of meteors it takes to make the difficulty go up
+global difficultyMax = 7
 
 global meteorTotal1 = 0
 global meteorTotal2 = 0
@@ -157,10 +157,20 @@ global specialTimerAgainst1# = 0
 #constant meteorMult# 1.3
 #constant specialMult# 1.8
 
+//The in game check to see if a special has been used once that game
+global special1Used = 0
+global special2Used = 0
+
 global spScore = 0
 global spHighScore = 0
 global spHighCrab$ = ""
+global spHighScoreClassic = 0
+global spHighCrabClassic$ = ""
 #constant spScoreMinSize = 70
+
+global spType = 0
+#constant MIRRORMODE 1
+#constant CLASSIC 2
 
 //Input buffers
 global buffer1 = 0
@@ -198,6 +208,12 @@ global met3CD2# = 0 //400
 #constant slowMetWidth 25
 #constant slowMetSpeedDen 8
 
+//Text Indexes
+#constant pauseTitle1 6
+#constant pauseTitle2 7
+#constant pauseDesc1 8
+#constant pauseDesc2 9
+
 //Sprite Indexes
 #constant crab1 1
 #constant crab2 2
@@ -211,6 +227,12 @@ global met3CD2# = 0 //400
 #constant pauseButton 8
 #constant playButton 9
 #constant exitButton 10
+#constant mainmenuButton 14
+
+//Just a sheet for when things need to be covered up
+#constant coverS 11
+#constant curtain 12
+#constant curtainB 13
 
 #constant planet1 101
 #constant planet2 102
@@ -238,8 +260,10 @@ global met3CD2# = 0 //400
 #constant specialBG 130
 #constant specialSprFront1 131
 #constant specialSprBack1 132
+#constant specialSprBacker1 135 //Only for Top and Chrono
 #constant specialSprFront2 133
 #constant specialSprBack2 134
+#constant specialSprBacker2 136 //Only for Top and Chrono
 
 //The sprite indexes of extra sprites needed for specials
 #constant special1Ex1 141
@@ -256,6 +280,7 @@ global met3CD2# = 0 //400
 
 #constant SPR_SP_SCORE 151
 #constant TXT_SP_SCORE 151
+#constant TXT_SP_DANGER 154
 
 #constant TXT_INTRO1 152
 #constant TXT_INTRO2 153
@@ -266,7 +291,11 @@ global met3CD2# = 0 //400
 #constant fontDescI 2	//Tahoma
 #constant fontDescItalI 4	//Tahoma (Italicized)
 #constant fontCrabI 3	//Somerset Barnyard
+#constant fontScoreI 1001	//SnowTunes UI Font
 
+#constant starParticleI 11
+
+//The indexs are reserved, but no constants are needed
 #constant crab1select1I 301
 #constant crab1select2I 302
 #constant crab1select3I 303
@@ -318,6 +347,9 @@ global met3CD2# = 0 //400
 #constant crab5attack2I 35
 #constant crab6attack2I 36
 
+#constant crab3attack3I 27
+#constant crab5attack3I 28
+
 #constant expOrbI 60
 #constant expBarI1 61
 #constant expBarI2 62
@@ -344,8 +376,12 @@ global met3CD2# = 0 //400
 #constant bg3I 83
 #constant bg4I 84
 #constant bg5I 85
+#constant bgPI 87 	//Pause foreground
+#constant bgRainSwipeI 88
 
 #constant meteorGlowI 86
+
+global loadedCrabSprites as Integer[0]
 
 #constant crab1start1I 101
 #constant crab1start2I 102
@@ -383,6 +419,24 @@ global met3CD2# = 0 //400
 #constant crab2skid2I 136
 #constant crab2skid3I 137
 
+#constant crab3start1I 141
+#constant crab3start2I 142
+#constant crab3walk1I 143
+#constant crab3walk2I 144
+#constant crab3walk3I 145
+#constant crab3walk4I 146
+#constant crab3walk5I 147
+#constant crab3walk6I 148
+#constant crab3walk7I 149
+#constant crab3walk8I 150
+#constant crab3jump1I 151
+#constant crab3jump2I 152
+#constant crab3death1I 153
+#constant crab3death2I 154
+#constant crab3skid1I 155
+#constant crab3skid2I 156
+#constant crab3skid3I 157
+
 #constant crab4start1I 161
 #constant crab4start2I 162
 #constant crab4walk1I 163
@@ -400,6 +454,24 @@ global met3CD2# = 0 //400
 #constant crab4skid1I 175
 #constant crab4skid2I 176
 #constant crab4skid3I 177
+
+#constant crab5start1I 181
+#constant crab5start2I 182
+#constant crab5walk1I 183
+#constant crab5walk2I 184
+#constant crab5walk3I 185
+#constant crab5walk4I 186
+#constant crab5walk5I 187
+#constant crab5walk6I 188
+#constant crab5walk7I 189
+#constant crab5walk8I 190
+#constant crab5jump1I 191
+#constant crab5jump2I 192
+#constant crab5death1I 193
+#constant crab5death2I 194
+#constant crab5skid1I 195
+#constant crab5skid2I 196
+#constant crab5skid3I 197
 
 #constant crab6start1I 201
 #constant crab6start2I 202
@@ -455,6 +527,9 @@ global planetVarI as Integer[planetITotalMax]
 #constant jumpPartI1 447 //447 - 452
 global jumpPartI as Integer[6]
 
+#constant attackPartI 453
+#constant attackPartInvertI 454
+
 //#constant planetVar1I 51
 //#constant planetVar2I 52
 //#constant planetVar3I 53
@@ -478,6 +553,12 @@ global jumpPartI as Integer[6]
 #constant par1jump 9
 #constant par2jump 10
 
+#constant parStar1 11
+#constant parStar2 12
+#constant parStar3 13
+
+#constant parAttack 21
+
 //Sound Indexes
 #constant turnS 1
 #constant jump1S 2
@@ -492,6 +573,7 @@ global jumpPartI as Integer[6]
 #constant arrowS 11
 #constant chooseS 12
 #constant gongS 13
+#constant buttonSound 14
 
 #constant exp1S 16
 #constant exp2S 17
@@ -504,12 +586,15 @@ global jumpPartI as Integer[6]
 #constant wizardSpell2S 23
 #constant ninjaStarS 24
 
+#constant mirrorBreakS 25
+
 
 
 //Music Indexes
 #constant titleMusic 101
 #constant characterMusic 102
 #constant resultsMusic 103
+#constant loserMusic 109
 
 #constant fightAMusic 104	//Andy's fight song
 #constant fightBMusic 105	//Brad's fight song
@@ -545,7 +630,12 @@ SetMusicSystemVolumeOGG(volumeM)
 #constant TXT_WAIT1 201
 #constant TXT_WAIT2 202
 #constant TXT_HIGHSCORE 203
+#constant TXT_SP_DESC 204
 #constant SPR_STARTAI 212
+#constant SPR_LOGO_HORIZ 213
+#constant SPR_LEADERBOARD 214
+#constant SPR_CLASSIC 215
+
 
 //Different Crab buttons for the single player mode
 #constant SPR_SP_C1 205
@@ -554,9 +644,6 @@ SetMusicSystemVolumeOGG(volumeM)
 #constant SPR_SP_C4 208
 #constant SPR_SP_C5 209
 #constant SPR_SP_C6 210
-
-#constant SPR_BG_SP 211
-
  
 //Character select screen sprites - player 1 
 #constant SPR_CS_READY_1 300 
@@ -595,6 +682,8 @@ SetMusicSystemVolumeOGG(volumeM)
 #constant tweenOnP1 2
 #constant tweenOffP2 3
 #constant tweenOnP2 4
+//global tweenButton = 5
+//tweenButton lasts until 25
 
 // Results screen sprites - player 1
 #constant TXT_R_CRAB_MSG_1 = 500
@@ -626,6 +715,7 @@ SetMusicSystemVolumeOGG(volumeM)
 global spActive = 0 //Single Player active
 global aiActive = 0 //VS AI active
 global paused = 0	//Game is currently paused
+global pauseTimer# = 0
 
 #constant glowS 20000
 type meteor
@@ -661,6 +751,8 @@ function LoadBaseSounds()
 		LoadSoundOGG(arrowS, "arrow.ogg")
 		LoadSoundOGG(chooseS, "choose.ogg")
 		LoadSoundOGG(gongS, "gong.ogg")
+		LoadSoundOGG(buttonSound, "select.ogg")
+		LoadSoundOGG(mirrorBreakS, "mirrorBreak.ogg")
 		
 		
 		LoadSoundOGG(exp1S, "exp1.ogg")
@@ -689,6 +781,8 @@ function LoadBaseSounds()
 		LoadMusicOGG(arrowS, "arrow.ogg")
 		LoadMusicOGG(chooseS, "choose.ogg")
 		LoadMusicOGG(gongS, "gong.ogg")
+		LoadMusicOGG(buttonSound, "select.ogg")
+		LoadMusicOGG(mirrorBreakS, "mirrorBreak.ogg")
 		
 		LoadMusicOGG(exp1S, "exp1.ogg")
 		LoadMusicOGG(exp2S, "exp2.ogg")
@@ -755,6 +849,7 @@ function PlayMusicOGGSP(songID, loopYN)
 			LoadMusicOGG(resultsMusic, "results.ogg")
 			SetMusicLoopTimesOGG(resultsMusic, 14.22, -1)
 		endif
+		if songID = loserMusic then LoadMusicOGG(loserMusic, "loser.ogg")
 		if songID = spMusic
 			LoadMusicOGG(spMusic, "spMusic.ogg")
 			SetMusicLoopTimesOGG(spMusic, .769, 25.384)
@@ -814,21 +909,29 @@ function LoadBaseImages()
 	LoadImage(fontDescI, "fontDesc.png")
 	LoadImage(fontDescItalI, "fontDescItal.png")
 	LoadImage(fontCrabI, "fontCrab.png")
+	LoadImage(fontScoreI, "ScoreFont.png")
 	
 	//#constant fontDesc 2
 	
 	SetFolder("/media/art")
 	
 	//The lives
+	//for i = 1 to 6
+		//Only loading in the base life images
+		//LoadImage(crab1life1I + (i-1)*3, "crab" + str(i) + "life1.png")
+	//next i
+	
 	for i = 1 to 6
-		if i = 1 or i = 2 or i = 4 or i = 6
-			for j = 1 to 3
-				LoadImage(crab1life1I - 1 + j + (i-1)*3, "crab" + str(i) + "life" + str(j) + ".png")
-			next j
-		endif
+		//Loading in the chibi crabs
+		//LoadImage(crab1life1I + (i-1)*3, "crab" + str(i) + "life1.png")
 	next i
 	
-	
+	//Old way of load lives (all of them)
+//~	for i = 1 to 6
+//~			for j = 1 to 3
+//~				LoadImage(crab1life1I - 1 + j + (i-1)*3, "crab" + str(i) + "life" + str(j) + ".png")
+//~			next j
+//~	next i
 	
 	SetFolder("/media/envi")
 	
@@ -837,6 +940,10 @@ function LoadBaseImages()
 	LoadImage(bg3I, "bg3.png")
 	LoadImage(bg4I, "bg4.png")
 	LoadImage(bg5I, "bg5.png")
+	LoadImage(bgPI, "pauseForeground.png")
+	LoadImage(bgRainSwipeI, "rainbowSwipe.png")
+	
+	LoadImage(starParticleI, "starParticle.png")
 	
 	for i = special4s1 to special4s8
 		LoadImage(i, "ravespprop" + str(i - special4s1 + 1) + ".png")
@@ -849,6 +956,8 @@ function LoadBaseImages()
 		LoadImage(jumpPartI[i], "jumpP" + str(i) + ".png")
 	next i
 	
+	LoadImage(attackPartI, "attackParticle.png")
+	LoadImage(attackPartInvertI, "attackParticleInvert.png")
 	
 	/*
 	LoadImage(planetVar1I, "planet1alt1.png")
@@ -897,7 +1006,7 @@ function LoadStartImages(loading)
 		//LoadImage(bg4I, "bg4.png")
 		
 		for i = 1 to 16
-			LoadImage(warpI1 - 1 + i, "hyperspacecolorized" + str(i) + ".png")
+			//LoadImage(warpI1 - 1 + i, "hyperspacecolorized" + str(i) + ".png")
 		next i
 		
 	else
@@ -905,7 +1014,7 @@ function LoadStartImages(loading)
 		
 		//DeleteImage(bg4I)
 		for i = 1 to 16
-			DeleteImage(warpI1 - 1 + i)
+			//DeleteImage(warpI1 - 1 + i)
 		next i
 		
 	endif
@@ -922,11 +1031,13 @@ function LoadCharacterSelectImages(loading)
 	
 		//Loading the start screen images
 		for i = 1 to 6
-			if i = 1 or i = 2 or i = 4 or i = 6
+			//if i = 1 or i = 2 or i = 4 or i = 6
 				for j = 1 to 6
 					LoadImage(crab1select1I - 1 + j + i*10, "crab" + str(i) + "select" + str(j) + ".png")
+					SyncG() //This is here so that the particles can keep on moving
 				next j
-			endif
+				//Sync() //This is here so that the particles can keep on moving
+			//endif
 		next i
 		
 		SetFolder("/media/envi")
@@ -1013,10 +1124,83 @@ function LoadGameImages(loading)
 //~			
 //~		endif
 		
-		SetFolder("/media/crabs")
-		
+		//The dynamic crab loader!
+		for i = 1 to 2
+			
+			SetFolder("/media/crabs")
+			
+			crabType = crab2Type
+			alt$ = "" //crab2Alt
+			
+			if i = 1
+				if crab1type = crab2type //TODO: Add alternate checker here
+					//The same crab
+					i = 2
+				else
+					//Different crabs
+					crabType = crab1Type
+					alt$ = "" //crab1Alt
+				endif
+			endif
+			
+			index = crab1start1I + (crabType-1)*20
+			
+			for j = 1 to 17
+				act$ = "" //The action to use in the sprite name
+				num = 0	//A second index, to subtract from the index, for the proper image name
+				if j <=2
+					act$ = "start"
+				elseif j <= 10
+					act$ = "walk"
+					num = -2
+				elseif j <= 12
+					act$ = "jump"
+					num = -10
+				elseif j <= 14
+					act$ = "death"
+					num = -12
+				else
+					act$ = "skid"
+					num = -14
+				endif
+					
+				LoadImage(index, "crab" + str(crabType) + alt$ + act$ + str(j+num) + ".png")
+			
+				
+				loadedCrabSprites.insert(index)
+				inc index, 1
+			next j
+			
+			SetFolder("/media/art")
+			
+			index = crab1attack1I - 1 + crabType
+			LoadImage(index, "crab" + str(crabType) + alt$ + "attack1.png")
+			LoadImage(index+10, "crab" + str(crabType) + alt$ + "attack2.png")
+			
+			if crabType = 3 then LoadImage(crab3attack3I, "crab3" + alt$ + "attack3.png")
+			if crabType = 5 then LoadImage(crab5attack3I, "crab5" + alt$ + "attack3.png")
+			
+			loadedCrabSprites.insert(index)
+			loadedCrabSprites.insert(index+10)
+			
+			//Lives loading
+			index = crab1life1I + (crabType-1)*3
+			for k = 1 to 3
+				LoadImage(index, "crab" + str(crabType) + alt$ + "life" + str(k) + ".png")
+				loadedCrabSprites.insert(index)
+				inc index, 1
+			next k
+			
+			SetFolder("/media/ui")
+			//Special images
+			
+			//TODO: crab1life1I images
+			
+		next i
+				
 		//Temporary if, until there is a better crab loading system
-		if GetImageExists(crab1start1I) = 0
+		if 1 = 0 // Not using //GetImageExists(crab1start1I) = 0
+			//Defunct, example for one crab
 			LoadImage(crab1start1I, "crab1start1.png")
 			LoadImage(crab1start2I, "crab1start2.png")
 			LoadImage(crab1walk1I, "crab1walk1.png")
@@ -1035,70 +1219,10 @@ function LoadGameImages(loading)
 			LoadImage(crab1skid2I, "crab1skid2.png")
 			LoadImage(crab1skid3I, "crab1skid3.png")
 			
-			LoadImage(crab2start1I, "crab2start1.png")
-			LoadImage(crab2start2I, "crab2start2.png")
-			LoadImage(crab2walk1I, "crab2walk1.png")
-			LoadImage(crab2walk2I, "crab2walk2.png")
-			LoadImage(crab2walk3I, "crab2walk3.png")
-			LoadImage(crab2walk4I, "crab2walk4.png")
-			LoadImage(crab2walk5I, "crab2walk5.png")
-			LoadImage(crab2walk6I, "crab2walk6.png")
-			LoadImage(crab2walk7I, "crab2walk7.png")
-			LoadImage(crab2walk8I, "crab2walk8.png")
-			LoadImage(crab2jump1I, "crab2jump1.png")
-			LoadImage(crab2jump2I, "crab2jump2.png")
-			LoadImage(crab2death1I, "crab2death1.png")
-			LoadImage(crab2death2I, "crab2death2.png")
-			LoadImage(crab2skid1I, "crab2skid1.png")
-			LoadImage(crab2skid2I, "crab2skid2.png")
-			LoadImage(crab2skid3I, "crab2skid3.png")
-			
-			LoadImage(crab4start1I, "crab4start1.png")
-			LoadImage(crab4start2I, "crab4start2.png")
-			LoadImage(crab4walk1I, "crab4walk1.png")
-			LoadImage(crab4walk2I, "crab4walk2.png")
-			LoadImage(crab4walk3I, "crab4walk3.png")
-			LoadImage(crab4walk4I, "crab4walk4.png")
-			LoadImage(crab4walk5I, "crab4walk5.png")
-			LoadImage(crab4walk6I, "crab4walk6.png")
-			LoadImage(crab4walk7I, "crab4walk7.png")
-			LoadImage(crab4walk8I, "crab4walk8.png")
-			LoadImage(crab4jump1I, "crab4jump1.png")
-			LoadImage(crab4jump2I, "crab4jump2.png")
-			LoadImage(crab4death1I, "crab4death1.png")
-			LoadImage(crab4death2I, "crab4death2.png")
-			LoadImage(crab4skid1I, "crab4skid1.png")
-			LoadImage(crab4skid2I, "crab4skid2.png")
-			LoadImage(crab4skid3I, "crab4skid3.png")
-			
-			LoadImage(crab6start1I, "crab6start1.png")
-			LoadImage(crab6start2I, "crab6start2.png")
-			LoadImage(crab6walk1I, "crab6walk1.png")
-			LoadImage(crab6walk2I, "crab6walk2.png")
-			LoadImage(crab6walk3I, "crab6walk3.png")
-			LoadImage(crab6walk4I, "crab6walk4.png")
-			LoadImage(crab6walk5I, "crab6walk5.png")
-			LoadImage(crab6walk6I, "crab6walk6.png")
-			LoadImage(crab6walk7I, "crab6walk7.png")
-			LoadImage(crab6walk8I, "crab6walk8.png")
-			LoadImage(crab6jump1I, "crab6jump1.png")
-			LoadImage(crab6jump2I, "crab6jump2.png")
-			LoadImage(crab6death1I, "crab6death1.png")
-			LoadImage(crab6death2I, "crab6death2.png")
-			LoadImage(crab6skid1I, "crab6skid1.png")
-			LoadImage(crab6skid2I, "crab6skid2.png")
-			LoadImage(crab6skid3I, "crab6skid3.png")
-			
 			SetFolder("/media/art")
 	
 			LoadImage(crab1attack1I, "crab1attack1.png")
 			LoadImage(crab1attack2I, "crab1attack2.png")
-			LoadImage(crab2attack1I, "crab2attack1.png")
-			LoadImage(crab2attack2I, "crab2attack2.png")
-			LoadImage(crab4attack1I, "crab4attack1.png")
-			LoadImage(crab4attack2I, "crab4attack2.png")
-			LoadImage(crab6attack1I, "crab6attack1.png")
-			LoadImage(crab6attack2I, "crab6attack2.png")
 		endif
 		
 	else
@@ -1119,6 +1243,17 @@ function LoadGameImages(loading)
 		next i
 		for i = 1 to planetITotalMax - planetIMax
 			DeleteImage(planetVarI[planetIMax + i])
+		next i
+		
+		if GetImageExists(crab3attack3I) then DeleteImage(crab3attack3I)
+		if GetImageExists(crab5attack3I) then DeleteImage(crab5attack3I)
+		
+		cLength = loadedCrabSprites.length
+		for i = 0 to cLength
+			if GetImageExists(loadedCrabSprites[i]) then DeleteImage(loadedCrabSprites[i])
+		next i
+		for i = 0 to cLength
+			loadedCrabSprites.remove(0)
 		next i
 		
 //~		if GetDeviceBaseName() = "android"
@@ -1152,6 +1287,28 @@ function LoadResultImages(loading)
 	
 	
 endfunction
+
+
+global crabPause1 as string[6]
+global crabPause2 as string[6]
+
+function SetCrabStrings()
+	crabPause1[1] = "Speed: {{{}} Turn: {{{}}" + chr(10) + "Double-tap: Roll Forward"
+	crabPause1[2] = "Speed: {{}}} Turn: {{{{}" + chr(10) + "Double-tap: Launch Forward"
+	crabPause1[3] = "Speed: {{{{{ Turn: {}}}}" + chr(10) + "Double-tap: Quick Brake"
+	crabPause1[4] = "Speed: {{{{} Turn: {{}}}" + chr(10) + "Double-tap: Launch Up"
+	crabPause1[5] = "Speed: {{{}} Turn: {{{}}" + chr(10) + "Double-tap: Roll Back"
+	crabPause1[6] = "Speed: {{{}} Turn: {{{{{" + chr(10) + "Tap: Instant Turn"
+	
+	crabPause2[1] = "Special: Meteor Shower" + chr(10) + "Call Space Ned to rain down" + chr(10) + "fast meteors on your opponent."
+	crabPause2[2] = "Special: Conjure Comets" + chr(10) + "Materialize three waves of" + chr(10) + "comets on the opposite screen."
+	crabPause2[3] = "Special: Orbital Nightmare" + chr(10) + "Make everything (planets, meteors," + chr(10) + "crabs) on the other screen spin."
+	crabPause2[4] = "Special: Party Time!" + chr(10) + "Obscure your opponent's vision" + chr(10) + "with intense rave lights."
+	crabPause2[5] = "Special: Fast Forward" + chr(10) + "Speed up your enemy's" + chr(10) + "game for a short while."
+	crabPause2[6] = "Special: Shuri-Krustacean" + chr(10) + "Fling deadly projecticles" + chr(10) + "directly up the screen."
+endfunction
+
+
 
 /*
 The Code Graveyard

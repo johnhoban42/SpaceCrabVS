@@ -5,6 +5,8 @@ function DrawPolar2(spr, rNum, theta#)
 	if GetSpriteExists(spr)
 		cenX = w/2
 		cenY = h/4 - GetSpriteHeight(split)/4
+		if spType = CLASSIC then cenY = 10000
+		//Placeholder for Classic SP game
 		SetSpritePosition(spr, rNum*cos(theta#) + cenX - GetSpriteWidth(spr)/2, rNum*sin(theta#) + cenY - GetSpriteHeight(spr)/2)
 		SetSpriteAngle(spr, theta#+90)
 	endif
@@ -28,7 +30,7 @@ function CreateGame2()
 	if GetSpriteExists(bgGame2) = 0 then CreateSprite(bgGame2, 0)
 	SetSpriteImage(bgGame2, bg1I)
 	SetBGRandomPosition(bgGame2)
-	SetSpriteDepth(bgGame2, 100)
+	SetSpriteDepth(bgGame2, 101)
 	
 	crab2Theta# = 90
 	DrawPolar2(crab2, crab2R#, crab2Theta#)
@@ -57,7 +59,7 @@ function CreateGame2()
 		crab2JumpDMax = 40
 		
 	elseif crab2Type = 3	//Top
-		for i = crab1start1I to crab1skid3I
+		for i = crab3start1I to crab3skid3I
 			AddSpriteAnimationFrame(crab2, i)
 		next i
 		crab2framerate = frameratecrab3
@@ -81,7 +83,7 @@ function CreateGame2()
 		crab2JumpDMax = 43
 		
 	elseif crab2Type = 5	//Chrono
-		for i = crab1start1I to crab1skid3I
+		for i = crab5start1I to crab5skid3I
 			AddSpriteAnimationFrame(crab2, i)
 		next i
 		crab2framerate = frameratecrab5
@@ -114,44 +116,44 @@ function CreateGame2()
 	
 	PlaySprite(crab2, crab2framerate, 1, 3, 10)
 	
-	CreateSprite(expHolder2, 0)
-	SetSpriteSize(expHolder2, w - 230, 40)
+	SetFolder("/media/ui")
+	CreateSpriteExistingAnimation(expHolder2, expHolder1)
+	SetSpriteSize(expHolder2, w - 130, 40)
 	SetSpriteMiddleScreenX(expHolder2)
 	SetSpriteY(expHolder2, 10)
 	SetSpriteDepth(expHolder2, 18)
-	SetSpriteColor(expHolder2, 150, 150, 150, 200)
+	PlaySprite(expHolder2, 20, 0, 1, 1)
+	SetSpriteAngle(expHolder2, 180)
 
-	CreateSprite(expBar2, 0)
-	SetSpriteSize(expBar2, 0, 26)
-	SetSpritePosition(expBar2, GetSpriteX(expHolder2) + 10, GetSpriteY(expHolder2) + 7)
+	CreateSpriteExistingAnimation(expbar2, expBar1)
+	SetSpriteSize(expbar2, GetSpriteWidth(expHolder2), GetSpriteHeight(expHolder2))
+	SetSpritePosition(expbar2, GetSpriteX(expHolder2), GetSpriteY(expHolder2))
 	SetSpriteDepth(expBar2, 18)
-	SetSpriteColor(expBar2, 255, 160, 0, 255)
-	AddSpriteAnimationFrame(expBar2, expBarI1)
-	AddSpriteAnimationFrame(expBar2, expBarI2)
-	AddSpriteAnimationFrame(expBar2, expBarI3)
-	AddSpriteAnimationFrame(expBar2, expBarI4)
-	AddSpriteAnimationFrame(expBar2, expBarI5)
-	AddSpriteAnimationFrame(expBar2, expBarI6)
-	//Current EXP bar animation is a temp one, this is just the framework
 	PlaySprite(expBar2, 20, 1, 1, 6)
+	SetSpriteAngle(expBar2, 180)
 	
-	CreateSprite(meteorButton2, 0)
+	LoadAnimatedSprite(meteorButton2, "attacke", 5)
+	PlaySprite(meteorButton2, 0, 0, 5, 5)
 	SetSpriteSize(meteorButton2, 90, 90)
-	SetSpritePosition(meteorButton2, GetSpriteX(expHolder2) + GetSpriteWidth(expHolder2) + 13, 10)
+	SetSpritePosition(meteorButton2, GetSpriteX(expHolder2) + GetSpriteWidth(expHolder2) + 13 - 50, 10)
 	SetSpriteDepth(meteorButton2, 15)
-	SetSpriteColor(meteorButton2, 30, 100, 255, 100)
+	SetSpriteColor(meteorButton2, 100, 100, 100, 255)
+	SetSpriteAngle(meteorButton2, 180)
 	//Might want to make the Y based on the sxp bar holder instead of the screen height
 	
-	CreateSpriteExpress(meteorMarker2, 4, GetSpriteHeight(expHolder2)+4, 0, GetSpriteY(expHolder2)-2, 14)
+	LoadSpriteExpress(meteorMarker2, "meteormark.png", 8, GetSpriteHeight(expHolder2)+4, 0, GetSpriteY(expHolder2)-2, 14)
 	//The X is on a seperate line because it is long
-	SetSpriteX(meteorMarker2, GetSpriteX(expHolder2) + GetSpriteWidth(expHolder2) - 1.0*(GetSpriteWidth(expHolder2)-20)*meteorCost2/specialCost2 + 4)
+	SetSpriteX(meteorMarker2, GetSpriteX(expHolder2) + GetSpriteWidth(expHolder2) - 1.0*(GetSpriteWidth(expHolder2)-20)*meteorCost2/specialCost2 + 4 + .116*GetSpriteWidth(expHolder1))
 	SetSpriteColor(meteorMarker2, 30, 100, 255, 255)
+	SetSpriteAngle(meteorMarker2, 180)
 	
-	CreateSprite(specialButton2, 0)
+	LoadAnimatedSprite(specialButton2, "crab" + str(crab2Type)+ "special", 5)
+	SetSpriteFrame(specialButton2, 5)
 	SetSpriteSize(specialButton2, 100, 100)
-	SetSpritePosition(specialButton2, GetSpriteX(expHolder2)-10-GetSpriteWidth(specialButton2)+2, 10)
+	SetSpritePosition(specialButton2, GetSpriteX(expHolder2)-10-GetSpriteWidth(specialButton2)+2 + 50, 10)
 	SetSpriteDepth(specialButton2, 15)
-	SetSpriteColor(specialButton2, 20, 255, 40, 100)
+	SetSpriteColor(specialButton2, 100, 100, 100, 255)
+	SetSpriteAngle(specialButton2, 180)
 	
 	crab2PlanetS[1] = 126
 	crab2PlanetS[2] = 127
@@ -159,7 +161,7 @@ function CreateGame2()
 	//The planet UI that shows how many lives are left
 	for i = 1 to 3 //The 4 minus below makes the planet sprites go in the correct order for the top
 		CreateSpriteExpress(crab2PlanetS[i], planetIconSize, planetIconSize, w/2 - planetIconSize/2 + (i-2)*planetIconSize*1.5, h/2 - 80 - planetIconSize, 5)
-		if crab2Type = 1 or crab2Type = 2 or crab2Type = 4 or crab2Type = 6 then SetSpriteImage(crab2PlanetS[i], crab1life1I - 1 + (crab2Type-1)*3 + i)
+		SetSpriteImage(crab2PlanetS[i], crab1life1I - 1 + (crab2Type-1)*3 + i)
 		if i > 1 then SetSpriteSize(crab2PlanetS[i], planetIconSize/4, planetIconSize/4)
 		DrawPolar2(crab2PlanetS[i], 300, 90 + (i-2)*20)
 		SetSpriteAngle(crab2PlanetS[i], 180)
@@ -167,6 +169,7 @@ function CreateGame2()
 	
 	//Setting gameplay parameters to their proper values
 	crab2Deaths = 0
+	special0Used = 0
 	
 	if spActive
 		for i = 1 to 3
@@ -181,7 +184,15 @@ function CreateGame2()
 	
 	
 	
+	
 		//Empty space to line up with single player graphics (text and text-holding sprite
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	
@@ -254,12 +265,12 @@ function DoGame2()
 			//The normal
 			fpsr# = fpsr# * 1.9
 		endif
-		DrawPolar2(special1Ex1, GetSpriteHeight(special1Ex1)/2, 90 - (specialTimerAgainst2#/chronoCrabTimeMax)*1080*6) //Minute Hand
-		DrawPolar2(special1Ex2, GetSpriteHeight(special1Ex2)/2, 90 - (specialTimerAgainst2#/chronoCrabTimeMax)*360*2) //Hour Hand
+		DrawPolar2(special1Ex1, 0, 90 - (specialTimerAgainst2#/chronoCrabTimeMax)*1080*6) //Minute Hand
+		DrawPolar2(special1Ex2, 0, 90 - (specialTimerAgainst2#/chronoCrabTimeMax)*360*2) //Hour Hand
 		//Clock wiggle
 		SetSpriteSize(special1Ex3, 150+12*sin(specialTimerAgainst2#*6), 150+12*cos(specialTimerAgainst2#*5))
 		DrawPolar2(special1Ex3, 0, 0)
-		SetSpriteAngle(special1Ex3, 180 + 5.0*cos(specialTimerAgainst2#*2))
+		SetSpriteAngle(special1Ex3, 0 + 5.0*cos(specialTimerAgainst2#*2))
 	endif
 	
 	//The Ninja Crab special
@@ -485,6 +496,7 @@ function DoGame2()
 		//Kill crab
 		inc crab2Deaths, 1
 		hit2Timer# = hitSceneMax
+		if crab2Deaths = 3 then hit2Timer# = hitSceneMax/3
 		
 		for i = special1Ex1 to special1Ex5
 			if GetSpriteExists(i)
@@ -674,7 +686,7 @@ function UpdateMeteor2()
 		inc meteorTotal2, 1
 		
 		//Updating the difficulty
-		if Mod(meteorTotal2, difficultyBar) = 0 and gameDifficulty2 < 7
+		if Mod(meteorTotal2, difficultyBar) = 0 and gameDifficulty2 < difficultyMax
 			inc gameDifficulty2, 1
 		endif
 	endif
@@ -685,44 +697,56 @@ function UpdateButtons2()
 	
 	if expTotal2 = specialCost2
 		//Bar is full
-		if GetSpriteColorAlpha(specialButton2) < 255 and hit1Timer# = 0 then PingColor(GetSpriteMiddleX(specialButton2), GetSpriteMiddleY(specialButton2), 250, 20, 255, 40, GetSpriteDepth(specialButton2)+1)
-		SetSpriteColor(expBar2, 255, 210, 50, 255)
-		PlaySprite(expBar2, 30, 1, 1, 6)
-		SetSpriteColor(specialButton2, 20, 255, 40, 255)
+		if GetSpriteColorRed(specialButton2) < 255 and hit1Timer# = 0 then PingColor(GetSpriteMiddleX(specialButton2), GetSpriteMiddleY(specialButton2), 250, 20, 255, 40, GetSpriteDepth(specialButton2)+1)
+		SetSpriteColor(specialButton2, 255, 255, 255, 255)
+		if GetSpriteCurrentFrame(specialButton2) = 5 then PlaySprite(specialButton2, 15, 1, 1, 4)
+		if GetSpritePlaying(expHolder2) = 0 then PlaySprite(expHolder2, 20, 1, 1, 12)
 	else
 		//Bar is not full
-		SetSpriteColor(expBar2, 255, 160, 0, 255)
-		PlaySprite(expBar2, 20, 1, 1, 6)
-		SetSpriteColor(specialButton2, 20, 255, 40, 100)
+		SetSpriteColor(specialButton2, 100, 100, 100, 255)
+		PlaySprite(specialButton2, 0, 0, 5, 5)
+		PlaySprite(expHolder2, 20, 0, 1, 1)
+		StopSprite(expHolder2)
 	endif
 	
 	if expTotal2 >= meteorCost2
 		//Enabling the button
-		if GetSpriteColorAlpha(meteorButton2) < 255 and hit1Timer# = 0 then PingColor(GetSpriteMiddleX(meteorButton2), GetSpriteMiddleY(meteorButton2), 370, 30, 100, 255, GetSpriteDepth(meteorButton2)+1)
-		SetSpriteColor(meteorButton2, 30, 100, 255, 255)
+		if GetSpriteColorRed(meteorButton2) < 255 and hit1Timer# = 0 then PingColor(GetSpriteMiddleX(meteorButton2), GetSpriteMiddleY(meteorButton2), 370, 30, 100, 255, GetSpriteDepth(meteorButton2)+1)
+		SetSpriteColor(meteorButton2, 255, 255, 255, 255)
+		if GetSpriteCurrentFrame(meteorButton2) = 5 then PlaySprite(meteorButton2, 15, 1, 1, 4)
 	else
 		//Disabling the button
-		SetSpriteColor(meteorButton2, 30, 100, 255, 100)
+		SetSpriteColor(meteorButton2, 100, 100, 100, 255)
+		PlaySprite(meteorButton2, 0, 0, 5, 5)
+		StopSprite(meteorButton2)
 	endif
 	
-	SetSpriteX(meteorMarker2, GetSpriteX(expHolder2) + GetSpriteWidth(expHolder2) - 1.0*(GetSpriteWidth(expHolder2)-20)*meteorCost2/specialCost2 + 4)
+	SetSpriteX(meteorMarker2, Max(GetSpriteX(expHolder2) + GetSpriteWidth(expHolder2) - 1.0*(GetSpriteWidth(expHolder2)-20)*meteorCost2/specialCost2 + 4 - .116*GetSpriteWidth(expHolder1), GetSpriteX(specialButton2)+GetSpriteWidth(specialButton2)+10))
 endfunction
 
 function SendMeteorFrom2()
 	PlaySoundR(arrowS, 100)
 	
 	CreateMeteor(1, 4, 0)
+	inc expTotal2, -1*meteorCost2
 	
 	meteorCost2 = meteorCost2*meteorMult#
 	if meteorCost2 > specialCost2-1 then meteorCost2 = specialCost2-1
 	
-	inc expTotal2, -1*meteorCost2
+	SetParticlesDirection(parAttack, 0, 1)
+	SetParticlesPosition(parAttack, GetSpriteMiddleX(meteorButton2), GetSpriteMiddleY(meteorButton2))
+	SetParticlesImage (parAttack, attackPartInvertI)
+	ResetParticleCount(parAttack)
+	
+	SetSpriteX(expBar2, GetSpriteX(expHolder2) + GetSpriteWidth(expHolder2))
+	
 	UpdateButtons2()
 endfunction
 
 function SendSpecial2()
 	
-	ShowSpecialAnimation(crab2Type)
+	ShowSpecialAnimation(crab2Type, special2Used)
+	special2Used = 1
 	
 	newMetS as meteor
 	
@@ -830,6 +854,7 @@ function SendSpecial2()
 		size = 160
 		
 		SetSpriteSize(special2Ex1, size, h/2)
+		SetSpritePosition(special2Ex1, 0, 0)
 		
 		SetSpriteSize(special2Ex2, size, h/2)
 		SetSpriteFlip(special2Ex2, 1, 0)
@@ -861,18 +886,18 @@ function SendSpecial2()
 		specialTimerAgainst1# = chronoCrabTimeMax
 		
 		if GetSpriteExists(special2Ex1) = 0
-			CreateSpriteExpress(special2Ex1, 12, 80, -100, -100, 6)	//Minute hand
-			CreateSpriteExpress(special2Ex2, 20, 60, -100, -100, 6)	//Hour hand
-			CreateSpriteExpress(special2Ex3, 100, 100, -200, -200, 7)	//Clock
+			SetFolder("/media/ui")
+			LoadSpriteExpress(special2Ex1, "clockhand2b.png", 100, 100, -100, -100, 6)	//Minute hand
+			LoadSpriteExpress(special2Ex2, "clockhand1b.png", 100, 100, -100, -100, 6)	//Hour hand
+			LoadSpriteExpress(special2Ex3, "clock.png", 100, 100, -200, -200, 7)	//Clock
 		endif
 		
 		SetSpriteColorAlpha(special2Ex1, 0)
 		SetSpriteColorAlpha(special2Ex2, 0)
-		SetSpriteColor(special2Ex3, 100, 100, 100, 0)
+		SetSpriteColorAlpha(special2Ex3, 0)
 		
-		
-		DrawPolar1(special2Ex1, GetSpriteHeight(special2Ex1)/2, 270 + (specialTimerAgainst1#/chronoCrabTimeMax)*1080)
-		DrawPolar1(special2Ex2, GetSpriteHeight(special2Ex2)/2, 270 + (specialTimerAgainst1#/chronoCrabTimeMax)*360)
+		DrawPolar1(special2Ex1, 0, 270 + (specialTimerAgainst1#/chronoCrabTimeMax)*1080)
+		DrawPolar1(special2Ex2, 0, 270 + (specialTimerAgainst1#/chronoCrabTimeMax)*360)
 		
 		//Clock wiggle
 		SetSpriteSize(special2Ex3, 150+12*sin(specialTimerAgainst1#*4), 150+12*cos(specialTimerAgainst1#*3))
@@ -890,6 +915,7 @@ function SendSpecial2()
 			if GetSpriteExists(i) = 0 then CreateSpriteExpress(i, ninjaStarSize, ninjaStarSize, -200, -200, 4)
 			SetSpriteImage(i, ninjaStarI)
 			SetSpriteColorAlpha(i, 0)
+			//SetSpriteShapeCircle(i, 0, 0, ninjaStarSize*2.2/7, 0)
 		next i
 		
 	endif
@@ -964,6 +990,7 @@ function HitScene2()
 				PlaySoundR(crackS, 100)
 				PlaySoundR(explodeS, 100)
 				inc crab2R#, -20
+				SetFolder("/media")
 				LoadSprite(bgHit2, "envi/bg0.png")
 				SetSpriteSizeSquare(bgHit2, w)
 				DrawPolar2(bgHit2, 0, crab2Theta#)
@@ -1089,6 +1116,7 @@ function HitScene2()
 		state = RESULTS
 	endif
 	
+	//The visual update code, based on what is happening above
 	DrawPolar2(crab2, crab2R#, crab2Theta#)
 	
 	if hit2Timer# > hitSceneMax*11/12
