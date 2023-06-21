@@ -5,6 +5,7 @@
 #include "characterSelect.agc"
 #include "results.agc"
 #include "ai.agc"
+#include "story.agc"
 #company_name "rondovo"
 
 // Project: SpaceCrabVS 
@@ -130,6 +131,8 @@ do
 		appState = DoGame()
 	elseif appState = RESULTS
 		appState = DoResults()
+	elseif appState = STORY
+		appState = DoStory()
 	endif
 	
 	touch = GetRawFirstTouchEvent(1)
@@ -146,6 +149,10 @@ do
     
 		//Print(GetDeviceBaseName())
 	Print(GetImageMemoryUsage())
+	
+	//Print(GetPointerX())
+	//Print(GetPointerY())
+	
     SyncG()
 loop
 

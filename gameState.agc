@@ -56,9 +56,8 @@ function InitGame()
 	AddButton(exitButton)
 	AddButton(mainmenuButton)
 	
-	SetFolder("/media")
-	
 	difficultyMax = 7
+	difficultyBar = 10
 	//The special classic mode setup
 	if spType = CLASSIC
 		SetSpriteVisible(split, 0)
@@ -76,12 +75,36 @@ function InitGame()
 		SetSpriteSize(bgGame1, h, h)
 		SetSpriteMiddleScreen(bgGame1)
 		difficultyMax = 9
+		difficultyBar = 9
 		
-		SetSpritePosition(pauseButton, w - 100 - GetSpriteWidth(pauseButton), 220)
+		DeleteSprite(bgGame2)
+		zoom# = GetViewZoom()
+		
+		//Adjusting the pause button positions, as well as creating phantom buttons for collision detection
+		SetSpritePosition(pauseButton, w - 120 - GetSpriteWidth(pauseButton), 290)
+		IncSpriteSizeCenteredMult(exitButton, 1/zoom#)
+		IncSpriteSizeCenteredMult(mainmenuButton, 1/zoom#)
+		
+		IncSpriteSizeCenteredMult(pauseButton, 1/zoom#*1.2)
+		LoadSpriteExpress(phantomPauseButton, "pause.png", GetSpriteWidth(pauseButton)*zoom#, GetSpriteHeight(pauseButton)*zoom#, 697-GetSpriteWidth(pauseButton)/2, 200-GetSpriteWidth(pauseButton)/2, 1)
+		SetSpriteColorAlpha(phantomPauseButton, 0)
+		AddButton(phantomPauseButton)
+		
+		IncSpriteSizeCenteredMult(playButton, 1/zoom#)
+		SetSpriteShapeCircle(playButton, GetSpriteWidth(playButton)/2, GetSpriteHeight(playButton)/2, GetSpriteWidth(playButton)*zoom#)
+		
+		IncSpriteX(exitButton, -70)
+		LoadSpriteExpress(phantomExitButton, "crabselect.png", GetSpriteWidth(exitButton)*zoom#, GetSpriteHeight(exitButton)*zoom#, 659-GetSpriteWidth(exitButton)/2, 803-GetSpriteWidth(exitButton)/2, 1)
+		SetSpriteColorAlpha(phantomExitButton, 0)
+		SetSpriteVisible(phantomExitButton, 0)
+		AddButton(phantomPauseButton)
+		
 		StartGameMusic()
 	endif
 	//For multiplayer mode, the music is started in a different place
 	//if spActive = 1 then StartGameMusic()
+	
+	SetFolder("/media")
 	
 	gameStateInitialized = 1
 		
@@ -171,8 +194,15 @@ function DoGame()
 		endif
 	
 		if ButtonMultitouchEnabled(pauseButton)
+			if paused = 0 then PauseGame()
 			paused = 1
-			PauseGame()
+		endif
+		
+		if GetSpriteExists(phantomPauseButton)
+			if ButtonMultitouchEnabled(phantomPauseButton)
+				if paused = 0 then PauseGame()
+				paused = 1
+			endif
 		endif
 		
 		// Check for state updates (pausing, losing). Sorry Player 2, Player 1 gets checked first.
@@ -198,8 +228,14 @@ function DoGame()
 			UnpauseGame()
 		endif
 		
-		if ButtonMultitouchEnabled(exitButton) and GetSpriteVisible(exitButton)
+		exitG = 0
+		if GetSpriteExists(phantomExitButton)
+			if ButtonMultitouchEnabled(phantomExitButton) and GetSpriteVisible(phantomExitButton) then exitG = 1
+		endif
+		
+		if (ButtonMultitouchEnabled(exitButton) and GetSpriteVisible(exitButton)) or exitG
 			TransitionStart(Random(1,lastTranType))
+			SetViewZoom(1)
 			state = CHARACTER_SELECT
 			if spActive then state = START
 			UnpauseGame()
@@ -207,6 +243,7 @@ function DoGame()
 		
 		if ButtonMultitouchEnabled(mainmenuButton) and GetSpriteVisible(mainmenuButton)
 			TransitionStart(Random(1,lastTranType))
+			SetViewZoom(1)
 			state = START
 			crab1Deaths = 0
 			crab2Deaths = 0
@@ -248,6 +285,8 @@ function EndGameScene()
 	endif
 	
 	endStage = 0
+	
+	SetFolder("/media")
 	
 	//Setup for the scene
 	LoadSprite(bgHit1, "envi/bg0.png")
@@ -325,8 +364,7 @@ function EndGameScene()
 				DrawPolar2(crabS, crabSR#, crabSTheta#)
 			endif
 			range = (hitTimer#-endSceneMax*2/4)/2
-			IncSpritePosition(crabS, Random(-range, range), Random(-range, range))	
-			SetSpriteColorAlpha(bgGame1, 80)
+			IncSpritePosition(crabS, Random(-range, range), Random(-range, range))
 			
 		//Crab is hit third time
 		elseif hitTimer# >= endSceneMax/4
@@ -526,7 +564,7 @@ function EndClassicScene()
 	next i
 
 	PlaySprite(crab1, 0, 1, 13, -1)
-
+	
 	while hitTimer# > 0
 	
 		inc hitTimer#, -1*fpsr#
@@ -627,6 +665,8 @@ function DeleteGameUI()
 	DeleteSprite(playButton)
 	DeleteSprite(exitButton)
 	DeleteSprite(mainmenuButton)
+	if GetSpriteExists(phantomPauseButton) then DeleteSprite(phantomPauseButton)
+	if GetSpriteExists(phantomExitButton) then DeleteSprite(phantomExitButton)
 	
 	if spActive
 		DeleteSprite(SPR_SP_SCORE)
@@ -722,7 +762,7 @@ function ExitGame()
 	//Game 2 (Top)
 	DeleteSprite(planet2)
 	DeleteSprite(crab2)
-	DeleteSprite(bgGame2)
+	if GetSpriteExists(bgGame2) then DeleteSprite(bgGame2)
 	specialTimerAgainst2# = 0
 		
 	met1CD2# = 50
@@ -765,12 +805,14 @@ endfunction
 function PauseGame()
 	
 	PlaySoundR(buttonSound, 100)
-	
-	CreateSpriteExpress(curtainB, h, h, 0, 0, 2)
+	zoom# = GetViewZoom()
+	CreateSpriteExpress(curtainB, h/zoom#, h/zoom#, 0, 0, 2)
 	SetSpriteImage(curtainB, bg3I)
+	SetSpriteMiddleScreen(curtainB)
 	
-	CreateSpriteExpress(curtain, w, h, 0, 0, 2)
+	CreateSpriteExpress(curtain, w/zoom#, h/zoom#, 0, 0, 2)
 	SetSpriteImage(curtain, bgPI)
+	SetSpriteMiddleScreen(curtain)
 	
 	if spType = CLASSIC
 		IncSpriteSizeCenteredMult(curtain, GetViewZoom())
@@ -778,8 +820,10 @@ function PauseGame()
 	endif
 	
 	SetSpriteVisible(pauseButton, 0)
+	if GetSpriteExists(phantomPauseButton) then SetSpriteVisible(phantomPauseButton, 0)
 	SetSpriteVisible(playButton, 1)
 	SetSpriteVisible(exitButton, 1)
+	if GetSpriteExists(phantomExitButton) then SetSpriteVisible(phantomExitButton, 1)
 	if spActive = 0 then SetSpriteVisible(mainmenuButton, 1)
 	
 	pauseTimer# = Random(0, 359)
@@ -799,13 +843,13 @@ function PauseGame()
 		//The titles
 		if i <= 7
 			SetTextFontImage(i, fontCrabI)
-			SetTextSize(i, 100)
-			SetTextSpacing(i, -22)
+			SetTextSize(i, 100/zoom#)
+			SetTextSpacing(i, -22/zoom#)
 			SetTextPosition(i, w/2, 980)
 		else //The descriptions
 			SetTextFontImage(i, fontDescI)
-			SetTextSize(i, 55)
-			SetTextSpacing(i, -15)
+			SetTextSize(i, 55/zoom#)
+			SetTextSpacing(i, -15/zoom#)
 			SetTextPosition(i, w/2, 1115)
 		endif
 		//The bottom (game 1)
@@ -835,7 +879,7 @@ function PauseGame()
 	//The single player special text
 	if spActive = 1
 		SetTextString(pauseTitle2, "Mirror Mode")
-		SetTextString(pauseDesc2, "A mysterious reflective surface split our" + chr(10) + "hero into two! Souls split across space," + chr(10) + "the crab still acts as one. Prove" + chr(10) + "that you can live to fight another day!")
+			SetTextString(pauseDesc2, "A mysterious reflective surface split our" + chr(10) + "hero into two! Souls split across space," + chr(10) + "the crab still acts as one. Prove" + chr(10) + "that you can live to fight another day!")
 		
 		IncTextY(pauseTitle1, 100)
 		IncTextY(pauseDesc1, 120)
@@ -844,11 +888,40 @@ function PauseGame()
 		SetTextAngle(pauseDesc2, 0)
 		
 		SetTextY(pauseTitle2, 180)
-		SetTextSize(pauseTitle2, 120)
+		SetTextSize(pauseTitle2, 120/zoom#)
 		SetTextY(pauseDesc2, 380)
-		SetTextSize(pauseDesc2, 50)
+		SetTextSize(pauseDesc2, 50/zoom#)
 	
 	endif
+	
+	if spType = CLASSIC
+		SetTextString(pauseTitle2, "Classic Mode")
+		SetTextSpacing(pauseTitle2, GetTextSpacing(pauseTitle2) - 3)
+		SetTextSpacing(pauseDesc2, GetTextSpacing(pauseDesc2) + 1)
+		IncTextY(pauseTitle2, 190)
+		IncTextY(pauseDesc2, 100)
+		rand = Random(1, 6)
+		if rand = 1
+			SetTextString(pauseDesc2, "The initial idea for Space Crab was" + chr(10) + "concieved in 2015, as a game called" + chr(10) + "'Ladder Wizard Wally'. The Ladder" + chr(10) + "Wizard you see in SCVS is the same one!")
+		elseif rand = 2
+			SetTextString(pauseDesc2, "Did you know that the first Space Crab" + chr(10) + "came out in 2018? In addition, the" + chr(10) + "first playable version was finished" + chr(10) + "in 24 hours. A painless birth!")
+		elseif rand = 3
+			SetTextString(pauseDesc2, "Space Crab 2 started with two guys in a" + chr(10) + "room. One said, 'What if we made" + chr(10) + "Space Crab 2?' The other said, 'I've" + chr(10) + "been waiting for you to say that.'")
+		elseif rand = 4
+			SetTextString(pauseDesc2, "Space Crab 2 got a major update in" + chr(10) + "Summer 2020! 'Deep Space' added 3 new" + chr(10) + "planets, 4 new songs, and 27 new" + chr(10) + "crabs. Almost a whole other game!")
+		elseif rand = 5
+			SetTextString(pauseDesc2, "The 'two players on one phone' concept" + chr(10) + "for SCVS came from early Rondovo game," + chr(10) + "'Rub'. Two players used paintbrushes to" + chr(10) + "cover the screen with their color!")
+		elseif rand = 6
+			SetTextString(pauseDesc2, "Space Crab made an appearence in" + chr(10) + "'Sleep Patrol Alpha' as a playable" + chr(10) + "character! Find every landmark in the" + chr(10) + "first map to unlock him.")
+		endif
+		
+		
+		IncTextY(pauseTitle1, -80)
+		IncTextY(pauseDesc1, -145)
+		
+		IncSpriteSizeCenteredMult(curtainB, GetViewZoom())
+	endif
+	
 	
 endfunction
 
@@ -858,9 +931,11 @@ function UnpauseGame()
 	if GetParticlesExists(11) = 0 then PlaySoundR(buttonSound, 100)
 	
 	SetSpriteVisible(pauseButton, 1)
+	if GetSpriteExists(phantomPauseButton) then SetSpriteVisible(phantomPauseButton, 1)
 	SetSpriteVisible(playButton, 0)
 	SetSpriteVisible(exitButton, 0)
 	SetSpriteVisible(mainmenuButton, 0)
+	if GetSpriteExists(phantomExitButton) then SetSpriteVisible(phantomExitButton, 0)
 	
 	
 	for i = pauseTitle1 to pauseDesc2
@@ -876,7 +951,6 @@ function UnpauseGame()
 	
 	DeleteSprite(curtain)
 	DeleteSprite(curtainB)
-	
 	ClearMultiTouch()
 	
 endfunction

@@ -465,11 +465,15 @@ function GetMultitouchPressedBottomRight()
 endfunction result
 
 function ButtonMultitouchEnabled(spr)
-    if (Button(spr) and GetPointerPressed() and deviceType = DESKTOP) or (GetMulitouchPressedButton(spr) and deviceType = MOBILE)
-        returnValue = 1
-    else
-        returnValue = 0
-    endif
+	if GetSpriteExists(spr)
+	    if (Button(spr) and GetPointerPressed() and deviceType = DESKTOP) or (GetMulitouchPressedButton(spr) and deviceType = MOBILE)
+	        returnValue = 1
+	    else
+	        returnValue = 0
+	    endif
+	else
+		returnValue = 0
+	endif
 endfunction returnValue
 
 function ClearMultiTouch()
@@ -841,6 +845,15 @@ function AddButton(spr)
 	index = buttons.find(spr)
 	if index = -1
 		buttons.insertsorted(spr)
+	endif
+	
+endfunction
+
+function RemoveButton(spr)
+buttons.sort()
+	index = buttons.find(spr)
+	if index <> -1
+		buttons.remove(index)
 	endif
 	
 endfunction

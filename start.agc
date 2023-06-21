@@ -83,11 +83,15 @@ function InitStart()
 	SetSpriteVisible(SPR_LEADERBOARD, 0)
 	AddButton(SPR_LEADERBOARD)
 	
-	LoadSprite(SPR_STARTAI, "vsAI.png")
+	LoadSpriteExpress(SPR_STARTAI, "vsAI.png", 250, 150, 50, 1130, 5)
 	SetSpriteSize(SPR_STARTAI, 250, 150)
 	SetSpritePosition(SPR_STARTAI, 50, 1130)
 	AddButton(SPR_STARTAI)
 	if demo then SetSpriteVisible(SPR_STARTAI, 0)
+	
+	LoadSpriteExpress(SPR_STORY_START, "story.png", 250, 150, 250, 1130, 5)
+	AddButton(SPR_STORY_START)
+	if demo then SetSpriteVisible(SPR_STORY_START, 0)
 	
 	SetFolder("/media")
 	
@@ -108,9 +112,8 @@ function InitStart()
 	SetTextVisible(TXT_HIGHSCORE, 0)
 	
 	CreateTextExpress(SPR_SP_C1, "CHOOSE A CRUSTACEAN, YEAH? WHY NOT CHOOSE A CRUSTACEAN, YEAH? WHY NOT CHOOSE A CRUSTACEAN, YEAH?", 80, fontCrabI, 1, w + 20, 980, 5)
-	//CreateTextExpress(SPR_SP_C1, "HOOSE A CRUSTACEAN, YEAH? WHY NOT C", 80, fontCrabI, 1, w + 20, 980, 5)
 	SetTextSpacing(SPR_SP_C1, -25)
-	SetTextVisible(SPR_SP_C1, 0) 
+	SetTextVisible(SPR_SP_C1, 0)
 	
 	LoadSpriteExpress(SPR_BG_START, "envi/bg4.png",h*1.5, h*1.5, 0, 0, 100)
 	SetSpriteMiddleScreen(SPR_BG_START)
@@ -124,7 +127,9 @@ function InitStart()
 	if spActive = 1  and (crab1Deaths <> 0 or crab2Deaths <> 0)
 	//Coming from the lose screen	
 		if spType = MIRRORMODE then ToggleStartScreen(MIRRORMODE_LOSE, 0)
-		if spType = CLASSIC then ToggleStartScreen(CLASSICMODE_LOSE, 0)
+		if spType = CLASSIC then ToggleStartScreen(CLASSICMODE_LOSE, 0)		
+		
+		DeleteText(SPR_SP_C1)
 		
 		for i = 70 to 1 step -1
 			SyncG()
@@ -144,15 +149,21 @@ function InitStart()
 		DeleteSprite(coverS)
 		DeleteTween(coverS)
 		
+		CreateTextExpress(SPR_SP_C1, "WANT TO TRY AGAIN? PICK ANOTHER CRAB! WANT TO TRY AGAIN? PICK ANOTHER CRAB!", 80, fontCrabI, 1, w + 20, 980, 5)
+		SetTextSpacing(SPR_SP_C1, -25)
+		startTimer# = -440
+		
 	elseif spActive = 1 and crab1Deaths = 0 and crab2Deaths = 0
 	//Returning from the pause menu
-		ToggleStartScreen(MIRRORMODE_START, 0)	
+		if spType = MIRRORMODE then ToggleStartScreen(MIRRORMODE_START, 0)
+		if spType = CLASSIC then ToggleStartScreen(CLASSICMODE_START, 0)		
 		StopMusicOGGSP(spMusic)
 		for i = retro1M to retro8M
 			if GetMusicExistsOGG(i)
 				if GetMusicPlayingOGGSP(i) then StopMusicOGGSP(i)
 			endif
 		next i
+		
 	endif
 	
 	spScore = 0
@@ -180,7 +191,7 @@ function DoStart()
 	UpdateStartElements()
 	
 	//Multiplayer section
-	if GetPointerPressed() and not Button(SPR_CLASSIC) and not Button(SPR_START1) and not Button(SPR_LEADERBOARD) and not Button(SPR_MENU_BACK) and not Button(SPR_START2) and not Button(SPR_START1P) and not Button(SPR_SP_C1) and not Button(SPR_SP_C2) and not Button(SPR_SP_C3) and not Button(SPR_SP_C4) and not Button(SPR_SP_C5) and not Button(SPR_SP_C6)
+	if GetPointerPressed() and not Button(SPR_CLASSIC) and not Button(SPR_STORY_START) and not Button(SPR_START1) and not Button(SPR_LEADERBOARD) and not Button(SPR_MENU_BACK) and not Button(SPR_START2) and not Button(SPR_START1P) and not Button(SPR_SP_C1) and not Button(SPR_SP_C2) and not Button(SPR_SP_C3) and not Button(SPR_SP_C4) and not Button(SPR_SP_C5) and not Button(SPR_SP_C6)
 		PingCrab(GetPointerX(), GetPointerY(), Random (100, 180))
 	endif
 	
@@ -264,6 +275,13 @@ function DoStart()
 		state = GAME
 	endif
 	
+	//Going to story mode, will eventually bring you to character select
+	if Button(SPR_STORY_START) and GetSpriteVisible(SPR_STORY_START)
+		spActive = 1
+		spType = STORYMODE
+		state = STORY
+	endif
+	
 	//Bringing up the leaderboard
 	if Button(SPR_LEADERBOARD) and GetSpriteVisible(SPR_LEADERBOARD)
 		ShowLeaderBoard(spType)
@@ -334,7 +352,13 @@ function UpdateStartElements()
 	endif
 
 	//The looping crab selection text
-	SetTextX(SPR_SP_C1, w+20-startTimer#*1243.62/360)
+	if GetTextString(SPR_LOGO_HORIZ) <> "LOSER XD"
+		//For the starting
+		SetTextX(SPR_SP_C1, w+20-startTimer#*1243.62/360)
+	else
+		//For the losing screen
+		SetTextX(SPR_SP_C1, w+20-startTimer#*1295.36/360)
+	endif
 endfunction
 
 #constant MAINSCREEN 1
@@ -345,6 +369,10 @@ endfunction
 
 function ToggleStartScreen(screen, swipe)
 	
+	for i = SPR_SP_C1 to SPR_SP_C6
+		RemoveButton(i)
+	next i
+	
 	if swipe
 		if GetSpriteExists(coverS) then DeleteSprite(coverS)
 		if GetTweenExists(coverS) then DeleteTween(coverS)
@@ -352,13 +380,19 @@ function ToggleStartScreen(screen, swipe)
 		SetSpriteImage(coverS, bgRainSwipeI)
 		CreateTweenSprite(coverS, 0.6)
 		SetTweenSpriteX(coverS, -h*2, w, TweenLinear())
+		
 		PlayTweenSprite(coverS,coverS, 0)
+		//PlaySoundR(rainbowSweepS, 100)
+		PlaySoundR(ninjaStarS, 100)
 		iEnd = 20/fpsr#
 		for i = 1 to iEnd
 			UpdateStartElements()
 			SyncG()
 		next i
 	endif
+	
+	if screen <> MAINSCREEN then startTimer# = -540
+	
 	
 	//Making everything invisible first
 	SetSpriteVisible(SPR_LOGO_HORIZ, 0)
@@ -372,7 +406,9 @@ function ToggleStartScreen(screen, swipe)
 	SetTextVisible(SPR_LOGO_HORIZ, 0)
 	SetSpriteVisible(SPR_MENU_BACK, 0)
 	SetSpriteVisible(SPR_START1P, 0)
+	SetTextVisible(SPR_START1P, 0)
 	SetTextVisible(SPR_SP_C1, 0) 
+	SetSpriteVisible(SPR_STORY_START, 0) 
 	SetTextY(SPR_LOGO_HORIZ, 360)
 	SetTextSize(TXT_SP_DESC, 59)
 	SetTextSpacing(TXT_SP_DESC, -17)
@@ -381,9 +417,15 @@ function ToggleStartScreen(screen, swipe)
 	SetSpriteY(SPR_LEADERBOARD, 520)
 	SetSpriteVisible(SPR_CLASSIC, 0)
 	SetSpriteY(SPR_MENU_BACK, 740)
+	SetTextString(SPR_SP_C1, "CHOOSE A CRUSTACEAN, YEAH? WHY NOT CHOOSE A CRUSTACEAN, YEAH? WHY NOT CHOOSE A CRUSTACEAN, YEAH?")
+	
+	for i = SPR_SP_C1 to SPR_SP_C6
+		AddButton(i)
+	next i
 	
 	if screen = MAINSCREEN
 		//Showing the main screen
+		startTimer# = 540
 		
 		SetSpriteColor(SPR_BG_START, 255, 255, 255, 255)
 		
@@ -405,14 +447,17 @@ function ToggleStartScreen(screen, swipe)
 		SetSpriteVisible(SPR_START1P, 1)
 		SetSpriteVisible(SPR_CLASSIC, 1)
 		if demo = 0 then SetSpriteVisible(SPR_STARTAI, 1)
+		if demo = 0 then SetSpriteVisible(SPR_STORY_START, 1)
 		SetTextVisible(TXT_WAIT1, 1)
 		SetTextVisible(TXT_WAIT2, 1)
 		
+		for i = SPR_SP_C1 to SPR_SP_C6
+			RemoveButton(i)
+		next i
+		
 	elseif screen = MIRRORMODE_START
 		//Showing the start of the mirror mode screen
-		
-		startTimer# = -540
-		
+				
 		StopMusicOGGSP(titleMusic)
 		PlayMusicOGGSP(spMusic, 1)
 		
@@ -430,6 +475,7 @@ function ToggleStartScreen(screen, swipe)
 		SetTextVisible(TXT_SP_DESC, 1)
 		SetTextVisible(SPR_SP_C1, 1) 
 		SetTextX(SPR_SP_C1, w + 20)
+		SetTextVisible(SPR_START1P, 1)
 		
 		SetSpriteAngle(SPR_TITLE, 90 + 320*sin(startTimer#)*(100+startTimer#)/20.0)
 		SetSpriteY(SPR_TITLE, -1000)
@@ -479,11 +525,10 @@ function ToggleStartScreen(screen, swipe)
 		SetTextVisible(SPR_SP_C1, 1)
 		SetTextX(SPR_SP_C1, w + 20)
 		SetSpriteVisible(SPR_LEADERBOARD, 1)
+		//SetTextString(SPR_SP_C1, "WANT TO TRY AGAIN? PICK ANOTHER CRAB! WANT TO TRY AGAIN? PICK ANOTHER CRAB!")
 		
 	elseif screen = CLASSICMODE_START
-		
-		startTimer# = -540
-		
+				
 		SetSpriteColor(SPR_BG_START, 150, 255, 190, 255)
 		
 		StopMusicOGGSP(titleMusic)
@@ -509,7 +554,7 @@ function ToggleStartScreen(screen, swipe)
 		
 		SetSpriteAngle(SPR_TITLE, 90 + 320*sin(startTimer#)*(100+startTimer#)/20.0)
 		SetSpriteY(SPR_TITLE, -1000)
-		
+		SetTextVisible(SPR_START1P, 1)
 		for i = SPR_SP_C1 to SPR_SP_C6			
 			PlayTweenSprite(i,  i, (i-SPR_SP_C1)*.06)
 		next i
@@ -555,8 +600,7 @@ function ToggleStartScreen(screen, swipe)
 		SetTextVisible(SPR_SP_C1, 1)
 		SetTextX(SPR_SP_C1, w + 20)
 		SetSpriteVisible(SPR_LEADERBOARD, 1)
-		
-		SetSpriteVisible(SPR_LEADERBOARD, 1)
+		//SetTextString(SPR_SP_C1, "WANT TO TRY AGAIN? PICK ANOTHER CRAB! WANT TO TRY AGAIN? PICK ANOTHER CRAB!")
 		
 	endif
 	
@@ -674,6 +718,7 @@ function ExitStart()
 	DeleteSprite(SPR_MENU_BACK)
 	DeleteSprite(SPR_LEADERBOARD)
 	DeleteSprite(SPR_CLASSIC)
+	DeleteSprite(SPR_STORY_START)
 	DeleteText(SPR_LOGO_HORIZ)
 	DeleteText(TXT_WAIT1)
 	DeleteText(TXT_WAIT2)

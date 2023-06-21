@@ -134,7 +134,7 @@ function InitResults()
 	winText[2] = "Top Crab's dizzying, dazzling display" + chr(10) + "ran circles around the competition!"
 	winText[3] = "Rave Crab moshed and never let up," + chr(10) + "and barely noticed that he won!"
 	winText[4] = "Chrono Crab bent time and the results" + chr(10) + "of the battle to his favor!"
-	winText[5] = "As swift as a nightime breeze, Ninja" + chr(10) + "Crab has downed his worthless foe."
+	winText[5] = "As swift as a nighttime breeze, Ninja" + chr(10) + "Crab has downed his worthless foe."
 	
 	loseText[0] = "Space Crab's orbital ordnance was" + chr(10) + "overpowered by a mightier opponent..."
 	loseText[1] = "Ladder Wizard was vexed, hexed," + chr(10) + "and wrecked in this battle..."

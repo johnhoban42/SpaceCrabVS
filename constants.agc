@@ -171,6 +171,7 @@ global spHighCrabClassic$ = ""
 global spType = 0
 #constant MIRRORMODE 1
 #constant CLASSIC 2
+#constant STORYMODE 3
 
 //Input buffers
 global buffer1 = 0
@@ -228,6 +229,8 @@ global met3CD2# = 0 //400
 #constant playButton 9
 #constant exitButton 10
 #constant mainmenuButton 14
+#constant phantomPauseButton 15
+#constant phantomExitButton 16
 
 //Just a sheet for when things need to be covered up
 #constant coverS 11
@@ -587,6 +590,7 @@ global jumpPartI as Integer[6]
 #constant ninjaStarS 24
 
 #constant mirrorBreakS 25
+#constant rainbowSweepS 26
 
 
 
@@ -635,6 +639,7 @@ SetMusicSystemVolumeOGG(volumeM)
 #constant SPR_LOGO_HORIZ 213
 #constant SPR_LEADERBOARD 214
 #constant SPR_CLASSIC 215
+#constant SPR_STORY_START 216
 
 
 //Different Crab buttons for the single player mode
@@ -674,6 +679,13 @@ SetMusicSystemVolumeOGG(volumeM)
 #constant SPR_CS_CRABS_2 490 
 #constant SPR_CS_TXT_BACK_2 489
 
+//Story Sprites/Text
+#constant SPR_TEXT_BOX 601
+
+#constant TXT_LINE 601
+#constant TXT_LINEB1 602
+#constant TXT_LINEB2 603
+
 //Ping sprites - 701 through 750
 
 //Tweens
@@ -712,6 +724,7 @@ SetMusicSystemVolumeOGG(volumeM)
 #constant GAME 2
 #constant PAUSE 3
 #constant RESULTS 4
+#constant STORY 5
 global spActive = 0 //Single Player active
 global aiActive = 0 //VS AI active
 global paused = 0	//Game is currently paused
@@ -753,6 +766,7 @@ function LoadBaseSounds()
 		LoadSoundOGG(gongS, "gong.ogg")
 		LoadSoundOGG(buttonSound, "select.ogg")
 		LoadSoundOGG(mirrorBreakS, "mirrorBreak.ogg")
+		LoadSoundOGG(rainbowSweepS, "rainbowSweep.ogg")
 		
 		
 		LoadSoundOGG(exp1S, "exp1.ogg")
@@ -783,6 +797,7 @@ function LoadBaseSounds()
 		LoadMusicOGG(gongS, "gong.ogg")
 		LoadMusicOGG(buttonSound, "select.ogg")
 		LoadMusicOGG(mirrorBreakS, "mirrorBreak.ogg")
+		LoadMusicOGG(rainbowSweepS, "rainbowSweep.ogg")
 		
 		LoadMusicOGG(exp1S, "exp1.ogg")
 		LoadMusicOGG(exp2S, "exp2.ogg")
