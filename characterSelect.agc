@@ -193,7 +193,7 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 	SetTextFontImage(csc.txtReady, fontDescItalI)
 	SetTextSpacing(csc.txtReady, -30)
 	SetTextMiddleScreenOffset(csc.txtReady, f, 0, p*7*h/16)
-	SetTextVisible(csc.txtReady, 0)
+	SetTextColorAlpha(csc.txtReady, 0)
 	
 	
 	SetVisibleCharacterUI(1, csc)
@@ -354,10 +354,13 @@ function SelectCrab(csc ref as CharacterSelectController)
 		crab2Type = csc.crabSelected + 1
 	endif
 	
-	SetSpriteVisible(csc.sprReady, 0)
+	//SetSpriteVisible(csc.sprReady, 0)
 	SetSpriteVisible(csc.sprLeftArrow, 0)
 	SetSpriteVisible(csc.sprRightArrow, 0)
-	SetTextVisible(csc.txtReady, 1)
+	
+	PlayTweenSprite(tweenSprFadeOut, csc.sprReady, 0)
+	PlayTweenText(tweenTxtFadeIn, csc.txtReady, 0)
+	PlaySprite(csc.sprReady, 12, 1, 1, 6)
 	
 	
 	//Text gets bigger to show that a selection has been locked in
@@ -377,12 +380,17 @@ function UnselectCrab(csc ref as CharacterSelectController)
 	//	crab2Type = csc.crabSelected + 1
 	//endif
 	
-	SetSpriteVisible(csc.sprReady, 1)
+	//SetSpriteVisible(csc.sprReady, 1)
 	
 	if csc.crabSelected <> 0 then SetSpriteVisible(csc.sprLeftArrow, 1)
 	if csc.crabSelected <> 5 then SetSpriteVisible(csc.sprRightArrow, 1)
-	SetTextVisible(csc.txtReady, 0)
 	
+	StopTweenSprite(tweenSprFadeOut, csc.sprReady)
+	StopTweenText(tweenTxtFadeIn, csc.txtReady)
+	SetSpriteColorAlpha(csc.sprReady, 255)
+	SetTextColorAlpha(csc.txtReady, 0)
+	
+	PlaySprite(csc.sprReady, 9+csc.player, 1, 7+8*(csc.player-1), 14+8*(csc.player-1))
 	
 	//Text gets smaller again
 	SetTextSize(csc.txtCrabName, GetTextSize(csc.txtCrabName) - 10)

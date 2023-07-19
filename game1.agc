@@ -664,7 +664,8 @@ function UpdateMeteor1()
 			
 			DeleteSprite(spr)
 			if getSpriteExists(spr+glowS) then DeleteSprite(spr + glowS)
-			PlaySoundR(explodeS, volumeSE)
+			if fruitMode = 0 then PlaySoundR(explodeS, volumeSE)
+			if fruitMode = 1 then PlaySoundR(fruitS, volumeSE)
 			
 			if meteorActive1[i].cat = 3 then DeleteSprite(spr + 10000)
 			//Meteor explosion goes here
@@ -712,6 +713,11 @@ function UpdateButtons1()
 		PlaySprite(meteorButton1, 0, 0, 5, 5)
 		StopSprite(meteorButton1)
 	endif
+	
+	//Placeholder lines for the AI active button-darkening logic
+	
+	
+	
 	
 	SetSpriteX(meteorMarker1, Min(GetSpriteX(expHolder1) + 1.0*(GetSpriteWidth(expHolder1)-20)*meteorCost1/specialCost1 - 4 + .116*GetSpriteWidth(expHolder1), GetSpriteX(specialButton1)-10))
 endfunction
@@ -990,11 +996,15 @@ function HitScene1()
 				for i = 1 to meteorActive1.length
 					StopSprite(meteorActive1[i].spr)
 				next i
+				PlayDangerMusic(0)
 			endif
 			
 			//Accounting for the Smash Bros Freeze
 			if hit1Timer# < hitSceneMax*8/9
-				if GetSoundPlayingR(launchS) = 0 then PlaySoundR(launchS, 100)
+				if GetSoundPlayingR(launchS) = 0
+					PlaySoundR(launchS, 100)
+					PlayDangerMusic(1)
+				endif
 				
 				for i = 1 to meteorActive1.length
 					ResumeSprite(meteorActive1[i].spr)

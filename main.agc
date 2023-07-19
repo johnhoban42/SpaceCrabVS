@@ -71,6 +71,11 @@ global gameTime#
 
 global demo = 1
 
+CreateTweenSprite(tweenSprFadeOut, tweenFadeLen#)
+SetTweenSpriteAlpha(tweenSprFadeOut, 255, 140, TweenEaseIn1())
+CreateTweenText(tweenTxtFadeIn, tweenFadeLen#)
+SetTweenTextAlpha(tweenTxtFadeIn, 0, 255, TweenEaseIn1())
+
 //SetPhysicsDebugOn()
 
 //RIP Sheep
@@ -311,8 +316,8 @@ function ShowLeaderBoard(num)
 		boardM$ = "scvs.mirrormode"
 		boardC$ = "scvs.classic"
 	elseif mPlatform = ANDROID
-		boardM$ = ""
-		boardC$ = ""
+		boardM$ = "CgkI3pbJ898dEAIQAQ"
+		boardC$ = "CgkI3pbJ898dEAIQAg"
 	endif
 	
 	board$ = ""
@@ -325,14 +330,14 @@ function ShowLeaderBoard(num)
 	Classic: scvs.classic
 	
 	Android Codes
-	Mirror:
-	Classic:	
+	Mirror: CgkI3pbJ898dEAIQAQ
+	Classic: CgkI3pbJ898dEAIQAg
 	*/
 	
 	if GetGameCenterLoggedIn()
 		
-		GameCenterSubmitScore(spHighScore, "")
-		GameCenterSubmitScore(0, "")
+		GameCenterSubmitScore(spHighScore, boardM$)
+		GameCenterSubmitScore(spHighScoreClassic, boardC$)
 		
 		GameCenterShowLeaderBoard(board$)
 	else

@@ -472,11 +472,11 @@ function DoGame2()
 	
 	//DrawPolar2(planet2, 0, 270)
 	
-	if expTotal2 >= meteorCost2 and ButtonMultitouchEnabled(meteorButton2) and hit1Timer# <= 0
+	if expTotal2 >= meteorCost2 and ButtonMultitouchEnabled(meteorButton2) and hit1Timer# <= 0 and aiActive = 0
 		SendMeteorFrom2()
 	endif
 	
-	if expTotal2 = specialCost2 and ButtonMultitouchEnabled(specialButton2) and hit1Timer# <= 0
+	if expTotal2 = specialCost2 and ButtonMultitouchEnabled(specialButton2) and hit1Timer# <= 0 and aiActive = 0
 		SendSpecial2()
 	endif
 	
@@ -664,7 +664,8 @@ function UpdateMeteor2()
 			
 			DeleteSprite(spr)
 			if getSpriteExists(spr+glowS) then DeleteSprite(spr + glowS)
-			PlaySoundR(explodeS, volumeSE)
+			if fruitMode = 0 then PlaySoundR(explodeS, volumeSE)
+			if fruitMode = 1 then PlaySoundR(fruitS, volumeSE)
 			
 			if meteorActive2[i].cat = 3 then DeleteSprite(spr + 10000)
 			//Meteor explosion goes here
@@ -689,7 +690,7 @@ function UpdateButtons2()
 	
 	if expTotal2 = specialCost2
 		//Bar is full
-		if GetSpriteColorRed(specialButton2) < 255 and hit1Timer# = 0 then PingColor(GetSpriteMiddleX(specialButton2), GetSpriteMiddleY(specialButton2), 250, 20, 255, 40, GetSpriteDepth(specialButton2)+1)
+		if GetSpriteColorRed(specialButton2) < 255 and hit1Timer# = 0 and aiActive = 0 then PingColor(GetSpriteMiddleX(specialButton2), GetSpriteMiddleY(specialButton2), 250, 20, 255, 40, GetSpriteDepth(specialButton2)+1)
 		SetSpriteColor(specialButton2, 255, 255, 255, 255)
 		if GetSpriteCurrentFrame(specialButton2) = 5 then PlaySprite(specialButton2, 15, 1, 1, 4)
 		if GetSpritePlaying(expHolder2) = 0 then PlaySprite(expHolder2, 20, 1, 1, 12)
@@ -703,7 +704,7 @@ function UpdateButtons2()
 	
 	if expTotal2 >= meteorCost2
 		//Enabling the button
-		if GetSpriteColorRed(meteorButton2) < 255 and hit1Timer# = 0 then PingColor(GetSpriteMiddleX(meteorButton2), GetSpriteMiddleY(meteorButton2), 370, 30, 100, 255, GetSpriteDepth(meteorButton2)+1)
+		if GetSpriteColorRed(meteorButton2) < 255 and hit1Timer# = 0 and aiActive = 0 then PingColor(GetSpriteMiddleX(meteorButton2), GetSpriteMiddleY(meteorButton2), 370, 30, 100, 255, GetSpriteDepth(meteorButton2)+1)
 		SetSpriteColor(meteorButton2, 255, 255, 255, 255)
 		if GetSpriteCurrentFrame(meteorButton2) = 5 then PlaySprite(meteorButton2, 15, 1, 1, 4)
 	else
@@ -711,6 +712,11 @@ function UpdateButtons2()
 		SetSpriteColor(meteorButton2, 100, 100, 100, 255)
 		PlaySprite(meteorButton2, 0, 0, 5, 5)
 		StopSprite(meteorButton2)
+	endif
+	
+	if aiActive
+		SetSpriteColor(specialButton2, 100, 100, 100, 255)
+		SetSpriteColor(meteorButton2, 100, 100, 100, 255)
 	endif
 	
 	SetSpriteX(meteorMarker2, Max(GetSpriteX(expHolder2) + GetSpriteWidth(expHolder2) - 1.0*(GetSpriteWidth(expHolder2)-20)*meteorCost2/specialCost2 + 4 - .116*GetSpriteWidth(expHolder1), GetSpriteX(specialButton2)+GetSpriteWidth(specialButton2)+10))
@@ -990,11 +996,15 @@ function HitScene2()
 				for i = 1 to meteorActive2.length
 					StopSprite(meteorActive2[i].spr)
 				next i
+				PlayDangerMusic(0)
 			endif
 			
 			//Accounting for the Smash Bros Freeze
 			if hit2Timer# < hitSceneMax*8/9
-				if GetSoundPlayingR(launchS) = 0 then PlaySoundR(launchS, 100)
+				if GetSoundPlayingR(launchS) = 0
+					PlaySoundR(launchS, 100)
+					PlayDangerMusic(1)
+				endif
 				
 				for i = 1 to meteorActive2.length
 					ResumeSprite(meteorActive2[i].spr)

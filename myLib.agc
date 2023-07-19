@@ -43,6 +43,33 @@ function LoadAnimatedSprite(spr, imgBase$, frameTotal)
 	next i
 endfunction
 
+function LoadAnimatedSpriteReversible(spr, imgBase$, frameTotal)
+	CreateSprite(spr, 0)
+	
+	//The image array inserts the sprite ID first, then the amount of frames, then images at the positions afterwards
+	imageA.insert(spr)
+	imageA.insert(frameTotal*2 - 1)
+	for i = 1 to frameTotal
+		if GetFileExists(imgBase$ + str(i) + ".png")
+			imageA.insert(LoadImage(imgBase$ + str(i) + ".png"))
+		else
+			imageA.insert(LoadImage(imgBase$ + "0" + str(i) + ".png"))
+		endif
+		
+		AddSpriteAnimationFrame(spr, imageA[imageA.length])
+	next i
+	
+	for i = frameTotal-1 to 1 step -1
+		if GetFileExists(imgBase$ + str(i) + ".png")
+			imageA.insert(LoadImage(imgBase$ + str(i) + ".png"))
+		else
+			imageA.insert(LoadImage(imgBase$ + "0" + str(i) + ".png"))
+		endif
+		
+		AddSpriteAnimationFrame(spr, imageA[imageA.length])
+	next i
+endfunction
+
 function CreateSpriteExistingAnimation(spr, refSpr)
 	CreateSprite(spr, 0)
 	
@@ -148,9 +175,14 @@ function CreateSpriteExpressImage(spr, img, wid, hei, x, y, depth)
 	SetSpriteDepth(spr, depth)
 endfunction
 
-
 function LoadSpriteExpress(spr, file$, wid, hei, x, y, depth)
 	LoadSprite(spr, file$)
+	SetSpriteSize(spr, wid, hei)
+	SetSpritePosition(spr, x, y)
+	SetSpriteDepth(spr, depth)
+endfunction
+
+function SetSpriteExpress(spr, wid, hei, x, y, depth)
 	SetSpriteSize(spr, wid, hei)
 	SetSpritePosition(spr, x, y)
 	SetSpriteDepth(spr, depth)
@@ -517,6 +549,23 @@ function GetSoundPlayingR(sound)
 	
 endfunction result
 
+function GetMusicPlayingOGGSP(songID)
+	exist = 0
+	exist = GetMusicExistsOGG(songID)
+	if exist
+		exist = GetMusicPlayingOGG(songID)
+	endif
+endfunction exist
+
+function StopMusicOGGSP(songID)
+
+	if GetMusicExistsOGG(songID)
+		StopMusicOGG(songID)
+		DeleteMusicOGG(songID)
+	endif
+
+endfunction
+
 function ArrayFind(array as integer[], var)
 	index = -1
 	for i = 0 to array.length
@@ -816,7 +865,8 @@ function ButtonsUpdate()
 					if GetTweenSpritePlaying(i, spr) then skip = 1
 				next i
 				
-				//The case for playing the tween; no matter what, playing the sound
+				//The case for playing the tween
+				//The sound logic makes sure that
 				if skip = 0
 					if GetTweenExists(tweenButton) = 0 then CreateTweenSprite(tweenButton, .3)
 					//GetTween
@@ -830,9 +880,11 @@ function ButtonsUpdate()
 					tweenButtonOld = tweenButton
 					inc tweenButton, 1
 					if tweenButton > 35 then tweenButton = 15
+					
+					PlaySoundR(buttonSound, 100)
+				else
+					if GetSoundPlayingR(buttonSound) = 0 then PlaySoundR(buttonSound, 100)
 				endif
-				
-				PlaySoundR(buttonSound, 100)
 				
 			endif
 			

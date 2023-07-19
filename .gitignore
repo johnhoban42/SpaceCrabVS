@@ -16,3 +16,9 @@ steam_api64.dll
 temp/
 
 singlePlayerButton.pdn
+
+Exports/
+
+AndroidLeaderboardIcon.pdn
+
+AndroidLeaderboardIcon.png

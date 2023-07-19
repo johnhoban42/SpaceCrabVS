@@ -17,15 +17,27 @@ function InitStart()
 	SetFolder("/media/ui")
 	
 	if demo
-		LoadSprite(SPR_TITLE, "titleDemo.png")
+		CreateSprite(SPR_TITLE, 0)
+		AddSpriteAnimationFrame(SPR_TITLE, logoDemoI)
 	else
-		LoadSprite(SPR_TITLE, "title.png")
+		CreateSprite(SPR_TITLE, 0)
+		AddSpriteAnimationFrame(SPR_TITLE, logoI)
 	endif
+	AddSpriteAnimationFrame(SPR_TITLE, logoFruitI)
+	SetSpriteFrame(SPR_TITLE, 1)
+	if fruitMode then SetSpriteFrame(SPR_TITLE, 2)
+	SetSpriteShape(SPR_TITLE, 1)
+	//if demo
+	//	LoadAnimatedSprite(SPR_TITLE, "titleDemo", 2)
+	//else
+	//	LoadAnimatedSprite(SPR_TITLE, "title", 1)
+	//endif
 	SetSpriteSize(SPR_TITLE, w*2/3, w*2/3)
 	SetSpriteMiddleScreen(SPR_TITLE)
-	IncSpriteY(SPR_TITLE, -50)
+	//IncSpriteY(SPR_TITLE, -50)
 	SetSpriteAngle(SPR_TITLE, 90)
 	SetSpriteDepth(SPR_TITLE, 5)
+	AddButton(SPR_TITLE)
 	
 	LoadSpriteExpress(SPR_LOGO_HORIZ, "logoHoriz.png", w-40, (w-40)/2, 0, 80, 5)
 	SetSpriteMiddleScreen(SPR_LOGO_HORIZ)
@@ -44,7 +56,7 @@ function InitStart()
 	PlaySprite(SPR_START1, 10, 1, 7, 14)
 	SetSpriteSize(SPR_START1, 842*.7, 317*.7)
 	SetSpriteMiddleScreenX(SPR_START1)
-	SetSpriteY(SPR_START1, h/2 + 520)
+	SetSpriteY(SPR_START1, h/2 + 480)
 	SetSpriteAngle(SPR_START1, 0)
 	SetSpriteDepth(SPR_START1, 75)
 	AddButton(SPR_START1)
@@ -58,27 +70,43 @@ function InitStart()
 	SetSpriteDepth(SPR_START2, 75)
 	AddButton(SPR_START2)
 	
-	CreateTextExpress(TXT_WAIT1, "Waiting for your opponent...", 86, fontDescItalI, 1, w/2, GetSpriteY(SPR_START1)+38, 3)
+	//The demo adjustments
+	IncSpriteY(SPR_START2, -50)
+	IncSpriteY(SPR_TITLE, -150)
+	IncSpriteY(SPR_START1, -250)
+	
+	CreateTextExpress(TXT_WAIT1, "Waiting for your opponent...", 90, fontDescItalI, 1, w/2, GetSpriteY(SPR_START1)+48, 3)
 	SetTextColorAlpha(TXT_WAIT1, 0)
-	SetTextSpacing(TXT_WAIT1, -30)
-	CreateTextExpress(TXT_WAIT2, "Waiting for your opponent...", 86, fontDescItalI, 1, w/2, GetSpriteY(SPR_START2)-38+GetSpriteHeight(SPR_START2), 3)
+	SetTextSpacing(TXT_WAIT1, -32)
+	CreateTextExpress(TXT_WAIT2, "Waiting for your opponent...", 90, fontDescItalI, 1, w/2, GetSpriteY(SPR_START2)-48+GetSpriteHeight(SPR_START2), 3)
 	SetTextColorAlpha(TXT_WAIT2, 0)
-	SetTextSpacing(TXT_WAIT2, -30)
+	SetTextSpacing(TXT_WAIT2, -32)
 	SetTextAngle(TXT_WAIT2, 180)
 	
-	LoadSpriteExpress(SPR_START1P, "singlePlayerButton.png", 250, 150, 520, 1030, 10)
+	LoadAnimatedSpriteReversible(SPR_START1P, "mirror", 8)
+	SetSpriteExpress(SPR_START1P, 250, 138, 520, 1030, 10)
 	AddButton(SPR_START1P)
 	
-	LoadSpriteExpress(SPR_CLASSIC, "classicButton.png", 250, 150, 520, 1180, 10)
+	LoadSpriteExpress(SPR_CLASSIC, "classic1.png", 250, 138, 520, 1180, 10)
 	AddButton(SPR_CLASSIC)
+	
+	//The demo adjustments
+	SetSpritePosition(SPR_START1P, 490, GetSpriteY(SPR_START1) + GetSpriteHeight(SPR_START1) + 35)
+	SetSpritePosition(SPR_CLASSIC, 490, GetSpriteY(SPR_START1P) + GetSpriteHeight(SPR_START1P) + 10)
+	//IncSpriteY(SPR_START1, -200)
+	
+	CreateTextExpress(TXT_ALONE, "Playing alone?" + chr(10) + "Try these!", 80, fontCrabI, 1, 250, GetSpriteY(SPR_START1)+ GetSpriteHeight(SPR_START1)+100, 4)
+	SetTextSpacing(TXT_ALONE, -23)
 	
 	HS_Offset = -140
 	
-	LoadSpriteExpress(SPR_MENU_BACK, "leftArrow.png", 160, 160, 30, 740, 5)
+	LoadAnimatedSprite(SPR_MENU_BACK, "back", 8)
+	//PlaySprite(SPR_MENU_BACK, 10, 1, 1, 8)
+	SetSpriteExpress(SPR_MENU_BACK, 160, 160, 56, 740, 5)
 	SetSpriteVisible(SPR_MENU_BACK, 0)
 	AddButton(SPR_MENU_BACK)
 	
-	LoadSpriteExpress(SPR_LEADERBOARD, "leaderboard.png", 492*.7, 179*.7, 30, 520, 5)
+	LoadSpriteExpress(SPR_LEADERBOARD, "leaderboard.png", 370, 205, 30, 520, 5)
 	SetSpriteMiddleScreenX(SPR_LEADERBOARD)
 	SetSpriteVisible(SPR_LEADERBOARD, 0)
 	AddButton(SPR_LEADERBOARD)
@@ -191,39 +219,53 @@ function DoStart()
 	UpdateStartElements()
 	
 	//Multiplayer section
-	if GetPointerPressed() and not Button(SPR_CLASSIC) and not Button(SPR_STORY_START) and not Button(SPR_START1) and not Button(SPR_LEADERBOARD) and not Button(SPR_MENU_BACK) and not Button(SPR_START2) and not Button(SPR_START1P) and not Button(SPR_SP_C1) and not Button(SPR_SP_C2) and not Button(SPR_SP_C3) and not Button(SPR_SP_C4) and not Button(SPR_SP_C5) and not Button(SPR_SP_C6)
+	if GetPointerPressed() and not Button(SPR_TITLE) and not Button(SPR_CLASSIC) and not Button(SPR_STORY_START) and not Button(SPR_START1) and not Button(SPR_LEADERBOARD) and not Button(SPR_MENU_BACK) and not Button(SPR_START2) and not Button(SPR_START1P) and not Button(SPR_SP_C1) and not Button(SPR_SP_C2) and not Button(SPR_SP_C3) and not Button(SPR_SP_C4) and not Button(SPR_SP_C5) and not Button(SPR_SP_C6)
 		PingCrab(GetPointerX(), GetPointerY(), Random (100, 180))
 	endif
 	
 	if ButtonMultitouchEnabled(SPR_START1) and spActive = 0
 		if GetSpriteColorAlpha(SPR_START1) = 255
 			//Pressing player one
-			SetSpriteColorAlpha(SPR_START1, 140)
-			SetTextColorAlpha(TXT_WAIT1, 255)				
+			PlayTweenSprite(tweenSprFadeOut, SPR_START1, 0)
+			PlayTweenText(tweenTxtFadeIn, TXT_WAIT1, 0)
+			//SetSpriteColorAlpha(SPR_START1, 140)
+			//SetTextColorAlpha(TXT_WAIT1, 255)				
 			PlaySprite(SPR_START1, 12, 1, 1, 6)
+			p1Ready = 1
 		else
 			//Cancelling player one
+			StopTweenSprite(tweenSprFadeOut, SPR_START1)
+			StopTweenText(tweenTxtFadeIn, TXT_WAIT1)
 			SetSpriteColorAlpha(SPR_START1, 255)
 			SetTextColorAlpha(TXT_WAIT1, 0)
 			PlaySprite(SPR_START1, 10, 1, 7, 14)
+			p1Ready = 0
 		endif
 	endif
 	
 	if ButtonMultitouchEnabled(SPR_START2) and spActive = 0
 		if GetSpriteColorAlpha(SPR_START2) = 255
 			//Pressing player two
-			SetSpriteColorAlpha(SPR_START2, 140)
-			SetTextColorAlpha(TXT_WAIT2, 255)		
+			PlayTweenSprite(tweenSprFadeOut, SPR_START2, 0)
+			PlayTweenText(tweenTxtFadeIn, TXT_WAIT2, 0)
+			//SetSpriteColorAlpha(SPR_START2, 140)
+			//SetTextColorAlpha(TXT_WAIT2, 255)		
 			PlaySprite(SPR_START2, 12, 1, 1, 6)
+			p2Ready = 1
 		else
 			//Cancelling player two
+			StopTweenSprite(tweenSprFadeOut, SPR_START2)
+			StopTweenText(tweenTxtFadeIn, TXT_WAIT2)
 			SetSpriteColorAlpha(SPR_START2, 255)
 			SetTextColorAlpha(TXT_WAIT2, 0)
 			PlaySprite(SPR_START2, 11, 1, 15, 22)
+			p2Ready = 0
 		endif
 	endif
 	
-	if GetTextColorAlpha(TXT_WAIT1) = 255 and GetTextColorAlpha(TXT_WAIT2) = 255
+	if p1Ready and p2Ready
+		p1Ready = 0
+		p2Ready = 0
 		spActive = 0
 		aiActive = 0
 		state = CHARACTER_SELECT
@@ -312,7 +354,40 @@ function UpdateStartElements()
 	inc startTimer#, fpsr#
 	if startTimer# > 360 then startTimer# = 0
 	
+	if mod(round(startTimer#)+1080, 150) = 0
+		if GetSpriteCurrentFrame(SPR_START1P) = 15 or GetSpriteCurrentFrame(SPR_START1P) = 1 then PlaySprite(SPR_START1P, 30, 0, 1, 8)
+		if GetSpriteCurrentFrame(SPR_START1P) = 8 then PlaySprite(SPR_START1P, 30, 0, 8, 15)
+	endif
+	if mod(round(startTimer#)+1080, 90) = 0 then PlaySprite(SPR_MENU_BACK, 10, 0, 1, 8)
+	
 	SetSpriteAngle(SPR_TITLE, 90 + 320*sin(startTimer#) + 50*sin(startTimer#*3))
+	if GetSpriteVisible(SPR_TITLE)
+		if fruitUnlock# < 0
+			if GetPointerState() and GetSpriteHitTest(SPR_TITLE, GetPointerX(), GetPointerY())
+				IncSpriteAngle(SPR_TITLE, 15*(300 + fruitUnlock#))
+				inc fruitUnlock#, fpsr#
+			else
+				fruitUnlock# = -300
+			endif
+			//Print(fruitUnlock#)
+			if fruitUnlock# => 0
+				PlaySoundR(gongS, 100)
+				fruitMode = 1
+				SetSpriteFrame(SPR_TITLE, 2)
+				startTimer# = 0
+			endif
+		else
+			if ButtonMultitouchEnabled(SPR_TITLE)
+				if fruitMode = 1
+					fruitMode = 0
+					SetSpriteFrame(SPR_TITLE, 1)
+				else
+					fruitMode = 1
+					SetSpriteFrame(SPR_TITLE, 2)
+				endif
+			endif
+		endif
+	endif
 	
 	if spActive = 0
 		for i = 0 to GetTextLength(TXT_WAIT1)
@@ -408,16 +483,18 @@ function ToggleStartScreen(screen, swipe)
 	SetSpriteVisible(SPR_START1P, 0)
 	SetTextVisible(SPR_START1P, 0)
 	SetTextVisible(SPR_SP_C1, 0) 
+	SetTextVisible(TXT_ALONE, 0) 
 	SetSpriteVisible(SPR_STORY_START, 0) 
 	SetTextY(SPR_LOGO_HORIZ, 360)
 	SetTextSize(TXT_SP_DESC, 59)
 	SetTextSpacing(TXT_SP_DESC, -17)
 	SetTextY(TXT_SP_DESC, 510)
 	SetSpriteVisible(SPR_LEADERBOARD, 0)
-	SetSpriteY(SPR_LEADERBOARD, 520)
+	SetSpriteY(SPR_LEADERBOARD, 490)
 	SetSpriteVisible(SPR_CLASSIC, 0)
 	SetSpriteY(SPR_MENU_BACK, 740)
 	SetTextString(SPR_SP_C1, "CHOOSE A CRUSTACEAN, YEAH? WHY NOT CHOOSE A CRUSTACEAN, YEAH? WHY NOT CHOOSE A CRUSTACEAN, YEAH?")
+	SetSpriteVisible(SPR_TITLE, 0)
 	
 	for i = SPR_SP_C1 to SPR_SP_C6
 		AddButton(i)
@@ -436,7 +513,7 @@ function ToggleStartScreen(screen, swipe)
 		
 		SetSpriteVisible(SPR_START1, 1)
 		SetSpriteVisible(SPR_START2, 1)
-		SetSpriteY(SPR_TITLE, h/2-GetSpriteWidth(SPR_TITLE)/2 - 50)
+		SetSpriteVisible(SPR_TITLE, 1)
 		
 		for i = SPR_SP_C1 to SPR_SP_C6
 			StopTweenSprite(i, i)
@@ -446,6 +523,7 @@ function ToggleStartScreen(screen, swipe)
 		
 		SetSpriteVisible(SPR_START1P, 1)
 		SetSpriteVisible(SPR_CLASSIC, 1)
+		SetTextVisible(TXT_ALONE, 1) 
 		if demo = 0 then SetSpriteVisible(SPR_STARTAI, 1)
 		if demo = 0 then SetSpriteVisible(SPR_STORY_START, 1)
 		SetTextVisible(TXT_WAIT1, 1)
@@ -477,9 +555,6 @@ function ToggleStartScreen(screen, swipe)
 		SetTextX(SPR_SP_C1, w + 20)
 		SetTextVisible(SPR_START1P, 1)
 		
-		SetSpriteAngle(SPR_TITLE, 90 + 320*sin(startTimer#)*(100+startTimer#)/20.0)
-		SetSpriteY(SPR_TITLE, -1000)
-		
 		for i = SPR_SP_C1 to SPR_SP_C6			
 			PlayTweenSprite(i,  i, (i-SPR_SP_C1)*.06)
 		next i
@@ -488,8 +563,6 @@ function ToggleStartScreen(screen, swipe)
 		
 		SetSpriteColor(SPR_BG_START, 255, 150, 190, 255)
 		
-		SetSpriteY(SPR_TITLE, -1000)
-			
 		for i = SPR_SP_C1 to SPR_SP_C6
 			num = i-SPR_SP_C1+1
 			SetSpriteY(i, 1080 + 250*((num-1)/3))
@@ -513,7 +586,8 @@ function ToggleStartScreen(screen, swipe)
 		endif
 		if spScore = spHighScore and spHighScore <> 0
 			SetTextString(TXT_SP_DESC, GetTextString(TXT_SP_DESC) + chr(10) + "New High Score!!")
-			IncSpriteY(SPR_LEADERBOARD, 52)
+			IncSpriteY(SPR_LEADERBOARD, 46)
+			IncSpriteSizeCenteredMult(SPR_LEADERBOARD, 0.85)
 		endif
 		SetTextString(TXT_HIGHSCORE, "High Score: " + str(spHighScore) + chr(10) + "with " + spHighCrab$)
 		if spHighScore = 0 then SetTextString(TXT_HIGHSCORE, "High Score: None set." + chr(10) + "Go set one!")
@@ -552,8 +626,6 @@ function ToggleStartScreen(screen, swipe)
 		SetTextX(SPR_SP_C1, w + 20)
 		IncSpriteY(SPR_MENU_BACK, -40)
 		
-		SetSpriteAngle(SPR_TITLE, 90 + 320*sin(startTimer#)*(100+startTimer#)/20.0)
-		SetSpriteY(SPR_TITLE, -1000)
 		SetTextVisible(SPR_START1P, 1)
 		for i = SPR_SP_C1 to SPR_SP_C6			
 			PlayTweenSprite(i,  i, (i-SPR_SP_C1)*.06)
@@ -562,8 +634,6 @@ function ToggleStartScreen(screen, swipe)
 	elseif screen = CLASSICMODE_LOSE
 		
 		SetSpriteColor(SPR_BG_START, 150, 255, 190, 255)
-		
-		SetSpriteY(SPR_TITLE, -1000)
 			
 		for i = SPR_SP_C1 to SPR_SP_C6
 			num = i-SPR_SP_C1+1
@@ -588,7 +658,8 @@ function ToggleStartScreen(screen, swipe)
 		endif
 		if spScore = spHighScoreClassic and spHighScoreClassic <> 0
 			SetTextString(TXT_SP_DESC, GetTextString(TXT_SP_DESC) + chr(10) + "New High Score!!")
-			IncSpriteY(SPR_LEADERBOARD, 52)
+			IncSpriteY(SPR_LEADERBOARD, 46)
+			IncSpriteSizeCenteredMult(SPR_LEADERBOARD, 0.85)
 		endif
 		SetTextString(TXT_HIGHSCORE, "High Score: " + str(spHighScoreClassic) + chr(10) + "with " + spHighCrabClassic$)
 		if spHighScoreClassic = 0 then SetTextString(TXT_HIGHSCORE, "High Score: None set." + chr(10) + "Go set one!")
@@ -712,7 +783,7 @@ function ExitStart()
 	DeleteSprite(SPR_LOGO_HORIZ)
 	DeleteSprite(SPR_START2)
 	DeleteAnimatedSprite(SPR_START1)
-	DeleteSprite(SPR_START1P)
+	DeleteAnimatedSprite(SPR_START1P)
 	DeleteSprite(SPR_STARTAI)
 	DeleteSprite(SPR_BG_START)
 	DeleteSprite(SPR_MENU_BACK)
@@ -725,6 +796,7 @@ function ExitStart()
 	DeleteText(TXT_HIGHSCORE)
 	DeleteText(TXT_SP_DESC)
 	DeleteText(SPR_SP_C1)
+	DeleteText(TXT_ALONE)
 	if GetSpriteExists(coverS) then DeleteSprite(coverS)
 	if GetTweenExists(SPR_LOGO_HORIZ) then DeleteTween(SPR_LOGO_HORIZ)
 	
@@ -736,6 +808,8 @@ function ExitStart()
 	next i
 		
 	startTimer# = 0
+	p1Ready = 0
+	p2Ready = 0
 	
 	startStateInitialized = 0
 	

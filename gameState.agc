@@ -37,7 +37,7 @@ function InitGame()
 	SetSpriteMiddleScreen(pauseButton)
 	//if spActive then SetSpritePosition(pauseButton, 30, 30)
 	
-	LoadSpriteExpress(playButton, "rightArrow.png", 185, 185, 0, 0, 1)
+	LoadSpriteExpress(playButton, "resume.png", 185, 185, 0, 0, 1)
 	SetSpriteMiddleScreen(playButton)
 	SetSpriteVisible(playButton, 0)
 	
@@ -314,6 +314,7 @@ function EndGameScene()
 		endif
 	next i
 	if GetMusicPlayingOGGSP(spMusic) then StopMusicOGGSP(spMusic)
+	if GetMusicPlayingOGGSP(dangerMusic) then StopMusicOGGSP(dangerMusic)
 	for i = retro1M to retro8M
 		if GetMusicExistsOGG(i)
 			if GetMusicPlayingOGGSP(i) then StopMusicOGGSP(i)
@@ -352,7 +353,8 @@ function EndGameScene()
 				PlaySoundR(crackS, 100)
 				PlaySoundR(explodeS, 100)
 				SetViewZoom(1.25)
-				SetViewOffset(GetSpriteMiddleX(crabS)/8, GetSpriteMiddleY(crabS)/8)
+				SetViewOffset(w/16, GetSpriteMiddleY(crabS)/8)
+				//SetViewOffset(GetSpriteMiddleX(crabS)/8, GetSpriteMiddleY(crabS)/8)
 				endStage = 2
 			endif
 			
@@ -376,7 +378,8 @@ function EndGameScene()
 				PlaySoundR(explodeS, 100)
 				
 				SetViewZoom(2)
-				SetViewOffset(GetSpriteMiddleX(crabS)/2, GetSpriteMiddleY(crabS)/2)
+				SetViewOffset(w/4, GetSpriteMiddleY(crabS)/2)
+				//SetViewOffset(GetSpriteMiddleX(crabS)/2, GetSpriteMiddleY(crabS)/2)
 				endStage = 3
 			endif
 			
@@ -716,6 +719,7 @@ function ExitGame()
 		endif
 	next i
 	if GetMusicPlayingOGGSP(spMusic) then StopMusicOGGSP(spMusic)
+	if GetMusicPlayingOGGSP(dangerMusic) then StopMusicOGGSP(dangerMusic)
 	for i = retro1M to retro8M
 		if GetMusicExistsOGG(i)
 			if GetMusicPlayingOGGSP(i) then StopMusicOGGSP(i)
@@ -900,9 +904,9 @@ function PauseGame()
 		SetTextSpacing(pauseDesc2, GetTextSpacing(pauseDesc2) + 1)
 		IncTextY(pauseTitle2, 190)
 		IncTextY(pauseDesc2, 100)
-		rand = Random(1, 6)
+		rand = Random(1, 7)
 		if rand = 1
-			SetTextString(pauseDesc2, "The initial idea for Space Crab was" + chr(10) + "concieved in 2015, as a game called" + chr(10) + "'Ladder Wizard Wally'. The Ladder" + chr(10) + "Wizard you see in SCVS is the same one!")
+			SetTextString(pauseDesc2, "The initial idea for Space Crab was" + chr(10) + "conceived in 2015, as a game called" + chr(10) + "'Ladder Wizard Wally'. The Ladder" + chr(10) + "Wizard you see in SCVS is the same one!")
 		elseif rand = 2
 			SetTextString(pauseDesc2, "Did you know that the first Space Crab" + chr(10) + "came out in 2018? In addition, the" + chr(10) + "first playable version was finished" + chr(10) + "in 24 hours. A painless birth!")
 		elseif rand = 3
@@ -912,7 +916,9 @@ function PauseGame()
 		elseif rand = 5
 			SetTextString(pauseDesc2, "The 'two players on one phone' concept" + chr(10) + "for SCVS came from early Rondovo game," + chr(10) + "'Rub'. Two players used paintbrushes to" + chr(10) + "cover the screen with their color!")
 		elseif rand = 6
-			SetTextString(pauseDesc2, "Space Crab made an appearence in" + chr(10) + "'Sleep Patrol Alpha' as a playable" + chr(10) + "character! Find every landmark in the" + chr(10) + "first map to unlock him.")
+			SetTextString(pauseDesc2, "Space Crab made an appearance in" + chr(10) + "'Sleep Patrol Alpha' as a playable" + chr(10) + "character! Find every landmark in the" + chr(10) + "first map to unlock him.")
+		elseif rand = 7
+			SetTextString(pauseDesc2, "Tap and hold on the main menu logo" + chr(10) + "for a fruity suprise!")
 		endif
 		
 		
@@ -956,18 +962,6 @@ function UnpauseGame()
 endfunction
 
 //Functions that are used by both games are down below
-
-function AddMeteorAnimation(spr)
-	AddSpriteAnimationFrame(spr, meteorI1)
-	AddSpriteAnimationFrame(spr, meteorI2)
-	AddSpriteAnimationFrame(spr, meteorI3)
-	AddSpriteAnimationFrame(spr, meteorI4)
-	PlaySprite(spr, 15, 1, 1, 4)
-	
-	if Random(1, 2) = 2 then SetSpriteFlip(spr, 1, 0)
-	
-	SetSpriteShapeCircle(spr, 0, GetSpriteHeight(spr)/8, GetSpriteWidth(spr)/2.8)
-endfunction
 
 function CreateExp(metSpr, metType, planetNum)
 	iEnd = 1 + planetNum //The default experience amount, for regular meteors
@@ -1618,7 +1612,6 @@ function CreateMeteor(gameNum, category, special)
 	CreateSprite(meteorSprNum, 0)
 	SetSpriteSize(meteorSprNum, metSizeX, metSizeY)
 	SetSpriteDepth(meteorSprNum, 20)
-	AddMeteorAnimation(meteorSprNum)
 	
 	if category = 1	//Normal
 		SetSpriteColor(meteorSprNum, 255, 120, 40, 255)
@@ -1642,6 +1635,7 @@ function CreateMeteor(gameNum, category, special)
 		
 	endif
 	
+	AddMeteorAnimation(meteorSprNum)
 	CreateMeteorGlow(meteorSprNum)
 	
 	inc meteorSprNum, 1
@@ -1654,12 +1648,49 @@ function CreateMeteor(gameNum, category, special)
 	
 endfunction
 
+function AddMeteorAnimation(spr)
+	if fruitMode = 0
+		AddSpriteAnimationFrame(spr, meteorI1)
+		AddSpriteAnimationFrame(spr, meteorI2)
+		AddSpriteAnimationFrame(spr, meteorI3)
+		AddSpriteAnimationFrame(spr, meteorI4)
+		PlaySprite(spr, 15, 1, 1, 4)
+	else
+		//FRUITALITY
+		rnd = Random(0, 5)
+		AddSpriteAnimationFrame(spr, fruit1I+rnd)
+		PlaySprite(spr, 15, 0, 1, 1)
+		SetSpriteColor(spr, 255, 255, 255, 255)
+	endif
+	
+	if Random(1, 2) = 2 then SetSpriteFlip(spr, 1, 0)
+	
+	SetSpriteShapeCircle(spr, 0, GetSpriteHeight(spr)/8, GetSpriteWidth(spr)/2.8)
+endfunction
+
 function CreateMeteorGlow(spr)
-	mult# = 1.6
+	mult# = 1.6	
 	CreateSprite(spr+glowS, meteorGlowI)
 	SetSpriteSize(spr+glowS, GetSpriteWidth(spr)*mult#, GetSpriteHeight(spr)*mult#)
 	SetSpriteDepth(spr+glowS, 21)
 	SetSpriteColor(spr+glowS, GetSpriteColorRed(spr), GetSpriteColorGreen(spr), GetSpriteColorBlue(spr), 255)
+	if fruitMode = 1
+		AddSpriteAnimationFrame(spr+glowS, flameI1)
+		AddSpriteAnimationFrame(spr+glowS, flameI2)
+		AddSpriteAnimationFrame(spr+glowS, flameI3)
+		AddSpriteAnimationFrame(spr+glowS, flameI4)
+		PlaySprite(spr+glowS, 15, 1, 1, 4)
+		if GetSpriteImageID(spr) = fruit1I then SetSpriteColor(spr+glowS, 0, 51, 204, 255)
+		if GetSpriteImageID(spr) = fruit2I then SetSpriteColor(spr+glowS, 255, 9, 9, 255)
+		if GetSpriteImageID(spr) = fruit3I then SetSpriteColor(spr+glowS, 122, 244, 0, 255)
+		if GetSpriteImageID(spr) = fruit4I then SetSpriteColor(spr+glowS, 255, 51, 133, 255)
+		if GetSpriteImageID(spr) = fruit5I then SetSpriteColor(spr+glowS, 255, 255, 0, 255)
+		if GetSpriteImageID(spr) = fruit6I then SetSpriteColor(spr+glowS, 168, 36, 255, 255)
+		
+		if GetSpriteFlippedH(spr) then SetSpriteFlip(spr+glowS, 1, 0)
+		
+		SetSpriteSize(spr+glowS, GetSpriteWidth(spr), GetSpriteHeight(spr))
+	endif
 endfunction
 
 function UpdateSPScore(added)
@@ -1882,6 +1913,35 @@ function StartGameMusic()
 	
 endfunction
 
+function PlayDangerMusic(startNew)
+
+	//Checking to make sure that the change should happen
+	if spActive = 0 and crab1Deaths = 2 and crab2Deaths = 2
+
+		if startNew = 0
+			//Stopping the old music
+			for i = fightAMusic to fightJMusic
+				if GetMusicExistsOGG(i)
+					if GetMusicPlayingOGGSP(i) then StopMusicOGGSP(i)
+				endif
+			next i
+			if GetMusicPlayingOGGSP(spMusic) then StopMusicOGGSP(spMusic)
+			for i = retro1M to retro8M
+				if GetMusicExistsOGG(i)
+					if GetMusicPlayingOGGSP(i) then StopMusicOGGSP(i)
+				endif
+			next i
+		else
+			//Playing the danger music
+			PlayMusicOGGSP(dangerMusic, 1)
+		endif
+		
+		
+
+	endif
+	
+endfunction
+
 function PlayOpeningScene()
 	
 	CreateSpriteExpress(curtain, w, h, 0, 0, 8)
@@ -1970,7 +2030,8 @@ function PlayOpeningScene()
 				if GetSpriteExists(met2S+glowS) then DeleteSprite(met2S + glowS)
 				meteorActive2.remove(1)
 				
-				PlaySoundR(explodeS, volumeSE)
+				if fruitMode = 0 then PlaySoundR(explodeS, volumeSE)
+				if fruitMode = 1 then PlaySoundR(fruitS, volumeSE)
 			endif
 			
 			

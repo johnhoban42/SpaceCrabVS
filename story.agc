@@ -26,8 +26,8 @@ function DoStory()
 	endif
 	state = STORY
 	
+	ShowScene(0)
 	
-
 		
 	// If we are leaving the state, exit appropriately
 	// Don't write anything after this!
@@ -42,6 +42,25 @@ endfunction state
 function ExitStory()
 	
 	resultsStateInitialized = 0
+	
+endfunction
+
+function ShowScene(sceneNum)
+	
+	SetFolder("/media/text")
+	
+	if sceneNum = 0
+		SceneFile$ = "testScene.txt"
+	else
+		SceneFile$ = "scene" + Str(1 + (sceneNum-1)/4) + "_" + Str(Mod(sceneNum, 4)) + ".txt"
+	endif
+	
+	OpenToRead(1, SceneFile$)
+	
+	currentRow$ = ReadLine(1)
+	lengthTest$ = ""
+	charTalk$ = ""
+	shownTextLine$ = ""
 	
 endfunction
 

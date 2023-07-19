@@ -168,10 +168,8 @@ global spHighScoreClassic = 0
 global spHighCrabClassic$ = ""
 #constant spScoreMinSize = 70
 
-global spType = 0
-#constant MIRRORMODE 1
-#constant CLASSIC 2
-#constant STORYMODE 3
+global p1Ready = 0
+global p2Ready = 0
 
 //Input buffers
 global buffer1 = 0
@@ -533,6 +531,22 @@ global jumpPartI as Integer[6]
 #constant attackPartI 453
 #constant attackPartInvertI 454
 
+//FRUITALITY Images
+#constant fruit1I 461
+#constant fruit2I 462
+#constant fruit3I 463
+#constant fruit4I 464
+#constant fruit5I 465
+#constant fruit6I 466
+#constant flameI1 467
+#constant flameI2 468
+#constant flameI3 469
+#constant flameI4 470
+
+#constant logoI 471
+#constant logoDemoI 472
+#constant logoFruitI 473
+
 //#constant planetVar1I 51
 //#constant planetVar2I 52
 //#constant planetVar3I 53
@@ -591,6 +605,7 @@ global jumpPartI as Integer[6]
 
 #constant mirrorBreakS 25
 #constant rainbowSweepS 26
+#constant fruitS 27
 
 
 
@@ -605,6 +620,8 @@ global jumpPartI as Integer[6]
 #constant fightJMusic 106	//John's fight song
 #constant tutorialMusic 107	//The tutorial song
 #constant spMusic 108		//Mirror Music 
+
+#constant dangerMusic 110
 
 #constant raveBass1 121
 #constant raveBass2 122
@@ -640,6 +657,7 @@ SetMusicSystemVolumeOGG(volumeM)
 #constant SPR_LEADERBOARD 214
 #constant SPR_CLASSIC 215
 #constant SPR_STORY_START 216
+#constant TXT_ALONE 216
 
 
 //Different Crab buttons for the single player mode
@@ -694,8 +712,23 @@ SetMusicSystemVolumeOGG(volumeM)
 #constant tweenOnP1 2
 #constant tweenOffP2 3
 #constant tweenOnP2 4
+
 //global tweenButton = 5
 //tweenButton lasts until 25
+
+#constant tweenFadeLen# .2
+//#constant tweenSprFadeIn 101
+//CreateTweenSprite(tweenSprFadeIn, tweenFadeLen#)
+//SetTweenSpriteAlpha(tweenSprFadeIn, 140, 255, TweenSmooth2())
+#constant tweenSprFadeOut 102
+//CreateTweenSprite(tweenSprFadeOut, tweenFadeLen#)
+//SetTweenSpriteAlpha(tweenSprFadeOut, 255, 140, TweenSmooth2())
+#constant tweenTxtFadeIn 103
+//CreateTweenText(tweenTxtFadeIn, tweenFadeLen#)
+//SetTweenTextAlpha(tweenTxtFadeIn, 0, 255, TweenSmooth2())
+//#constant tweenTxtFadeOut 104
+//CreateTweenText(tweenTxtFadeOut, tweenFadeLen#)
+//SetTweenTextAlpha(tweenTxtFadeOut, 255, 0, TweenSmooth2())
 
 // Results screen sprites - player 1
 #constant TXT_R_CRAB_MSG_1 = 500
@@ -729,6 +762,13 @@ global spActive = 0 //Single Player active
 global aiActive = 0 //VS AI active
 global paused = 0	//Game is currently paused
 global pauseTimer# = 0
+global spType = 0
+global fruitMode = 0
+#constant MIRRORMODE 1
+#constant CLASSIC 2
+#constant STORYMODE 3
+
+global fruitUnlock# = -300
 
 #constant glowS 20000
 type meteor
@@ -767,6 +807,7 @@ function LoadBaseSounds()
 		LoadSoundOGG(buttonSound, "select.ogg")
 		LoadSoundOGG(mirrorBreakS, "mirrorBreak.ogg")
 		LoadSoundOGG(rainbowSweepS, "rainbowSweep.ogg")
+		LoadSoundOGG(fruitS, "fruit.ogg")
 		
 		
 		LoadSoundOGG(exp1S, "exp1.ogg")
@@ -798,6 +839,7 @@ function LoadBaseSounds()
 		LoadMusicOGG(buttonSound, "select.ogg")
 		LoadMusicOGG(mirrorBreakS, "mirrorBreak.ogg")
 		LoadMusicOGG(rainbowSweepS, "rainbowSweep.ogg")
+		LoadMusicOGG(fruitS, "fruit.ogg")
 		
 		LoadMusicOGG(exp1S, "exp1.ogg")
 		LoadMusicOGG(exp2S, "exp2.ogg")
@@ -869,6 +911,7 @@ function PlayMusicOGGSP(songID, loopYN)
 			LoadMusicOGG(spMusic, "spMusic.ogg")
 			SetMusicLoopTimesOGG(spMusic, .769, 25.384)
 		endif
+		if songID = dangerMusic then LoadMusicOGG(dangerMusic, "danger.ogg")
 		
 		if songID = raveBass1 then LoadMusicOGG(raveBass1, "raveBass.ogg")
 		if songID = raveBass2 then LoadMusicOGG(raveBass2, "raveBass2.ogg")
@@ -890,22 +933,7 @@ function PlayMusicOGGSP(songID, loopYN)
 	
 endfunction
 
-function GetMusicPlayingOGGSP(songID)
-	exist = 0
-	exist = GetMusicExistsOGG(songID)
-	if exist
-		exist = GetMusicPlayingOGG(songID)
-	endif
-endfunction exist
 
-function StopMusicOGGSP(songID)
-
-	if GetMusicExistsOGG(songID)
-		StopMusicOGG(songID)
-		DeleteMusicOGG(songID)
-	endif
-
-endfunction
 
 function LoadJumpSounds()
 	if GetMusicExistsOGG(jump1S) then DeleteMusicOGG(jump1S)
@@ -991,6 +1019,25 @@ function LoadBaseImages()
 	next i
 	
 	
+	LoadImage(fruit1I, "fruit1.png")
+	LoadImage(fruit2I, "fruit2.png")
+	LoadImage(fruit3I, "fruit3.png")
+	LoadImage(fruit4I, "fruit4.png")
+	LoadImage(fruit5I, "fruit5.png")
+	LoadImage(fruit6I, "fruit6.png")
+	
+	LoadImage(flameI1, "flame1.png")
+	LoadImage(flameI2, "flame2.png")
+	LoadImage(flameI3, "flame3.png")
+	LoadImage(flameI4, "flame4.png")
+	
+			
+	SetFolder("/media/ui")
+	
+	LoadImage(logoI, "title.png")
+	LoadImage(logoDemoI, "titleDemo.png")
+	LoadImage(logoFruitI, "titleFruit.png")
+	
 	SetFolder("/media")
 	
 	LoadImage(meteorGlowI, "glow.png")
@@ -1002,9 +1049,6 @@ function LoadBaseImages()
 	LoadImage(expBarI4, "expBar4.png")
 	LoadImage(expBarI5, "expBar5.png")
 	LoadImage(expBarI6, "expBar6.png")
-	
-	
-	SetFolder("/media")
 	
 	LoadImage(boarderI, "boader.png")
 	LoadImage(ufoI, "spaceNed.png")
@@ -1271,29 +1315,6 @@ function LoadGameImages(loading)
 			loadedCrabSprites.remove(0)
 		next i
 		
-//~		if GetDeviceBaseName() = "android"
-//~			SetFolder("/media/sounds")
-//~			
-//~			StopMusicOGGSP(ufoS)
-//~			StopMusicOGGSP(wizardSpell1S)
-//~			StopMusicOGGSP(wizardSpell2S)
-//~			StopMusicOGGSP(ninjaStarS)
-//~			StopMusicOGGSP(turnS)
-//~			StopMusicOGGSP(specialS)
-//~			StopMusicOGGSP(specialExitS)
-//~			StopMusicOGGSP(explodeS)
-//~			StopMusicOGGSP(launchS)
-//~			StopMusicOGGSP(crackS)
-//~			StopMusicOGGSP(flyingS)
-//~			StopMusicOGGSP(landingS)
-//~			StopMusicOGGSP(exp1S)
-//~			StopMusicOGGSP(exp2S)
-//~			StopMusicOGGSP(exp3S)
-//~			StopMusicOGGSP(exp4S)
-//~			StopMusicOGGSP(exp5S)
-//~			
-//~		endif
-		
 	endif
 	
 endfunction
@@ -1322,8 +1343,6 @@ function SetCrabStrings()
 	crabPause2[5] = "Special: Fast Forward" + chr(10) + "Speed up your enemy's" + chr(10) + "game for a short while."
 	crabPause2[6] = "Special: Shuri-Krustacean" + chr(10) + "Fling deadly projecticles" + chr(10) + "directly up the screen."
 endfunction
-
-
 
 /*
 The Code Graveyard
