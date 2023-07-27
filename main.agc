@@ -146,14 +146,14 @@ do
 		touch = GetRawNextTouchEvent()
 	endwhile
 	
-    Print(ScreenFPS())
+    //Print(ScreenFPS())
     //Print(fpsr#)
     //Print(GetRawLastKey())
     //Print(meteorTotal1)
     //Print(specialTimerAgainst2#)
     
 		//Print(GetDeviceBaseName())
-	Print(GetImageMemoryUsage())
+	//Print(GetImageMemoryUsage())
 	
 	//Print(GetPointerX())
 	//Print(GetPointerY())
@@ -313,8 +313,8 @@ endfunction
 function ShowLeaderBoard(num)
 	
 	if mPlatform = APPLE
-		boardM$ = "scvs.mirrormode"
-		boardC$ = "scvs.classic"
+		boardM$ = "grp.scvs.mirrormode"
+		boardC$ = "grp.scvs.classic"
 	elseif mPlatform = ANDROID
 		boardM$ = "CgkI3pbJ898dEAIQAQ"
 		boardC$ = "CgkI3pbJ898dEAIQAg"
@@ -326,8 +326,8 @@ function ShowLeaderBoard(num)
 	
 	/*
 	Apple Codes
-	Mirror: scvs.mirrormode
-	Classic: scvs.classic
+	Mirror: grp.scvs.mirrormode
+	Classic: grp.scvs.classic
 	
 	Android Codes
 	Mirror: CgkI3pbJ898dEAIQAQ

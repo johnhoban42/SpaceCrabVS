@@ -308,18 +308,7 @@ function EndGameScene()
 	if GetSpriteExists(expBar1) then DeleteGameUI()
 	
 	//Getting rid of the music
-	for i = fightAMusic to fightJMusic
-		if GetMusicExistsOGG(i)
-			if GetMusicPlayingOGGSP(i) then StopMusicOGGSP(i)
-		endif
-	next i
-	if GetMusicPlayingOGGSP(spMusic) then StopMusicOGGSP(spMusic)
-	if GetMusicPlayingOGGSP(dangerMusic) then StopMusicOGGSP(dangerMusic)
-	for i = retro1M to retro8M
-		if GetMusicExistsOGG(i)
-			if GetMusicPlayingOGGSP(i) then StopMusicOGGSP(i)
-		endif
-	next i
+	StopGamePlayMusic()
 	
 	while hitTimer# > 0
 	
@@ -713,18 +702,7 @@ function ExitGame()
 	if GetTextExists(TXT_INTRO2) then DeleteText(TXT_INTRO2)
 	paused = 0
 	
-	for i = fightAMusic to fightJMusic
-		if GetMusicExistsOGG(i)
-			if GetMusicPlayingOGGSP(i) then StopMusicOGGSP(i)
-		endif
-	next i
-	if GetMusicPlayingOGGSP(spMusic) then StopMusicOGGSP(spMusic)
-	if GetMusicPlayingOGGSP(dangerMusic) then StopMusicOGGSP(dangerMusic)
-	for i = retro1M to retro8M
-		if GetMusicExistsOGG(i)
-			if GetMusicPlayingOGGSP(i) then StopMusicOGGSP(i)
-		endif
-	next i
+	StopGamePlayMusic()
 	
 	//This is called if the end cutscene for the game never plays
 	if GetSpriteExists(expBar1)
@@ -916,7 +894,7 @@ function PauseGame()
 		elseif rand = 5
 			SetTextString(pauseDesc2, "The 'two players on one phone' concept" + chr(10) + "for SCVS came from early Rondovo game," + chr(10) + "'Rub'. Two players used paintbrushes to" + chr(10) + "cover the screen with their color!")
 		elseif rand = 6
-			SetTextString(pauseDesc2, "Space Crab made an appearance in" + chr(10) + "'Sleep Patrol Alpha' as a playable" + chr(10) + "character! Find every landmark in the" + chr(10) + "first map to unlock him.")
+			SetTextString(pauseDesc2, "Space Crab made an appearance in" + chr(10) + "'Sleep Patrol Alpha' as a playable" + chr(10) + "character! Find every landmark on the" + chr(10) + "first map to unlock him.")
 		elseif rand = 7
 			SetTextString(pauseDesc2, "Tap and hold on the main menu logo" + chr(10) + "for a fruity suprise!")
 		endif
@@ -1898,7 +1876,25 @@ endfunction
 function StartGameMusic()
 	
 	
-	if spActive = 0 then PlayMusicOGGSP(fightAMusic, 1)	//Todo: put in a music randomizer
+	if spActive = 0
+		pass = 0
+		while pass = 0
+			rnd = Random(1, 3)
+			if rnd = 1 and oldSong <> fightAMusic
+				PlayMusicOGGSP(fightAMusic, 1)
+				oldSong = fightAMusic
+				pass = 1
+			elseif rnd = 2 and oldSong <> fightBMusic
+				PlayMusicOGGSP(fightBMusic, 1)
+				oldSong = fightBMusic
+				pass = 1
+			elseif rnd = 3 and oldSong <> fightJMusic
+				PlayMusicOGGSP(fightJMusic, 1)
+				oldSong = fightJMusic
+				pass = 1
+			endif
+		endwhile
+	endif
 	
 	if spActive = 1 
 		if spType = MIRRORMODE
@@ -1919,26 +1915,42 @@ function PlayDangerMusic(startNew)
 	if spActive = 0 and crab1Deaths = 2 and crab2Deaths = 2
 
 		if startNew = 0
-			//Stopping the old music
-			for i = fightAMusic to fightJMusic
-				if GetMusicExistsOGG(i)
-					if GetMusicPlayingOGGSP(i) then StopMusicOGGSP(i)
-				endif
-			next i
-			if GetMusicPlayingOGGSP(spMusic) then StopMusicOGGSP(spMusic)
-			for i = retro1M to retro8M
-				if GetMusicExistsOGG(i)
-					if GetMusicPlayingOGGSP(i) then StopMusicOGGSP(i)
-				endif
-			next i
+			
+			//Getting the song ID and stopping the music
+			oldSong = 0
+			if GetMusicPlayingOGGSP(fightAMusic) then oldSong = fightAMusic
+			if GetMusicPlayingOGGSP(fightBMusic) then oldSong = fightBMusic
+			if GetMusicPlayingOGGSP(fightJMusic) then oldSong = fightJMusic
+			
+			StopGamePlayMusic()
+			
 		else
-			//Playing the danger music
-			PlayMusicOGGSP(dangerMusic, 1)
+			//Playing the matching danger music
+			if oldSong = fightAMusic then PlayMusicOGGSP(dangerAMusic, 1)
+			if oldSong = fightBMusic then PlayMusicOGGSP(dangerBMusic, 1)
+			if oldSong = fightJMusic then PlayMusicOGGSP(dangerJMusic, 1)
+			
 		endif
 		
-		
-
 	endif
+	
+endfunction
+
+function StopGamePlayMusic()
+	
+	for i = fightAMusic to fightJMusic
+		if GetMusicPlayingOGGSP(i) then StopMusicOGGSP(i)
+	next i
+	
+	if GetMusicPlayingOGGSP(spMusic) then StopMusicOGGSP(spMusic)
+	
+	for i = dangerAMusic to dangerCMusic
+		if GetMusicPlayingOGGSP(i) then StopMusicOGGSP(i)
+	next i
+	
+	for i = retro1M to retro8M
+		if GetMusicPlayingOGGSP(i) then StopMusicOGGSP(i)
+	next i
 	
 endfunction
 

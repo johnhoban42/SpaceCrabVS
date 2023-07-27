@@ -213,6 +213,14 @@ global met3CD2# = 0 //400
 #constant pauseDesc1 8
 #constant pauseDesc2 9
 
+#constant storyText 10001
+#constant storyText2 10002
+#constant storyText3 10003
+#constant storyText4 10004
+#constant storyText5 10005
+#constant storyFitter 10006
+
+
 //Sprite Indexes
 #constant crab1 1
 #constant crab2 2
@@ -621,7 +629,10 @@ global jumpPartI as Integer[6]
 #constant tutorialMusic 107	//The tutorial song
 #constant spMusic 108		//Mirror Music 
 
-#constant dangerMusic 110
+#constant dangerAMusic 111
+#constant dangerBMusic 112
+#constant dangerJMusic 113
+#constant dangerCMusic 114
 
 #constant raveBass1 121
 #constant raveBass2 122
@@ -635,6 +646,8 @@ global jumpPartI as Integer[6]
 #constant retro6M 136
 #constant retro7M 137
 #constant retro8M 138
+
+global oldSong = 0
 
 //Volume for music and sound effects
 global volumeM = 60
@@ -900,8 +913,16 @@ function PlayMusicOGGSP(songID, loopYN)
 			LoadMusicOGG(fightAMusic, "fightA.ogg")
 			SetMusicLoopTimesOGG(fightAMusic, 28.235, -1)
 		endif
+		if songID = fightBMusic then LoadMusicOGG(fightBMusic, "fightB.ogg")
+		if songID = fightJMusic
+			LoadMusicOGG(fightJMusic, "fightJ.ogg")
+			SetMusicLoopTimesOGG(fightJMusic, 6.0, -1)
+		endif
 		if songID = tutorialMusic then LoadMusicOGG(tutorialMusic, "fightD.ogg")
-		if songID = characterMusic then LoadMusicOGG(characterMusic, "character.ogg")
+		if songID = characterMusic
+			LoadMusicOGG(characterMusic, "character.ogg")
+			SetMusicLoopTimesOGG(characterMusic, 2.581, -1)
+		endif
 		if songID = resultsMusic
 			LoadMusicOGG(resultsMusic, "results.ogg")
 			SetMusicLoopTimesOGG(resultsMusic, 14.22, -1)
@@ -911,7 +932,10 @@ function PlayMusicOGGSP(songID, loopYN)
 			LoadMusicOGG(spMusic, "spMusic.ogg")
 			SetMusicLoopTimesOGG(spMusic, .769, 25.384)
 		endif
-		if songID = dangerMusic then LoadMusicOGG(dangerMusic, "danger.ogg")
+		if songID = dangerAMusic then LoadMusicOGG(dangerAMusic, "dangerA.ogg")
+		if songID = dangerBMusic then LoadMusicOGG(dangerBMusic, "dangerB.ogg")
+		if songID = dangerJMusic then LoadMusicOGG(dangerJMusic, "dangerJ.ogg")
+		if songID = dangerCMusic then LoadMusicOGG(dangerCMusic, "dangerC.ogg")
 		
 		if songID = raveBass1 then LoadMusicOGG(raveBass1, "raveBass.ogg")
 		if songID = raveBass2 then LoadMusicOGG(raveBass2, "raveBass2.ogg")

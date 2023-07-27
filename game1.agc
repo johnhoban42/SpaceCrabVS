@@ -976,7 +976,7 @@ function HitScene1()
 	state = GAME
 	
 	inc hit1Timer#, -1*fpsr#
-	Print(hit1Timer#)
+	//Print(hit1Timer#)
 	if GetMusicPlayingOGGSP(raveBass2) then StopMusicOGGSP(raveBass2)
 	
 	if crab1Deaths < 3

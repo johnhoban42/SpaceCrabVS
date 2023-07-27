@@ -169,7 +169,7 @@ function CreateGame2()
 	
 	//Setting gameplay parameters to their proper values
 	crab2Deaths = 0
-	special0Used = 0
+	special2Used = 0
 	
 	if spActive
 		for i = 1 to 3
@@ -976,7 +976,7 @@ function HitScene2()
 	state = GAME
 	
 	inc hit2Timer#, -1*fpsr#
-	Print(hit2Timer#)
+	//Print(hit2Timer#)
 	if GetMusicPlayingOGGSP(raveBass1) then StopMusicOGGSP(raveBass1)
 	
 	if crab2Deaths < 3

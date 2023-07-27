@@ -102,6 +102,7 @@ function InitStart()
 	
 	LoadAnimatedSprite(SPR_MENU_BACK, "back", 8)
 	//PlaySprite(SPR_MENU_BACK, 10, 1, 1, 8)
+	SetSpriteFrame(SPR_MENU_BACK, 8)
 	SetSpriteExpress(SPR_MENU_BACK, 160, 160, 56, 740, 5)
 	SetSpriteVisible(SPR_MENU_BACK, 0)
 	AddButton(SPR_MENU_BACK)

@@ -9,6 +9,15 @@ function InitStory()
 	CreateSpriteExpress(SPR_TEXT_BOX, w-80, 280, 0, 0, 10)
 	SetSpriteMiddleScreen(SPR_TEXT_BOX)
 	
+	for i = storyText to storyFitter
+		CreateTextExpress(i, "", 60, fontDescI, 0, GetSpriteX(SPR_TEXT_BOX)+20, GetSpriteY(SPR_TEXT_BOX)+20, 8)
+		SetTextSpacing(i, -14)
+		SetTextColor(i, 0, 0, 0, 255)
+	next i
+	
+	SetTextColorAlpha(storyFitter, 0)
+	
+	
 	
 	//Loading the text
 	
@@ -41,6 +50,11 @@ endfunction state
 // Cleanup upon leaving this state
 function ExitStory()
 	
+	DeleteSprite(SPR_TEXT_BOX)
+	for i = storyText to storyFitter
+		DeleteText(i)
+	next i
+	
 	resultsStateInitialized = 0
 	
 endfunction
@@ -57,80 +71,122 @@ function ShowScene(sceneNum)
 	
 	OpenToRead(1, SceneFile$)
 	
-	currentRow$ = ReadLine(1)
-	lengthTest$ = ""
-	charTalk$ = ""
-	shownTextLine$ = ""
+	wholeRow$ = ReadLine(1)
+		
+	//TODO: Read the music file as the first line
+	
+	//This whill iterates through the entire text file, one line at a time
+	while (CompareString(wholeRow$, "") = 0)		
+		
+		//TODO: Read enterR, enterL, or exit; assign that crab to the sprites on that side of the screen
+		
+		//TODO: Check if there is a colon; this sets which crab is talking, then delete everything before the colon
+		newCrabTalk = 0
+		if CompareString(":", Mid(wholeRow$, 3, 1)) then newCrabTalk = 1
+		
+		
+		//TODO: Posing: Grab everything before a semicolon, formatted like 'b12f5'
+		//Set those images for the assiciated crab's sprites
+		//Grab the chibi life number for later use, choose which one based on the face used
+		//Delete the old images if things changed, can maybe use a variable to store & load the previous images index?
+		
+		
+		//TODO: Delete any spaces before the actual dialouge starts
+		
+		
+		wholeRow$ = wholeRow$ + " " //Adding a space to the end of the line for easier processing.
+		displayString$ = ""			//The string that is being shown, with line breaks; text moves to here from wholeRow.
+		curPos = 0					//The positioning system for the below while loop.
+		curChar$ = ""				//The current character at the curPos.
+		lastSpacePos = 1				//Keeping track of where the previous space was, so that the line breaks can happen after the overage width is passed.
+		
+		while curPos <> Len(wholeRow$)
+			inc curPos, 1
+			curChar$ = Mid(wholeRow$, curPos, 1)
+			
+			//If the current character is a space, then a linebreak may happen
+			if curChar$ = " "
+				
+				//This checks if the wholeRow, up to the current position, inside of a formatted string, is longer than the textbox width.
+				newLine = 0
+				SetTextString(storyFitter, Mid(wholeRow$, 1, curPos))
+				if (GetTextTotalWidth(storyFitter) > GetSpriteWidth(SPR_TEXT_BOX)-40)
+					newLine = 1
+				endif
+				
+				//This takes the current line, up to the word before it went overwidth, and puts it in the display string.
+				//The processing line is then shortened, and the position is reset.
+				if newLine
+					displayString$ = displayString$ + Mid(wholeRow$, 1, lastSpacePos) + chr(10)
+					wholeRow$ = Mid(wholeRow$, lastSpacePos+1, len(wholeRow$)-lastSpacePos)
+					curPos = 0
+				endif
+				
+				//This takes the position of the previous space character, to be used in line splicing.
+				lastSpacePos = curPos
+			endif
+		endwhile
+		displayString$ = displayString$ + wholeRow$	//Adding the remainder of the row into the display string.
+		
+		SetTextString(storyText, displayString$)		//Publicly displaying the edited string.
+		
+		wholeRow$ = ReadLine(1)	//Reading the new line of the text file.
+		
+		
+		//Waiting for the user input before continuing.
+		nextLine = 0
+		showPos = 1
+		lineNum = 0
+		
+		//Creating seperate tweens for lines 1 through 4
+		for i = 0 to 3
+			if GetTweenExists(storyText + i) then DeleteTween(storyText + i)
+			CreateTweenChar(storyText + i, .05)
+			SetTweenCharAlpha(storyText + i, 0, 255, TweenSmooth1())
+			SetTweenCharY(storyText + i, -GetTextSize(storyText) + GetTextSize(storyText)*(i-.7), GetTextSize(storyText)*i, TweenOvershoot())
+		next i
+		
+		for i = 0 to len(displayString$)
+			SetTextCharColorAlpha(storyText, i, 0)
+			
+			if Mid(displayString$, i+1, 1) = chr(10) and lineNum < 3
+				inc lineNum, 1
+			endif
+			PlayTweenChar(storyText+lineNum, storyText, i, .02*i)
+		next i
+		
+		hurryUp = 0
+		while nextLine = 0
+
+			if GetRawKeyPressed(32)
+				hurryUp = 1
+			endif
+			if hurryUp then UpdateAllTweens(.1)
+			if GetRawKeyPressed(32) and GetTweenCharPlaying(storyText, storyText, len(displayString$)) = 0 and GetTweenCharPlaying(storyText2, storyText, len(displayString$)) = 0 and GetTweenCharPlaying(storyText3, storyText, len(displayString$)) = 0 and GetTweenCharPlaying(storyText4, storyText, len(displayString$)) = 0 then nextLine = 1
+			SyncG()
+		endwhile
+		
+		
+	endwhile
+	
+endfunction
+
+function SetStoryCrabSprites()
+	
+	
 	
 endfunction
 
 //The snowtunes code that I'm pulling from
 /*
 function displayText(tNum)
-
-	//flag[flagNum] = 1
-
-	//The fancy text will always be #1!!!
-	
-	SetFolder("/media/text")
-	
-	if tNum = 1
-		OpenToRead(1, "beach1.txt")
-	elseif tNum = 2
-		OpenToRead(1, "beach2.txt")
-	elseif tNum = 3
-		OpenToRead(1, "beach3.txt")
-	elseif tNum = 4
-		OpenToRead(1, "beach4.txt")
-	else
-		OpenToRead(1, "noText.txt")
-	endif
-	
 	
 	currentRow$ = ReadLine(1)
 	charTalk$ = ""
 	talkTo$ = "" 
 	textLine$ = ""
 	
-	CreateText(1, "")
-	SetTextSize(1, 40)
-	SetTextPosition(1, 100, 100)
-	FixTextToScreen(1, 1)
-	SetTextFontImage(1, UIFont)
-	SetTextSpacing(1, -7)
-	
-	CreateSprite(32, LoadImage("cowText1.png"))
-	SetSpriteSize(32, 600, 300)
-	SetSpritePosition(32, 100, 100)
-	SetSpriteColor(32, 125, 125, 125, 255)
-	FixSpriteToScreen(32, 1)
-	
-	//Setting the scene
-	SetMusicVolumeOGG(rolling, 0)
-	SetParticlesFrequency(feet, 0)
-	SetParticlesFrequency(feetIce, 0)
-	StopSprite(5)
-	SetSpriteAngle(5, 0)
-	
-	//Offsetting the text box
-	if worldLevel = 5
-		if GetSpriteX(1) > GetSpriteMiddleX(beach1_shop)
-			SetSpritePosition(32, 500, 100)
-			
-		endif
-	endif
-	
-	//Create the textbox with 4 animation frames
-	
-	//Just to slow the snowman down
-	if GetSpriteExists(1)
-		while GetSpritePhysicsVelocityX(1) > .2
-			SetSpritePhysicsVelocity(1, GetSpritePhysicsVelocityX(1)/2, GetSpritePhysicsVelocityY(1))
-		endwhile
-		SetSpritePhysicsVelocity(1, 0, GetSpritePhysicsVelocityY(1))
-		SetSpritePhysicsAngularVelocity(1, 0)
-	endif
-	
+
 	//This whill iterates through the entire text file, one line at a time
 	while (CompareString(currentRow$, "") = 0)		
 		
@@ -164,9 +220,6 @@ function displayText(tNum)
 			
 		//This while loop iterates through the line
 		while goToNext = 0
-			SetSpritePosition(2, GetSpriteX(1)+GetSpriteWidth(1)/2-GetSpriteWidth(2)/2, GetSpriteY(1)-GetSpriteHeight(2)+8)
-			SetSpritePosition(3, GetSpriteX(2), GetSpriteY(2)-GetSpriteHeight(3)+8)
-			SetSpritePosition(5, GetSpriteX(3)+GetSpriteWidth(3)/6-GetSpritePhysicsVelocityX(1)/50, GetSpriteY(3)+GetSpriteHeight(3)-4)
 			fpsr# = 60.0/ScreenFPS()
 			
 			//Get use GetTextWidth

@@ -219,7 +219,7 @@ function DoResultsController(rc ref as ResultsController)
 		SetTextColorAlpha(rc.txtWinMsg, rc.frame * (255 / FRAMES_WIN_MSG#)) 
 		SetSpriteColorAlpha(coverS, 255 - rc.frame * (255 / FRAMES_WIN_MSG#))
 	endif
-	print(rc.frame)
+	//print(rc.frame)
 	
 	// Make the rest of the UI appear in sync with the song
 	if GetMusicPositionOGG(resultsMusic) >= 3.117 and GetSpriteVisible(rc.sprCrabWin) = 0 //rc.frame => FRAMES_SHOW_UI# 

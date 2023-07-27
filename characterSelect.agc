@@ -324,7 +324,7 @@ function ChangeCrabs(csc ref as CharacterSelectController, dir as integer, start
 	next spr
 	dec csc.glideFrame
 	
-	Print(cNum)
+	//Print(cNum)
 	//Sleep(500)
 	
 	// Finish the glide and change the displayed crab
@@ -419,6 +419,7 @@ function DoCharacterSelectController(csc ref as CharacterSelectController)
 					ChangeCrabs(csc, 1, 1)
 					csc.stage = 2
 					i = NUM_CRABS
+					ClearMultiTouch()
 				endif
 			next i
 		
