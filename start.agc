@@ -10,7 +10,7 @@ global startStateInitialized as integer = 0
 // Does nothing right now, just a placeholder
 function InitStart()
 	
-	SetCrabStrings()
+	SetCrabPauseStrings()
 	
 	SetSpriteVisible(split, 0)
 	

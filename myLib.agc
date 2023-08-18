@@ -843,7 +843,7 @@ function PingUpdate()
 	for i = pingStart to pingEnd
 		if GetSpriteExists(i)
 			IncSpriteColorAlpha(i, -speed#*fpsr#)
-			if GetSpriteColorAlpha(i) <= 0 then DeleteSprite(i)
+			if GetSpriteColorAlpha(i) <= 10 then DeleteSprite(i)
 		endif
 	next i
 
@@ -907,5 +907,13 @@ buttons.sort()
 	if index <> -1
 		buttons.remove(index)
 	endif
+	
+endfunction
+
+function SetTweenPulse(twn, spr, impact#)
+	SetTweenSpriteSizeX(twn, GetSpriteWidth(spr)*impact#, GetSpriteWidth(spr), TweenOvershoot())
+	SetTweenSpriteSizeY(twn, GetSpriteHeight(spr)*impact#, GetSpriteHeight(spr), TweenOvershoot())
+	SetTweenSpriteX(twn, GetSpriteMiddleX(spr)-(GetSpriteWidth(spr)*impact#)/2, GetSpriteX(spr), TweenOvershoot())
+	SetTweenSpriteY(twn, GetSpriteMiddleY(spr)-(GetSpriteHeight(spr)*impact#)/2, GetSpriteY(spr), TweenOvershoot())
 	
 endfunction

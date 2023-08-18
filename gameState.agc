@@ -253,12 +253,22 @@ function DoGame()
 	endif
 	
 	if state = RESULTS
-		EndGameScene()		
+		EndGameScene()
+		if storyActive
+			//This is the case of ending story mode in a VS battle
+			state = STORY
+			if crab1Deaths = 3 then storyRetry = 1
+		endif
 	endif
 	
 	if spActive = 1 and crab1Deaths > 0 or crab2Deaths > 0 and state = START
 		if spType = MIRRORMODE then EndMirrorScene()
 		if spType = CLASSIC then EndClassicScene()
+		if storyActive
+			//This is the case of ending story mode in a single player mode
+			state = STORY
+			if spScore < storyMinScore then storyRetry = 1
+		endif
 	endif
 	
 	
@@ -418,7 +428,7 @@ function EndGameScene()
 				SyncG()
 			next i
 			
-			InitResults()
+			if storyActive = 0 then InitResults()
 		endif
 		
 		SyncG()
@@ -462,7 +472,7 @@ function EndMirrorScene()
 	if GetSpriteExists(expBar1) then DeleteGameUI()
 	
 	//Getting rid of the music
-	if GetMusicPlayingOGGSP(spMusic) then StopMusicOGGSP(spMusic)
+	StopGamePlayMusic()
 
 	PlaySprite(crab1, 0, 1, 13, -1)
 	PlaySprite(crab2, 0, 1, 13, -1)
@@ -503,7 +513,7 @@ function EndMirrorScene()
 				
 				endStage = 4
 				PlaySoundR(launchS, 100)
-				PlayMusicOGGSP(loserMusic, 0)
+				if storyActive = 0 or spScore < storyMinScore then PlayMusicOGGSP(loserMusic, 0)
 				
 				if GetSpriteExists(bgHit1) then DeleteSprite(bgHit1)
 			endif
@@ -549,11 +559,7 @@ function EndClassicScene()
 	if GetSpriteExists(expBar1) then DeleteGameUI()
 	
 	//Getting rid of the music
-	for i = retro1M to retro8M
-		if GetMusicExistsOGG(i)
-			if GetMusicPlayingOGGSP(i) then StopMusicOGGSP(i)
-		endif
-	next i
+	StopGamePlayMusic()
 
 	PlaySprite(crab1, 0, 1, 13, -1)
 	
@@ -590,7 +596,7 @@ function EndClassicScene()
 				
 				endStage = 4
 				PlaySoundR(launchS, 100)
-				PlayMusicOGGSP(loserMusic, 0)
+				if storyActive = 0 or spScore < storyMinScore then PlayMusicOGGSP(loserMusic, 0)
 				
 				if GetSpriteExists(bgHit1) then DeleteSprite(bgHit1)
 			endif
@@ -1875,37 +1881,38 @@ endfunction
 
 function StartGameMusic()
 	
-	
-	if spActive = 0
-		pass = 0
-		while pass = 0
-			rnd = Random(1, 3)
-			if rnd = 1 and oldSong <> fightAMusic
-				PlayMusicOGGSP(fightAMusic, 1)
-				oldSong = fightAMusic
-				pass = 1
-			elseif rnd = 2 and oldSong <> fightBMusic
-				PlayMusicOGGSP(fightBMusic, 1)
-				oldSong = fightBMusic
-				pass = 1
-			elseif rnd = 3 and oldSong <> fightJMusic
-				PlayMusicOGGSP(fightJMusic, 1)
-				oldSong = fightJMusic
-				pass = 1
-			endif
-		endwhile
-	endif
-	
-	if spActive = 1 
-		if spType = MIRRORMODE
-			PlayMusicOGGSP(spMusic, 1)
-		
-		elseif GetMusicPlayingOGGSP(retro1M) = 0 and spType = CLASSIC
-			StopMusicOGGSP(loserMusic)
-			PlayMusicOGGSP(retro1M + Random(0, 7), 1)
+	if storyActive = 0
+		if spActive = 0
+			pass = 0
+			while pass = 0
+				rnd = Random(1, 3)
+				if rnd = 1 and oldSong <> fightAMusic
+					PlayMusicOGGSP(fightAMusic, 1)
+					oldSong = fightAMusic
+					pass = 1
+				elseif rnd = 2 and oldSong <> fightBMusic
+					PlayMusicOGGSP(fightBMusic, 1)
+					oldSong = fightBMusic
+					pass = 1
+				elseif rnd = 3 and oldSong <> fightJMusic
+					PlayMusicOGGSP(fightJMusic, 1)
+					oldSong = fightJMusic
+					pass = 1
+				endif
+			endwhile
 		endif
+		
+		if spActive = 1 
+			if spType = MIRRORMODE
+				PlayMusicOGGSP(spMusic, 1)
+			
+			elseif GetMusicPlayingOGGSP(retro1M) = 0 and spType = CLASSIC
+				StopMusicOGGSP(loserMusic)
+				PlayMusicOGGSP(retro1M + Random(0, 7), 1)
+			endif
+		endif
+		if GetMusicExistsOGG(spMusic) then SetMusicLoopTimesOGG(spMusic, 6.932, -1)
 	endif
-	if GetMusicExistsOGG(spMusic) then SetMusicLoopTimesOGG(spMusic, 6.932, -1)
 	
 endfunction
 
@@ -1922,7 +1929,7 @@ function PlayDangerMusic(startNew)
 			if GetMusicPlayingOGGSP(fightBMusic) then oldSong = fightBMusic
 			if GetMusicPlayingOGGSP(fightJMusic) then oldSong = fightJMusic
 			
-			StopGamePlayMusic()
+			if oldSong <> 0 then StopGamePlayMusic()
 			
 		else
 			//Playing the matching danger music

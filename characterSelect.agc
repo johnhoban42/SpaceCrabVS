@@ -239,6 +239,7 @@ function InitCharacterSelect()
 	csc2.sprTxtBack = SPR_CS_TXT_BACK_2
 	
 	InitCharacterSelectController(csc1)
+	
 	InitCharacterSelectController(csc2)
 	
 	

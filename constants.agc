@@ -92,6 +92,8 @@ global crab1Vel# = 1.28
 global crab1Accel# = .1	//Is .1 because it takes 2 to reach full reversal, and original game timer was 20
 global crab1Turning = 0 	//Is zero for when the crab isn't turning, and 1 or -1 depending on the direction it is CHANGING TO
 global crab1Type = 2
+global crab1Alt = 0
+global crab1Str$ = ""
 global crab1JumpD# = 0
 global crab1JumpHMax# = 5
 global crab1JumpSpeed# = 1.216
@@ -116,6 +118,8 @@ global crab2Vel# = 1.28
 global crab2Accel# = .1
 global crab2Turning = 0
 global crab2Type = 1
+global crab2Alt = 0
+global crab2Str$ = ""
 global crab2JumpD# = 0
 global crab2JumpHMax# = 5
 global crab2JumpSpeed# = 1.216
@@ -217,8 +221,7 @@ global met3CD2# = 0 //400
 #constant storyText2 10002
 #constant storyText3 10003
 #constant storyText4 10004
-#constant storyText5 10005
-#constant storyFitter 10006
+#constant storyFitter 10005
 
 
 //Sprite Indexes
@@ -614,6 +617,7 @@ global jumpPartI as Integer[6]
 #constant mirrorBreakS 25
 #constant rainbowSweepS 26
 #constant fruitS 27
+#constant fwipS 28
 
 
 
@@ -650,7 +654,7 @@ global jumpPartI as Integer[6]
 global oldSong = 0
 
 //Volume for music and sound effects
-global volumeM = 60
+global volumeM = 0
 global volumeSE = 40
 
 SetMusicSystemVolumeOGG(volumeM)
@@ -710,12 +714,38 @@ SetMusicSystemVolumeOGG(volumeM)
 #constant SPR_CS_CRABS_2 490 
 #constant SPR_CS_TXT_BACK_2 489
 
-//Story Sprites/Text
+//Story Sprites/Text and variable
 #constant SPR_TEXT_BOX 601
+#constant SPR_TEXT_BOX2 602
+#constant SPR_TEXT_BOX3 603
+#constant SPR_TEXT_BOX4 604
 
 #constant TXT_LINE 601
-#constant TXT_LINEB1 602
-#constant TXT_LINEB2 603
+#constant TXT_LINE2 602
+#constant TXT_LINE3 603
+#constant TXT_LINE4 604
+
+#constant TXT_RESULT1 611
+#constant TXT_RESULT2 612
+#constant TXT_RESULT3 613
+
+#constant SPR_CRAB1_BODY 611
+#constant SPR_CRAB1_FACE 612
+#constant SPR_CRAB1_COSTUME 613
+
+#constant SPR_CRAB2_BODY 614
+#constant SPR_CRAB2_FACE 615
+#constant SPR_CRAB2_COSTUME 616
+
+
+
+global curChapter = 9
+global curScene = 0
+global lineSkipTo = 0
+global storyActive = 0
+global storyMinScore = 0
+global storyRetry = 0
+global storyTimer# = 0
 
 //Ping sprites - 701 through 750
 
@@ -730,10 +760,11 @@ SetMusicSystemVolumeOGG(volumeM)
 //tweenButton lasts until 25
 
 #constant tweenFadeLen# .2
-//#constant tweenSprFadeIn 101
+#constant tweenSprFadeIn 101
 //CreateTweenSprite(tweenSprFadeIn, tweenFadeLen#)
 //SetTweenSpriteAlpha(tweenSprFadeIn, 140, 255, TweenSmooth2())
 #constant tweenSprFadeOut 102
+#constant tweenSprFadeOutFull 105
 //CreateTweenSprite(tweenSprFadeOut, tweenFadeLen#)
 //SetTweenSpriteAlpha(tweenSprFadeOut, 255, 140, TweenSmooth2())
 #constant tweenTxtFadeIn 103
@@ -821,6 +852,7 @@ function LoadBaseSounds()
 		LoadSoundOGG(mirrorBreakS, "mirrorBreak.ogg")
 		LoadSoundOGG(rainbowSweepS, "rainbowSweep.ogg")
 		LoadSoundOGG(fruitS, "fruit.ogg")
+		LoadSoundOGG(fwipS, "fwip.ogg")
 		
 		
 		LoadSoundOGG(exp1S, "exp1.ogg")
@@ -853,6 +885,7 @@ function LoadBaseSounds()
 		LoadMusicOGG(mirrorBreakS, "mirrorBreak.ogg")
 		LoadMusicOGG(rainbowSweepS, "rainbowSweep.ogg")
 		LoadMusicOGG(fruitS, "fruit.ogg")
+		LoadMusicOGG(fwipS, "fwip.ogg")
 		
 		LoadMusicOGG(exp1S, "exp1.ogg")
 		LoadMusicOGG(exp2S, "exp2.ogg")
@@ -954,9 +987,41 @@ function PlayMusicOGGSP(songID, loopYN)
 		
 	PlayMusicOGG(songID, loopYN)
 	SetFolder("/" + oldFolder$)
-	
 endfunction
 
+function PlayMusicOGGSPStr(str$, loopYN)
+	id = 0
+	
+	if str$ = "title" then id = titleMusic
+	if str$ = "fightA" then id = fightAMusic
+	if str$ = "fightB" then id = fightBMusic
+	if str$ = "fightJ" then id = fightJMusic
+	if str$ = "fightD" then id = tutorialMusic
+	if str$ = "characterSelect" then id = characterMusic
+	if str$ = "results" then id = resultsMusic
+	if str$ = "loserXD" then id = loserMusic
+	if str$ = "chromecoast" then id = spMusic
+	if str$ = "dangerA" then id = dangerAMusic
+	if str$ = "dangerB" then id = dangerBMusic
+	if str$ = "dangerJ" then id = dangerJMusic
+	if str$ = "dangerC" then id = dangerCMusic
+	if str$ = "rave1" then id = raveBass1
+	if str$ = "rave2" then id = raveBass2
+	
+	if str$ = "retro1" then id = retro1M
+	if str$ = "retro2" then id = retro2M
+	if str$ = "retro3" then id = retro3M
+	if str$ = "retro4" then id = retro4M
+	if str$ = "retro5" then id = retro5M
+	if str$ = "retro6" then id = retro6M
+	if str$ = "retro7" then id = retro7M
+	if str$ = "retro8" then id = retro8M
+	
+	if id <> 0 and GetMusicPlayingOGGSP(id) = 0
+		StopGamePlayMusic()
+		PlayMusicOGGSP(id, loopYN)
+	endif
+endfunction
 
 
 function LoadJumpSounds()
@@ -1352,7 +1417,7 @@ endfunction
 global crabPause1 as string[6]
 global crabPause2 as string[6]
 
-function SetCrabStrings()
+function SetCrabPauseStrings()
 	crabPause1[1] = "Speed: {{{}} Turn: {{{}}" + chr(10) + "Double-tap: Roll Forward"
 	crabPause1[2] = "Speed: {{}}} Turn: {{{{}" + chr(10) + "Double-tap: Launch Forward"
 	crabPause1[3] = "Speed: {{{{{ Turn: {}}}}" + chr(10) + "Double-tap: Quick Brake"

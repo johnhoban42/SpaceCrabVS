@@ -69,10 +69,14 @@ global fpsr#
 
 global gameTime#
 
-global demo = 1
+global demo = 0
 
+CreateTweenSprite(tweenSprFadeIn, tweenFadeLen#)
+SetTweenSpriteAlpha(tweenSprFadeIn, 0, 255, TweenEaseIn1())
 CreateTweenSprite(tweenSprFadeOut, tweenFadeLen#)
 SetTweenSpriteAlpha(tweenSprFadeOut, 255, 140, TweenEaseIn1())
+CreateTweenSprite(tweenSprFadeOutFull, tweenFadeLen#)
+SetTweenSpriteAlpha(tweenSprFadeOutFull, 255, 0, TweenEaseIn1())
 CreateTweenText(tweenTxtFadeIn, tweenFadeLen#)
 SetTweenTextAlpha(tweenTxtFadeIn, 0, 255, TweenEaseIn1())
 
