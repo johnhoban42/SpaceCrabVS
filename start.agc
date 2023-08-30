@@ -165,7 +165,7 @@ function InitStart()
 		next i
 		
 		for i = 17 to 1 step -1
-			SetSpriteColorAlpha(coverS, 15*i)
+			if GetSpriteExists(coverS) then SetSpriteColorAlpha(coverS, 15*i)
 			SyncG()
 		next i
 		
@@ -175,8 +175,8 @@ function InitStart()
 		SetTextVisible(SPR_LOGO_HORIZ, 1)
 		
 		PlaySoundR(chooseS, 100)
-		DeleteSprite(coverS)
-		DeleteTween(coverS)
+		if GetSpriteExists(coverS) then DeleteSprite(coverS)
+		if GetSpriteExists(coverS) then DeleteTween(coverS)
 		
 		CreateTextExpress(SPR_SP_C1, "WANT TO TRY AGAIN? PICK ANOTHER CRAB! WANT TO TRY AGAIN? PICK ANOTHER CRAB!", 80, fontCrabI, 1, w + 20, 980, 5)
 		SetTextSpacing(SPR_SP_C1, -25)

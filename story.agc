@@ -184,6 +184,7 @@ function ExitStory()
 		DeleteText(storyText)
 		DeleteSprite(playButton)
 		DeleteSprite(exitButton)
+		lineSkipTo = 0
 		
 		if GetMusicPlayingOGGSP(loserMusic) then StopMusicOGGSP(loserMusic)
 		
@@ -207,7 +208,7 @@ function ShowScene(sceneNum)
 	if sceneNum = 0
 		SceneFile$ = "testScene.txt"
 	else
-		SceneFile$ = "chap" + Str((sceneNum-1)/4) + "_" + Str(Mod(sceneNum, 4)) + ".txt"
+		SceneFile$ = "chap" + Str((sceneNum-1)/4) + "_" + Str(Mod(sceneNum-1, 4)+1) + ".txt"
 	endif
 	SetCrabFromChapter(curChapter)
 	
@@ -369,6 +370,10 @@ function ShowScene(sceneNum)
 		wholeRow$ = ReadLine(1)	//Reading the new line of the text file.
 		inc lineOverall, 1
 		
+		if CompareString(wholeRow$, "") = 1
+			state = StartEndScreen()
+		endif
+		
 	endwhile
 	
 	CloseFile(1)
@@ -382,16 +387,33 @@ function SetStoryCrabSprites()
 endfunction
 
 function StartEndScreen()
+	state = STORY
+	
+	inc curScene, 1
+	highestScene = Max(highestScene, curChapter*4+curScene)
+	lineSkipTo = 0
+	
 	for i = 0 to 2
 		CreateTextExpress(TXT_RESULT1 + i, "", 80, fontCrabI, 1, w/2, 240 + 85*i, 6)
+		SetTextColorAlpha(TXT_RESULT1 + i, 254)
 	next i
 	if curScene = 5	//This is set to one higher than 4, because the scene will increment before calling this scene
 		SetTextString(TXT_RESULT1, crab1Str$)
 		SetTextString(TXT_RESULT2, "STORY")
 		SetTextString(TXT_RESULT3, "CLEAR!")
+		for i = TXT_RESULT1 to TXT_RESULT2
+			CreateTweenText(i, .3)
+			SetTweenTextSize(i, 1, 80, TweenSmooth2())
+		next i		
 	else
 		SetTextString(TXT_RESULT1, "-SCENE-")
 		SetTextString(TXT_RESULT2, "-CLEAR-")
+		CreateTweenText(TXT_RESULT1, .3)
+		CreateTweenText(TXT_RESULT2, .3)
+		SetTweenTextX(TXT_RESULT1, -w, w/2 + 20, TweenSmooth2())
+		SetTweenTextX(TXT_RESULT2, w*2, w/2 - 20, TweenSmooth2())
+		SetTextX(TXT_RESULT1, -w)
+		SetTextX(TXT_RESULT2, -w)
 	endif
 	
 	SetFolder("/media/ui")
@@ -414,41 +436,74 @@ function StartEndScreen()
 	
 	PlayTweenSprite(tweenSprFadeIn, exitButton, 1)
 	//Make tweens for the text to slide in!
-	PlayTweenText(tweenTxtFadeIn, TXT_RESULT1, 0,)
-	PlayTweenText(tweenTxtFadeIn, TXT_RESULT2)
 	
 	if curScene = 5
-		
+		//End of chapter
 		SetSpriteMiddleScreen(exitButton)
 		IncSpriteY(exitButton, 300)
 		
 	else
+		//End of scene
 		
-		
+		PlayTweenText(TXT_RESULT1, TXT_RESULT1, 0)
+		PlayTweenText(TXT_RESULT2, TXT_RESULT2, .3)
 		PlayTweenSprite(tweenSprFadeIn, playButton, 1)
 	endif
 	
-	DoStoryEndScreen()	
+	ExitStory()
 	
-endfunction
+	state = DoStoryEndScreen()
+	
+endfunction state
 
 function DoStoryEndScreen()
+	state = STORY
+	
 	endDone = 0
 	while (endDone = 0)
 		
-		if ButtonMultitouchEnabled(playButton)
+		if curScene < 5
+			if GetTextX(TXT_RESULT1) > w/2 and GetTextColorAlpha(TXT_RESULT1) <> 255
+				PlaySoundR(chooseS, volumeSE)
+				SetTextColorAlpha(TXT_RESULT1, 255)
+			endif
+			if GetTextX(TXT_RESULT2) < w/2 and GetTextColorAlpha(TXT_RESULT2) <> 255
+				PlaySoundR(chooseS, volumeSE)
+				SetTextColorAlpha(TXT_RESULT2, 255)
+			endif
+		else
+			//End of story scene
+			for i = TXT_RESULT1 to TXT_RESULT3
+				if GetTextSize(i) > 79 and GetTextColorAlpha(i) <> 255
+					PlaySoundR(chooseS, volumeSE)
+					SetTextColorAlpha(i, 255)
+				endif
+			next i
+		endif
+		
+		if ButtonMultitouchEnabled(playButton) and GetSpriteColorAlpha(playButton) > 100
+			endDone = 1
+		elseif ButtonMultitouchEnabled(exitButton) and GetSpriteColorAlpha(exitButton) > 100
+			state = CHARACTER_SELECT
+			endDone = 1
+		endif
 		
 		SyncG()		
 	endwhile
 	
+	StopGamePlayMusic()
+	
 	TransitionStart(Random(1, lastTranType))
-	DeleteText(TXT_RESULT1)
-	DeleteText(TXT_RESULT2)
-	DeleteText(TXT_RESULT3)
+	for i = TXT_RESULT1 to TXT_RESULT3
+		if GetTextExists(i) then DeleteText(i)
+		if GetTweenTextExists(i) then DeleteTween(i)
+	next i
 	DeleteSprite(playButton)
 	DeleteSprite(exitButton)
 	
-endfunction
+	
+	
+endfunction state
 
 function SetCrabFromChapter(chap)
 	crabID = 0

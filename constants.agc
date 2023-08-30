@@ -741,6 +741,7 @@ SetMusicSystemVolumeOGG(volumeM)
 
 global curChapter = 9
 global curScene = 0
+global highestScene = 0
 global lineSkipTo = 0
 global storyActive = 0
 global storyMinScore = 0

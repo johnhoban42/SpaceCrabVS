@@ -1959,6 +1959,8 @@ function StopGamePlayMusic()
 		if GetMusicPlayingOGGSP(i) then StopMusicOGGSP(i)
 	next i
 	
+	if GetMusicPlayingOGGSP(resultsMusic) then StopMusicOGGSP(resultsMusic)
+	
 endfunction
 
 function PlayOpeningScene()
