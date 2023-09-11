@@ -114,6 +114,20 @@ function SetSpriteMiddleScreenX(spr)
 	SetSpriteX(spr, w/2-GetSpriteWidth(spr)/2)
 endfunction
 
+function SetSpriteMiddleScreenXDispH1(spr)
+	SetSpriteX(spr, (w/2-GetSpriteHeight(split)/2)/2-GetSpriteWidth(spr)/2)
+endfunction
+function SetSpriteMiddleScreenXDispH2(spr)
+	SetSpriteX(spr, w/2 + (w/2+GetSpriteHeight(split)/2)/2-GetSpriteWidth(spr)/2)
+endfunction
+
+function SetTextMiddleScreenXDispH1(txt)
+	SetTextX(txt, (w/2-GetSpriteHeight(split)/2)/2)
+endfunction
+function SetTextMiddleScreenXDispH2(txt)
+	SetTextX(txt, w/2 + (w/2+GetSpriteHeight(split)/2)/2)
+endfunction
+
 function SetSpriteMiddleScreenY(spr)
 	SetSpriteY(spr, h/2-GetSpriteHeight(spr)/2)
 endfunction

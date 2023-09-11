@@ -18,7 +18,7 @@
 SetErrorMode(2)
 
 // set window properties
-SetWindowTitle( "SpaceCrabVS" )
+SetWindowTitle( "Space Crab VS" )
 SetWindowSize( 700, 1400, 0 )
 SetWindowAllowResize( 1 ) // allow the user to resize the window
 
@@ -41,15 +41,26 @@ global mPlatform = APPLE
 if device$ = "android" or device$ = "ios" then deviceType = MOBILE
 if device$ = "android" then mPlatform = ANDROID
 
-#constant w 800
-#constant h 1600
+global w = 800
+global h = 1600
 
+SetVirtualResolution(w, h) // doesn't have to match the window
+
+global dispH = 0		//Variable for horizontal display
+if deviceType = 99//DESKTOP
+	dispH = 1
+	w = 1280
+	h = 720
+	gameScale# = .75
+	//SetPhysicsDebugOn()
+	SetWindowSize(w, h, 0)
+endif
 
 
 SetAntialiasMode( 1 )
 
 // set display properties
-SetVirtualResolution( w, h ) // doesn't have to match the window
+SetVirtualResolution(w, h)
 SetOrientationAllowed(1, 0, 0, 0) // allow both portrait and landscape on mobile devices
 SetSyncRate( 120, 0 ) // 30fps instead of 60 to save battery	//LOL
 SetScissor( 0,0,0,0 ) // use the maximum available screen space, no black borders
@@ -87,9 +98,11 @@ SetTweenTextAlpha(tweenTxtFadeIn, 0, 255, TweenEaseIn1())
 //SetSpriteSize(split, w*1.5, 80)
 LoadSprite(split, "belt.png")
 SetSpriteSize(split, w, 120)
+if dispH then SetSpriteSize(split, h, 120)
 SetSpriteColor(split, 200, 200, 200, 255)
 SetSpriteMiddleScreenX(split)
 SetSpriteMiddleScreenY(split)
+if dispH then SetSpriteAngle(split, 90)
 global appState = START
 
 gameTime# = 0
@@ -160,8 +173,7 @@ do
 	//Print(GetImageMemoryUsage())
 	
 	//Print(GetPointerX())
-	//Print(GetPointerY())
-	
+	if GetTextExists(pauseDesc2) then Print(GetTextString(pauseDesc2))
     SyncG()
 loop
 

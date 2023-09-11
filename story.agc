@@ -2,9 +2,13 @@
 // Created: 23-06-20
 
 global storyStateInitialized as integer = 0
+global talk1S
+global talkBS
 
 // Initialize the story screen
 function InitStory()
+	
+	SetSpriteVisible(split, 0)
 	
 	for i = SPR_TEXT_BOX to SPR_TEXT_BOX4
 		CreateSpriteExpress(i, w-80, 280, 0, 0, 15-(i-SPR_TEXT_BOX))
@@ -45,11 +49,52 @@ function InitStory()
 	
 	//Load the difference faces/bodies as animation frames, then set the frame for different faces
 	//Load the costume as it comes, use the body frame number to load the correct costume file string number
-	cSize = 400
+	cSize = 360
 	for i = SPR_CRAB1_BODY to SPR_CRAB2_COSTUME
-		CreateSpriteExpress(i, cSize, cSize, -cSize, GetSpriteY(SPR_TEXT_BOX) + GetSpriteHeight(SPR_TEXT_BOX), 5)
+		CreateSpriteExpress(i, cSize, cSize, -cSize, GetSpriteY(SPR_TEXT_BOX) + GetSpriteHeight(SPR_TEXT_BOX) + 80, 5)
 		//if i <= SPR_CRAB1_COSTUME then Set		
 	next i 
+	
+	CreateTweenSprite(SPR_CRAB1_BODY, .5)
+	SetTweenSpriteX(SPR_CRAB1_BODY, -cSize, 20, TweenSmooth1())
+	CreateTweenSprite(SPR_CRAB2_BODY, .5)
+	SetTweenSpriteX(SPR_CRAB2_BODY, w, w-cSize-20, TweenSmooth1())
+	
+	SetSpritePosition(SPR_CRAB1_FACE, 20, GetSpriteY(SPR_TEXT_BOX) + GetSpriteHeight(SPR_TEXT_BOX) + 80)
+	SetSpritePosition(SPR_CRAB2_FACE, w-cSize-20, GetSpriteY(SPR_TEXT_BOX) + GetSpriteHeight(SPR_TEXT_BOX) + 80)
+	
+	impact# = 1.4
+	spr = SPR_CRAB1_FACE
+	CreateTweenSprite(spr, .3)
+	SetTweenSpriteSizeX(spr, GetSpriteWidth(spr)*impact#, GetSpriteWidth(spr), TweenOvershoot())
+	SetTweenSpriteSizeY(spr, GetSpriteHeight(spr)*impact#, GetSpriteHeight(spr), TweenOvershoot())
+	SetTweenSpriteX(spr, GetSpriteMiddleX(spr)-(GetSpriteWidth(spr)*impact#)/2, GetSpriteX(spr), TweenOvershoot())
+	SetTweenSpriteY(spr, GetSpriteMiddleY(spr)-(GetSpriteHeight(spr)*impact#)/2, GetSpriteY(spr), TweenOvershoot())
+	MatchSpritePosition(spr, SPR_CRAB1_BODY)
+	spr = SPR_CRAB2_FACE
+	CreateTweenSprite(spr, .3)
+	SetTweenSpriteSizeX(spr, GetSpriteWidth(spr)*impact#, GetSpriteWidth(spr), TweenOvershoot())
+	SetTweenSpriteSizeY(spr, GetSpriteHeight(spr)*impact#, GetSpriteHeight(spr), TweenOvershoot())
+	SetTweenSpriteX(spr, GetSpriteMiddleX(spr)-(GetSpriteWidth(spr)*impact#)/2, GetSpriteX(spr), TweenOvershoot())
+	SetTweenSpriteY(spr, GetSpriteMiddleY(spr)-(GetSpriteHeight(spr)*impact#)/2, GetSpriteY(spr), TweenOvershoot())
+	MatchSpritePosition(spr, SPR_CRAB2_BODY)
+	
+	CreateTweenSprite(SPR_CRAB2_COSTUME, .3)
+	SetTweenSpriteX(SPR_CRAB2_COSTUME, w-cSize-20, w+200, TweenSmooth2())
+	
+	CreateTweenSprite(SPR_CRAB1_COSTUME, .3)
+	SetTweenSpriteX(SPR_CRAB1_COSTUME, 20, cSize-200, TweenSmooth2())
+	//Just need to test that these tweens work!
+	
+	
+	SetFolder("/media/sounds")
+	if GetDeviceBaseName() <> "android"
+		talk1S = LoadSoundOGG("talk1.ogg")
+		talkBS = LoadSoundOGG("talkB.ogg")
+	else
+		talk1S = LoadMusicOGG("talk1.ogg")
+		talkBS = LoadMusicOGG("talkB.ogg")
+	endif
 	
 	//Loading the text
 	
@@ -92,6 +137,8 @@ function InitResultsRetry()
 	PlayTweenText(tweenTxtFadeIn, storyText, 1)
 	PlayTweenSprite(tweenSprFadeIn, playButton, 1)
 	PlayTweenSprite(tweenSprFadeIn, exitButton, 1)
+	
+	SetSpriteVisible(split, 0)
 
 	storyStateInitialized = 1
 endfunction
@@ -177,7 +224,16 @@ function ExitStory()
 		
 		for i = SPR_CRAB1_BODY to SPR_CRAB2_COSTUME
 			DeleteSprite(i)
+			if GetTweenExists(i) then DeleteTween(i)
 		next i
+		
+		if GetDeviceBaseName() <> "android"
+			DeleteSound(talk1S)
+			DeleteSound(talkBS)
+		else
+			DeleteMusicOGG(talk1S)
+			DeleteMusicOGG(talkBS)
+		endif
 		
 	else
 		
@@ -224,15 +280,15 @@ function ShowScene(sceneNum)
 		inc lineOverall, 1
 	next i
 	
+	crabLType = 0
+	crabLAlt = 0
+	crabRType = 0
+	crabRAlt = 0
+	
 	//This whill iterates through the entire text file, one line at a time
 	while (CompareString(wholeRow$, "") = 0)		
 		
-		//TODO: Read enterR, enterL, or exit; assign that crab to the sprites on that side of the screen
-		//Revised: The main crab of the chapter will always be on the left
-		
-		//TODO: Check if there is a colon; this sets which crab is talking, then delete everything before the colon
-		newCrabTalk = 0
-		if CompareString(":", Mid(wholeRow$, 3, 1)) then newCrabTalk = 1
+		//PART 1: Commands, that skip to the next line
 		
 		//Doing any music changes
 		if GetStringToken(wholeRow$, " ", 1) = "music"
@@ -243,11 +299,35 @@ function ShowScene(sceneNum)
 				
 		//Starting a VS match
 		if GetStringToken(wholeRow$, " ", 1) = "fight"
+			state = GAME
+			spActive = 0
+			spType = STORYMODE
+			aiActive = 1
+			firstFight = 0
+			SetCrabFromChapter(curChapter)
+			SetFolder("/media/text")
+			OpenToRead(2, "fights.txt")
+			for i = 2 to curChapter
+				ReadLine(2)
+			next i
+			st$ = GetStringToken(ReadLine(2), " ", curScene)
+			SetCrabFromString(st$, 2)
+			CloseFile(2)
+			lineSkipTo = lineOverall+1
+			TransitionStart(Random(1,lastTranType))
+			//Need to mute music cues, leaving the game
+			//Need to add an spType checker after the match is done, so the game comes right back here
 			exit
 		endif
 		
 		//Starting mirror game
-		if GetStringToken(wholeRow$, " ", 1) = "fight"
+		if GetStringToken(wholeRow$, " ", 1) = "mirror"
+			state = GAME
+			spActive = 1
+			spType = MIRRORMODE
+			storyMinScore = Val(GetStringToken(wholeRow$, " ", 2))
+			lineSkipTo = lineOverall+1
+			TransitionStart(Random(1,lastTranType))
 			exit
 		endif
 		
@@ -262,6 +342,75 @@ function ShowScene(sceneNum)
 			exit
 		endif
 		
+		//Making a crab leave
+		if GetStringToken(wholeRow$, " ", 1) = "exit"
+			if Val(GetStringToken(wholeRow$, " ", 2)) = 1
+				//Crab 1 leaving
+				PlayTweenSprite(SPR_CRAB1_COSTUME, SPR_CRAB1_BODY, 0)
+				PlayTweenSprite(SPR_CRAB1_COSTUME, SPR_CRAB1_FACE, 0)
+				PlayTweenSprite(SPR_CRAB1_COSTUME, SPR_CRAB1_COSTUME, 0)
+				crabLType = 0
+				crabLAlt = 0
+			else
+				//Crab 2 leaving
+				PlayTweenSprite(SPR_CRAB2_COSTUME, SPR_CRAB2_BODY, 0)
+				PlayTweenSprite(SPR_CRAB2_COSTUME, SPR_CRAB2_FACE, 0)
+				PlayTweenSprite(SPR_CRAB2_COSTUME, SPR_CRAB2_COSTUME, 0)
+				crabRType = 0
+				crabRAlt = 0
+			endif
+			wholeRow$ = ReadLine(1)
+			inc lineOverall, 1
+		endif
+		
+		//PART 2: Stage commands, which move a crab around, and remove themselves after being read
+		
+		//TODO: Check if there is a colon; this sets which crab is talking, then delete everything before the colon
+		newCrabTalk = 0
+		if CompareString(":", Mid(wholeRow$, 3, 1))
+			newCrabTalk = 1
+			SetCrabFromString(GetStringToken(wholeRow$, ":", 1), 3)
+			if crabRefType <> crab1Type or crabRefAlt <> crab1Alt
+				//Crab 2 is changing
+				if crabRType = 0
+					//Bringing a new crab from the side, when no crab was there originally
+					PlayTweenSprite(SPR_CRAB2_BODY, SPR_CRAB2_BODY, 0)
+					PlayTweenSprite(SPR_CRAB2_BODY, SPR_CRAB2_FACE, 0)
+					PlayTweenSprite(SPR_CRAB2_BODY, SPR_CRAB2_COSTUME, 0)
+				elseif crabRType = crabRefType
+					//Switching back to the right side crab
+					PlayTweenSprite(SPR_CRAB2_FACE, SPR_CRAB2_BODY, 0)
+					PlayTweenSprite(SPR_CRAB2_FACE, SPR_CRAB2_FACE, 0)
+					PlayTweenSprite(SPR_CRAB2_FACE, SPR_CRAB2_COSTUME, 0)
+				else
+					//A different crab is being put in spot 2
+					PlayTweenSprite(SPR_CRAB2_COSTUME, SPR_CRAB2_BODY, 0)
+					PlayTweenSprite(SPR_CRAB2_COSTUME, SPR_CRAB2_FACE, 0)
+					PlayTweenSprite(SPR_CRAB2_COSTUME, SPR_CRAB2_COSTUME, 0)
+					PlayTweenSprite(SPR_CRAB2_BODY, SPR_CRAB2_BODY, .3)
+					PlayTweenSprite(SPR_CRAB2_BODY, SPR_CRAB2_FACE, .3)
+					PlayTweenSprite(SPR_CRAB2_BODY, SPR_CRAB2_COSTUME, .3)
+				endif
+				crabRType = crabRefType
+				crabRAlt = crabRefAlt
+			else
+				//Crab 1 is changing 
+				if crabLType = 0
+					PlayTweenSprite(SPR_CRAB1_BODY, SPR_CRAB1_BODY, 0)
+					PlayTweenSprite(SPR_CRAB1_BODY, SPR_CRAB1_FACE, 0)
+					PlayTweenSprite(SPR_CRAB1_BODY, SPR_CRAB1_COSTUME, 0)
+				else
+					PlayTweenSprite(SPR_CRAB1_FACE, SPR_CRAB1_BODY, 0)
+					PlayTweenSprite(SPR_CRAB1_FACE, SPR_CRAB1_FACE, 0)
+					PlayTweenSprite(SPR_CRAB1_FACE, SPR_CRAB1_COSTUME, 0)
+				endif
+				crabLType = crabRefType
+				crabLAlt = crabRefAlt
+			endif
+			wholeRow$ = GetStringToken(wholeRow$, ":", 2)
+		endif
+		
+		
 		//TODO: Posing: Grab everything before a semicolon, formatted like 'b12f5'
 		//Set those images for the assiciated crab's sprites
 		//Grab the chibi life number for later use, choose which one based on the face used
@@ -269,6 +418,7 @@ function ShowScene(sceneNum)
 		
 		
 		//TODO: Delete any spaces before the actual dialouge starts
+		if CompareString(" ", Mid(wholeRow$, 1, 1)) then wholeRow$ = Mid(wholeRow$, 2, -1)
 		
 		//The start of the normal dialogue box processing
 		wholeRow$ = wholeRow$ + " " //Adding a space to the end of the line for easier processing.
@@ -354,16 +504,22 @@ function ShowScene(sceneNum)
 			if Mid(displayString$, i+1, 1) = "!" then inc delay#, .12
 		next i
 		
+		charSounded = 1
+		
 		hurryUp = 0
 		while nextLine = 0
-
-			if GetRawKeyPressed(32)
+			storyInput = 0
+			if GetPointerPressed() or GetRawKeyPressed(32) then storyInput = 1
+			if GetTextCharColorAlpha(storyText, charSounded) = 255 and GetTextCharColorAlpha(storyText, Len(displayString$)-9) = 0
+				PlaySoundR(talk1S, volumeSE/(hurryUp/2+1))
+				inc charSounded, 1
+			endif
+			if storyInput
 				hurryUp = 1
 			endif
 			if hurryUp then UpdateAllTweens(.1)
-			if GetRawKeyPressed(32) and GetTweenCharPlaying(storyFitter, storyText, len(displayString$)) = 0 and GetTweenCharPlaying(storyFitter+1, storyText, len(displayString$)) = 0 and GetTweenCharPlaying(storyFitter+2, storyText, len(displayString$)) = 0 and GetTweenCharPlaying(storyFitter+3, storyText, len(displayString$)) = 0 then nextLine = 1
+			if storyInput and GetTweenCharPlaying(storyFitter, storyText, len(displayString$)) = 0 and GetTweenCharPlaying(storyFitter+1, storyText, len(displayString$)) = 0 and GetTweenCharPlaying(storyFitter+2, storyText, len(displayString$)) = 0 and GetTweenCharPlaying(storyFitter+3, storyText, len(displayString$)) = 0 then nextLine = 1
 			SyncG()
-			Print(boxNum)
 		endwhile
 		
 		inc boxNum, 1
@@ -408,6 +564,8 @@ function StartEndScreen()
 	else
 		SetTextString(TXT_RESULT1, "-SCENE-")
 		SetTextString(TXT_RESULT2, "-CLEAR-")
+		if GetTweenExists(TXT_RESULT1) then DeleteTween(TXT_RESULT1)
+		if GetTweenExists(TXT_RESULT2) then DeleteTween(TXT_RESULT2)
 		CreateTweenText(TXT_RESULT1, .3)
 		CreateTweenText(TXT_RESULT2, .3)
 		SetTweenTextX(TXT_RESULT1, -w, w/2 + 20, TweenSmooth2())
@@ -507,122 +665,99 @@ endfunction state
 
 function SetCrabFromChapter(chap)
 	crabID = 0
-	chapterTitle$ = ""
+	chapterTitle$ = chapterDesc[chap]
 	
 	if chap = 1	//Space Crab
 		crab1Type = 1
 		crab1Alt = 0
-		chapterTitle$ = "The Idea"
 		
 	elseif chap = 2	//Ladder Wizard
 		crab1Type = 2
 		crab1Alt = 0
-		chapterTitle$ = "The Strategy"
 		
 	elseif chap = 3	//#1 Fan Crab
 		crab1Type = 4
 		crab1Alt = 1
-		chapterTitle$ = ""
 		
 	elseif chap = 4	//Top Crab
 		crab1Type = 3
 		crab1Alt = 0
-		chapterTitle$ = ""
 		
 	elseif chap = 5	//King Crab
 		crab1Type = 2
 		crab1Alt = 1
-		chapterTitle$ = "The Political Influence"
 		
 	elseif chap = 6	//Inianda Jeff
 		crab1Type = 5
 		crab1Alt = 1
-		chapterTitle$ = "The Adventurer"
 		
 	elseif chap = 7	//Taxi Crab
 		crab1Type = 3
 		crab1Alt = 1
-		chapterTitle$ = "The Transportation Expert"
 		
 	elseif chap = 8	//Hawaiian Crab
 		crab1Type = 4
 		crab1Alt = 2
-		chapterTitle$ = ""
 		
 	elseif chap = 9	//Team Player
 		crab1Type = 6
 		crab1Alt = 1
-		chapterTitle$ = ""
 		
 	elseif chap = 10	//Rock Lobster
 		crab1Type = 5
 		crab1Alt = 2
-		chapterTitle$ = "Mister Music"
 		
 	elseif chap = 11	//Ninja Crab
 		crab1Type = 6
 		crab1Alt = 0
-		chapterTitle$ = ""
 		
 	elseif chap = 12	//Crab Cake
 		crab1Type = 5
 		crab1Alt = 3
-		chapterTitle$ = "The Cosmic Cook"
 		
 	elseif chap = 13	//Cranime
 		crab1Type = 6
 		crab1Alt = 2
-		chapterTitle$ = "Single & Mingling"
 		
 	elseif chap = 14	//Crabicus
 		crab1Type = 2
 		crab1Alt = 2
-		chapterTitle$ = "The Calculator?"
 		
 	elseif chap = 15	//Rave Crab
 		crab1Type = 4
 		crab1Alt = 0
-		chapterTitle$ = "The Party...?"
 		
 	elseif chap = 16	//Mad Crab
 		crab1Type = 1
 		crab1Alt = 1
-		chapterTitle$ = "The Voice of Reason"
 		
 	elseif chap = 17	//Holy Crab
 		crab1Type = 4
 		crab1Alt = 3
-		chapterTitle$ = "The Divine Eye-in-the-Sky"
 		
 	elseif chap = 18	//Al Legal
 		crab1Type = 1
 		crab1Alt = 2
-		chapterTitle$ = "The Crab Resources Department"
 		
 	elseif chap = 19	//Space Barc
 		crab1Type = 3
 		crab1Alt = 2
-		chapterTitle$ = "The Other Side of the Paw"
 		
 	elseif chap = 20	//Crabyss Knight
 		crab1Type = 2
 		crab1Alt = 3
-		chapterTitle$ = "The Valiant Defender"
 		
 	elseif chap = 21	//Chrono Crab
 		crab1Type = 5
 		crab1Alt = 0
-		chapterTitle$ = "The Starlight Rival"
 		
 	elseif chap = 22	//Space Crab 2
 		crab1Type = 1
 		crab1Alt = 0
-		chapterTitle$ = "Fight for the Future!"
 		
 	elseif chap = 23	//Future Crab
 		crab1Type = 1
 		crab1Alt = 3
-		chapterTitle$ = ""
 		
 	endif
 	SetCrabString(1)
@@ -675,3 +810,114 @@ function SetCrabString(crabNum)
 	if crabNum = 1 then crab1Str$ = newStr$
 	if crabNum = 2 then crab2Str$ = newStr$
 endfunction
+
+function SetCrabFromString(str$, crabNum)
+
+	myType = 0
+	myAlt = 0
+
+	
+	if str$ = "SC"	//Space Crab
+		mType = 1
+		mAlt = 0
+		
+	elseif str$ = "LW" //Ladder Wizard
+		mType = 2
+		mAlt = 0
+		
+	elseif str$ = "FC"	//#1 Fan Crab
+		mType = 4
+		mAlt = 1
+		
+	elseif str$ = "TC"	//Top Crab
+		mType = 3
+		mAlt = 0
+		
+	elseif str$ = "KC"	//King Crab
+		mType = 2
+		mAlt = 1
+		
+	elseif str$ = "IJ"	//Inianda Jeff
+		mType = 5
+		mAlt = 1
+		
+	elseif str$ = "TX"	//Taxi Crab
+		mType = 3
+		mAlt = 1
+		
+	elseif str$ = "HC"	//Hawaiian Crab
+		mType = 4
+		mAlt = 2
+		
+	elseif str$ = "TP"	//Team Player
+		mType = 6
+		mAlt = 1
+		
+	elseif str$ = "RL"	//Rock Lobster
+		mType = 5
+		mAlt = 2
+		
+	elseif str$ = "NC"	//Ninja Crab
+		mType = 6
+		mAlt = 0
+		
+	elseif str$ = "CE"	//Crab Cake
+		mType = 5
+		mAlt = 3
+		
+	elseif str$ = "CR"	//Cranime
+		mType = 6
+		mAlt = 2
+		
+	elseif str$ = "CB"	//Crabicus
+		mType = 2
+		mAlt = 2
+		
+	elseif str$ = "RC"	//Rave Crab
+		mType = 4
+		mAlt = 0
+		
+	elseif str$ = "MC"	//Mad Crab
+		mType = 1
+		mAlt = 1
+		
+	elseif str$ = "HO"	//Holy Crab
+		mType = 4
+		mAlt = 3
+		
+	elseif str$ = "AL"	//Al Legal
+		mType = 1
+		mAlt = 2
+		
+	elseif str$ = "SB"	//Space Barc
+		mType = 3
+		mAlt = 2
+		
+	elseif str$ = "CK"	//Crabyss Knight
+		mType = 2
+		mAlt = 3
+		
+	elseif str$ = "SC"	//Chrono Crab
+		mType = 5
+		mAlt = 0
+		
+	elseif str$ = "FU"	//Future Crab
+		mType = 1
+		mAlt = 3
+		
+	endif
+	
+	if crabNum = 1
+		crab1Type = mType
+		crab1Alt = mAlt
+	elseif crabNum = 2
+		crab2Type = mType
+		crab2Alt = mAlt
+	else
+		crabRefType = mType
+		crabRefAlt = mAlt
+	endif
+	SetCrabString(crabNum)
+	
+endfunction
+	

@@ -11,6 +11,7 @@ global startStateInitialized as integer = 0
 function InitStart()
 	
 	SetCrabPauseStrings()
+	SetStoryShortStrings()
 	
 	SetSpriteVisible(split, 0)
 	
@@ -74,7 +75,7 @@ function InitStart()
 	IncSpriteY(SPR_START2, -50)
 	IncSpriteY(SPR_TITLE, -150)
 	IncSpriteY(SPR_START1, -250)
-	
+		
 	CreateTextExpress(TXT_WAIT1, "Waiting for your opponent...", 90, fontDescItalI, 1, w/2, GetSpriteY(SPR_START1)+48, 3)
 	SetTextColorAlpha(TXT_WAIT1, 0)
 	SetTextSpacing(TXT_WAIT1, -32)
@@ -197,12 +198,74 @@ function InitStart()
 	
 	spScore = 0
 		
-	if spActive = 0 then PlayMusicOGGSP(titleMusic, 1)
+	if dispH then HorizontalStart()
 		
+	if spActive = 0 then PlayMusicOGGSP(titleMusic, 1)
+				
 	startStateInitialized = 1
 	
 endfunction
 
+function HorizontalStart()
+	
+	SetSpriteSize(SPR_TITLE, h*2/3, h*2/3)
+	SetSpritePosition(SPR_TITLE, w/11, h/7)
+	
+	SetSpriteMiddleScreen(SPR_LOGO_HORIZ)
+	SetSpriteY(SPR_LOGO_HORIZ, 10)
+	
+	//CreateTextExpress(SPR_LOGO_HORIZ, "MIRROR MODE", 130, fontCrabI, 1, w/2, 360, 5)
+	
+	SetSpriteSize(SPR_START1, 842*.7, 317*.7)
+	SetSpriteMiddleScreenX(SPR_START1)
+	SetSpriteY(SPR_START1, h/2 + 480)
+	
+	SetSpriteSize(SPR_START2, 842*.7, 317*.7)
+	SetSpriteMiddleScreenX(SPR_START2)
+	
+	//CreateTextExpress(TXT_WAIT1, "Waiting for your opponent...", 90, fontDescItalI, 1, w/2, GetSpriteY(SPR_START1)+48, 3)
+	//CreateTextExpress(TXT_WAIT2, "Waiting for your opponent...", 90, fontDescItalI, 1, w/2, GetSpriteY(SPR_START2)-48+GetSpriteHeight(SPR_START2), 3)
+	SetTextAngle(TXT_WAIT2, 0)
+	
+	//LoadAnimatedSpriteReversible(SPR_START1P, "mirror", 8)
+	SetSpriteExpress(SPR_START1P, 250, 138, 520, 1030, 10)
+	
+	//LoadSpriteExpress(SPR_CLASSIC, "classic1.png", 250, 138, 520, 1180, 10)
+	
+	//The demo adjustments
+	//SetSpritePosition(SPR_START1P, 490, GetSpriteY(SPR_START1) + GetSpriteHeight(SPR_START1) + 35)
+	//SetSpritePosition(SPR_CLASSIC, 490, GetSpriteY(SPR_START1P) + GetSpriteHeight(SPR_START1P) + 10)
+	//IncSpriteY(SPR_START1, -200)
+	
+	//CreateTextExpress(TXT_ALONE, "Playing alone?" + chr(10) + "Try these!", 80, fontCrabI, 1, 250, GetSpriteY(SPR_START1)+ GetSpriteHeight(SPR_START1)+100, 4)
+		
+	SetSpriteExpress(SPR_MENU_BACK, 160, 160, 56, 740, 5)
+	
+	SetSpriteMiddleScreenX(SPR_LEADERBOARD)
+	
+	SetSpriteExpress(SPR_STARTAI, 250, 150, w*3/5, h*3/5 + 100, 5)
+	SetSpriteExpress(SPR_STORY_START, 250, 150, w*3/5, h*3/5 - 100, 5)
+		
+	for i = SPR_SP_C1 to SPR_SP_C6
+		num = i-SPR_SP_C1+1
+		SetSpriteSize(i, 406/1.3, 275/1.3)
+		SetSpritePosition(i, w/2 - GetSpriteWidth(i)/2 - 250 + 250*(Mod(num-1,3)), 1080 + 250*((num-1)/3))
+	next i
+	
+	//CreateTextExpress(TXT_HIGHSCORE, "High Score: " + str(spHighScore) + chr(10) + "with " + spHighCrab$, 74, fontDescI, 1, w*3/4-100, GetSpriteY(SPR_MENU_BACK) + 10, 5)
+		
+	//CreateTextExpress(SPR_SP_C1, "CHOOSE A CRUSTACEAN, YEAH? WHY NOT CHOOSE A CRUSTACEAN, YEAH? WHY NOT CHOOSE A CRUSTACEAN, YEAH?", 80, fontCrabI, 1, w + 20, 980, 5)
+		
+	SetSpriteSize(SPR_BG_START, w*1.1, w*1.1)
+	SetSpriteMiddleScreen(SPR_BG_START)
+	
+	for i = SPR_SP_C1 to SPR_SP_C6
+		num = i-SPR_SP_C1+1
+		//SetSpritePosition(i, w/2 - GetSpriteWidth(i)/2 - 250 + 250*(Mod(num-1,3)), 1080*5 + 250*((num-1)/3))
+	next i
+	
+	
+endfunction
 
 // Start screen execution loop
 // Each time this loop exits, return the next state to enter into
@@ -313,8 +376,8 @@ function DoStart()
 		aiActive = 1
 		firstFight = 0
 		//To do: take this to the character selection screen, figure out if first fight should play
-		crab1Type = 1
-		crab2Type = 1
+		crab1Type = 4
+		crab2Type = 4
 		state = GAME
 	endif
 	
@@ -322,7 +385,8 @@ function DoStart()
 	if Button(SPR_STORY_START) and GetSpriteVisible(SPR_STORY_START)
 		spActive = 1
 		spType = STORYMODE
-		state = STORY
+		state = CHARACTER_SELECT
+		TransitionStart(Random(1,lastTranType))
 	endif
 	
 	//Bringing up the leaderboard
@@ -362,6 +426,7 @@ function UpdateStartElements()
 	if mod(round(startTimer#)+1080, 90) = 0 then PlaySprite(SPR_MENU_BACK, 10, 0, 1, 8)
 	
 	SetSpriteAngle(SPR_TITLE, 90 + 320*sin(startTimer#) + 50*sin(startTimer#*3))
+	if dispH then SetSpriteAngle(SPR_TITLE, 4*sin(startTimer#*3))
 	if GetSpriteVisible(SPR_TITLE)
 		if fruitUnlock# < 0
 			if GetPointerState() and GetSpriteHitTest(SPR_TITLE, GetPointerX(), GetPointerY())

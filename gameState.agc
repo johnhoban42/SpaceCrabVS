@@ -26,6 +26,9 @@ function InitGame()
 	meteorTotal1 = 0
 	meteorTotal2 = 0
 	
+	metSizeX = 58*gameScale#
+	metSizeY = 80*gameScale#
+	
 	SetSpriteVisible(split, 1)
 	TransitionEnd()
 	
@@ -43,12 +46,14 @@ function InitGame()
 	
 	LoadSpriteExpress(exitButton, "crabselect.png", 140, 140, 0, 0, 1)
 	SetSpriteMiddleScreen(exitButton)
-	IncSpriteX(exitButton, 270)
+	if dispH = 0 then IncSpriteX(exitButton, 270)
+	if dispH then IncSpriteY(exitButton, 220)
 	SetSpriteVisible(exitButton, 0)
 	
 	LoadSpriteExpress(mainmenuButton, "mainmenu.png", 140, 140, 0, 0, 1)
 	SetSpriteMiddleScreen(mainmenuButton)
-	IncSpriteX(mainmenuButton, -270)
+	if dispH = 0 then IncSpriteX(mainmenuButton, -270)
+	if dispH then IncSpriteY(mainmenuButton, -220)
 	SetSpriteVisible(mainmenuButton, 0)
 	
 	AddButton(pauseButton)
@@ -218,7 +223,8 @@ function DoGame()
 		inc pauseTimer#, fpsr#/3
 		if pauseTimer# > 360 then dec pauseTimer#, 360
 		
-		SetSpriteX(curtainB, w/2 - GetSpriteWidth(curtainB)/2 + w/4*sin(pauseTimer#))
+		if dispH = 0 then SetSpriteX(curtainB, w/2 - GetSpriteWidth(curtainB)/2 + w/4*sin(pauseTimer#))
+		if dispH then SetSpriteY(curtainB, h/2 - GetSpriteHeight(curtainB)/2 + h/4*sin(pauseTimer#))
 		IncSpriteAngle(exitButton, -fpsr#)
 		IncSpriteAngle(mainmenuButton, -fpsr#)
 		IncSpriteAngle(playButton, fpsr#)
@@ -796,10 +802,16 @@ function PauseGame()
 	zoom# = GetViewZoom()
 	CreateSpriteExpress(curtainB, h/zoom#, h/zoom#, 0, 0, 2)
 	SetSpriteImage(curtainB, bg3I)
+	if dispH then SetSpriteSize(curtainB, w/zoom#, w/zoom#)
 	SetSpriteMiddleScreen(curtainB)
 	
-	CreateSpriteExpress(curtain, w/zoom#, h/zoom#, 0, 0, 2)
+	CreateSpriteExpress(curtain, w/zoom#*1.3, h/zoom#*1.3, 0, 0, 2)
 	SetSpriteImage(curtain, bgPI)
+	if dispH
+		SetSpriteSize(curtain, 800, 1600)
+		SetSpriteAngle(curtain, 90)
+		
+	endif
 	SetSpriteMiddleScreen(curtain)
 	
 	if spType = CLASSIC
@@ -815,7 +827,8 @@ function PauseGame()
 	if spActive = 0 then SetSpriteVisible(mainmenuButton, 1)
 	
 	pauseTimer# = Random(0, 359)
-	SetSpriteX(curtainB, w/2 - GetSpriteWidth(curtainB)/2 + w/4*sin(pauseTimer#))
+	if dispH = 0 then SetSpriteX(curtainB, w/2 - GetSpriteWidth(curtainB)/2 + w/4*sin(pauseTimer#))
+	if dispH then SetSpriteY(curtainB, h/2 - GetSpriteHeight(curtainB)/2 + h/4*sin(pauseTimer#))
 	
 	iEnd = 5/fpsr#
 	for i = 1 to iEnd
@@ -850,13 +863,12 @@ function PauseGame()
 		
 	next i
 	
-	
 	//Making the crab title and description
 	SetTextString(pauseTitle1, crabNames[crab1Type])
 	SetTextString(pauseDesc1, crabPause1[crab1Type])
 	if spActive = 0 then SetTextString(pauseDesc1, GetTextString(pauseDesc1) + chr(10) + chr(10) + crabPause2[crab1Type])
 	
-	if spActive = 0 and aiActive = 0
+	if (spActive = 0 and aiActive = 0)
 		//For a multiplayer game
 		SetTextY(pauseTitle2, h/2 - (GetTextY(pauseTitle1)-h/2))
 		SetTextY(pauseDesc2, h/2 - (GetTextY(pauseDesc1)-h/2))
@@ -865,7 +877,7 @@ function PauseGame()
 	endif
 	
 	//The single player special text
-	if spActive = 1
+	if spType = MIRRORMODE
 		SetTextString(pauseTitle2, "Mirror Mode")
 			SetTextString(pauseDesc2, "A mysterious reflective surface split our" + chr(10) + "hero into two! Souls split across space," + chr(10) + "the crab still acts as one. Prove" + chr(10) + "that you can live to fight another day!")
 		
@@ -912,6 +924,26 @@ function PauseGame()
 		IncSpriteSizeCenteredMult(curtainB, GetViewZoom())
 	endif
 	
+	if dispH
+		for i = pauseTitle1 to pauseDesc2
+			SetTextSize(i, GetTextSize(i) - 13)
+			SetTextSpacing(i, GetTextSpacing(i) + 3)
+		next i
+		
+		SetTextY(pauseTitle1, h/5+20)
+		SetTextY(pauseTitle2, h/5+20)
+		SetTextY(pauseDesc1, GetTextY(pauseTitle1) + 140)
+		SetTextY(pauseDesc2, GetTextY(pauseTitle2) + 140)
+		SetTextMiddleScreenXDispH1(pauseTitle1)
+		SetTextMiddleScreenXDispH1(pauseDesc1)
+		SetTextMiddleScreenXDispH2(pauseTitle2)
+		SetTextMiddleScreenXDispH2(pauseDesc2)
+		
+		SetTextAngle(pauseTitle2, 0)
+		SetTextAngle(pauseDesc2, 0)
+		
+	endif
+	
 	
 endfunction
 
@@ -951,10 +983,12 @@ function CreateExp(metSpr, metType, planetNum)
 	iEnd = 1 + planetNum //The default experience amount, for regular meteors
 	if metType = 2 then iEnd = 2 + planetNum
 	if metType = 3 then iEnd = 3 + planetNum
+	
+	
 
 	for i = 1 to iEnd
 		CreateSprite(expSprNum, starParticleI)
-		SetSpriteSize(expSprNum, 16, 16)
+		SetSpriteSize(expSprNum, 16*gameScale#, 16*gameScale#)
 		SetSpritePosition(expSprNum, GetSpriteMiddleX(metSpr) - GetSpriteWidth(expSprNum)/2, GetSpriteMiddleY(metSpr) - GetSpriteHeight(expSprNum)/2)
 		SetSpriteColor(expSprNum, 255, 255, 0, 5)
 		SetSpriteAngle(expSprNum, Random(1, 360))
@@ -978,14 +1012,14 @@ function UpdateExp()
 
 		alpha = GetSpriteColorAlpha(spr)
 		if alpha < 255
-			IncSpritePosition(spr, (255-alpha)/18*fpsr#*cos(GetSpriteAngle(spr)), (255-alpha)/18*fpsr#*sin(GetSpriteAngle(spr)))
+			IncSpritePosition(spr, (255-alpha)/18*fpsr#*cos(GetSpriteAngle(spr))*gameScale#, (255-alpha)/18*fpsr#*sin(GetSpriteAngle(spr))*gameScale#)
 
 			SetSpriteColorAlpha(spr, GetSpriteColorAlpha(spr) + 10)
 		endif
 
 		//Collision for the first/bottom crab
 		//dis1 = GetSpriteDistance(spr, crab1)
-		if GetSpriteDistance(spr, crab1) < 50
+		if GetSpriteDistance(spr, crab1) < 50*gameScale#
 			IncSpritePosition(spr, -(0-(GetSpriteMiddleX(crab1)-GetSpriteX(spr)))/4.0*fpsr#, -(0-(GetSpriteMiddleY(crab1)-GetSpriteY(spr)))/4.0*fpsr#)
 			//GlideToSpot(spr, GetSpriteMiddleX(crab1), GetSpriteMiddleY(crab1), 5)
 			//Either gliding method above works, I like the way the one on top looks more
@@ -1071,14 +1105,25 @@ function UpdateExp()
 	endif
 	
 	//Player 2 EXP
-	SetSpriteScissor(expBar2, GetSpriteX(expHolder1), 0, w, h)
-	GlideToX(expBar2, GetSpriteX(expHolder2) - (GetSpriteWidth(expHolder2))*(1.0*expTotal2/specialCost2), 2)
-	
-	if (GetSpriteX(expBar2) - .116*GetSpriteWidth(expHolder2)*2/3) + GetSpriteWidth(expHolder2) <= GetSpriteX(specialButton2) + GetSpriteWidth(specialButton2) and expTotal2 <> specialCost2
-		expTotal2 = specialCost2
-		UpdateButtons2()
+	if dispH = 0
+		SetSpriteScissor(expBar2, GetSpriteX(expHolder1), 0, w, h)
+		GlideToX(expBar2, GetSpriteX(expHolder2) - (GetSpriteWidth(expHolder2))*(1.0*expTotal2/specialCost2), 2)
+		
+		if (GetSpriteX(expBar2) - .116*GetSpriteWidth(expHolder2)*2/3) + GetSpriteWidth(expHolder2) <= GetSpriteX(specialButton2) + GetSpriteWidth(specialButton2) and expTotal2 <> specialCost2
+			expTotal2 = specialCost2
+			UpdateButtons2()
+		endif
 	endif
 	
+	if dispH
+		SetSpriteScissor(expBar2, 0, 0, GetSpriteWidth(expHolder2)+GetSpriteX(expHolder2), h)
+		GlideToX(expBar2, GetSpriteX(expHolder2) + (GetSpriteWidth(expHolder2))*(1.0*expTotal2/specialCost2), 2)
+		
+		if (GetSpriteX(expBar2) + .116*GetSpriteWidth(expHolder2)*2/3) >= GetSpriteX(specialButton2) and expTotal2 <> specialCost2
+			expTotal2 = specialCost2
+			UpdateButtons2()
+		endif
+	endif
 
 	if deleted > 0
 		expList.remove(deleted)
@@ -1274,6 +1319,8 @@ function ShowSpecialAnimation(crabType, fast)
 		if crabType = 6 then SetTextString(i, "SHURI-KRUSTACEAN")
 	next i
 	
+	
+	
 	iEnd = 120/fpsr#
 	if fast
 		iEnd = 80/fpsr#
@@ -1282,9 +1329,25 @@ function ShowSpecialAnimation(crabType, fast)
 		fastM# = 1
 	endif
 	
+	if dispH
+		iEnd = iEnd * 1.2
+		SetSpriteVisible(specialSprFront2, 0)
+		SetSpriteVisible(specialSprBack2, 0)
+		if GetSpriteExists(specialSprBacker2) then SetSpriteVisible(specialSprBacker2, 0)
+		SetTextVisible(specialSprFront2, 0)
+		SetTextSize(specialSprFront1, GetTextSize(specialSprFront2) + 20)
+		SetTextY(specialSprFront1, h-20-GetTextSize(specialSprFront2))
+		if crabType = 3 or crabType = 5
+			SetSpriteFlip(specialSprBacker1, 0, 1)
+			SetSpriteMiddleScreen(specialSprFront1)
+			SetSpriteMiddleScreen(specialSprBack1)
+			SetSpriteMiddleScreen(specialSprBacker1)
+		endif
+	endif
+	
 	for i = 1 to iEnd
 		
-		if i <= iEnd*1/4 and i > 2
+		if i <= iEnd*1/4 and i > 20
 			/*if deviceType = DESKTOP
 				if GetPointerPressed() and GetPointerY() > h/2 then buffer1 = 1
 				if GetPointerPressed() and GetPointerY() < h/2 then buffer2 = 1
@@ -1343,19 +1406,25 @@ function ShowSpecialAnimation(crabType, fast)
 			
 		endif
 		
-		//Top crab
+		//Top crab & Chrono crab
 		if crabType = 3 or crabType = 5
 			if i = 1
-				DrawPolar1(specialSprFront1, 0, 270)
-				DrawPolar1(specialSprBack1, 0, 270)
-				DrawPolar1(specialSprBacker1, 0, 270)
-				DrawPolar2(specialSprFront2, 0, 90)
-				DrawPolar2(specialSprBack2, 0, 90)
-				DrawPolar2(specialSprBacker2, 0, 90)
+				if dispH = 0
+					DrawPolar1(specialSprFront1, 0, 270)
+					DrawPolar1(specialSprBack1, 0, 270)
+					DrawPolar1(specialSprBacker1, 0, 270)
+					DrawPolar2(specialSprFront2, 0, 90)
+					DrawPolar2(specialSprBack2, 0, 90)
+					DrawPolar2(specialSprBacker2, 0, 90)
+				endif
 				
 				if crabType = 5
-					IncSpritePosition(specialSprFront2, -2*(specSize*700/1356.0 - specSize/2), -2*(specSize*932/1356.0 - specSize/2))
-					IncSpritePosition(specialSprBack2, -2*(specSize*700/1356.0 - specSize/2), -2*(specSize*932/1356.0 - specSize/2))
+					IncSpritePosition(specialSprFront2, -2*(specSize*700/1356.0 - specSize/2)-500*dispH, -2*(specSize*932/1356.0 - specSize/2))
+					IncSpritePosition(specialSprBack2, -2*(specSize*700/1356.0 - specSize/2)-500*dispH, -2*(specSize*932/1356.0 - specSize/2))
+					if dispH
+						IncSpriteX(specialSprFront1, -2*(specSize*700/1356.0 - specSize/2)-1*dispH)
+						IncSpriteX(specialSprBack1, -2*(specSize*700/1356.0 - specSize/2)-1*dispH)
+					endif
 				endif
 			endif
 				
@@ -1387,6 +1456,10 @@ function ShowSpecialAnimation(crabType, fast)
 			if crabType = 5
 				IncSpritePosition(specialSprFront2, -.125*fpsr#, -.25*fpsr#)
 				IncSpritePosition(specialSprBack2, -.125*fpsr#, -.25*fpsr#)
+				if dispH
+					IncSpritePosition(specialSprFront1, -.125*fpsr#, .25*fpsr#*0)
+					IncSpritePosition(specialSprBack1, -.125*fpsr#, .25*fpsr#*0)
+				endif
 			endif
 			
 			//Goes around once for top, 3 times for chrono
@@ -1452,7 +1525,7 @@ function InitAttackParticles()
     		SetParticlesImage (i, img)
 			SetParticlesFrequency(i, 300)
 			SetParticlesLife(i, lifeEnd#)	//Time in seconds that the particles stick around
-			SetParticlesSize(i, 20)
+			SetParticlesSize(i, 20*gameScale#)
 			SetParticlesStartZone(i, -metSizeX/4, -metSizeX/4, metSizeX/4, metSizeX/4) //The box that the particles can start from
 			//SetParticlesStartZone(i, -5, -5, 5, 5) //The box that the particles can start from
     		SetParticlesDirection(i, 30, 20)
@@ -1513,6 +1586,23 @@ function InitAttackParticles()
 		AddParticlesColorKeyFrame (par, lifeEnd#, 255, 255, 255, 0 )
 	
 	endif
+	
+	for i = par1met1 to par2spe1
+		if i <> par1spe1 and i <> par2spe1
+			SetParticlesSize(i, 20*gameScale#)
+			SetParticlesDirection(i, 30*gameScale#, 20*gameScale#)
+	    	SetParticlesVelocityRange (i, 0.8*gameScale#, 2.5*gameScale#)
+	    	SetParticlesStartZone(i, -metSizeX/4*gameScale#, -metSizeX/4*gameScale#, metSizeX/4*gameScale#, metSizeX/4*gameScale#) //The box that the particles can start from
+		endif
+		if i = par1spe1
+			SetParticlesPosition (i, w/4, h/2)
+			SetParticlesStartZone(i, -w/2, -h/2, w/4, h/2)
+		endif
+		if i = par2spe1
+			SetParticlesPosition (i, w*3/4, h/2)
+			SetParticlesStartZone(i, -w/4, -h/2, w/4, h/2)
+		endif
+	next i
 endfunction
 
 function ActivateMeteorParticles(mType, spr, gameNum)
@@ -1535,14 +1625,20 @@ endfunction
 
 function GetCrabDefaultR(spr)
 	//Returns the normal height that a crab will be at
-	r# = planetSize/2 + GetSpriteHeight(spr)/3
+	r# = planetSize/2*gameScale# + GetSpriteHeight(spr)/3
 endfunction r#
 
 function SetBGRandomPosition(spr)
 	//Sets the background to a random angle/spot
-	SetSpriteSizeSquare(spr, w*2)
-	if spr = bgGame1 then SetSpritePosition(spr, -1*w + Random(0, w), h/2)
-	if spr = bgGame2 then SetSpritePosition(spr, -1*w + Random(0, w), h/2-GetSpriteHeight(spr))
+	if dispH = 0
+		SetSpriteSizeSquare(spr, w*2)
+		if spr = bgGame1 then SetSpritePosition(spr, -1*w + Random(0, w), h/2)
+		if spr = bgGame2 then SetSpritePosition(spr, -1*w + Random(0, w), h/2-GetSpriteHeight(spr))
+	else
+		SetSpriteSizeSquare(spr, h*2)
+		if spr = bgGame1 then SetSpritePosition(spr, w/2-h*2, 0 - Random(0,h))
+		if spr = bgGame2 then SetSpritePosition(spr, w/2, 0 - Random(0,h))
+	endif
 	SetSpriteAngle(spr, 90*Random(1, 4))
 	
 	if appState = CHARACTER_SELECT
@@ -1589,7 +1685,7 @@ function CreateMeteor(gameNum, category, special)
 	newMet.cat = 0
 	
 	newMet.theta = Random(1, 360)
-	newMet.r = metStartDistance
+	newMet.r = metStartDistance/gameScale#
 	newMet.spr = meteorSprNum
 	newMet.cat = category
 	
@@ -1613,7 +1709,7 @@ function CreateMeteor(gameNum, category, special)
 		SetSpriteDepth(meteorSprNum + 10000, 30)
 		
 	elseif category = 4	//Attack from other player (this 4 indexing is only used here)
-		newMet.r = metStartDistance-50
+		newMet.r = metStartDistance/gameScale#-50
 		newMet.cat = 1
 		SetSpriteColor(meteorSprNum, 40, 160, 255, 254)
 		
@@ -1644,7 +1740,9 @@ function AddMeteorAnimation(spr)
 		rnd = Random(0, 5)
 		AddSpriteAnimationFrame(spr, fruit1I+rnd)
 		PlaySprite(spr, 15, 0, 1, 1)
-		SetSpriteColor(spr, 255, 255, 255, 255)
+		SetSpriteColorRed(spr, 255)
+		SetSpriteColorGreen(spr, 255)
+		SetSpriteColorBlue(spr, 255)
 	endif
 	
 	if Random(1, 2) = 2 then SetSpriteFlip(spr, 1, 0)
@@ -1751,11 +1849,11 @@ function InitJumpParticles()
 		ClearParticlesColors(i)
 		SetParticlesFrequency(i, 300)
 		SetParticlesLife(i, lifeEnd#)	//Time in seconds that the particles stick around
-		SetParticlesSize(i, 10)
-		SetParticlesStartZone(i, -5, -5, 5, 5) //The box that the particles can start from
-		SetParticlesDirection(i, 100, 100)
+		SetParticlesSize(i, 10*gameScale#)
+		SetParticlesStartZone(i, -5*gameScale#, -5*gameScale#, 5*gameScale#, 5*gameScale#) //The box that the particles can start from
+		SetParticlesDirection(i, 100*gameScale#, 100*gameScale#)
 		SetParticlesAngle(i, 10)
-		SetParticlesVelocityRange (i, 0.8, 2.5 )
+		SetParticlesVelocityRange (i, 0.8*gameScale#, 2.5*gameScale#)
 		SetParticlesMax (i, 100)
 		SetParticlesDepth(i, 25)
 		
@@ -1857,20 +1955,20 @@ function ActivateJumpParticles(gameNum)
 		SetParticlesPosition(par, GetSpriteMiddleX(crabS) - GetSpriteHeight(crabS)/2*cos(crabTheta#), GetSpriteMiddleY(crabS) - GetSpriteHeight(crabS)/2*sin(crabTheta#))
 		
 		if crabType = 1
-			SetParticlesDirection(par, cos(crabTheta#-50*dir)*90, sin(crabTheta#-50*dir)*90)
+			SetParticlesDirection(par, cos(crabTheta#-50*dir)*90*gameScale#, sin(crabTheta#-50*dir)*90*gameScale#)
 			SetParticlesPosition(par, GetSpriteMiddleX(crabS) - GetSpriteHeight(crabS)/4*cos(crabTheta#), GetSpriteMiddleY(crabS) - GetSpriteHeight(crabS)/4*sin(crabTheta#))
 		elseif crabType = 2
-			SetParticlesDirection(par, cos(crabTheta#+60*dir)*200, sin(crabTheta#+60*dir)*200)
+			SetParticlesDirection(par, cos(crabTheta#+60*dir)*200*gameScale#, sin(crabTheta#+60*dir)*200*gameScale#)
 		elseif crabType = 3
-			SetParticlesDirection(par, cos(crabTheta#+70*dir)*170, sin(crabTheta#+70*dir)*170)
+			SetParticlesDirection(par, cos(crabTheta#+70*dir)*170*gameScale#, sin(crabTheta#+70*dir)*170*gameScale#)
 		elseif crabType = 4
-			SetParticlesDirection(par, cos(crabTheta#)*400, sin(crabTheta#)*400)
+			SetParticlesDirection(par, cos(crabTheta#)*400*gameScale#, sin(crabTheta#)*400*gameScale#)
 		elseif crabType = 5
 			SetParticlesPosition(par, GetSpriteMiddleX(crabS), GetSpriteMiddleY(crabS))
-			SetParticlesDirection(par, cos(crabTheta#)*90, sin(crabTheta#)*90)
+			SetParticlesDirection(par, cos(crabTheta#)*90*gameScale#, sin(crabTheta#)*90*gameScale#)
 		elseif crabType = 6
 			SetParticlesPosition(par, GetSpriteMiddleX(crabS), GetSpriteMiddleY(crabS))
-			SetParticlesDirection(par, cos(crabTheta#)*70, sin(crabTheta#)*70)
+			SetParticlesDirection(par, cos(crabTheta#)*70*gameScale#, sin(crabTheta#)*70*gameScale#)
 		endif
 		
 		ResetParticleCount(par)
@@ -2140,6 +2238,11 @@ function PlayOpeningScene()
 		SetTextSpacing(TXT_INTRO2, -22)
 		SetTextAngle(TXT_INTRO2, 180)
 		
+		if dispH
+			SetTextMiddleScreen(TXT_INTRO1, 0)
+			SetTextY(TXT_INTRO2, 9999)
+		endif
+		
 		phase = 1
 		
 		while oTimer# > 0
@@ -2188,8 +2291,12 @@ function PlayOpeningScene()
 		SetTextSpacing(i, -30)
 		SetTextY(i, h*3/4  - h/2*(i-TXT_INTRO1))
 		SetTextDepth(i, 3)
+		
+		if dispH
+			SetTextMiddleScreen(TXT_INTRO1, 0)
+			SetTextY(TXT_INTRO2, 9999)
+		endif
 	next i	
-	
-	
+		
 	
 endfunction

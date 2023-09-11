@@ -135,19 +135,6 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 	next i
 		
 	//Descriptions were moved down here to include newline characters
-	/*crabDescs[0] = "Known across the cosmos for his quick dodges!" + chr(10) + "Has connections in high places."
-	crabDescs[1] = "He's been hitting the books AND the gym! His" + chr(10) + "new meteor spells are a force to be reckoned with."
-	crabDescs[2] = "Started spinning one day, and never stopped!" + chr(10) + "Learned to weaponize his rotational influence."
-	crabDescs[3] = "Always ready to start a party!!" + chr(10) + "How can you say no?"
-	crabDescs[4] = "A clockwork master! Doesn't like to bend time," + chr(10) + "but will make an exception in a fight."
-	crabDescs[5] = "Lurking in black holes, opponents will" + chr(10) + "never expect his spinning-star blades!" */
-	
-	//crabDescs[0] = "Known far and wide, he's" + chr(10) + "ready to claim his fame!" + chr(10) + "Double-tap for his galaxy" + chr(10) + "famous quick-dodge move!"
-	//crabDescs[1] = "He's been hitting the books AND the gym! His" + chr(10) + "new meteor spells are a force to be reckoned with."
-	//crabDescs[2] = "Started spinning one day, and never stopped!" + chr(10) + "Learned to weaponize his rotational influence."
-	//crabDescs[3] = "Always ready to start a party!!" + chr(10) + "How can you say no?"
-	//crabDescs[4] = "A clockwork master! Doesn't like to bend time," + chr(10) + "but will make an exception in a fight."
-	//crabDescs[5] = "Lurking in black holes, opponents will" + chr(10) + "never expect his spinning-star blades!"
 	crabDescs[0] = "Speed: {{{}} Turn: {{{}}" + chr(10) + "Known far and wide, he's ready to claim his fame!" + chr(10) + "Double-tap for his galaxy famous quick-dodge!" + chr(10) + "Special Attack: Meteor Shower"
 	crabDescs[1] = "Speed: {{}}} Turn: {{{{}" + chr(10) + "The most magical being this side of the nebula." + chr(10) + "Launch into the skies with a double-tap spell!" + chr(10) + "Special Attack: Conjure Comets"
 	crabDescs[2] = "Speed: {{{{{ Turn: {}}}}" + chr(10) + "Grew up at the Rotation Station, and it shows." + chr(10) + "Very fast! Double-tap to skid & stop a sec'." + chr(10) + "Special Attack: Orbital Nightmare"
@@ -195,15 +182,54 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 	SetTextMiddleScreenOffset(csc.txtReady, f, 0, p*7*h/16)
 	SetTextColorAlpha(csc.txtReady, 0)
 	
+	if spActive = 1
+		//Creating the story mode exclusive stuff
+		CreateTextExpress(TXT_CS_CRAB_STATS_2, "Chapter " + str(curChapter), 90, fontDescItalI, 0, 40, 100, 10)
+		CreateTextExpress(TXT_CS_CRAB_NAME_2, chapterTitle[curChapter], 110, fontDescI, 2, w-40, 190, 10)
+		CreateTextExpress(TXT_CS_CRAB_DESC_2, chapterDesc[curChapter], 64, fontDescI, 1, w/2, 370, 10)
+		
+		SetTextSpacing(TXT_CS_CRAB_STATS_2, -24)
+		SetTextSpacing(TXT_CS_CRAB_NAME_2, -29)
+		SetTextSpacing(TXT_CS_CRAB_DESC_2, -17)
+		
+		SetSpriteSize(csc.sprTxtBack, w, 140)
+		IncSpriteY(csc.sprTxtBack, 40)
+		IncTextY(csc.txtCrabDesc, 34)
+		
+		SetFolder("/media/envi")
+		
+		LoadSpriteExpress(SPR_CS_BG_2, "bg5.png", w*1.4, w*1.4, -w*0.2, -w*0.2, 199)
+		
+		SetFolder("/media")
+	
+		if dispH
+			for i = TXT_CS_CRAB_NAME_2 to TXT_CS_CRAB_STATS_2
+				if i <> TXT_CS_READY_2
+					SetTextSize(i, GetTextSize(i) - 18)
+					SetTextSpacing(i, GetTextSpacing(i) + 3)
+					
+				endif
+			next i
+			
+		endif
+	
+	endif
+	
+	if dispH
+		
+		
+	endif
 	
 	SetVisibleCharacterUI(1, csc)
 	
 endfunction
 
-
 // Initialize the character select screen
 // Does nothing right now, just a placeholder
 function InitCharacterSelect()
+	
+	if spActive = 1 then spType = STORYMODE
+	if spType = STORYMODE then spActive = 1
 	
 	SetSpriteVisible(split, 1)
 	
@@ -240,8 +266,11 @@ function InitCharacterSelect()
 	
 	InitCharacterSelectController(csc1)
 	
-	InitCharacterSelectController(csc2)
-	
+	if spActive and spType = STORYMODE
+		//InitStorySelectController(csc2)
+	else
+		InitCharacterSelectController(csc2)
+	endif
 	
 	LoadSpriteExpress(SPR_MENU_BACK, "ui/mainmenu.png", 140, 140, 0, 0, 3)
 	SetSpriteMiddleScreen(SPR_MENU_BACK)
@@ -280,9 +309,14 @@ function ChangeCrabs(csc ref as CharacterSelectController, dir as integer, start
 		csc.crabSelected = csc.crabSelected + dir
 		//This is moved up so that people can see the names quicker
 		SetTextString(csc.txtCrabName, crabNames[csc.crabSelected+1])
-		//SetTextMiddleScreenX(csc.txtCrabName, f)
 		SetTextString(csc.txtCrabDesc, crabDescs[csc.crabSelected])
-		//SetTextMiddleScreenX(csc.txtCrabDesc, f)
+		if spActive
+			curChapter = csc.crabSelected+1
+			SetTextString(csc.txtCrabDesc, crabPause1[csc.crabSelected+1])
+			SetTextString(TXT_CS_CRAB_STATS_2, "Chapter " + str(curChapter))
+			SetTextString(TXT_CS_CRAB_NAME_2, chapterTitle[curChapter])
+			SetTextString(TXT_CS_CRAB_DESC_2, chapterDesc[curChapter])
+		endif
 		
 		space = 12
 		for i = 0 to FindString(crabDescs[csc.crabSelected], chr(10))-1
@@ -406,6 +440,14 @@ function DoCharacterSelectController(csc ref as CharacterSelectController)
 
 	if not csc.ready
 		
+		if spActive = 1 and csc.stage = 1
+			SetVisibleCharacterUI(2, csc)
+			csc.crabSelected = curChapter-2
+			ChangeCrabs(csc, 1, 1)
+			csc.stage = 2
+			ClearMultiTouch()
+		endif
+		
 		//The 6-crab view
 		if csc.stage = 1
 			for i = 0 to NUM_CRABS-1
@@ -450,7 +492,7 @@ function DoCharacterSelectController(csc ref as CharacterSelectController)
 			
 			for i = 0 to NUM_CRABS-1
 				spr = csc.sprCrabs + i
-				if ButtonMultitouchEnabled(spr)
+				if ButtonMultitouchEnabled(spr) and spActive = 0
 					SetVisibleCharacterUI(1, csc)
 					for j = 0 to NUM_CRABS-1
 						PlayTweenSprite(csc.sprCrabs + j, csc.sprCrabs + j, 0)
@@ -466,6 +508,7 @@ function DoCharacterSelectController(csc ref as CharacterSelectController)
 	//Slowly lighting the backgrounds
 	SetSpriteColorAlpha(csc.sprBG, 205+abs(50*cos(90*csc.player + 80*GetMusicPositionOGG(characterMusic))))
 	IncSpriteAngle(csc.sprBGB, 1.8*fpsr#)
+	if spActive then IncSpriteAngle(SPR_CS_BG_2, -0.8*fpsr#)
 	//IncSpriteAngle(csc.sprBGB, 6*fpsr#)
 	
 	// Continue an existing glide
@@ -493,7 +536,7 @@ function DoCharacterSelect()
 	state = CHARACTER_SELECT
 	
 	DoCharacterSelectController(csc1)
-	DoCharacterSelectController(csc2)
+	if spActive = 0 then DoCharacterSelectController(csc2)
 		
 	//Unselects the crab if the screen is touched again (only works on mobile for testing)
 	if csc1.ready = 1 and GetMultitouchPressedBottom()
@@ -530,18 +573,20 @@ function DoCharacterSelect()
 		next i		
 	endif
 	
-	if csc2.ready = 0 and doJit
-		txt = csc2.txtCrabName
-		for i = 0 to GetTextLength(txt)
-			SetTextCharY(txt, i, -102 -1 * (jitterNum + csc2.glideFrame) + Random(0, (jitterNum + csc2.glideFrame)*2))
-			if csc2.stage = 1 and i > 12 then SetTextCharY(csc2.txtCrabName, i, -102 -1 * (jitterNum + csc2.glideFrame) + Random(0, (jitterNum + csc2.glideFrame)*2) - GetTextSize(txt))
-			SetTextCharAngle(txt, i, 180 - 1*(jitterNum + csc2.glideFrame) + Random(0, jitterNum + csc2.glideFrame)*2)
-		next i
-	else
-		txt = csc2.txtReady
-		for i = 0 to GetTextLength(txt)
-			SetTextCharY(txt, GetTextLength(txt)-i, -140.0 + 8.0*abs(8*cos(GetMusicPositionOGG(characterMusic)*200+i*10 )))	//Code from SnowTunes
-		next i
+	if spActive = 0
+		if csc2.ready = 0 and doJit
+			txt = csc2.txtCrabName
+			for i = 0 to GetTextLength(txt)
+				SetTextCharY(txt, i, -102 -1 * (jitterNum + csc2.glideFrame) + Random(0, (jitterNum + csc2.glideFrame)*2))
+				if csc2.stage = 1 and i > 12 then SetTextCharY(csc2.txtCrabName, i, -102 -1 * (jitterNum + csc2.glideFrame) + Random(0, (jitterNum + csc2.glideFrame)*2) - GetTextSize(txt))
+				SetTextCharAngle(txt, i, 180 - 1*(jitterNum + csc2.glideFrame) + Random(0, jitterNum + csc2.glideFrame)*2)
+			next i
+		else
+			txt = csc2.txtReady
+			for i = 0 to GetTextLength(txt)
+				SetTextCharY(txt, GetTextLength(txt)-i, -140.0 + 8.0*abs(8*cos(GetMusicPositionOGG(characterMusic)*200+i*10 )))	//Code from SnowTunes
+			next i
+		endif
 	endif
 	
 	//Spinning the main menu button
@@ -549,14 +594,25 @@ function DoCharacterSelect()
 	
 	if ButtonMultitouchEnabled(SPR_MENU_BACK)
 		state = START
+		spActive = 0
+		spType = 0
 		TransitionStart(Random(1,lastTranType))
 	endif
 	
 	if csc1.ready and csc2.ready
 		spActive = 0
+		spType = 0
 		state = GAME
 		SetTextVisible(csc1.txtReady, 0)
 		SetTextVisible(csc2.txtReady, 0)
+		TransitionStart(Random(1,lastTranType))
+	endif
+	
+	//Going to the story mode!
+	if csc1.ready and spActive
+		spActive = 1
+		spType = STORYMODE
+		state = STORY
 		TransitionStart(Random(1,lastTranType))
 	endif
 	
@@ -608,7 +664,14 @@ endfunction
 function ExitCharacterSelect()
 	
 	CleanupCharacterSelectController(csc1)
-	CleanupCharacterSelectController(csc2)
+	if GetSpriteExists(csc2.sprReady) then CleanupCharacterSelectController(csc2)
+	if spActive
+		DeleteSprite(SPR_CS_BG_2)
+		DeleteText(TXT_CS_CRAB_STATS_2)
+		DeleteText(TXT_CS_CRAB_NAME_2)
+		DeleteText(TXT_CS_CRAB_DESC_2)
+	endif
+	
 	DeleteSprite(SPR_MENU_BACK)
 	
 	if GetMusicPlayingOGGSP(characterMusic) then StopMusicOGGSP(characterMusic)

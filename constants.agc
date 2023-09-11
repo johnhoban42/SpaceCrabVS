@@ -51,8 +51,8 @@ global startTimer# = 0
 
 //Gameplay constants & variables
 #constant planetSize 220
-#constant metSizeX 58
-#constant metSizeY 80
+global metSizeX = 58
+global metSizeY = 80
 
 #constant spaceCrabTimeMax 200	//This is just for moving the UFO
 #constant topCrabTimeMax 1200
@@ -82,6 +82,8 @@ global hit2Timer# = 0
 
 global firstFight = 1
 global gameTimer# = 0
+
+global gameScale# = 1
 
 global crab1R# = 1
 global crab1Rdefault# = 1
@@ -130,6 +132,9 @@ global crab2PlanetS as Integer[3]
 
 global nudge2R# = 0
 global nudge2Theta# = 0
+
+global crabRefType = 0
+global crabRefAlt = 0
 
 global gameDifficulty1 = 1
 global gameDifficulty2 = 1
@@ -739,7 +744,7 @@ SetMusicSystemVolumeOGG(volumeM)
 
 
 
-global curChapter = 9
+global curChapter = 1
 global curScene = 0
 global highestScene = 0
 global lineSkipTo = 0
@@ -1432,6 +1437,87 @@ function SetCrabPauseStrings()
 	crabPause2[4] = "Special: Party Time!" + chr(10) + "Obscure your opponent's vision" + chr(10) + "with intense rave lights."
 	crabPause2[5] = "Special: Fast Forward" + chr(10) + "Speed up your enemy's" + chr(10) + "game for a short while."
 	crabPause2[6] = "Special: Shuri-Krustacean" + chr(10) + "Fling deadly projecticles" + chr(10) + "directly up the screen."
+endfunction
+
+global chapterTitle as string[25]
+global chapterDesc as string[25]
+
+function SetStoryShortStrings()
+	chapterTitle[1] = "The Idea"
+	chapterDesc[1] = "After an unfortunate event," + chr(10) + "a chance encounter leads" + chr(10) + "Space Crab down a path" + chr(10) + "he never expected!"
+	
+	chapterTitle[2] = "The Strategy"
+	chapterDesc[2] = "To fill out the founding" + chr(10) + "members of the Star Seekers," + chr(10) + "Ladder Wizard seeks the most" + chr(10) + "powerful crabs he knows."
+	
+	chapterTitle[3] = "The Fan"
+	chapterDesc[3] = "Top Crab shouldn't" + chr(10) + "be here :P" + chr(10) + "This part's not done yet." + chr(10) + "Luckily, no demo" + chr(10) + "should see this."
+	
+	chapterTitle[4] = ""
+	chapterDesc[4] = ""
+	
+	chapterTitle[5] = "Political Influence"
+	chapterDesc[5] = ""
+	
+	chapterTitle[6] = "The Adventurer"
+	chapterDesc[6] = ""
+	
+	chapterTitle[7] = "The Transportation Expert"
+	chapterDesc[7] = ""
+	
+	chapterTitle[8] = ""
+	chapterDesc[8] = ""
+	
+	chapterTitle[9] = "The Physical Fitness"
+	chapterDesc[9] = ""
+	
+	chapterTitle[10] = "Mister Music"
+	chapterDesc[10] = ""
+	
+	chapterTitle[11] = ""
+	chapterDesc[11] = ""
+	
+	chapterTitle[12] = "The Cosmic Cook"
+	chapterDesc[12] = ""
+	
+	chapterTitle[13] = "New Crab 1"
+	chapterDesc[13] = ""
+	
+	chapterTitle[14] = "Single & Mingling"
+	chapterDesc[14] = ""
+	
+	chapterTitle[15] = "The Calculator?"
+	chapterDesc[15] = ""
+	
+	chapterTitle[16] = "The Party...?"
+	chapterDesc[16] = ""
+	
+	chapterTitle[17] = "The Voice of Reason"
+	chapterDesc[17] = ""
+	
+	chapterTitle[18] = "The Divine Eye-in-the-Sky"
+	chapterDesc[18] = ""
+	
+	chapterTitle[19] = "The Crab Resources Department"
+	chapterDesc[19] = ""
+	
+	chapterTitle[20] = "New Crab 2"
+	chapterDesc[20] = ""
+	
+	chapterTitle[21] = "The Other Side of the Paw"
+	chapterDesc[21] = ""
+	
+	chapterTitle[22] = "The Valiant Defender"
+	chapterDesc[22] = ""
+	
+	chapterTitle[23] = "The Starlight Rival"
+	chapterDesc[23] = ""
+	
+	chapterTitle[24] = "Fight for the Future!"
+	chapterDesc[24] = ""
+	
+	chapterTitle[25] = "The Future"
+	chapterDesc[25] = ""
+	
 endfunction
 
 /*
