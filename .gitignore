@@ -1,7 +1,7 @@
 # AGK project files
-.agk
-.byc
-.exe
+*.agk
+*.byc
+*.exe
 
 *.byc
 

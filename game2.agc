@@ -336,10 +336,11 @@ function DoGame2()
 	if spActive = 1 and (GetMultitouchPressedTop() or GetMultitouchPressedBottom()) and deviceType = MOBILE and not ButtonMultitouchEnabled(pauseButton) then true3 = 1
 	//Activating the crab turn at an input
 	
-	aiTrue = 0
-	if aiActive = 1 then aiTrue = AITurn()
+	//Process AI turning
+	aiTurn = 0
+	if aiActive = 1 then aiTurn = AITurn()
 	
-	if (((true2 or buffer2 or true1 or true3) and aiActive = 0) or aiTrue = 1) and crab2JumpD# = 0
+	if (((true2 or buffer2 or true1 or true3) and aiActive = 0) or aiTurn = 1) and crab2JumpD# = 0
 		
 		buffer2 = 0
 		if crab2Turning = 0 and crab2Type <> 6
@@ -354,7 +355,7 @@ function DoGame2()
 			crab2Turning = -1*crab2Turning
 			
 			//This checks that either the crab1Dir is small enough, or that it is right at the start of the process
-			if Abs(crab2Dir#) < .7 or (crab2Turning * crab2Dir# > 0) or (Abs(crab2Dir#) < 1 and specialTimerAgainst2# > 0 and crab1Type = 5) or crab2Type = 6
+			if  Abs(crab2Dir#) < .7 or (crab2Turning * crab2Dir# > 0) or (Abs(crab2Dir#) < 1 and specialTimerAgainst2# > 0 and crab1Type = 5) or crab2Type = 6
 				//The crab leap code
 				//crab1Turning = -1*crab1Turning	//Still not sure if you should leap forwards or backwards
 				if spActive = 0 then PlayMusicOGG(jump2S, 0)
@@ -492,12 +493,27 @@ function DoGame2()
 	
 	//DrawPolar2(planet2, 0, 270)
 	
+<<<<<<< HEAD
 	if expTotal2 >= meteorCost2 and ButtonMultitouchEnabled(meteorButton2) and hit1Timer# <= 0 and aiActive = 0
+=======
+	//Process AI meteor and special actions
+	aiSpecial = 0
+	if aiActive = 1 then aiSpecial = AISpecial()
+	if expTotal2 >= meteorCost2 and hit1Timer# <= 0  and (ButtonMultitouchEnabled(meteorButton2) or AISpecial = 1)
+>>>>>>> AI
 		SendMeteorFrom2()
+		//Send info to AI when Special Attack has occurred
+		if aiActive = 1 then AIResetSpecial(1)
 	endif
 	
+<<<<<<< HEAD
 	if expTotal2 = specialCost2 and ButtonMultitouchEnabled(specialButton2) and hit1Timer# <= 0 and aiActive = 0
+=======
+	if expTotal2 = specialCost2 and hit1Timer# <= 0 and (ButtonMultitouchEnabled(specialButton2) or AISpecial = 2)
+>>>>>>> AI
 		SendSpecial2()
+		//Send info to AI when Special Attack has occurred
+		if aiActive = 1 then AIResetSpecial(2)
 	endif
 	
 	//Death is above so that the screen nudging code activates
@@ -945,7 +961,7 @@ function SendSpecial2()
 			if GetSpriteExists(i) = 0 then CreateSpriteExpress(i, ninjaStarSize, ninjaStarSize, -200, -200, 4)
 			SetSpriteImage(i, ninjaStarI)
 			SetSpriteColorAlpha(i, 0)
-			SetSpriteShapeCircle(i, 0, 0, ninjaStarSize*2.2/7, 0)
+			//SetSpriteShapeCircle(i, 0, 0, ninjaStarSize*2.2/7, 0)
 		next i
 		
 	endif

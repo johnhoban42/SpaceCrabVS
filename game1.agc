@@ -945,7 +945,7 @@ function SendSpecial1()
 			if GetSpriteExists(i) = 0 then CreateSpriteExpress(i, ninjaStarSize, ninjaStarSize, -200, -200, 4)
 			SetSpriteImage(i, ninjaStarI)
 			SetSpriteColorAlpha(i, 0)
-			SetSpriteShapeCircle(i, 0, 0, ninjaStarSize*2.2/7, 0)
+			//SetSpriteShapeCircle(i, 0, 0, ninjaStarSize*2.2/7, 0)
 		next i
 		
 	endif
