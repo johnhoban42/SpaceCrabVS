@@ -1,0 +1,31 @@
+music retro4 1
+SC: Hmm, Ladder Wizard was my only real lead.
+I mean, I've MET a lot of crabs, but I don't know them THAT well.
+The only guy who's phone number I actually have saved is Space Ned.
+It's not like a crab's just going to appear out of nowhere, wanting to join the Star Seekers.
+...Right?
+Dang, I thought that would work.
+??: Wh-whoa! Watch out!
+SC: (Thank you lady luck!)
+TC: Sorry! Sorry. I have such a hard time keeping control.
+Balancing isn't my strong suit. 
+WhOAH!
+SC: No worries, kid. Say, if it's stability you want-
+TC: Sorry, I can't hear you! I'm spinning way too fast!
+Please knock me down so we can talk!
+PL-PLEASE!
+music fightA 1
+fight TC
+music retro6 1
+TC: Whew, what a relief! I could get used to this kind of steadiness.
+SC: Well, if you want steady, why not join the Star Seekers?
+While we plan on discovering wonderous new places,
+you'll always have a steady group of crabs to back you up!
+TC: Wow! A group like that exists? Count me in!
+SC: Really? Cool! Very cool!
+TC: I want to ask, though- can my friend join, too?
+Well, maybe he's not my 'friend'...
+I do owe him a favor though. Can you consider it?
+SC: Consider it done!
+(Boy, things have gone great for the Star Seekers so far!)
+(What could possibly mess it up now?)

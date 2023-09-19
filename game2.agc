@@ -218,6 +218,13 @@ function CreateGame2()
 	
 	endif
 	
+	if dispH and aiActive = 0
+		CreateTextExpress(meteorButton2, "Z", 40, fontScoreI, 1, GetSpriteMiddleX(meteorButton2) - 2, GetSpriteY(meteorButton2) - 40, 10)
+		CreateTextExpress(specialButton2, "X", 40, fontScoreI, 1, GetSpriteMiddleX(specialButton2) - 2, GetSpriteY(specialButton2) - 40, 10)
+		SetTextColor(meteorButton2, 100, 100, 100, 255)
+		SetTextColor(specialButton2, 100, 100, 100, 255)
+	endif
+	
 endfunction
 
 function DoGame2()
@@ -225,7 +232,7 @@ function DoGame2()
 	//The Space Crab special (just Space Ned)
 	if specialTimerAgainst2# > 0 and crab1Type = 1
 		DrawPolar2(special1Ex1, 180 + ((specialTimerAgainst2# - 100)^2)/11, 0 + specialTimerAgainst2#)
-		SetSpriteAngle(special1Ex1, 180 + sin(specialTimerAgainst2#*8)*10)
+		SetSpriteAngle(special1Ex1, 180*dispH + 180 + sin(specialTimerAgainst2#*8)*10)
 	endif
 
 	//The Top Crab special
@@ -492,25 +499,17 @@ function DoGame2()
 	UpdateMeteor2()
 	
 	//DrawPolar2(planet2, 0, 270)
-	
-<<<<<<< HEAD
-	if expTotal2 >= meteorCost2 and ButtonMultitouchEnabled(meteorButton2) and hit1Timer# <= 0 and aiActive = 0
-=======
+
 	//Process AI meteor and special actions
 	aiSpecial = 0
 	if aiActive = 1 then aiSpecial = AISpecial()
 	if expTotal2 >= meteorCost2 and hit1Timer# <= 0  and (ButtonMultitouchEnabled(meteorButton2) or AISpecial = 1)
->>>>>>> AI
 		SendMeteorFrom2()
 		//Send info to AI when Special Attack has occurred
 		if aiActive = 1 then AIResetSpecial(1)
 	endif
 	
-<<<<<<< HEAD
-	if expTotal2 = specialCost2 and ButtonMultitouchEnabled(specialButton2) and hit1Timer# <= 0 and aiActive = 0
-=======
 	if expTotal2 = specialCost2 and hit1Timer# <= 0 and (ButtonMultitouchEnabled(specialButton2) or AISpecial = 2)
->>>>>>> AI
 		SendSpecial2()
 		//Send info to AI when Special Attack has occurred
 		if aiActive = 1 then AIResetSpecial(2)
@@ -518,7 +517,8 @@ function DoGame2()
 	
 	//Death is above so that the screen nudging code activates
 	hitSpr = CheckDeath2()
-	if hitSpr <> 0
+	if GetRawKeyPressed(76) then crab2Deaths = 2
+	if hitSpr <> 0 or GetRawKeyPressed(76)
 		DeleteSprite(hitSpr)
 		if getSpriteExists(hitSpr+glowS) then DeleteSprite(hitSpr + glowS)
 		//Kill crab
@@ -732,12 +732,14 @@ function UpdateButtons2()
 		SetSpriteColor(specialButton2, 255, 255, 255, 255)
 		if GetSpriteCurrentFrame(specialButton2) = 5 then PlaySprite(specialButton2, 15, 1, 1, 4)
 		if GetSpritePlaying(expHolder2) = 0 then PlaySprite(expHolder2, 20, 1, 1, 12)
+		if GetTextExists(specialButton2) then SetTextColor(specialButton2, 255, 255, 255, 255)
 	else
 		//Bar is not full
 		SetSpriteColor(specialButton2, 100, 100, 100, 255)
 		PlaySprite(specialButton2, 0, 0, 5, 5)
 		PlaySprite(expHolder2, 20, 0, 1, 1)
 		StopSprite(expHolder2)
+		if GetTextExists(specialButton2) then SetTextColor(specialButton2, 100, 100, 100, 255)
 	endif
 	
 	if expTotal2 >= meteorCost2
@@ -745,11 +747,13 @@ function UpdateButtons2()
 		if GetSpriteColorRed(meteorButton2) < 255 and hit1Timer# = 0 and aiActive = 0 then PingColor(GetSpriteMiddleX(meteorButton2), GetSpriteMiddleY(meteorButton2), 370, 30, 100, 255, GetSpriteDepth(meteorButton2)+1)
 		SetSpriteColor(meteorButton2, 255, 255, 255, 255)
 		if GetSpriteCurrentFrame(meteorButton2) = 5 then PlaySprite(meteorButton2, 15, 1, 1, 4)
+		if GetTextExists(meteorButton2) then SetTextColor(meteorButton2, 255, 255, 255, 255)
 	else
 		//Disabling the button
 		SetSpriteColor(meteorButton2, 100, 100, 100, 255)
 		PlaySprite(meteorButton2, 0, 0, 5, 5)
 		StopSprite(meteorButton2)
+		if GetTextExists(meteorButton2) then SetTextColor(meteorButton2, 100, 100, 100, 255)
 	endif
 	
 	if aiActive
@@ -771,8 +775,10 @@ function SendMeteorFrom2()
 	if meteorCost2 > specialCost2-1 then meteorCost2 = specialCost2-1
 	
 	SetParticlesDirection(parAttack, 0, 1)
+	if dispH then SetParticlesDirection(parAttack, 0, -1)
 	SetParticlesPosition(parAttack, GetSpriteMiddleX(meteorButton2), GetSpriteMiddleY(meteorButton2))
-	SetParticlesImage (parAttack, attackPartInvertI)
+	SetParticlesImage (parAttack, attackPartI)
+	if dispH = 0 then SetParticlesImage (parAttack, attackPartInvertI)
 	ResetParticleCount(parAttack)
 	
 	SetSpriteX(expBar2, GetSpriteX(expHolder2) + GetSpriteWidth(expHolder2))

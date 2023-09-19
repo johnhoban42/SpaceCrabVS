@@ -4,18 +4,25 @@
 global storyStateInitialized as integer = 0
 global talk1S
 global talkBS
+global trashBag as integer[0]
 
 // Initialize the story screen
 function InitStory()
 	
 	SetSpriteVisible(split, 0)
 	
+	//Size of the crab drawings
+	cSize = 360
+	if dispH then cSize = 240
+	
 	for i = SPR_TEXT_BOX to SPR_TEXT_BOX4
 		CreateSpriteExpress(i, w-80, 280, 0, 0, 15-(i-SPR_TEXT_BOX))
+		if dispH then SetSpriteSize(i, w-80 - cSize*2, 190)
 		//SetSpriteSize(i, GetSpriteWidth(i), GetSpriteHeight(i) + 30)	//Originally for the bottom one
 		SetSpriteMiddleScreenX(i)
 		SetSpriteY(i, h/2 + 20 - (i - SPR_TEXT_BOX)*(GetSpriteHeight(i) + 50))
-		
+		if dispH then SetSpriteY(i, h - GetSpriteHeight(i) - 90 - (i - SPR_TEXT_BOX)*(GetSpriteHeight(i) + 30))
+			
 		CreateTweenSprite(i, .3)
 		if i > SPR_TEXT_BOX
 			SetTweenSpriteY(i, GetSpriteY(i) + (GetSpriteHeight(i) + 50), GetSpriteY(i), TweenEaseOut2())
@@ -37,6 +44,10 @@ function InitStory()
 			SetTweenTextY(i, GetTextY(i) + (GetSpriteHeight(SPR_TEXT_BOX) + 20), GetTextY(i), TweenEaseOut2())
 			SetTextColorAlpha(i, 0)
 		endif
+		if dispH
+			SetTextSize(i, 50)
+			SetTextSpacing(i, -13)
+		endif
 	next i
 	
 	//SetTweenTextAlpha(storyText, 155, 255, TweenSmooth2())
@@ -49,9 +60,10 @@ function InitStory()
 	
 	//Load the difference faces/bodies as animation frames, then set the frame for different faces
 	//Load the costume as it comes, use the body frame number to load the correct costume file string number
-	cSize = 360
 	for i = SPR_CRAB1_BODY to SPR_CRAB2_COSTUME
 		CreateSpriteExpress(i, cSize, cSize, -cSize, GetSpriteY(SPR_TEXT_BOX) + GetSpriteHeight(SPR_TEXT_BOX) + 80, 5)
+		if dispH then SetSpriteY(i, h - 20 - cSize)
+		if i < SPR_CRAB2_BODY then SetSpriteFlip(i, 1, 0)
 		//if i <= SPR_CRAB1_COSTUME then Set		
 	next i 
 	
@@ -62,6 +74,10 @@ function InitStory()
 	
 	SetSpritePosition(SPR_CRAB1_FACE, 20, GetSpriteY(SPR_TEXT_BOX) + GetSpriteHeight(SPR_TEXT_BOX) + 80)
 	SetSpritePosition(SPR_CRAB2_FACE, w-cSize-20, GetSpriteY(SPR_TEXT_BOX) + GetSpriteHeight(SPR_TEXT_BOX) + 80)
+	if dispH
+		SetSpriteY(SPR_CRAB1_FACE, h-20-cSize)
+		SetSpriteY(SPR_CRAB2_FACE, h-20-cSize)
+	endif
 	
 	impact# = 1.4
 	spr = SPR_CRAB1_FACE
@@ -100,6 +116,9 @@ function InitStory()
 	
 	if GetSpriteExists(coverS) then PlayTweenSprite(tweenSprFadeOutFull, coverS, 0)
 	
+	if dispH = 0 then CreateSpriteExpress(bgGame1, h, h, -h/2, 0, 99)
+	if dispH then CreateSpriteExpress(bgGame1, w*1.2, w*1.2, -w*.1, -w*.6, 99)
+	
 	storyTimer# = 0
 	
 	storyStateInitialized = 1
@@ -109,6 +128,11 @@ function InitResultsRetry()
 	CreateTextExpress(storyText, "You were supposed" + chr(10) + "to win that one..." + chr(10) + chr(10) + "Try again?", 102, fontCrabI, 1, w/2, 350, 10)
 	SetTextSpacing(storyText, -30)
 	SetTextColor(storyText, 0, 0, 0, 255)
+	if dispH
+		SetTextSize(storyText, 92)
+		SetTextY(storyText, 20)
+		
+	endif
 
 	if GetSpriteExists(coverS) = 0 then CreateSpriteExpress(coverS, w, h, 0, 0, 15)
 
@@ -117,15 +141,23 @@ function InitResultsRetry()
 	SetFolder("/media/ui")
 
 	LoadSpriteExpress(playButton, "restart.png", 265, 265, 0, 0, 4)
+	if dispH then SetSpriteSizeSquare(playButton, 225)
 	SetSpriteMiddleScreen(playButton)
 	IncSpriteY(playButton, 160)
 	//IncSpriteX(playButton, 180)
 	//IncSpriteY(playButton, 280)
+	if dispH then IncSpriteY(playButton, 36)
 	
 	LoadSpriteExpress(exitButton, "crabselect.png", 190, 190, 0, 0, 4)
+	if dispH then SetSpriteSizeSquare(exitButton, 150)
 	SetSpriteMiddleScreen(exitButton)
-	IncSpriteY(exitButton, 570)
-	IncSpriteX(exitButton, -210)
+	if dispH = 0
+		IncSpriteY(exitButton, 570)
+		IncSpriteX(exitButton, -210)
+	else
+		IncSpriteY(exitButton, 250)
+		IncSpriteX(exitButton, -450)
+	endif
 	//IncSpriteY(exitButton, 280)
 
 	AddButton(playButton)
@@ -235,12 +267,13 @@ function ExitStory()
 			DeleteMusicOGG(talkBS)
 		endif
 		
+		DeleteSprite(bgGame1)
+		
 	else
 		
 		DeleteText(storyText)
 		DeleteSprite(playButton)
 		DeleteSprite(exitButton)
-		lineSkipTo = 0
 		
 		if GetMusicPlayingOGGSP(loserMusic) then StopMusicOGGSP(loserMusic)
 		
@@ -274,6 +307,13 @@ function ShowScene(sceneNum)
 	wholeRow$ = ReadLine(1)
 	lineOverall = 1
 	
+	//Firstly, loading the background image
+	if GetStringToken(wholeRow$, " ", 1) = "bg"
+		if GetSpriteExists(bgGame1) then SetSpriteImage(bgGame1, bg1I - 1 + Val(GetStringToken(wholeRow$, " ", 2)))
+		wholeRow$ = ReadLine(1)
+		//inc lineOverall, 1
+	endif
+	
 	//This returns from a fight, so the correct line is started from.
 	for i = 1 to lineSkipTo-1
 		wholeRow$ = ReadLine(1)
@@ -284,9 +324,10 @@ function ShowScene(sceneNum)
 	crabLAlt = 0
 	crabRType = 0
 	crabRAlt = 0
+	targetCrab = 0
 	
 	//This whill iterates through the entire text file, one line at a time
-	while (CompareString(wholeRow$, "") = 0)		
+	while (CompareString(wholeRow$, "") = 0) and state = STORY	
 		
 		//PART 1: Commands, that skip to the next line
 		
@@ -303,6 +344,9 @@ function ShowScene(sceneNum)
 			spActive = 0
 			spType = STORYMODE
 			aiActive = 1
+			ai$ = GetStringToken(wholeRow$, " ", 2)
+			if Len(ai$) = 5 then SetAIDifficulty(Val(Mid(ai$, 1, 1)), Val(Mid(ai$, 2, 1)), Val(Mid(ai$, 3, 1)), Val(Mid(ai$, 4, 1)), Val(Mid(ai$, 5, 1)))
+			knowingAI = Val(Mid(ai$, 5, 1))
 			firstFight = 0
 			SetCrabFromChapter(curChapter)
 			SetFolder("/media/text")
@@ -369,47 +413,95 @@ function ShowScene(sceneNum)
 		newCrabTalk = 0
 		if CompareString(":", Mid(wholeRow$, 3, 1))
 			newCrabTalk = 1
-			SetCrabFromString(GetStringToken(wholeRow$, ":", 1), 3)
-			if crabRefType <> crab1Type or crabRefAlt <> crab1Alt
-				//Crab 2 is changing
-				if crabRType = 0
-					//Bringing a new crab from the side, when no crab was there originally
-					PlayTweenSprite(SPR_CRAB2_BODY, SPR_CRAB2_BODY, 0)
-					PlayTweenSprite(SPR_CRAB2_BODY, SPR_CRAB2_FACE, 0)
-					PlayTweenSprite(SPR_CRAB2_BODY, SPR_CRAB2_COSTUME, 0)
-				elseif crabRType = crabRefType
-					//Switching back to the right side crab
-					PlayTweenSprite(SPR_CRAB2_FACE, SPR_CRAB2_BODY, 0)
-					PlayTweenSprite(SPR_CRAB2_FACE, SPR_CRAB2_FACE, 0)
-					PlayTweenSprite(SPR_CRAB2_FACE, SPR_CRAB2_COSTUME, 0)
+			if GetStringToken(wholeRow$, ":", 1) <> "??"
+				SetCrabFromString(GetStringToken(wholeRow$, ":", 1), 3)
+				if crabRefType <> crab1Type or crabRefAlt <> crab1Alt
+					//Crab 2 is changing
+					if crabRType = 0
+						//Bringing a new crab from the side, when no crab was there originally
+						PlayTweenSprite(SPR_CRAB2_BODY, SPR_CRAB2_BODY, 0)
+						PlayTweenSprite(SPR_CRAB2_BODY, SPR_CRAB2_FACE, 0)
+						PlayTweenSprite(SPR_CRAB2_BODY, SPR_CRAB2_COSTUME, 0)
+					elseif crabRType = crabRefType
+						//Switching back to the right side crab
+						PlayTweenSprite(SPR_CRAB2_FACE, SPR_CRAB2_BODY, 0)
+						PlayTweenSprite(SPR_CRAB2_FACE, SPR_CRAB2_FACE, 0)
+						PlayTweenSprite(SPR_CRAB2_FACE, SPR_CRAB2_COSTUME, 0)
+					else
+						//A different crab is being put in spot 2
+						PlayTweenSprite(SPR_CRAB2_COSTUME, SPR_CRAB2_BODY, 0)
+						PlayTweenSprite(SPR_CRAB2_COSTUME, SPR_CRAB2_FACE, 0)
+						PlayTweenSprite(SPR_CRAB2_COSTUME, SPR_CRAB2_COSTUME, 0)
+						PlayTweenSprite(SPR_CRAB2_BODY, SPR_CRAB2_BODY, .3)
+						PlayTweenSprite(SPR_CRAB2_BODY, SPR_CRAB2_FACE, .3)
+						PlayTweenSprite(SPR_CRAB2_BODY, SPR_CRAB2_COSTUME, .3)
+					endif
+					crabRType = crabRefType
+					crabRAlt = crabRefAlt
+					crab2Type = crabRefType
+					crab2Alt = crabRefAlt
+					targetCrab = 2
 				else
-					//A different crab is being put in spot 2
-					PlayTweenSprite(SPR_CRAB2_COSTUME, SPR_CRAB2_BODY, 0)
-					PlayTweenSprite(SPR_CRAB2_COSTUME, SPR_CRAB2_FACE, 0)
-					PlayTweenSprite(SPR_CRAB2_COSTUME, SPR_CRAB2_COSTUME, 0)
-					PlayTweenSprite(SPR_CRAB2_BODY, SPR_CRAB2_BODY, .3)
-					PlayTweenSprite(SPR_CRAB2_BODY, SPR_CRAB2_FACE, .3)
-					PlayTweenSprite(SPR_CRAB2_BODY, SPR_CRAB2_COSTUME, .3)
+					//Crab 1 is changing 
+					if crabLType = 0
+						PlayTweenSprite(SPR_CRAB1_BODY, SPR_CRAB1_BODY, 0)
+						PlayTweenSprite(SPR_CRAB1_BODY, SPR_CRAB1_FACE, 0)
+						PlayTweenSprite(SPR_CRAB1_BODY, SPR_CRAB1_COSTUME, 0)
+					else
+						PlayTweenSprite(SPR_CRAB1_FACE, SPR_CRAB1_BODY, 0)
+						PlayTweenSprite(SPR_CRAB1_FACE, SPR_CRAB1_FACE, 0)
+						PlayTweenSprite(SPR_CRAB1_FACE, SPR_CRAB1_COSTUME, 0)
+					endif
+					crabLType = crabRefType
+					crabLAlt = crabRefAlt
+					targetCrab = 1
 				endif
-				crabRType = crabRefType
-				crabRAlt = crabRefAlt
-			else
-				//Crab 1 is changing 
-				if crabLType = 0
-					PlayTweenSprite(SPR_CRAB1_BODY, SPR_CRAB1_BODY, 0)
-					PlayTweenSprite(SPR_CRAB1_BODY, SPR_CRAB1_FACE, 0)
-					PlayTweenSprite(SPR_CRAB1_BODY, SPR_CRAB1_COSTUME, 0)
-				else
-					PlayTweenSprite(SPR_CRAB1_FACE, SPR_CRAB1_BODY, 0)
-					PlayTweenSprite(SPR_CRAB1_FACE, SPR_CRAB1_FACE, 0)
-					PlayTweenSprite(SPR_CRAB1_FACE, SPR_CRAB1_COSTUME, 0)
-				endif
-				crabLType = crabRefType
-				crabLAlt = crabRefAlt
+				wholeRow$ = GetStringToken(wholeRow$, ":", 2)
 			endif
-			wholeRow$ = GetStringToken(wholeRow$, ":", 2)
 		endif
 		
+		if FindString(wholeRow$, ";") <> 0
+			body$ = Mid(wholeRow$, FindString(wholeRow$, "B")+1, 1)
+			face$ = Mid(wholeRow$, FindString(wholeRow$, "F")+1, 1)
+			
+			//Wizard and Cranime will have costumes loaded in based on faces
+			
+			SetFolder("/media/storysprites")
+			//Make a dump image cache, that is deleted when the story is exited
+			if targetCrab = 1
+				//1st Crab Target
+				
+				SetSpriteImage(SPR_CRAB1_BODY, LoadImage("body" + body$ + ".png"))
+				SetSpriteImage(SPR_CRAB1_FACE, LoadImage("face" + face$ + ".png"))
+				if crab1Type <> 1 or crab1Alt <> 0
+					SetSpriteImage(SPR_CRAB1_COSTUME, LoadImage("costume" + str(crab1Type) + body$ + ".png"))
+				else
+					SetSpriteImage(SPR_CRAB1_COSTUME, LoadImage("blank.png"))
+				endif
+				
+				for i = SPR_CRAB1_BODY to SPR_CRAB1_COSTUME
+					trashBag.insert(GetSpriteImageID(i))
+				next i
+					
+			else
+				//2nd Crab Target
+				
+				SetSpriteImage(SPR_CRAB2_BODY, LoadImage("body" + body$ + ".png"))
+				SetSpriteImage(SPR_CRAB2_FACE, LoadImage("face" + face$ + ".png"))
+				if crab2Type <> 1 or crab2Alt <> 0
+					SetSpriteImage(SPR_CRAB2_COSTUME, LoadImage("costume" + str(crab2Type) + body$ + ".png"))
+				else
+					SetSpriteImage(SPR_CRAB2_COSTUME, LoadImage("blank.png"))
+				endif
+				
+				for i = SPR_CRAB2_BODY to SPR_CRAB2_COSTUME
+					trashBag.insert(GetSpriteImageID(i))
+				next i
+				
+			endif
+			
+			wholeRow$ = GetStringToken(wholeRow$, ";", 2)
+		endif
 		
 		//TODO: Posing: Grab everything before a semicolon, formatted like 'b12f5'
 		//Set those images for the assiciated crab's sprites
@@ -508,8 +600,18 @@ function ShowScene(sceneNum)
 		
 		hurryUp = 0
 		while nextLine = 0
+			DoInputs()
+			
+			if inputExit
+				state = CHARACTER_SELECT
+				TransitionStart(Random(1,lastTranType))
+				nextLine = 1
+				StopGamePlayMusic()
+				exit
+			endif
+			
 			storyInput = 0
-			if GetPointerPressed() or GetRawKeyPressed(32) then storyInput = 1
+			if GetPointerPressed() or inputSelect then storyInput = 1
 			if GetTextCharColorAlpha(storyText, charSounded) = 255 and GetTextCharColorAlpha(storyText, Len(displayString$)-9) = 0
 				PlaySoundR(talk1S, volumeSE/(hurryUp/2+1))
 				inc charSounded, 1
@@ -519,6 +621,7 @@ function ShowScene(sceneNum)
 			endif
 			if hurryUp then UpdateAllTweens(.1)
 			if storyInput and GetTweenCharPlaying(storyFitter, storyText, len(displayString$)) = 0 and GetTweenCharPlaying(storyFitter+1, storyText, len(displayString$)) = 0 and GetTweenCharPlaying(storyFitter+2, storyText, len(displayString$)) = 0 and GetTweenCharPlaying(storyFitter+3, storyText, len(displayString$)) = 0 then nextLine = 1
+			Print(GetImageMemoryUsage())
 			SyncG()
 		endwhile
 		
@@ -531,6 +634,12 @@ function ShowScene(sceneNum)
 		endif
 		
 	endwhile
+	
+	endI = trashBag.length
+	for i = 1 to endI
+		if GetImageExists(trashBag[0]) then DeleteImage(trashBag[0])
+		trashBag.remove(0)
+	next i
 	
 	CloseFile(1)
 	
@@ -599,7 +708,7 @@ function StartEndScreen()
 		//End of chapter
 		SetSpriteMiddleScreen(exitButton)
 		IncSpriteY(exitButton, 300)
-		
+		clearedChapter = Max(clearedChapter, curChapter)
 	else
 		//End of scene
 		
@@ -619,6 +728,7 @@ function DoStoryEndScreen()
 	
 	endDone = 0
 	while (endDone = 0)
+		DoInputs()
 		
 		if curScene < 5
 			if GetTextX(TXT_RESULT1) > w/2 and GetTextColorAlpha(TXT_RESULT1) <> 255

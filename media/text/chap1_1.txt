@@ -1,9 +1,10 @@
+bg 1
 music retro1 1
-SC: Come on... pick up...
-Hey! Space Ned? It's me, Space Crab.
+SC:BGFH; Come on... pick up...
+BEFA; Hey! Space Ned? It's me, Space Crab.
 Remember last week, when I let my ship get destroyed by meteors?
-It, uh, happened again.
-Do you think you can tow it? Get the repairs started on it?
+BEFJ; It, uh, happened again.
+BEFA; Do you think you can tow it? Get the repairs started on it?
 ...
 What?! What do you MEAN your Tow UFO was ALSO destroyed by meteors?
 Well, this really sucks.
@@ -12,7 +13,7 @@ Yep- sounds good, I'll call if I need anything else. Bye.
 *beep*
 ...
 BLUAUGH.
-RC: Whoa, another wayward traveler?
+RC:BBFA; Whoa, another wayward traveler?
 Did you come here too, when you heard that SICK bass drop?
 SC: Bass drop? That was my ship exploding!
 My ship that I spent hundreds of coins fixing!
@@ -27,10 +28,10 @@ We use crashed meteor bits to send over attacks, and extra meteors too.
 First one to get hit three times loses. Simple, right?
 SC: I get it. Sure, let's blow off some steam!
 music fightA 1
-fight 4
+fight 18463
 music retro2 1
 SC: Hey, that was pretty fun! Thanks for showing me how to battle!
-RC: N-no problem! (This guy's STRONG!)
+RC:BJFS; N-no problem! (This guy's STRONG!)
 How did you learn to weave a meteor storm so well?
 SC: Well, I have a bit of practice.
 I explored TONS of planets to get enough coins to repair my ship.

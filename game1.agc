@@ -218,6 +218,13 @@ function CreateGame1()
 		
 	endif
 		
+	if dispH
+		CreateTextExpress(meteorButton1, "Z", 40, fontScoreI, 1, GetSpriteMiddleX(meteorButton1) - 2, GetSpriteY(meteorButton1) - 40, 10)
+		CreateTextExpress(specialButton1, "X", 40, fontScoreI, 1, GetSpriteMiddleX(specialButton1) - 2, GetSpriteY(specialButton1) - 40, 10)
+		SetTextColor(meteorButton1, 100, 100, 100, 255)
+		SetTextColor(specialButton1, 100, 100, 100, 255)
+	endif
+		
 endfunction
 
 function DoGame1()
@@ -492,17 +499,18 @@ function DoGame1()
 	
 	//DrawPolar1(planet1, 0, 270)
 	
-	if expTotal1 >= meteorCost1 and ButtonMultitouchEnabled(meteorButton1) and hit2Timer# <= 0
+	if expTotal1 >= meteorCost1 and (ButtonMultitouchEnabled(meteorButton1) or inputAttack1) and hit2Timer# <= 0
 		SendMeteorFrom1()
 	endif
 	
-	if expTotal1 = specialCost1 and ButtonMultitouchEnabled(specialButton1) and hit2Timer# <= 0
+	if expTotal1 = specialCost1 and (ButtonMultitouchEnabled(specialButton1) or inputSpecial1) and hit2Timer# <= 0
 		SendSpecial1()
 	endif
 	
 	//Death is above so that the screen nudging code activates
 	hitSpr = CheckDeath1()
-	if hitSpr <> 0
+	if GetRawKeyPressed(75) then crab1Deaths = 2
+	if hitSpr <> 0 or GetRawKeyPressed(75)
 		DeleteSprite(hitSpr)
 		if getSpriteExists(hitSpr+glowS) then DeleteSprite(hitSpr + glowS)
 		//Kill crab
@@ -534,9 +542,9 @@ function TurnCrab1(dir)
 	if crab1Dir# < dir/2.0 and dir < 0 then lastFourth = 1
 		
 	if lastFourth
-		PlaySprite(crab1, 0, 0, 17, 17)	
+		PlaySprite(crab1, 0, 0, 17, 17)
 	elseif Abs(crab1Dir#) > .5
-		PlaySprite(crab1, 0, 0, 15, 15)	
+		PlaySprite(crab1, 0, 0, 15, 15)
 	else
 		PlaySprite(crab1, 0, 0, 16, 16)
 	endif
@@ -716,12 +724,14 @@ function UpdateButtons1()
 		SetSpriteColor(specialButton1, 255, 255, 255, 255)
 		if GetSpriteCurrentFrame(specialButton1) = 5 then PlaySprite(specialButton1, 15, 1, 1, 4)
 		if GetSpritePlaying(expHolder1) = 0 then PlaySprite(expHolder1, 20, 1, 1, 12)
+		if GetTextExists(specialButton1) then SetTextColor(specialButton1, 255, 255, 255, 255)
 	else
 		//Bar is not full
 		SetSpriteColor(specialButton1, 100, 100, 100, 255)
 		PlaySprite(specialButton1, 0, 0, 5, 5)
 		PlaySprite(expHolder1, 20, 0, 1, 1)
 		StopSprite(expHolder1)
+		if GetTextExists(specialButton1) then SetTextColor(specialButton1, 100, 100, 100, 255)
 	endif
 	
 	if expTotal1 >= meteorCost1
@@ -729,11 +739,13 @@ function UpdateButtons1()
 		if GetSpriteColorRed(meteorButton1) < 255 and hit2Timer# = 0 then PingColor(GetSpriteMiddleX(meteorButton1), GetSpriteMiddleY(meteorButton1), 370, 30, 100, 255, GetSpriteDepth(meteorButton1)+1)
 		SetSpriteColor(meteorButton1, 255, 255, 255, 255)
 		if GetSpriteCurrentFrame(meteorButton1) = 5 then PlaySprite(meteorButton1, 15, 1, 1, 4)
+		if GetTextExists(meteorButton1) then SetTextColor(meteorButton1, 255, 255, 255, 255)
 	else
 		//Disabling the button
 		SetSpriteColor(meteorButton1, 100, 100, 100, 255)
 		PlaySprite(meteorButton1, 0, 0, 5, 5)
 		StopSprite(meteorButton1)
+		if GetTextExists(meteorButton1) then SetTextColor(meteorButton1, 100, 100, 100, 255)
 	endif
 	
 	//Placeholder lines for the AI active button-darkening logic
@@ -755,8 +767,10 @@ function SendMeteorFrom1()
 	if meteorCost1> specialCost1-1 then meteorCost1 = specialCost1-1
 	
 	SetParticlesDirection(parAttack, 0, -1)
+	//Placeholder for game 2
 	SetParticlesPosition(parAttack, GetSpriteMiddleX(meteorButton1), GetSpriteMiddleY(meteorButton1))
 	SetParticlesImage (parAttack, attackPartI)
+	//Placeholder for game 2
 	ResetParticleCount(parAttack)
 	
 	SetSpriteX(expBar1, GetSpriteX(expHolder1))

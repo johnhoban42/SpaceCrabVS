@@ -43,6 +43,15 @@ Crab types (internal):
 
 */
 
+global inputSelect = 0
+global inputExit = 0
+global inputLeft = 0
+global inputRight = 0
+global inputUp = 0
+global inputDown = 0
+global inputAttack1 = 0
+global inputSpecial1 = 0
+
 //The timer for the starting screen
 global startTimer# = 0
 
@@ -250,6 +259,11 @@ global met3CD2# = 0 //400
 #constant coverS 11
 #constant curtain 12
 #constant curtainB 13
+
+#constant SPR_SELECT1 21
+#constant SPR_SELECT2 22
+#constant SPR_SELECT3 23
+#constant SPR_SELECT4 24
 
 #constant planet1 101
 #constant planet2 102
@@ -747,6 +761,7 @@ SetMusicSystemVolumeOGG(volumeM)
 global curChapter = 1
 global curScene = 0
 global highestScene = 0
+global clearedChapter = 1
 global lineSkipTo = 0
 global storyActive = 0
 global storyMinScore = 0

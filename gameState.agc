@@ -62,7 +62,7 @@ function InitGame()
 	AddButton(mainmenuButton)
 	
 	difficultyMax = 7
-	difficultyBar = 10
+	difficultyBar = 9 - aiActive*(knowingAI/3)
 	//The special classic mode setup
 	if spType = CLASSIC
 		SetSpriteVisible(split, 0)
@@ -198,7 +198,7 @@ function DoGame()
 			meteorSprNum = 1050
 		endif
 	
-		if ButtonMultitouchEnabled(pauseButton)
+		if ButtonMultitouchEnabled(pauseButton) or inputExit
 			if paused = 0 then PauseGame()
 			paused = 1
 		endif
@@ -229,7 +229,7 @@ function DoGame()
 		IncSpriteAngle(mainmenuButton, -fpsr#)
 		IncSpriteAngle(playButton, fpsr#)
 		
-		if ButtonMultitouchEnabled(playButton)
+		if ButtonMultitouchEnabled(playButton) or inputExit
 			paused = 0
 			UnpauseGame()
 		endif
@@ -359,6 +359,7 @@ function EndGameScene()
 				PlaySoundR(explodeS, 100)
 				SetViewZoom(1.25)
 				SetViewOffset(w/16, GetSpriteMiddleY(crabS)/8)
+				if dispH then SetViewOffset(GetSpriteMiddleX(crabS)/8, h/16)
 				//SetViewOffset(GetSpriteMiddleX(crabS)/8, GetSpriteMiddleY(crabS)/8)
 				endStage = 2
 			endif
@@ -382,8 +383,10 @@ function EndGameScene()
 				PlaySoundR(crackS, 50)
 				PlaySoundR(explodeS, 100)
 				
+				
 				SetViewZoom(2)
 				SetViewOffset(w/4, GetSpriteMiddleY(crabS)/2)
+				if dispH then SetViewOffset(GetSpriteMiddleX(crabS)/2, h/4)
 				//SetViewOffset(GetSpriteMiddleX(crabS)/2, GetSpriteMiddleY(crabS)/2)
 				endStage = 3
 			endif
@@ -409,7 +412,8 @@ function EndGameScene()
 				
 				endStage = 4
 				PlaySoundR(launchS, 100)
-				PlayMusicOGGSP(resultsMusic, 1)
+				if spType <> STORYMODE then PlayMusicOGGSP(resultsMusic, 1)
+				if spType = STORYMODE and crabS = crab1 then PlayMusicOGGSP(loserMusic, 0)
 				
 				if GetSpriteExists(bgHit1) then DeleteSprite(bgHit1)
 			endif
@@ -636,6 +640,8 @@ function DeleteGameUI()
 	DeleteSprite(crab1PlanetS[1])
 	DeleteSprite(crab1PlanetS[2])
 	DeleteSprite(crab1PlanetS[3])
+	if GetTextExists(meteorButton1) then DeleteText(meteorButton1)
+	if GetTextExists(specialButton1) then DeleteText(specialButton1)
 	
 	for i = special2Ex1 to special2Ex5
 		DeleteSprite(i)
@@ -651,6 +657,8 @@ function DeleteGameUI()
 	DeleteSprite(crab2PlanetS[1])
 	DeleteSprite(crab2PlanetS[2])
 	DeleteSprite(crab2PlanetS[3])
+	if GetTextExists(meteorButton2) then DeleteText(meteorButton2)
+	if GetTextExists(specialButton2) then DeleteText(specialButton2)
 	
 	for i = special1Ex1 to special1Ex5
 		DeleteSprite(i)
@@ -924,6 +932,7 @@ function PauseGame()
 		IncSpriteSizeCenteredMult(curtainB, GetViewZoom())
 	endif
 	
+	
 	if dispH
 		for i = pauseTitle1 to pauseDesc2
 			SetTextSize(i, GetTextSize(i) - 13)
@@ -944,10 +953,24 @@ function PauseGame()
 		
 	endif
 	
+	if spType = STORYMODE
+		SetTextFontImage(pauseTitle2, fontDescI)
+		SetTextSpacing(pauseTitle2, -25)
+		
+		SetTextString(pauseTitle2, Str(curChapter) + " - " + chapterTitle[curChapter])
+		SetTextString(pauseDesc2, chapterDesc[curChapter])
+		if dispH
+			IncTextY(pauseTitle2, 20)
+			IncTextY(pauseDesc2, 20)
+		endif
+	endif
+	
 	
 endfunction
 
 function UnpauseGame()
+	
+	TurnOffSelect()
 	
 	//Only playing the button sound if the game wasn't exited
 	if GetParticlesExists(11) = 0 then PlaySoundR(buttonSound, 100)
@@ -1144,7 +1167,7 @@ function DeleteHalfExp(gameNum)
 			spr = expList[i]
 			if gameNum = 1
 				//This is only for the bottom crab
-				if GetSpriteY(spr) > h/2 and deleted = 0
+				if ((dispH = 0 and GetSpriteY(spr) > h/2) or (dispH and GetSpriteX(spr) < w/2)) and deleted = 0
 					deleted = i
 					DeleteSprite(spr)
 					badLeave = 1
@@ -1153,7 +1176,7 @@ function DeleteHalfExp(gameNum)
 			
 			if gameNum = 2
 				//This is only for the top crab
-				if GetSpriteY(spr) < h/2 and deleted = 0
+				if ((dispH = 0 and GetSpriteY(spr) < h/2) or (dispH and GetSpriteX(spr) > w/2)) and deleted = 0
 					deleted = i
 					DeleteSprite(spr)
 					badLeave = 1
@@ -1942,6 +1965,7 @@ function ActivateJumpParticles(gameNum)
 		crabS = crab2
 		crabType = crab2Type
 		crabTheta# = crab2Theta#
+		if dispH then inc crabTheta#, 180
 		if crab2Dir# > 0
 			dir = 1
 		else

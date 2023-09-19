@@ -1,0 +1,38 @@
+bg 2
+music retro1 1
+LW: Space Crab! Space Crab! I'm glad I found you!
+SC: Oh, Ladder Wizard! I actually wanted to ask you something...
+LW: Later, later! Oh boy, oh boy, you've GOT to hear this!
+SC: Uh, sure, go ahead.
+LW: Well, I thought, the hills in the Crab Nebula, right?
+Meteors sneak up behind them, and always catch us!
+And the Crustacean Station, the satellites - WAY too unpredictable!
+SC: Okay... go on...
+LW: So I thought, I'll need to enhance my dodges, yes?
+A few spells later, bing, bang, boom...
+Now, I can fly through the air, by DOUBLE TURNING! Haha, yes! It's true!
+SC: (Eh, it's not THAT impressive...)
+(I mean, all of us can DOUBLE TURN to dodge, or jump, or something else...)
+That's great and all, but I wanted to ask-
+LW: It's a marvel of modern wizardry! Heights my grandfather could only DREAM of reaching!
+(Geez... when he's like this, there's no getting through to him.)
+(I need to snap him out of it!)
+SC: Why not show me your skills, then? How about a quick one-on-one battle?
+LW: Yes, an excellent idea for an excellent occasion!
+I hope you're ready to marvel at this magical display!
+music retro3 1
+fight LW
+music retro8 1
+LW: Wow, you've become quite powerful since I last saw you!
+I'll need to continue my wizardry studies to keep up.
+What was it you wanted to bring up, earlier?
+SC: I'm glad you asked! I'm putting together a group- to explore the cosmos, to solve it's mysteries-
+The Star Seekers!
+Can I count you in?
+LW: Sounds like an excellent time!
+I can contribute my knowledge of space and it's magical properties - anything you want to know.
+SC: That's great to hear!!
+If you can think of anyone else, ask them to join too! Thanks a ton, gotta run!
+exit 1
+LW: ...
+If I can think of... ANYONE else...?

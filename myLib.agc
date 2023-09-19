@@ -3,6 +3,11 @@ function SyncG()
 	PingUpdate()
 	ButtonsUpdate()
 	UpdateAllTweens(GetFrameTime())
+	//if GetSpriteColorAlpha(SPR_SELECT1) > 0
+		//for i = SPR_SELECT1 to SPR_SELECT4
+			//SetSpriteColorByCycle(i, gameTime#*2)
+		//next i
+	//endif
     Sync()
 endfunction
 
@@ -173,6 +178,7 @@ endfunction returnValue
 
 function Button(sprite) 
 	returnValue = GetPointerPressed() and Hover(sprite)
+	if selectTarget = sprite and inputSelect then returnValue = 1
 endfunction returnValue
 
 function CreateSpriteExpress(spr, wid, hei, x, y, depth)
@@ -512,7 +518,7 @@ endfunction result
 
 function ButtonMultitouchEnabled(spr)
 	if GetSpriteExists(spr)
-	    if (Button(spr) and GetPointerPressed() and deviceType = DESKTOP) or (GetMulitouchPressedButton(spr) and deviceType = MOBILE)
+	    if (Button(spr) and (GetPointerPressed() or inputSelect) and deviceType = DESKTOP) or (GetMulitouchPressedButton(spr) and deviceType = MOBILE)
 	        returnValue = 1
 	    else
 	        returnValue = 0
