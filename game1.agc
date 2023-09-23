@@ -336,7 +336,8 @@ function DoGame1()
 	inc crab1Theta#, crab1Vel# * crab1Dir# * fpsr# //Need to figure out why FPSR modifier isn't working
 	
 	true1 = 0
-	if (deviceType = DESKTOP and ((GetPointerPressed() and (GetPointerY() > GetSpriteY(split) + GetSpriteHeight(split))) or (GetRawKeyPressed(32) or GetRawKeyPressed(49))) and Hover(meteorButton1) = 0 and Hover(specialButton1) = 0) then true1 = 1
+	//if (deviceType = DESKTOP and ((GetPointerPressed() and (GetPointerY() > GetSpriteY(split) + GetSpriteHeight(split))) or (GetRawKeyPressed(32) or GetRawKeyPressed(49))) and Hover(meteorButton1) = 0 and Hover(specialButton1) = 0) then true1 = 1
+	if dispH and (inputTurn1 or (GetPointerPressed() and (GetPointerX() < w/2) and Hover(meteorButton1) = 0 and Hover(specialButton1) = 0 and Hover(pauseButton) = 0)) then true1 = 1
 	true2 = 0
 	if (GetMulitouchPressedButton(split) = 0 and GetMulitouchPressedButton(meteorButton1) = 0 and GetMulitouchPressedButton(specialButton1) = 0 and GetMultitouchPressedBottom() and deviceType = MOBILE) then true2 = 1
 	true3 = 0
@@ -344,6 +345,7 @@ function DoGame1()
 	//Activating the crab turn at an input
 	
 	//Space left for the AI stuff in game 2
+		
 	//More space
 	
 	if (true2 or buffer1 or true1 or true3) and crab1JumpD# = 0

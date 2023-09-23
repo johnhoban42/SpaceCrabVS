@@ -336,7 +336,8 @@ function DoGame2()
 	inc crab2Theta#, crab2Vel# * crab2Dir# * fpsr#
 	
 	true1 = 0
-	if (deviceType = DESKTOP and ((GetPointerPressed() and (GetPointerY() < GetSpriteY(split))) or (GetRawKeyPressed(32) or GetRawKeyPressed(50))) and Hover(meteorButton2) = 0 and Hover(specialButton2) = 0) then true1 = 1
+	//if (deviceType = DESKTOP and ((GetPointerPressed() and (GetPointerY() < GetSpriteY(split))) or (GetRawKeyPressed(32) or GetRawKeyPressed(50))) and Hover(meteorButton2) = 0 and Hover(specialButton2) = 0) then true1 = 1
+	if dispH and (inputTurn2 or (GetPointerPressed() and (GetPointerX() > w/2) and Hover(meteorButton2) = 0 and Hover(specialButton2) = 0 and Hover(pauseButton) = 0)) then true1 = 1
 	true2 = 0
 	if (GetMulitouchPressedButton(split) = 0 and GetMulitouchPressedButton(meteorButton2) = 0 and GetMulitouchPressedButton(specialButton2) = 0 and GetMultitouchPressedTop() and deviceType = MOBILE) then true2 = 1
 	true3 = 0

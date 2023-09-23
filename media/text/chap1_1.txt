@@ -1,60 +1,68 @@
 bg 1
 music retro1 1
-SC:BGFH; Come on... pick up...
+se explosion
+*CRAB-SPLOSION*
+SC:BGFU; Come on... pick up...
 BEFA; Hey! Space Ned? It's me, Space Crab.
 Remember last week, when I let my ship get destroyed by meteors?
-BEFJ; It, uh, happened again.
+BEFIa; It, uh, happened again.
 BEFA; Do you think you can tow it? Get the repairs started on it?
-...
-What?! What do you MEAN your Tow UFO was ALSO destroyed by meteors?
-Well, this really sucks.
+BGFU; ...
+BEFDe; What?! What do you MEAN your Tow UFO was ALSO destroyed by meteors?
+BGFEd; Well, this really sucks.
 I'll figure something out, for now.
-Yep- sounds good, I'll call if I need anything else. Bye.
+BEFU; Yep- sounds good, I'll call if I need anything else. Bye.
+se phone
 *beep*
-...
-BLUAUGH.
-RC:BBFA; Whoa, another wayward traveler?
-Did you come here too, when you heard that SICK bass drop?
-SC: Bass drop? That was my ship exploding!
-My ship that I spent hundreds of coins fixing!
-And I'll have to collect them all again!
-RC: My man, money shouldn't treated as an obstacle-
-Only as an enabler for the greater joys in life!
-SC: 'My man', your 'pep talk' isn't working.
+BBFE; ...
+BBFD; Hmph.
+RC:BAFA; Whoa, another wayward traveler?
+BAFAe; Did you come here too, when you heard that SICK bass drop?
+SC: BBFE; Bass drop? That was my ship exploding!
+BAFE; My ship that I spent hundreds of coins fixing!
+BAFDe; Which I now need to do all over again!!
+RC: BCFEb; My man, money shouldn't treated as an obstacle-
+BCFA; Only as an enabler for the greater joys in life!
+SC: BIFUa; 'My man', your 'pep talk' isn't working.
 RC: Well then, how about a quick battle to clear your mind?
-SC: Wait- battle HERE? Like, with our claws??
+SC: BIFC; Wait- battle HERE? Like, with our claws??
 RC: No way, man. We'll each take our own planet, yeah? Survival style.
-We use crashed meteor bits to send over attacks, and extra meteors too.
+BAFA; We use crashed meteor bits to send over attacks, and extra meteors too.
 First one to get hit three times loses. Simple, right?
-SC: I get it. Sure, let's blow off some steam!
+SC: BAFDb; I get it. Sure, let's blow off some steam!
 music fightA 1
-fight 18463
+fight 18783
 music retro2 1
-SC: Hey, that was pretty fun! Thanks for showing me how to battle!
-RC:BJFS; N-no problem! (This guy's STRONG!)
-How did you learn to weave a meteor storm so well?
-SC: Well, I have a bit of practice.
-I explored TONS of planets to get enough coins to repair my ship.
-...More than once.
-RC: No way, you're THAT Space Crab?! Every crab out there has heard of you!
-You must have seen everything in the stars by now! 
-SC: Seen everything? Not even close.
-There are so many wonders out in space- new discoveries, new challanges, new music...
-I've never had a problem I couldn't solve by seeking out the stars.
-RC: ...DUDE.
+SC: BAFA; Hey, that was pretty fun! Thanks for showing me how to battle!
+RC:BJFXc; N-no problem! (This guy's STRONG!)
+BBFW; How did you learn to weave a meteor storm so well?
+SC: BIFAb; Well, I have a bit of practice.
+BAFAd; I explored TONS of planets to get enough coins to repair my ship.
+BCFIa; ...More than once.
+RC: BAFW; No way, you're THAT Space Crab?! Every crab out there has heard of you!
+BAFO; You must have seen everything in the stars by now! 
+SC: BIFAb; Seen everything? Not even close.
+BIFA; There are so many wonders out in space- new discoveries, new challanges, new music...
+BAFO; I've never had a problem I couldn't solve by seeking out the stars.
+RC: BHFPb; ...DUDE.
 That was downright poetic, man!
-Especially that part at the end- 'seeking out the stars'.
-You got me more hyped than any party I've been to in the last two years!
-Can I join you, in your 'star seeking'?
-SC: Huh? Join me?
-RC: Y'know, I bet if you gave that speech to other crabs, they would totally join too!
-Everything's better with more crabs! A 24/7 party! The biggest posse in the galaxy!
-SC: Woah, slow down. The biggest in the galaxy? I'm not sure about that.
-(That would be pretty cool, though.)
-A posse, huh? To explore the galaxy together?
-I'm a fan of that idea.
-Sure, let's do it! Today is the day that the Star Seekers oficially form!
-Our mission: to explore the cosmos and discover it's infinite wonders.
-RC: Outrageous, dude! I'll go around and see who wants to join the galaxy's biggest party!
+BAFAd; Especially that part at the end- 'seeking out the stars'.
+BAFO; You got me more hyped than any party I've been to in a long time!
+BAFT; Can I join you, in your 'star seeking'?
+SC: BAFS; Huh? Join me?
+RC: BAFT; Y'know, I bet if you gave that speech to other crabs, they would totally join too!
+BAFL; Everything's better with more crabs! A 24/7 party! The biggest posse in the galaxy!
+SC: BCFU; Woah, slow down. The biggest in the galaxy? I'm not sure about that.
+BCFI; (That would be pretty cool, though.)
+BAFA; A posse, huh? To explore the galaxy together?
+BAFAe; I'm a fan of that idea.
+BAFDc; Sure, let's do it! Today is the day that the Star Seekers oficially form!
+BAFB; Our mission: to explore the cosmos and discover it's infinite wonders.
+RC: BAFT; Outrageous, dude! I'll go around and see who wants to join the galaxy's biggest party!
 exit 2
-SC: This might be cool! I'm getting excited.
+SC: BAFDc; This could be cool! I'm getting excited.
+
+
+
+
+BLUAUGH.

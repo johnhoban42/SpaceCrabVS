@@ -99,7 +99,7 @@ function InitStory()
 	SetTweenSpriteX(SPR_CRAB2_COSTUME, w-cSize-20, w+200, TweenSmooth2())
 	
 	CreateTweenSprite(SPR_CRAB1_COSTUME, .3)
-	SetTweenSpriteX(SPR_CRAB1_COSTUME, 20, cSize-200, TweenSmooth2())
+	SetTweenSpriteX(SPR_CRAB1_COSTUME, 20, -cSize-200, TweenSmooth2())
 	//Just need to test that these tweens work!
 	
 	
@@ -195,7 +195,7 @@ function DoStory()
 	if storyRetry = 0
 		//The normal case, showing a story screen
 		if curScene = 0 then curScene = 1
-		state = ShowScene(curChapter*4+curScene)
+		state = ShowScene(curChapter, curScene)
 	else
 		//Do jittery text for the first half of result text
 		//Spin the buttons
@@ -220,7 +220,7 @@ function DoStory()
 		
 		if ButtonMultitouchEnabled(playButton)
 			inc lineSkipTo, -2
-			state = ShowScene(curChapter*4+1)
+			state = ShowScene(curChapter, curScene)
 			
 		elseif ButtonMultitouchEnabled(exitButton)
 			state = CHARACTER_SELECT
@@ -286,7 +286,7 @@ function ExitStory()
 	
 endfunction
 
-function ShowScene(sceneNum)
+function ShowScene(chap, scene)
 	state = story
 	
 	storyActive = 1
@@ -294,10 +294,10 @@ function ShowScene(sceneNum)
 	
 	SetFolder("/media/text")
 	
-	if sceneNum = 0
+	if scene = 0
 		SceneFile$ = "testScene.txt"
 	else
-		SceneFile$ = "chap" + Str((sceneNum-1)/4) + "_" + Str(Mod(sceneNum-1, 4)+1) + ".txt"
+		SceneFile$ = "chap" + Str(chap) + "_" + Str(scene) + ".txt"
 	endif
 	SetCrabFromChapter(curChapter)
 	
@@ -326,6 +326,8 @@ function ShowScene(sceneNum)
 	crabRAlt = 0
 	targetCrab = 0
 	
+	soundeffect = 0
+	
 	//This whill iterates through the entire text file, one line at a time
 	while (CompareString(wholeRow$, "") = 0) and state = STORY	
 		
@@ -334,6 +336,16 @@ function ShowScene(sceneNum)
 		//Doing any music changes
 		if GetStringToken(wholeRow$, " ", 1) = "music"
 			PlayMusicOGGSPStr(GetStringToken(wholeRow$, " ", 2), Val(GetStringToken(wholeRow$, " ", 3)))
+			wholeRow$ = ReadLine(1)
+			inc lineOverall, 1
+		endif
+		
+		//Playing a sound effect
+		if GetStringToken(wholeRow$, " ", 1) = "se"
+			if GetSoundExists(soundeffect) then DeleteSound(soundeffect)
+			SetFolder("/media/sounds")
+			soundeffect = LoadSoundOGG(GetStringToken(wholeRow$, " ", 2) + ".ogg")
+			PlaySound(soundeffect, volumeSE, 0)
 			wholeRow$ = ReadLine(1)
 			inc lineOverall, 1
 		endif
@@ -354,7 +366,7 @@ function ShowScene(sceneNum)
 			for i = 2 to curChapter
 				ReadLine(2)
 			next i
-			st$ = GetStringToken(ReadLine(2), " ", curScene)
+			st$ = Mid(GetStringToken(ReadLine(2), " ", curScene), 1, 2)
 			SetCrabFromString(st$, 2)
 			CloseFile(2)
 			lineSkipTo = lineOverall+1
@@ -461,23 +473,43 @@ function ShowScene(sceneNum)
 		endif
 		
 		if FindString(wholeRow$, ";") <> 0
-			body$ = Mid(wholeRow$, FindString(wholeRow$, "B")+1, 1)
-			face$ = Mid(wholeRow$, FindString(wholeRow$, "F")+1, 1)
-			
+			str$ = GetStringToken(wholeRow$, ";", 1)
+			body$ = Mid(str$, FindString(str$, "B")+1, 1)
+			face$ = Mid(str$, FindString(str$, "F")+1, -1)
+			costume$ = body$
+			if Mid(face$, 1, 1) = "I" or Mid(face$, 1, 1) = "J" or Mid(face$, 1, 1) = "L" or Mid(face$, 1, 1) = "O" or Mid(face$, 1, 1) = "Q"
+				body$ = body$ + "r"
+			endif
+			hatBonus$ = ""
+			if Mid(face$, 2, 1) = "1" and ((targetCrab = 1 and crab1Type = 2 and crab1Alt = 0) or (targetCrab = 2 and crab2Type = 2 and crab2Alt = 0))
+				hatBonus$ = "A"
+			endif
 			//Wizard and Cranime will have costumes loaded in based on faces
 			
 			SetFolder("/media/storysprites")
 			//Make a dump image cache, that is deleted when the story is exited
 			if targetCrab = 1
 				//1st Crab Target
+				cosType = GetCrabCostumeType(crab1Type, crab1Alt)
 				
 				SetSpriteImage(SPR_CRAB1_BODY, LoadImage("body" + body$ + ".png"))
 				SetSpriteImage(SPR_CRAB1_FACE, LoadImage("face" + face$ + ".png"))
-				if crab1Type <> 1 or crab1Alt <> 0
-					SetSpriteImage(SPR_CRAB1_COSTUME, LoadImage("costume" + str(crab1Type) + body$ + ".png"))
+				if cosType = 1
+					//Hat costume
+					SetSpriteImage(SPR_CRAB1_COSTUME, LoadImage("costume" + str(crab1Type) + hatBonus$ + ".png"))
+				elseif cosType = 2
+					//Unique sprite (WIP)
+					SetSpriteImage(SPR_CRAB1_COSTUME, LoadImage("costume" + str(crab1Type) + costume$ + ".png"))
+				elseif cosType = 4
+					//Posed costume
+					SetSpriteImage(SPR_CRAB1_COSTUME, LoadImage("costume" + str(crab1Type) + costume$ + ".png"))
 				else
+					//Blank costume
 					SetSpriteImage(SPR_CRAB1_COSTUME, LoadImage("blank.png"))
 				endif
+				PlayTweenSprite(SPR_CRAB1_FACE, SPR_CRAB1_BODY, 0)
+				PlayTweenSprite(SPR_CRAB1_FACE, SPR_CRAB1_FACE, 0)
+				PlayTweenSprite(SPR_CRAB1_FACE, SPR_CRAB1_COSTUME, 0)
 				
 				for i = SPR_CRAB1_BODY to SPR_CRAB1_COSTUME
 					trashBag.insert(GetSpriteImageID(i))
@@ -485,14 +517,26 @@ function ShowScene(sceneNum)
 					
 			else
 				//2nd Crab Target
+				cosType = GetCrabCostumeType(crab2Type, crab2Alt)
 				
 				SetSpriteImage(SPR_CRAB2_BODY, LoadImage("body" + body$ + ".png"))
 				SetSpriteImage(SPR_CRAB2_FACE, LoadImage("face" + face$ + ".png"))
-				if crab2Type <> 1 or crab2Alt <> 0
-					SetSpriteImage(SPR_CRAB2_COSTUME, LoadImage("costume" + str(crab2Type) + body$ + ".png"))
+				if cosType = 1
+					//Hat costume
+					SetSpriteImage(SPR_CRAB2_COSTUME, LoadImage("costume" + str(crab2Type) + hatBonus$ + ".png"))
+				elseif cosType = 2
+					//Unique sprite (WIP)
+					SetSpriteImage(SPR_CRAB2_COSTUME, LoadImage("costume" + str(crab2Type) + costume$ + ".png"))
+				elseif cosType = 4
+					//Posed costume
+					SetSpriteImage(SPR_CRAB2_COSTUME, LoadImage("costume" + str(crab2Type) + costume$ + ".png"))
 				else
+					//Blank costume
 					SetSpriteImage(SPR_CRAB2_COSTUME, LoadImage("blank.png"))
 				endif
+				PlayTweenSprite(SPR_CRAB2_FACE, SPR_CRAB2_BODY, 0)
+				PlayTweenSprite(SPR_CRAB2_FACE, SPR_CRAB2_FACE, 0)
+				PlayTweenSprite(SPR_CRAB2_FACE, SPR_CRAB2_COSTUME, 0)
 				
 				for i = SPR_CRAB2_BODY to SPR_CRAB2_COSTUME
 					trashBag.insert(GetSpriteImageID(i))
@@ -640,6 +684,7 @@ function ShowScene(sceneNum)
 		if GetImageExists(trashBag[0]) then DeleteImage(trashBag[0])
 		trashBag.remove(0)
 	next i
+	if GetSoundExists(soundeffect) then DeleteSound(soundeffect)
 	
 	CloseFile(1)
 	
@@ -655,7 +700,7 @@ function StartEndScreen()
 	state = STORY
 	
 	inc curScene, 1
-	highestScene = Max(highestScene, curChapter*4+curScene)
+	highestScene = Max(highestScene, (curChapter-1)*4+curScene)
 	lineSkipTo = 0
 	
 	for i = 0 to 2
@@ -921,6 +966,24 @@ function SetCrabString(crabNum)
 	if crabNum = 2 then crab2Str$ = newStr$
 endfunction
 
+function GetCrabCostumeType(cT, cA)
+	cosType = 0
+	if (cT = 2 and cA = 0) or (cT = 4 and cA = 2) or (cT = 4 and cA = 3) or (cT = 5 and cA = 1) or (cT = 6 and cA = 1)
+		//Hat type
+		cosType = 1
+	elseif (cT = 2 and cA = 2) or (cT = 3 and cA = 0) or (cT = 3 and cA = 1) or (cT = 3 and cA = 2) or (cT = 5 and cA = 3)
+		//Unique sprite type
+		cosType = 2
+	elseif (cT = 1 and cA = 0) or (cT = 6 and cA = 2)
+		//Blank costume type
+		cosType = 3
+	else
+		//Full body type
+		cosType = 4
+	endif
+		
+endfunction cosType
+
 function SetCrabFromString(str$, crabNum)
 
 	myType = 0
@@ -1007,7 +1070,7 @@ function SetCrabFromString(str$, crabNum)
 		mType = 2
 		mAlt = 3
 		
-	elseif str$ = "SC"	//Chrono Crab
+	elseif str$ = "CC"	//Chrono Crab
 		mType = 5
 		mAlt = 0
 		

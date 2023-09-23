@@ -204,6 +204,22 @@ function InitStart()
 				
 	startStateInitialized = 1
 	
+	if debug
+		for i = SPR_CRAB1_BODY to SPR_CRAB1_COSTUME
+			CreateSpriteExpress(i, 200, 200, 50, 50, 5)
+		next i
+		SetFolder("/media/storysprites")
+		body$ = Upper("A")
+		face$ = Upper("A")
+		SetSpriteImage(SPR_CRAB1_BODY, LoadImage("body" + body$ + ".png"))
+		SetSpriteImage(SPR_CRAB1_FACE, LoadImage("face" + face$ + ".png"))
+		//if crab1Type <> 1 or crab1Alt <> 0
+		//	SetSpriteImage(SPR_CRAB1_COSTUME, LoadImage("costume" + str(2) + body$ + ".png"))
+		//else
+			SetSpriteImage(SPR_CRAB1_COSTUME, LoadImage("blank.png"))
+		//endif
+	endif
+	
 endfunction
 
 function HorizontalStart()
@@ -430,7 +446,7 @@ function UpdateStartElements()
 	if GetSpriteVisible(SPR_TITLE)
 		if fruitUnlock# < 0
 			if GetPointerState() and GetSpriteHitTest(SPR_TITLE, GetPointerX(), GetPointerY())
-				IncSpriteAngle(SPR_TITLE, 15*(300 + fruitUnlock#))
+				IncSpriteAngle(SPR_TITLE, 15*(300 + fruitUnlock#) + .012*fruitUnlock#*fruitUnlock#)
 				inc fruitUnlock#, fpsr#
 			else
 				fruitUnlock# = -300
@@ -500,6 +516,32 @@ function UpdateStartElements()
 		//For the losing screen
 		SetTextX(SPR_SP_C1, w+20-startTimer#*1295.36/360)
 	endif
+	
+	if debug
+		SetFolder("/media/storysprites")
+		
+		if GetRawKeyState(17)	//Alt
+			body$ = Upper(chr(GetRawLastKey()))
+			
+			if GetFileExists("body" + body$ + ".png") then SetSpriteImage(SPR_CRAB1_BODY, LoadImage("body" + body$ + ".png"))
+			if crab1Type <> 1 or crab1Alt <> 0
+				if GetFileExists("costume" + str(2) + body$ + ".png") then SetSpriteImage(SPR_CRAB1_COSTUME, LoadImage("costume" + str(2) + body$ + ".png"))
+			else
+				SetSpriteImage(SPR_CRAB1_COSTUME, LoadImage("blank.png"))
+			endif
+		elseif GetRawKeyState(16) 	//Face Base
+			face$ = Upper(chr(GetRawLastKey()))
+			if GetFileExists("face" + face$ + "a.png") then SetSpriteImage(SPR_CRAB1_FACE, LoadImage("face" + face$ + ".png"))
+		else
+			
+			//crab1Type = Val(chr(GetRawLastKey()))
+		endif
+			
+		
+		
+		
+	endif
+	
 endfunction
 
 #constant MAINSCREEN 1
@@ -865,6 +907,12 @@ function ExitStart()
 	DeleteText(TXT_ALONE)
 	if GetSpriteExists(coverS) then DeleteSprite(coverS)
 	if GetTweenExists(SPR_LOGO_HORIZ) then DeleteTween(SPR_LOGO_HORIZ)
+	
+	if debug
+		for i = SPR_CRAB1_BODY to SPR_CRAB1_COSTUME
+			DeleteSprite(i)
+		next i
+	endif
 	
 	StopMusicOGGSP(titleMusic)
 	

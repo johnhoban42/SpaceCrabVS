@@ -1,3 +1,4 @@
+bg 1
 music retro4 1
 SC: Hmm, Ladder Wizard was my only real lead.
 I mean, I've MET a lot of crabs, but I don't know them THAT well.
@@ -15,7 +16,7 @@ TC: Sorry, I can't hear you! I'm spinning way too fast!
 Please knock me down so we can talk!
 PL-PLEASE!
 music fightA 1
-fight TC
+fight 18692
 music retro6 1
 TC: Whew, what a relief! I could get used to this kind of steadiness.
 SC: Well, if you want steady, why not join the Star Seekers?

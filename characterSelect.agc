@@ -203,9 +203,25 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 		
 		LoadSpriteExpress(SPR_CS_BG_2, "bg5.png", w*1.4, w*1.4, -w*0.2, -w*0.2, 199)
 		
+		for i = 1 to 4
+			spr = SPR_SCENE1 - 1 + i
+			CreateSpriteExpress(spr, 100, 100, w*3/4 + GetSpriteHeight(split)/4 - 50 + (i-2.5)*130, h - 130, 10)
+			CreateTextExpress(spr, Str(i), 60, fontScoreI, 1, GetSpriteX(spr) + 90, GetSpriteY(spr) + 50,  9)
+			AddButton(spr)
+		next i
+		CreateTextExpress(TXT_SCENE, "Scene Select:", 54, fontDescI, 0, w/2 + 100, h-200, 10)
+		SetTextSpacing(TXT_SCENE, -14)
+		
+		SetSceneImages(1)
+		
 		SetFolder("/media")
 	
 		if dispH
+			for i = 1 to 4
+				spr = SPR_SCENE1 - 1 + i
+				//SetSpriteExpress(spr, 75, 75, w/2
+			next i
+			
 			for i = TXT_CS_CRAB_NAME_2 to TXT_CS_CRAB_STATS_2
 				if i <> TXT_CS_READY_2
 					SetTextSize(i, GetTextSize(i) - 18)
@@ -261,6 +277,8 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 			SetSpriteMiddleScreenXDispH1(csc.sprRightArrow)
 			IncSpriteX(csc.sprRightArrow, w/4-86)
 			SetSpriteY(csc.sprRightArrow, GetSpriteY(csc.sprTxtBack)+GetSpriteHeight(csc.sprRightArrow)/2 + 30)
+			
+			SetSpriteVisible(csc.sprReady, 0)
 		endif
 	endif
 	
@@ -374,6 +392,8 @@ function ChangeCrabs(csc ref as CharacterSelectController, dir as integer, start
 			SetTextCharY(csc.txtCrabDesc, i, GetTextSize(csc.txtCrabDesc)*3*p + space*p - GetTextSize(csc.txtCrabDesc)*f)
 		next i
 		
+		SetSceneImages(0)
+		
 	endif
 	
 	cNum = csc.crabSelected
@@ -431,10 +451,10 @@ function ChangeCrabs(csc ref as CharacterSelectController, dir as integer, start
 			if csc.CrabSelected <> 0
 				SetSpriteVisible(csc.sprLeftArrow, 1)
 			endif
-			if csc.CrabSelected <> clearedChapter
+			if csc.CrabSelected <> Min(clearedChapter, finalChapter-1)
 				SetSpriteVisible(csc.sprRightArrow, 1)
 			endif
-			SetSpriteVisible(csc.sprReady, 1)
+			//SetSpriteVisible(csc.sprReady, 1)
 		else
 			if csc.CrabSelected <> 0
 				SetSpriteVisible(csc.sprLeftArrow, 1)
@@ -549,9 +569,19 @@ function DoCharacterSelectController(csc ref as CharacterSelectController)
 				PlaySoundR(arrowS, 100)
 				ChangeCrabs(csc, -1, 1)
 			// Scroll right
-			elseif (ButtonMultitouchEnabled(csc.sprRightArrow) or (GetMultitouchPressedTopLeft() and csc.player = 2 and dispH = 0) or (GetMultitouchPressedBottomRight() and csc.player = 1 and dispH = 0)) and ((csc.crabSelected < NUM_CRABS-1 and spType <> STORYMODE) or (csc.crabSelected < clearedChapter and spType = STORYMODE))
+			elseif (ButtonMultitouchEnabled(csc.sprRightArrow) or (GetMultitouchPressedTopLeft() and csc.player = 2 and dispH = 0) or (GetMultitouchPressedBottomRight() and csc.player = 1 and dispH = 0)) and ((csc.crabSelected < NUM_CRABS-1 and spType <> STORYMODE) or (csc.crabSelected < Min(clearedChapter, finalChapter-1) and spType = STORYMODE))
 				ChangeCrabs(csc, 1, 1)
 				PlaySoundR(arrowS, 100)
+			endif
+			
+			if spType = STORYMODE
+				for i = 1 to 4
+					spr = SPR_SCENE1 - 1 + i
+					if ButtonMultitouchEnabled(spr)
+						curScene = i
+						SelectCrab(csc)
+					endif
+				next i
 			endif
 			
 			if csc.glideFrame <= 0
@@ -749,6 +779,12 @@ function ExitCharacterSelect()
 		DeleteText(TXT_CS_CRAB_STATS_2)
 		DeleteText(TXT_CS_CRAB_NAME_2)
 		DeleteText(TXT_CS_CRAB_DESC_2)
+		for i = 1 to 4
+			spr = SPR_SCENE1 - 1 + i
+			if GetSpriteExists(spr) then DeleteSprite(spr)
+			if GetTextExists(spr) then DeleteText(spr)
+		next i
+		DeleteText(TXT_SCENE)
 	endif
 	
 	DeleteSprite(SPR_MENU_BACK)
@@ -761,3 +797,42 @@ function ExitCharacterSelect()
 	ClearMultiTouch()
 	
 endfunction
+
+function SetSceneImages(new)
+	SetFolder("/media/text")
+	OpenToRead(2, "fights.txt")
+	for i = 2 to curChapter
+		ReadLine(2)
+	next i
+	line$ = ReadLine(2)
+	CloseFile(2)
+	for i = 1 to 4
+		spr = SPR_SCENE1 - 1 + i
+		if new = 0 then DeleteImage(GetSpriteImageID(spr))
+		
+		SetCrabFromString(Mid(GetStringToken(line$, " ", i), 1, 2), 3)
+		
+		SetFolder("/media/art")
+		imgStr$ = "crab" + str(crabRefType) + AltStr(crabRefAlt) + "life" + Mid(GetStringToken(line$, " ", i), 3, 1) + ".png"
+		if GetFileExists(imgStr$) then img = LoadImage(imgStr$)
+		SetSpriteImage(spr, img)
+	next i
+	
+	vis = 1
+	if curChapter > clearedChapter then vis = 0
+	for i = 1 to 4
+		spr = SPR_SCENE1 - 1 + i
+		SetSpriteVisible(spr, vis)
+		SetTextVisible(spr, vis)
+		SetTextVisible(TXT_SCENE, vis)
+	next i
+	SetSpriteVisible(SPR_CS_READY_1, Mod(vis+1, 2))
+	
+endfunction
+
+function AltStr(alt)
+	myStr$ = ""
+	if alt = 1 then myStr$ = "a"
+	if alt = 2 then myStr$ = "b"
+	if alt = 3 then myStr$ = "c"
+endfunction myStr$

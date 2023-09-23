@@ -305,6 +305,7 @@ function EndGameScene()
 	SetFolder("/media")
 	
 	//Setup for the scene
+	if GetSpriteExists(bgHit1) then DeleteSprite(bgHit1)
 	LoadSprite(bgHit1, "envi/bg0.png")
 	SetSpriteSizeSquare(bgHit1, w)
 	if crab1Deaths = 3

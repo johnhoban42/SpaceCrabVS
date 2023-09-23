@@ -51,7 +51,7 @@ if deviceType = DESKTOP
 	dispH = 1
 	w = 1280
 	h = 720
-	gameScale# = .75
+	gameScale# = .7
 	//SetPhysicsDebugOn()
 	SetWindowSize(w, h, 0)
 endif
@@ -69,6 +69,7 @@ UseNewDefaultFonts( 1 )
 SetVSync(1)
 
 if deviceType = MOBILE then SetScissor(0, 0, w, h)
+if deviceType = DESKTOP then SetScissor(0, 0, w, h)
 SetImmersiveMode(1)
 
 LoadBaseImages()
@@ -81,6 +82,7 @@ global fpsr#
 global gameTime#
 
 global demo = 0
+global debug = 1
 
 CreateTweenSprite(tweenSprFadeIn, tweenFadeLen#)
 SetTweenSpriteAlpha(tweenSprFadeIn, 0, 255, TweenEaseIn1())
@@ -134,6 +136,9 @@ endfunction
 
 LoadGame()
 
+//curChapter = 1
+//curScene = 4
+//appState = STORY
 
 
 do
@@ -165,7 +170,7 @@ do
 		touch = GetRawNextTouchEvent()
 	endwhile
 	
-    //Print(ScreenFPS())
+    Print(ScreenFPS())
     //Print(fpsr#)
     Print(GetRawLastKey())
     //Print(meteorTotal1)
@@ -174,7 +179,7 @@ do
 		//Print(GetDeviceBaseName())
 	//Print(GetImageMemoryUsage())
 	
-	//Print(GetPointerX())
+	//Print(GetSpriteWidth(SPR_SELECT1))
     SyncG()
 loop
 
@@ -185,6 +190,7 @@ function DoInputs()
 	inputRight = 0
 	inputUp = 0
 	inputDown = 0
+	inputTurn1 = 0
 	inputAttack1 = 0
 	inputSpecial1 = 0
 	
@@ -194,8 +200,10 @@ function DoInputs()
 	if GetRawKeyPressed(39) or GetRawKeyPressed(68) then inputRight = 1
 	if GetRawKeyPressed(38) or GetRawKeyPressed(87) then inputUp = 1
 	if GetRawKeyPressed(40) or GetRawKeyPressed(83) then inputDown = 1
+	if GetRawKeyPressed(32) then inputTurn1 = 1
 	if GetRawKeyPressed(90) then inputAttack1 = 1
 	if GetRawKeyPressed(88) then inputSpecial1 = 1
+	if GetRawKeyPressed(13) then inputTurn2 = 1
 	
 	if GetRawJoystickConnected(1)
 		//for i = 1 to 64
@@ -206,6 +214,7 @@ function DoInputs()
 		if GetRawJoystickButtonPressed(1, 7) or GetRawJoystickButtonPressed(1, 8) then inputExit = 1
 		if GetRawJoystickButtonPressed(1, 3) or GetRawJoystickButtonPressed(1, 5) then inputAttack1 = 1
 		if GetRawJoystickButtonPressed(1, 2) or GetRawJoystickButtonPressed(1, 6) then inputSpecia1 = 1
+		if GetRawJoystickButtonPressed(1, 1) or GetRawJoystickButtonPressed(1, 4) then inputTurn1 = 1
 		if GetRawJoystickButtonPressed(1, 13) then inputLeft = 1
 		if GetRawJoystickButtonPressed(1, 15) then inputRight = 1
 		if GetRawJoystickButtonPressed(1, 14) then inputUp = 1
@@ -420,12 +429,23 @@ function CreateSelectButtons()
 endfunction
 
 function MoveSelect()
+	
+	for i = SPR_SELECT1 to SPR_SELECT4
+		SetSpriteSize(i, 40, 40)
+		ClearTweenSprite(i)
+	next i
+	
 	if selectTarget = 0
+		
 		//If you're pressing the arrow key for the first time
 		if appState = START
 			selectTarget = SPR_STORY_START
 		elseif appState = CHARACTER_SELECT
 			selectTarget = SPR_CS_READY_1
+			if GetSpriteVisible(SPR_CS_READY_1) = 0
+				if spType = STORYMODE then selectTarget = SPR_SCENE1
+				if spType <> STORYMODE then selectTarget = SPR_CS_READY_2
+			endif
 		elseif appState = GAME and paused = 1
 			selectTarget = playButton
 		elseif appState = STORY
@@ -497,6 +517,7 @@ function MoveSelect()
 			SetTweenSpriteX(SPR_SELECT4, GetSpriteX(SPR_SELECT4), GetSpriteX(sel)-GetSpriteWidth(SPR_SELECT1)/2, twn)
 			SetTweenSpriteY(SPR_SELECT4, GetSpriteY(SPR_SELECT4), GetSpriteY(sel)+GetSpriteHeight(sel) - GetSpriteHeight(SPR_SELECT1)/2, twn)
 			
+			UpdateAllTweens(.4)
 			for i = SPR_SELECT1 to SPR_SELECT4
 				PlayTweenSprite(i, i, 0)
 			next i

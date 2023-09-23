@@ -51,6 +51,10 @@ global inputUp = 0
 global inputDown = 0
 global inputAttack1 = 0
 global inputSpecial1 = 0
+global inputTurn1 = 0
+global inputAttack2 = 0
+global inputSpecial2 = 0
+global inputTurn2 = 0
 
 //The timer for the starting screen
 global startTimer# = 0
@@ -716,7 +720,12 @@ SetMusicSystemVolumeOGG(volumeM)
 #constant TXT_CS_READY_1 305 
 #constant SPR_CS_CRABS_1 390
 #constant SPR_CS_TXT_BACK_1 389
- 
+
+#constant SPR_SCENE1 321 
+#constant SPR_SCENE2 322 
+#constant SPR_SCENE3 323 
+#constant SPR_SCENE4 324 
+#constant TXT_SCENE 325
 
 #constant SPR_MENU_BACK 399
  
@@ -761,7 +770,8 @@ SetMusicSystemVolumeOGG(volumeM)
 global curChapter = 1
 global curScene = 0
 global highestScene = 0
-global clearedChapter = 1
+global clearedChapter = 2
+#constant finalChapter 2
 global lineSkipTo = 0
 global storyActive = 0
 global storyMinScore = 0
@@ -984,7 +994,10 @@ function PlayMusicOGGSP(songID, loopYN)
 		if songID = loserMusic then LoadMusicOGG(loserMusic, "loser.ogg")
 		if songID = spMusic
 			LoadMusicOGG(spMusic, "spMusic.ogg")
-			SetMusicLoopTimesOGG(spMusic, .769, 25.384)
+			
+			SetMusicLoopTimesOGG(spMusic, 6.932, -1)
+			if appState = START then SetMusicLoopTimesOGG(spMusic, .769, 25.384)
+			
 		endif
 		if songID = dangerAMusic then LoadMusicOGG(dangerAMusic, "dangerA.ogg")
 		if songID = dangerBMusic then LoadMusicOGG(dangerBMusic, "dangerB.ogg")
