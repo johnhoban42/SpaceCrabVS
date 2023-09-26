@@ -560,7 +560,7 @@ function DoCharacterSelectController(csc ref as CharacterSelectController)
 		//The 1-crab view
 		elseif csc.stage = 2
 			// Ready button
-			if Button(csc.sprReady)
+			if Button(csc.sprReady) and GetSpriteVisible(csc.sprReady)
 				PlaySoundR(chooseS, 100)
 				SelectCrab(csc)
 				//PingColor(GetSpriteMiddleX(csc.sprCrabs+csc.crabSelected), GetSpriteMiddleY(csc.sprCrabs+csc.crabSelected), 400, 255, 100, 100, 50)
@@ -577,7 +577,7 @@ function DoCharacterSelectController(csc ref as CharacterSelectController)
 			if spType = STORYMODE
 				for i = 1 to 4
 					spr = SPR_SCENE1 - 1 + i
-					if ButtonMultitouchEnabled(spr)
+					if ButtonMultitouchEnabled(spr) and GetSpriteVisible(spr)
 						curScene = i
 						SelectCrab(csc)
 					endif
@@ -719,6 +719,7 @@ function DoCharacterSelect()
 	
 	//Going to the story mode!
 	if csc1.ready and spActive
+		if ButtonMultitouchEnabled(csc1.sprReady) and GetSpriteVisible(csc1.sprReady) then curScene = Mod(highestScene, 4)
 		spActive = 1
 		spType = STORYMODE
 		state = STORY
@@ -827,6 +828,9 @@ function SetSceneImages(new)
 		SetTextVisible(TXT_SCENE, vis)
 	next i
 	SetSpriteVisible(SPR_CS_READY_1, Mod(vis+1, 2))
+	if vis = 0
+		//if Mod(highestScene, 4) <> 1 then //TODO: Set sprite image to be continue
+	endif
 	
 endfunction
 

@@ -593,6 +593,11 @@ function ArrayFind(array as integer[], var)
 	next i
 endfunction index
 
+function LoadImageR(txt$)
+	img = 0
+	if GetFileExists(txt$) then img = LoadImage(txt$)
+endfunction img
+
 function SetSpriteColorRandomBright(spr)
 	//Recoloring!
 	r = 0

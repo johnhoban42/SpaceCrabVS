@@ -6,6 +6,8 @@ global talk1S
 global talkBS
 global trashBag as integer[0]
 
+#constant textSideSpacingX 35
+#constant textSideSpacingY 19
 // Initialize the story screen
 function InitStory()
 	
@@ -15,9 +17,16 @@ function InitStory()
 	cSize = 360
 	if dispH then cSize = 240
 	
+	SetFolder("/media/storysprites")
+	
 	for i = SPR_TEXT_BOX to SPR_TEXT_BOX4
-		CreateSpriteExpress(i, w-80, 280, 0, 0, 15-(i-SPR_TEXT_BOX))
-		if dispH then SetSpriteSize(i, w-80 - cSize*2, 190)
+		if dispH
+			LoadSpriteExpress(i, "dBox_D.png", w-80 - cSize*2, 190, 0, 0, 15-(i-SPR_TEXT_BOX))
+		else
+			//TODO - make the image dBox_M
+			LoadSpriteExpress(i, "dBox_D.png", w-80, 280, 0, 0, 15-(i-SPR_TEXT_BOX))
+		endif
+			
 		//SetSpriteSize(i, GetSpriteWidth(i), GetSpriteHeight(i) + 30)	//Originally for the bottom one
 		SetSpriteMiddleScreenX(i)
 		SetSpriteY(i, h/2 + 20 - (i - SPR_TEXT_BOX)*(GetSpriteHeight(i) + 50))
@@ -35,8 +44,8 @@ function InitStory()
 	SetTweenSpriteAlpha(SPR_TEXT_BOX, 0, 255, TweenEaseOut2())	
 	
 	for i = storyText to storyFitter
-		CreateTextExpress(i, "", 60, fontDescI, 0, GetSpriteX(SPR_TEXT_BOX)+20, GetSpriteY(SPR_TEXT_BOX)+20, 15-(i-storyText))
-		if i < storyFitter then SetTextY(i, GetSpriteY(i - storyText + SPR_TEXT_BOX)+20)
+		CreateTextExpress(i, "", 60, fontDescI, 0, GetSpriteX(SPR_TEXT_BOX)+textSideSpacingX, GetSpriteY(SPR_TEXT_BOX)+textSideSpacingY, 15-(i-storyText))
+		if i < storyFitter then SetTextY(i, GetSpriteY(i - storyText + SPR_TEXT_BOX)+textSideSpacingY)
 		SetTextSpacing(i, -14)
 		SetTextColor(i, 0, 0, 0, 255)
 		CreateTweenText(i, .3)
@@ -45,8 +54,8 @@ function InitStory()
 			SetTextColorAlpha(i, 0)
 		endif
 		if dispH
-			SetTextSize(i, 50)
-			SetTextSpacing(i, -13)
+			SetTextSize(i, 45)
+			SetTextSpacing(i, -12)
 		endif
 	next i
 	
@@ -469,6 +478,8 @@ function ShowScene(chap, scene)
 					targetCrab = 1
 				endif
 				wholeRow$ = GetStringToken(wholeRow$, ":", 2)
+			else
+				targetCrab = 2
 			endif
 		endif
 		
@@ -477,7 +488,7 @@ function ShowScene(chap, scene)
 			body$ = Mid(str$, FindString(str$, "B")+1, 1)
 			face$ = Mid(str$, FindString(str$, "F")+1, -1)
 			costume$ = body$
-			if Mid(face$, 1, 1) = "I" or Mid(face$, 1, 1) = "J" or Mid(face$, 1, 1) = "L" or Mid(face$, 1, 1) = "O" or Mid(face$, 1, 1) = "Q"
+			if Mid(face$, 1, 1) = "I" or Mid(face$, 1, 1) = "L" or Mid(face$, 1, 1) = "O"
 				body$ = body$ + "r"
 			endif
 			hatBonus$ = ""
@@ -492,20 +503,20 @@ function ShowScene(chap, scene)
 				//1st Crab Target
 				cosType = GetCrabCostumeType(crab1Type, crab1Alt)
 				
-				SetSpriteImage(SPR_CRAB1_BODY, LoadImage("body" + body$ + ".png"))
-				SetSpriteImage(SPR_CRAB1_FACE, LoadImage("face" + face$ + ".png"))
+				SetSpriteImage(SPR_CRAB1_BODY, LoadImageR("body" + body$ + ".png"))
+				SetSpriteImage(SPR_CRAB1_FACE, LoadImageR("face" + face$ + ".png"))
 				if cosType = 1
 					//Hat costume
-					SetSpriteImage(SPR_CRAB1_COSTUME, LoadImage("costume" + str(crab1Type) + hatBonus$ + ".png"))
+					SetSpriteImage(SPR_CRAB1_COSTUME, LoadImageR("costume" + str(crab1Type) + hatBonus$ + ".png"))
 				elseif cosType = 2
 					//Unique sprite (WIP)
-					SetSpriteImage(SPR_CRAB1_COSTUME, LoadImage("costume" + str(crab1Type) + costume$ + ".png"))
+					SetSpriteImage(SPR_CRAB1_COSTUME, LoadImageR("costume" + str(crab1Type) + costume$ + ".png"))
 				elseif cosType = 4
 					//Posed costume
-					SetSpriteImage(SPR_CRAB1_COSTUME, LoadImage("costume" + str(crab1Type) + costume$ + ".png"))
+					SetSpriteImage(SPR_CRAB1_COSTUME, LoadImageR("costume" + str(crab1Type) + costume$ + ".png"))
 				else
 					//Blank costume
-					SetSpriteImage(SPR_CRAB1_COSTUME, LoadImage("blank.png"))
+					SetSpriteImage(SPR_CRAB1_COSTUME, LoadImageR("blank.png"))
 				endif
 				PlayTweenSprite(SPR_CRAB1_FACE, SPR_CRAB1_BODY, 0)
 				PlayTweenSprite(SPR_CRAB1_FACE, SPR_CRAB1_FACE, 0)
@@ -519,20 +530,20 @@ function ShowScene(chap, scene)
 				//2nd Crab Target
 				cosType = GetCrabCostumeType(crab2Type, crab2Alt)
 				
-				SetSpriteImage(SPR_CRAB2_BODY, LoadImage("body" + body$ + ".png"))
-				SetSpriteImage(SPR_CRAB2_FACE, LoadImage("face" + face$ + ".png"))
+				SetSpriteImage(SPR_CRAB2_BODY, LoadImageR("body" + body$ + ".png"))
+				SetSpriteImage(SPR_CRAB2_FACE, LoadImageR("face" + face$ + ".png"))
 				if cosType = 1
 					//Hat costume
-					SetSpriteImage(SPR_CRAB2_COSTUME, LoadImage("costume" + str(crab2Type) + hatBonus$ + ".png"))
+					SetSpriteImage(SPR_CRAB2_COSTUME, LoadImageR("costume" + str(crab2Type) + hatBonus$ + ".png"))
 				elseif cosType = 2
 					//Unique sprite (WIP)
-					SetSpriteImage(SPR_CRAB2_COSTUME, LoadImage("costume" + str(crab2Type) + costume$ + ".png"))
+					SetSpriteImage(SPR_CRAB2_COSTUME, LoadImageR("costume" + str(crab2Type) + costume$ + ".png"))
 				elseif cosType = 4
 					//Posed costume
-					SetSpriteImage(SPR_CRAB2_COSTUME, LoadImage("costume" + str(crab2Type) + costume$ + ".png"))
+					SetSpriteImage(SPR_CRAB2_COSTUME, LoadImageR("costume" + str(crab2Type) + costume$ + ".png"))
 				else
 					//Blank costume
-					SetSpriteImage(SPR_CRAB2_COSTUME, LoadImage("blank.png"))
+					SetSpriteImage(SPR_CRAB2_COSTUME, LoadImageR("blank.png"))
 				endif
 				PlayTweenSprite(SPR_CRAB2_FACE, SPR_CRAB2_BODY, 0)
 				PlayTweenSprite(SPR_CRAB2_FACE, SPR_CRAB2_FACE, 0)
@@ -568,6 +579,11 @@ function ShowScene(chap, scene)
 		SetTextString(storyText3, GetTextString(storyText2))
 		SetTextString(storyText2, GetTextString(storyText))
 		
+		SetSpriteFlip(SPR_TEXT_BOX4, GetSpriteFlippedH(SPR_TEXT_BOX3), 0)
+		SetSpriteFlip(SPR_TEXT_BOX3, GetSpriteFlippedH(SPR_TEXT_BOX2), 0)
+		SetSpriteFlip(SPR_TEXT_BOX2, GetSpriteFlippedH(SPR_TEXT_BOX), 0)
+		SetSpriteFlip(SPR_TEXT_BOX, targetCrab-1, 0)
+		
 		while curPos <> Len(wholeRow$)
 			inc curPos, 1
 			curChar$ = Mid(wholeRow$, curPos, 1)
@@ -578,7 +594,7 @@ function ShowScene(chap, scene)
 				//This checks if the wholeRow, up to the current position, inside of a formatted string, is longer than the textbox width.
 				newLine = 0
 				SetTextString(storyFitter, Mid(wholeRow$, 1, curPos))
-				if (GetTextTotalWidth(storyFitter) > GetSpriteWidth(SPR_TEXT_BOX)-40)
+				if (GetTextTotalWidth(storyFitter) > GetSpriteWidth(SPR_TEXT_BOX)-textSideSpacingX*2)
 					newLine = 1
 				endif
 				
@@ -606,6 +622,7 @@ function ShowScene(chap, scene)
 		lineNum = 0
 		
 		PlaySoundR(fwipS, volumeSE)
+		PlaySoundR(arrowS, volumeSE)
 		for i = SPR_TEXT_BOX to SPR_TEXT_BOX4
 			if boxNum >= i-SPR_TEXT_BOX then PlayTweenSprite(i, i, 0)
 			if boxNum = i-SPR_TEXT_BOX then SetSpriteColorAlpha(i, 255)
@@ -653,6 +670,9 @@ function ShowScene(chap, scene)
 				StopGamePlayMusic()
 				exit
 			endif
+			
+		    //Print(GetSpriteWidth(SPR_TEXT_BOX))
+		    //Print(GetSpriteHeight(SPR_TEXT_BOX))
 			
 			storyInput = 0
 			if GetPointerPressed() or inputSelect then storyInput = 1
@@ -712,6 +732,7 @@ function StartEndScreen()
 		SetTextString(TXT_RESULT2, "STORY")
 		SetTextString(TXT_RESULT3, "CLEAR!")
 		for i = TXT_RESULT1 to TXT_RESULT2
+			if GetTweenExists(i) then DeleteTween(i)
 			CreateTweenText(i, .3)
 			SetTweenTextSize(i, 1, 80, TweenSmooth2())
 		next i		
@@ -754,6 +775,7 @@ function StartEndScreen()
 		SetSpriteMiddleScreen(exitButton)
 		IncSpriteY(exitButton, 300)
 		clearedChapter = Max(clearedChapter, curChapter)
+		inc curChapter, 1
 	else
 		//End of scene
 		
@@ -761,6 +783,8 @@ function StartEndScreen()
 		PlayTweenText(TXT_RESULT2, TXT_RESULT2, .3)
 		PlayTweenSprite(tweenSprFadeIn, playButton, 1)
 	endif
+	
+	SaveGame()
 	
 	ExitStory()
 	

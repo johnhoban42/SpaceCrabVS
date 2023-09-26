@@ -12,7 +12,7 @@ LW: BAFD; So I thought, I'll need to enhance my dodges, yes?
 BAFDc; A few spells later, bing, bang, boom...
 BKFPb; Now, I can fly through the air, by DOUBLE TURNING! Haha, yes! It's true!
 SC: BAFU; (Eh, it's not THAT impressive...)
-BAFS; (I mean, all of us can DOUBLE TURN to dodge, or jump, or something else...)
+BAFHa; (I mean, all of us can DOUBLE TURN to dodge, or jump, or something else...)
 BAFU; That's great and all, but I wanted to ask-
 LW: BKFL; It's a marvel of modern wizardry! Heights my grandfather could only DREAM of reaching!
 SC: (Geez... when he's like this, there's no getting through to him.)
@@ -27,9 +27,9 @@ LW: BAFAd; Wow, you've become quite powerful since I last saw you!
 BAFD1c; I'll need to continue my wizardry studies to keep up.
 BAFT; What was it you wanted to bring up, earlier?
 SC: BAFAe; I'm glad you asked! I'm putting together a group- to explore the cosmos, to solve it's mysteries-
-BKFCb; The Star Seekers!
+BKFAh; The Star Seekers!
 BAFB; Can I count you in?
-LW: Sounds like an excellent time!
+LW: BAFT1; Sounds like an excellent time!
 BIFAd; I can contribute my knowledge of space and it's magical properties - anything you want to know.
 SC: BAFAd; That's great to hear!!
 BAFDb; If you can think of anyone else, ask them to join too! Thanks a ton, gotta run!

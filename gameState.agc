@@ -936,8 +936,12 @@ function PauseGame()
 	
 	if dispH
 		for i = pauseTitle1 to pauseDesc2
-			SetTextSize(i, GetTextSize(i) - 13)
-			SetTextSpacing(i, GetTextSpacing(i) + 3)
+			SetTextSize(i, GetTextSize(i) - 11)
+			SetTextSpacing(i, GetTextSpacing(i) + 2)
+			if i = pauseTitle1
+				SetTextSize(i, GetTextSize(i) - 15)
+				SetTextSpacing(i, GetTextSpacing(i) + 2)
+			endif
 		next i
 		
 		SetTextY(pauseTitle1, h/5+20)
@@ -963,6 +967,7 @@ function PauseGame()
 		if dispH
 			IncTextY(pauseTitle2, 20)
 			IncTextY(pauseDesc2, 20)
+			
 		endif
 	endif
 	

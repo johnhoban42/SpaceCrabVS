@@ -40,7 +40,7 @@ SC: BIFAb; Well, I have a bit of practice.
 BAFAd; I explored TONS of planets to get enough coins to repair my ship.
 BCFIa; ...More than once.
 RC: BAFW; No way, you're THAT Space Crab?! Every crab out there has heard of you!
-BAFO; You must have seen everything in the stars by now! 
+BAFSa; You must have seen everything in the stars by now! 
 SC: BIFAb; Seen everything? Not even close.
 BIFA; There are so many wonders out in space- new discoveries, new challanges, new music...
 BAFO; I've never had a problem I couldn't solve by seeking out the stars.
@@ -49,7 +49,7 @@ That was downright poetic, man!
 BAFAd; Especially that part at the end- 'seeking out the stars'.
 BAFO; You got me more hyped than any party I've been to in a long time!
 BAFT; Can I join you, in your 'star seeking'?
-SC: BAFS; Huh? Join me?
+SC: BAFHa; Huh? Join me?
 RC: BAFT; Y'know, I bet if you gave that speech to other crabs, they would totally join too!
 BAFL; Everything's better with more crabs! A 24/7 party! The biggest posse in the galaxy!
 SC: BCFU; Woah, slow down. The biggest in the galaxy? I'm not sure about that.
@@ -57,7 +57,7 @@ BCFI; (That would be pretty cool, though.)
 BAFA; A posse, huh? To explore the galaxy together?
 BAFAe; I'm a fan of that idea.
 BAFDc; Sure, let's do it! Today is the day that the Star Seekers oficially form!
-BAFB; Our mission: to explore the cosmos and discover it's infinite wonders.
+BPFB; Our mission: to explore the cosmos and discover it's infinite wonders.
 RC: BAFT; Outrageous, dude! I'll go around and see who wants to join the galaxy's biggest party!
 exit 2
 SC: BAFDc; This could be cool! I'm getting excited.

@@ -1,43 +1,44 @@
 bg 3
 music retro5 1
-SC: Well, this is the place. Top Crab said I would his friend here.
-Is that him? He's the only crab around, so, probably.
-CC: Oh? Who is this small, pathetic crab I see, minutely walking my way?
-SC: Minutely? Huh?
-CC: Go on, speak what you came here to speak.
-My time is minutely precious to me, in a way that YOU wouldn't understand.
-SC: (Again with the minutes...)
-Hi. I'm Space Crab- Top Crab sent me here.
-He said that you might be willing to join my new exploration group- the Star Seekers.
-Uhh...
-Top of it's class, big plans ahead, and you'll be in on the ground floor. What do you say?
-CC: ... (thinking)
-...(devious grin)
+BPFDb; Time to start the fight!
+
+SC: BAFU; Well, this is the place. Top Crab said I would his friend here.
+BAFW; Is that him? He's the only crab around, so, probably.
+CC: BAFMa; Oh? Who is this small, pathetic crab I see, minutely walking my way?
+SC: BAFCd; Minutely? Huh?
+CC: BOFDd; Go on, speak what you came here to speak.
+BIFBe; My time is minutely precious to me, in a way that YOU wouldn't understand.
+SC: BDFHa; (Again with the minutes...)
+BAFA; Hi. I'm Space Crab- Top Crab sent me here.
+BAFAg; He said that you might be willing to join my new exploration group- the Star Seekers.
+BMFHa; Uhh...
+BPFQa; Top of it's class, big plans ahead, and you'll be in on the ground floor. What do you say?
+CC: BMFM; ...
+BMFK; ...
 Actually... my time is better spent elsewhere.
-SC: Oh, I see. Can't get everyone, I guess.
+SC: BAFU; Oh, I see. Can't get everyone, I guess.
 music fightB 1
-CC: Building my OWN Star Seekers!
-SC: WHAT?!
-CC: No, not just seekers... a Galactic Empire!
-After I assemble my men, not even the flow of time will stand in our way!
-All will BOW before us!
-SC: (This guy's nuts! I'll have to beat some sense into him!)
-CC: HEY! Don't think you can get the jump on me!
-I control time, and the outcome of this battle as well!
+CC: BLFQa; Building my OWN Star Seekers!
+SC: BHFP; WHAT?!
+CC: BAFQa; No, not just seekers... a Galactic Empire!
+BKFK; After I assemble my men, not even the flow of time will stand in our way!
+BKFPb; All will BOW before us!
+SC: BPFDe; (This guy's nuts! I'll have to beat some sense into him!)
+CC: BAFBd; HEY! Don't think you can get the jump on me!
+BPFQa; I control time, and the outcome of this battle as well!
 music fightB 1
 fight 55422
 music fightB 1
-CC: You fight well, Crab of Space...
-Just like me! Ha ha ha!
-SC: So, you'll stop your crazy plan for galactic domination!?
-CC: Oh, you sweet, stupid, idiotic, imbecelic crab...
-The only thing that could stop me is time itself!
-SC: (Huh? I thought you controlled time??)
-CC: I'll be taking my outro, at the moment.
-Maybe I'll get YOU to join me, someday... my Starlight Rival!
+CC: BAFQa; You fight well, Crab of Space...
+BAFL; Just like me! Ha ha ha!
+SC: BBFRb; So, you'll stop your crazy plan for galactic domination!?
+CC: BAFAe; Oh, you sweet, stupid, idiotic, imbecelic crab...
+BAFOi; The only thing that could stop me is time itself!
+SC: BAFDd; Huh? I thought you controlled time??
+CC: BLFJb; I'll be taking my outro, at the moment.
+BPFQa; Maybe I'll get YOU to join me, someday... my Starlight Rival!
 exit 2
-SC: Starlight Rival...(thinking)
-... *(grins)
-If it's a rival he wants, then that's what he'll get!
-I'll find the best crabs in the galaxy, get them on my side, and take Chrono Crab DOWN!
-Time to start the fight!
+SC: BBFH; Starlight Rival...
+BBFD; ...
+BAFDa; If it's a rival he wants, then that's what he'll get!
+BKFBd; I'll find the best crabs in the galaxy, get them on my side, and take Chrono Crab DOWN!

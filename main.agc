@@ -111,35 +111,45 @@ gameTime# = 0
 
 function SaveGame()
 	SetFolder("/media")
-	OpenToWrite(1, "save.txt")
+	OpenToWrite(3, "save.txt")
 	
-	WriteInteger(1, spHighScore)
-	WriteString(1, spHighCrab$)
-	WriteInteger(1, spHighScoreClassic)
-	WriteString(1, spHighCrabClassic$)
+	WriteInteger(3, spHighScore)
+	WriteString(3, spHighCrab$)
+	WriteInteger(3, spHighScoreClassic)
+	WriteString(3, spHighCrabClassic$)
+	WriteInteger(3, curChapter)
+	WriteInteger(3, highestScene)
+	WriteInteger(3, clearedChapter)
 	
-	CloseFile(1)
+	CloseFile(3)
 endfunction
 
 function LoadGame()
 	SetFolder("/media")
 	if GetFileExists("save.txt") = 0 then SaveGame()
-	OpenToRead(1, "save.txt")
+	OpenToRead(3, "save.txt")
 	
-	spHighScore = ReadInteger(1)
-	spHighCrab$ = ReadString(1)
-	spHighScoreClassic = ReadInteger(1)
-	spHighCrabClassic$ = ReadString(1)
+	spHighScore = ReadInteger(3)
+	spHighCrab$ = ReadString(3)
+	spHighScoreClassic = ReadInteger(3)
+	spHighCrabClassic$ = ReadString(3)
+	curChapter = ReadInteger(3)
+	highestScene = ReadInteger(3)
+	clearedChapter = ReadInteger(3)
 	
-	CloseFile(1)
+	CloseFile(3)
 endfunction
 
 LoadGame()
-
 //curChapter = 1
+//clearedChapter = 0
+curChapter = Max(curChapter, 1)
+curChapter = Min(curChapter, finalChapter)
+
+
 //curScene = 4
 //appState = STORY
-
+//highestScene = 1
 
 do
 	fpsr# = 60.0/ScreenFPS()
@@ -179,7 +189,7 @@ do
 		//Print(GetDeviceBaseName())
 	//Print(GetImageMemoryUsage())
 	
-	//Print(GetSpriteWidth(SPR_SELECT1))
+	//Print(highestScene)
     SyncG()
 loop
 

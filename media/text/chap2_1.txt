@@ -1,0 +1,35 @@
+bg 2
+music retro3
+LW: So, I was given an IMPORTANT task...
+
+Ask ANYONE I can think of to join this 'Star Seekers' group...
+I just have no idea where to start!
+AL: If you had no idea where to start, then why did you come bother me?
+LW: You're the smartest guy I know, you HAVE to have some ideas!
+Who should I be asking? The biggest crabs? The tallest crabs?
+Maybe... the SMARTEST crabs? (schmoozing)
+AL: You're being far more transparent than you typically are.
+That's Sparse Crab's thing.
+Is this that big of a deal to you?
+LW: Well, yeah, this was a request from THE Space Crab. I can't ignore that!
+AL: Hmm... I would like to give you an answer, but I'm all booked up.
+Not only am I supposed to file taxes for Crabicus, but King Crab also booked me for a consultation.
+Something about employment rights under a monarchial reign.
+LW: Have room for one more appointment? A battle, with me!
+When I win, you'll clear your schedule, and join the Star Seekers!
+AL: Honestly, that's doubtful. Though, I'll entertain the challenge.
+music fightA
+fight
+music results
+AL: Ah! Bwa-ba-ba-what!?
+LW: Yeah, I guess I HAVE been getting pretty good.
+AL: This is not what I was expecting. Nope.
+Uh. Gotta go! Gotta reschedule! Leaving now!
+exit 2
+LW: Wait! Al! You left your schedule behind!
+...
+Crabicus, King Crab...
+If these two have Al Legal working for them, they MUST be powerful.
+Wait, Crabicus...
+I went to school with him! They called him a 'Numerical Wizard'!
+If the Star Seekers want to succeed, they'll need more magicians. He's my top priority! 
