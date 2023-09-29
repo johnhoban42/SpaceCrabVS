@@ -511,8 +511,8 @@ function DoGame1()
 	
 	//Death is above so that the screen nudging code activates
 	hitSpr = CheckDeath1()
-	if GetRawKeyPressed(75) then crab1Deaths = 2
-	if hitSpr <> 0 or GetRawKeyPressed(75)
+	if GetRawKeyPressed(75) and debug then crab1Deaths = 2
+	if hitSpr <> 0 or (GetRawKeyPressed(75) and debug)
 		DeleteSprite(hitSpr)
 		if getSpriteExists(hitSpr+glowS) then DeleteSprite(hitSpr + glowS)
 		//Kill crab

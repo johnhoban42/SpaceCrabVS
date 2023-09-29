@@ -16,7 +16,7 @@ se phone
 *beep*
 BBFE; ...
 BBFD; Hmph.
-RC:BAFA; Whoa, another wayward traveler?
+RC:BAFA; Whoa, another wayward traveler!
 BAFAe; Did you come here too, when you heard that SICK bass drop?
 SC: BBFE; Bass drop? That was my ship exploding!
 BAFE; My ship that I spent hundreds of coins fixing!

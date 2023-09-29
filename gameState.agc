@@ -1849,7 +1849,7 @@ function UpdateSPScore(added)
 		endif
 	endif
 	
-	if GetRawKeyPressed(38) then inc gameDifficulty1, 1
+	if GetRawKeyPressed(38) and debug then inc gameDifficulty1, 1
 	
 	//The flashing warning text
 	SetTextColor(TXT_SP_DANGER, 255, 160 - 10*(gameDifficulty1) + (0.0+10*gameDifficulty1)*sin(gameTimer#*(5+gameDifficulty1)), 160 - 10*(gameDifficulty1) + (0.0+10*gameDifficulty1)*sin(gameTimer#*(5+gameDifficulty1)), 255)

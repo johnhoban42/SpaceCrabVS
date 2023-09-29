@@ -117,11 +117,11 @@ function InitStart()
 	SetSpriteSize(SPR_STARTAI, 250, 150)
 	SetSpritePosition(SPR_STARTAI, 50, 1130)
 	AddButton(SPR_STARTAI)
-	if demo then SetSpriteVisible(SPR_STARTAI, 0)
+	SetSpriteVisible(SPR_STARTAI, 0)
 	
 	LoadSpriteExpress(SPR_STORY_START, "story.png", 250, 150, 250, 1130, 5)
 	AddButton(SPR_STORY_START)
-	if demo then SetSpriteVisible(SPR_STORY_START, 0)
+	//if demo then SetSpriteVisible(SPR_STORY_START, 0)
 	
 	SetFolder("/media")
 	
@@ -260,7 +260,7 @@ function HorizontalStart()
 	SetSpriteMiddleScreenX(SPR_LEADERBOARD)
 	
 	SetSpriteExpress(SPR_STARTAI, 250, 150, w*3/5, h*3/5 + 100, 5)
-	SetSpriteExpress(SPR_STORY_START, 250, 150, w*3/5, h*3/5 - 100, 5)
+	SetSpriteExpress(SPR_STORY_START, 250, 150, w*3/5 + 40, h*3/5 - 100, 5)
 		
 	for i = SPR_SP_C1 to SPR_SP_C6
 		num = i-SPR_SP_C1+1

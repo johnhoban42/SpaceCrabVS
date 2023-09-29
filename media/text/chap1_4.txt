@@ -1,7 +1,5 @@
 bg 3
 music retro5 1
-BPFDb; Time to start the fight!
-
 SC: BAFU; Well, this is the place. Top Crab said I would his friend here.
 BAFW; Is that him? He's the only crab around, so, probably.
 CC: BAFMa; Oh? Who is this small, pathetic crab I see, minutely walking my way?
@@ -27,7 +25,7 @@ SC: BPFDe; (This guy's nuts! I'll have to beat some sense into him!)
 CC: BAFBd; HEY! Don't think you can get the jump on me!
 BPFQa; I control time, and the outcome of this battle as well!
 music fightB 1
-fight 55422
+fight 45422
 music fightB 1
 CC: BAFQa; You fight well, Crab of Space...
 BAFL; Just like me! Ha ha ha!
@@ -42,3 +40,4 @@ SC: BBFH; Starlight Rival...
 BBFD; ...
 BAFDa; If it's a rival he wants, then that's what he'll get!
 BKFBd; I'll find the best crabs in the galaxy, get them on my side, and take Chrono Crab DOWN!
+BPFDb; Time to start the fight!

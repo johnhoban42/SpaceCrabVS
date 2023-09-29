@@ -834,9 +834,3 @@ function SetSceneImages(new)
 	
 endfunction
 
-function AltStr(alt)
-	myStr$ = ""
-	if alt = 1 then myStr$ = "a"
-	if alt = 2 then myStr$ = "b"
-	if alt = 3 then myStr$ = "c"
-endfunction myStr$

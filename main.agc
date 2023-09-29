@@ -81,7 +81,7 @@ global fpsr#
 
 global gameTime#
 
-global demo = 0
+global demo = 1
 global debug = 1
 
 CreateTweenSprite(tweenSprFadeIn, tweenFadeLen#)
@@ -141,15 +141,16 @@ function LoadGame()
 endfunction
 
 LoadGame()
-//curChapter = 1
 //clearedChapter = 0
 curChapter = Max(curChapter, 1)
 curChapter = Min(curChapter, finalChapter)
 
-
-//curScene = 4
-//appState = STORY
-//highestScene = 1
+if debug
+	//curChapter = 2
+	//curScene = 3
+	//appState = STORY
+	//highestScene = 1
+endif
 
 do
 	fpsr# = 60.0/ScreenFPS()
@@ -180,16 +181,18 @@ do
 		touch = GetRawNextTouchEvent()
 	endwhile
 	
-    Print(ScreenFPS())
-    //Print(fpsr#)
-    Print(GetRawLastKey())
-    //Print(meteorTotal1)
-    //Print(specialTimerAgainst2#)
-    
-		//Print(GetDeviceBaseName())
-	//Print(GetImageMemoryUsage())
-	
-	//Print(highestScene)
+	if debug
+	    Print(ScreenFPS())
+	    //Print(fpsr#)
+	    Print(GetRawLastKey())
+	    //Print(meteorTotal1)
+	    //Print(specialTimerAgainst2#)
+	    
+			//Print(GetDeviceBaseName())
+		//Print(GetImageMemoryUsage())
+		
+		//Print(highestScene)
+	endif
     SyncG()
 loop
 
@@ -275,7 +278,7 @@ function TransitionStart(tranType)
 		//The star swipe
 		for i = 11 to 13
 			SetParticlesStartZone(i, -GetParticlesSize(i), 0, -GetParticlesSize(i), h) //The box that the particles can start from
-			SetParticlesDirection(i, 50, 0)
+			SetParticlesDirection(i, 50 + dispH*20, 0)
 			SetParticlesRotationRange(i, 400, 800)
 			SetParticlesVelocityRange (i, 30, 60)
 			ClearParticlesColors(i)

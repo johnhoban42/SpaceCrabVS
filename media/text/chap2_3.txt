@@ -1,0 +1,45 @@
+bg 3
+music fightJ
+KC: BAFJb; Hear ye, hear ye!
+BMFJb; I hereby decree, this to be...
+BMFAh; Another beautiful day in the galax-
+se phone
+BAFD; Oh, is this a call I'm getting, in the middle of my Royal Address?
+BEFM; What. Is this really THAT important?
+BEFDe; What? A crab in a funny little hat? And he's heading right into MY throne room?
+BEFMa; And you didn't think to STOP HIM?!
+LW: BCFS1; Wow, this is a neato setup you've got here!
+BAFS1a; Your crown really is as shiny as they say.
+se phone
+KC: BAFDa; Ahem.
+BAFDd; You should know, I don't take kindly to unplanned visitors.
+LW: BAFA1; Ah, well good thing I only need to do this once.
+BKFA1d; Space Crab is putting together a group called the Star Seekers!
+BIFA1d; We're going to explore space and solve it's many mysteries!
+BOFA1g; Do you want to join, and help us on our awesome quest?
+KC: BBFD; ...
+music retro5 1
+BIFL; BWAHAHAHA!!
+BMFOi; Me? JOIN something? That's rich. I'm the KING. You should be joining ME!
+BIFDc; In fact, considering the trespassing you're currently committing...
+BAFO; I ALREADY OWN you! Ohohoho!
+LW: BDFJ1a; (Oh. This is a lot more serious than I thought.)
+BAFH1a; (Not everyone will be an easy sell, it seems.)
+BDFIa; (Or a safe sell, for that matter.)
+exit 1
+KC: BOFBd; HEY! My new property is getting away! GUARDS! Help me take him down!
+music retro5 1
+fight 68252
+music retro1 1
+LW: BGFIa; So, funny story, it looks like King Crab won't be joining the Star Seekers. Oh well.
+SC: BEFPa; WHAT?!? You asked KING Crab?
+BEFDe; You know he's not really a king, right? All he is is insane!
+LW: BEFA1g; Yeah, but he sure is strong! I know that since we just got done fighting.
+SC: BEFRb; Geez... I really do appreciate your help with finding recruits.
+BEFJe; But you need to watch out for yourself, too!
+LW: BEFQ1b; Space Crab, don't worry! I won't disappoint you!
+se phone
+exit 2
+BIFJ1b; I'll help put together the best Star Seekers you could only dream of!
+??: You would be well advised to listen to your friend.
+LW: BHFPa; Whuh? Who said that?

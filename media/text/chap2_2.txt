@@ -1,0 +1,29 @@
+bg 2
+music retro4
+LW: BAFAd; ...And that's why I came to you! You're the most magical guy I can think of!
+BOFA1d; As the famous 'Number Wizard', we need you on the team, Crabicus!
+CB: BAFDd; I keep telling you, math isn't magic!
+BCFEe; It's JUST math! You can do it too, if you really wanted.
+LW: BAFJ1b; You keep telling me that, but I know magic when I see it!
+CB: BBFEa; Look, Ladder Wizard, I'm flattered. But I know how these things go.
+LW: BKFS1a; But this'll be fun! Just like Astronomy Club back in school!
+CB: BNFOa; I always HATED Astronomy Club! Why bring that up now?
+LW: BCFH1a; Wait, really? Uhh, then how about some of this to distract you?
+music retro4
+fight 41586
+music retro4
+LW: BBFJa; I didn't realize that club was such a sore spot for you. Was astronomy really that bad?
+CB: BAFRb; I loved the astronomy part! It was the club itself I had a problem with.
+BAFM; All they let me do was count stars!
+BMFEa; Groups only want me, a crab who's good at math, to JUST do their math stuff.
+BMFEd; If I join the Star Seekers, I'll just be toiling away, pushed off to the side.
+BNFEe; A math monkey, tucked away, while everyone else gets to do the cool stuff.
+LW: BOFB1; But that won't happen this time!
+BAFD1d; I'll admit, I don't know much about what the Star Seekers will actually do.
+CB: BAFEa; Wait, what?
+LW: BAFD1c; But I DO know that every crab will get to do what THEY want.
+BMFE1b; That's MY guarantee.
+CB: BNFH; Honestly, I have my doubts...
+BLFEb; But the chance to be a real part of the group is a calculated risk I'm willing to take.
+LW: BAFA1g; Glad to have you on board, Number Wizard!
+CB: BBFHa; Ah, uh, yeah.

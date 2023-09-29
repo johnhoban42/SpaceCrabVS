@@ -753,9 +753,9 @@ SetMusicSystemVolumeOGG(volumeM)
 #constant TXT_LINE3 603
 #constant TXT_LINE4 604
 
-#constant TXT_RESULT1 611
-#constant TXT_RESULT2 612
-#constant TXT_RESULT3 613
+#constant TXT_RESULT1 621
+#constant TXT_RESULT2 622
+#constant TXT_RESULT3 623
 
 #constant SPR_CRAB1_BODY 611
 #constant SPR_CRAB1_FACE 612
@@ -1548,6 +1548,12 @@ function SetStoryShortStrings()
 	
 endfunction
 
+function AltStr(alt)
+	myStr$ = ""
+	if alt = 1 then myStr$ = "a"
+	if alt = 2 then myStr$ = "b"
+	if alt = 3 then myStr$ = "c"
+endfunction myStr$
 /*
 The Code Graveyard
 
