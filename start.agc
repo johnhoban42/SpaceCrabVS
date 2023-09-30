@@ -398,7 +398,7 @@ function DoStart()
 	endif
 	
 	//Going to story mode, will eventually bring you to character select
-	if Button(SPR_STORY_START) and GetSpriteVisible(SPR_STORY_START)
+	if (Button(SPR_STORY_START) and GetSpriteVisible(SPR_STORY_START)) or ((inputSelect and selectTarget = 0))
 		spActive = 1
 		spType = STORYMODE
 		state = CHARACTER_SELECT

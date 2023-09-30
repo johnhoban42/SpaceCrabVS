@@ -228,7 +228,7 @@ function DoStory()
 			endif
 		next i
 		
-		if ButtonMultitouchEnabled(playButton)
+		if ButtonMultitouchEnabled(playButton) or (inputSelect and selectTarget = 0)
 			inc lineSkipTo, -2
 			state = ShowScene(curChapter, curScene)
 			
@@ -327,8 +327,10 @@ function ShowScene(chap, scene)
 		//inc lineOverall, 1
 	endif
 	
+	fightDone = 0
 	//This returns from a fight, so the correct line is started from.
 	for i = 1 to lineSkipTo-1
+		fightDone = 1
 		wholeRow$ = ReadLine(1)
 		inc lineOverall, 1
 	next i
@@ -684,7 +686,7 @@ function ShowScene(chap, scene)
 		while nextLine = 0
 			DoInputs()
 			
-			if inputExit
+			if inputExit and fightDone = 0
 				state = CHARACTER_SELECT
 				TransitionStart(Random(1,lastTranType))
 				nextLine = 1
@@ -888,9 +890,9 @@ function DoStoryEndScreen()
 		SetSpriteAngle(playButton, 4*sin(TextJitterTimer#*3))
 		IncSpriteAngle(exitButton, 60.0/ScreenFPS())
 		
-		if ((inputSelect and curScene < 5) or (ButtonMultitouchEnabled(playButton))) and GetSpriteColorAlpha(playButton) > 100
+		if ((inputSelect and curScene < 5 and selectTarget = 0) or (ButtonMultitouchEnabled(playButton))) and GetSpriteColorAlpha(playButton) > 100
 			endDone = 1
-		elseif ((inputSelect and curScene = 5) or (ButtonMultitouchEnabled(exitButton))) and GetSpriteColorAlpha(exitButton) > 100
+		elseif ((inputSelect and curScene = 5 and selectTarget = 0) or (ButtonMultitouchEnabled(exitButton))) and GetSpriteColorAlpha(exitButton) > 100
 			state = CHARACTER_SELECT
 			endDone = 1
 		endif

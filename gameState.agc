@@ -278,6 +278,11 @@ function DoGame()
 	endif
 	
 	
+	if GetRawKeyPressed(187) and debug
+		inc gameDifficulty1, 1
+		inc gameDifficulty2, 1
+	endif
+	
 	// If we are leaving the state, exit appropriately
 	// Don't write anything after this!
 	if state <> GAME
@@ -1238,7 +1243,7 @@ function ResumeGameAnimations()
 	//PlaySprite(expHolder2)
 endfunction
 
-function ShowSpecialAnimation(crabType, fast)
+function ShowSpecialAnimation(crabType, playerNum, fast)
 	
 	fpsr# = 60.0/ScreenFPS()
 	
@@ -1268,7 +1273,7 @@ function ShowSpecialAnimation(crabType, fast)
 			SetSpriteColor(i, 220, 220, 220, 255)
 			SetSpriteSizeSquare(i, specSize)
 			//SetSpriteSizeSquare(i, 300)	//Smaller at Brad's request
-			SetSpriteImage(i, crab1attack2I - 1 + crabType)
+			SetSpriteImage(i, crab1attack2I - 1 + playerNum)
 			if crabType = 4
 				SetSpriteSizeSquare(i, specSize*1.4)
 				SetSpriteColor(i, 255, 255, 255, 0)
@@ -1276,7 +1281,7 @@ function ShowSpecialAnimation(crabType, fast)
 		else
 			//Front Sprites
 			SetSpriteDepth(i, 1)
-			SetSpriteImage(i, crab1attack1I - 1 + crabType)
+			SetSpriteImage(i, crab1attack1I - 1 + playerNum)
 		endif
 		
 		if i >= specialSprFront2 then SetSpriteAngle(i, 180)
@@ -1849,7 +1854,6 @@ function UpdateSPScore(added)
 		endif
 	endif
 	
-	if GetRawKeyPressed(38) and debug then inc gameDifficulty1, 1
 	
 	//The flashing warning text
 	SetTextColor(TXT_SP_DANGER, 255, 160 - 10*(gameDifficulty1) + (0.0+10*gameDifficulty1)*sin(gameTimer#*(5+gameDifficulty1)), 160 - 10*(gameDifficulty1) + (0.0+10*gameDifficulty1)*sin(gameTimer#*(5+gameDifficulty1)), 255)

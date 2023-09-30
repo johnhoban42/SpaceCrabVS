@@ -147,7 +147,7 @@ curChapter = Min(curChapter, finalChapter)
 
 if debug
 	//curChapter = 2
-	//curScene = 3
+	//curScene = 1
 	//appState = STORY
 	//highestScene = 1
 endif

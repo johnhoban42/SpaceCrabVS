@@ -598,6 +598,10 @@ function LoadImageR(txt$)
 	if GetFileExists(txt$) then img = LoadImage(txt$)
 endfunction img
 
+function LoadImageR2(index, txt$)
+	if GetFileExists(txt$) then index = LoadImage(txt$)
+endfunction
+
 function SetSpriteColorRandomBright(spr)
 	//Recoloring!
 	r = 0

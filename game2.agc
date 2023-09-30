@@ -40,10 +40,14 @@ function CreateGame2()
 	
 	crab2Theta# = 90
 	DrawPolar2(crab2, crab2R#, crab2Theta#)
+	for i = crab2start1I to crab2skid3I
+		AddSpriteAnimationFrame(crab2, i)
+	next i
+	
 	if crab2Type = 1		//Space
-		for i = crab1start1I to crab1skid3I
-			AddSpriteAnimationFrame(crab2, i)
-		next i
+		//for i = crab1start1I to crab1skid3I
+			//AddSpriteAnimationFrame(crab2, i)
+		//next i
 		crab2framerate = frameratecrab1
 		specialCost2 = specialPrice1
 		crab2Vel# = 1.28
@@ -53,9 +57,6 @@ function CreateGame2()
 		crab2JumpDMax = 28
 		
 	elseif crab2Type = 2	//Wizard
-		for i = crab2start1I to crab2skid3I
-			AddSpriteAnimationFrame(crab2, i)
-		next i
 		crab2framerate = frameratecrab2
 		specialCost2 = specialPrice2
 		crab2Vel# = 1.08
@@ -65,9 +66,9 @@ function CreateGame2()
 		crab2JumpDMax = 40
 		
 	elseif crab2Type = 3	//Top
-		for i = crab3start1I to crab3skid3I
-			AddSpriteAnimationFrame(crab2, i)
-		next i
+		//for i = crab3start1I to crab3skid3I
+			//AddSpriteAnimationFrame(crab2, i)
+		//next i
 		crab2framerate = frameratecrab3
 		specialCost2 = specialPrice3
 		crab2Vel# = 2.48
@@ -77,9 +78,9 @@ function CreateGame2()
 		crab2JumpDMax = 32
 		
 	elseif crab2Type = 4	//Rave
-		for i = crab4start1I to crab4skid3I
-			AddSpriteAnimationFrame(crab2, i)
-		next i
+		//for i = crab4start1I to crab4skid3I
+			//AddSpriteAnimationFrame(crab2, i)
+		//next i
 		crab2framerate = frameratecrab4
 		specialCost2 = specialPrice4
 		crab2Vel# = 1.59
@@ -89,9 +90,9 @@ function CreateGame2()
 		crab2JumpDMax = 43
 		
 	elseif crab2Type = 5	//Chrono
-		for i = crab5start1I to crab5skid3I
-			AddSpriteAnimationFrame(crab2, i)
-		next i
+		//for i = crab5start1I to crab5skid3I
+			//AddSpriteAnimationFrame(crab2, i)
+		//next i
 		crab2framerate = frameratecrab5
 		specialCost2 = specialPrice5
 		crab2Vel# = 1.38
@@ -101,9 +102,9 @@ function CreateGame2()
 		crab2JumpDMax = 28
 		
 	elseif crab2Type = 6	//Ninja
-		for i = crab6start1I to crab6skid3I
-			AddSpriteAnimationFrame(crab2, i)
-		next i
+		//for i = crab6start1I to crab6skid3I
+			//AddSpriteAnimationFrame(crab2, i)
+		//next i
 		crab2framerate = frameratecrab6
 		specialCost2 = specialPrice6
 		crab2Vel# = 1.5
@@ -115,7 +116,7 @@ function CreateGame2()
 	else
 		//The debug option, no crab selected
 		for i = crab1start1I to crab1death2I
-			AddSpriteAnimationFrame(crab2, i)
+			//AddSpriteAnimationFrame(crab2, i)
 		next i
 		specialCost2 = 1
 	endif
@@ -179,7 +180,7 @@ function CreateGame2()
 	//The planet UI that shows how many lives are left
 	for i = 1 to 3 //The 4 minus below makes the planet sprites go in the correct order for the top
 		CreateSpriteExpress(crab2PlanetS[i], planetIconSize, planetIconSize, w/2 - planetIconSize/2 + (i-2)*planetIconSize*1.5, h/2 - 80 - planetIconSize, 5)
-		SetSpriteImage(crab2PlanetS[i], crab1life1I - 1 + (crab2Type-1)*3 + i)
+		SetSpriteImage(crab2PlanetS[i], crab2life1I - 1 + i)
 		if i > 1 then SetSpriteSize(crab2PlanetS[i], planetIconSize/4, planetIconSize/4)
 		DrawPolar2(crab2PlanetS[i], 300, 90 + (i-2)*20)
 		SetSpriteAngle(crab2PlanetS[i], 180-180*dispH)
@@ -789,7 +790,7 @@ endfunction
 
 function SendSpecial2()
 	
-	ShowSpecialAnimation(crab2Type, special2Used)
+	ShowSpecialAnimation(crab2Type, 2, special2Used)
 	special2Used = 1
 	
 	newMetS as meteor

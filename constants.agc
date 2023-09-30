@@ -360,30 +360,14 @@ global met3CD2# = 0 //400
 #constant crab2life2I 375
 #constant crab2life3I 376
 
-#constant crab4life1I 380
-#constant crab4life2I 381
-#constant crab4life3I 382
-
-#constant crab6life1I 386
-#constant crab6life2I 387
-#constant crab6life3I 388
-
 #constant crab1attack1I 21
 #constant crab2attack1I 22
-#constant crab3attack1I 23
-#constant crab4attack1I 24
-#constant crab5attack1I 25
-#constant crab6attack1I 26
 
 #constant crab1attack2I 31
 #constant crab2attack2I 32
-#constant crab3attack2I 33
-#constant crab4attack2I 34
-#constant crab5attack2I 35
-#constant crab6attack2I 36
 
-#constant crab3attack3I 27
-#constant crab5attack3I 28
+#constant crab1attack3I 41
+#constant crab2attack3I 41
 
 #constant expOrbI 60
 #constant expBarI1 61
@@ -453,78 +437,6 @@ global loadedCrabSprites as Integer[0]
 #constant crab2skid1I 135
 #constant crab2skid2I 136
 #constant crab2skid3I 137
-
-#constant crab3start1I 141
-#constant crab3start2I 142
-#constant crab3walk1I 143
-#constant crab3walk2I 144
-#constant crab3walk3I 145
-#constant crab3walk4I 146
-#constant crab3walk5I 147
-#constant crab3walk6I 148
-#constant crab3walk7I 149
-#constant crab3walk8I 150
-#constant crab3jump1I 151
-#constant crab3jump2I 152
-#constant crab3death1I 153
-#constant crab3death2I 154
-#constant crab3skid1I 155
-#constant crab3skid2I 156
-#constant crab3skid3I 157
-
-#constant crab4start1I 161
-#constant crab4start2I 162
-#constant crab4walk1I 163
-#constant crab4walk2I 164
-#constant crab4walk3I 165
-#constant crab4walk4I 166
-#constant crab4walk5I 167
-#constant crab4walk6I 168
-#constant crab4walk7I 169
-#constant crab4walk8I 170
-#constant crab4jump1I 171
-#constant crab4jump2I 172
-#constant crab4death1I 173
-#constant crab4death2I 174
-#constant crab4skid1I 175
-#constant crab4skid2I 176
-#constant crab4skid3I 177
-
-#constant crab5start1I 181
-#constant crab5start2I 182
-#constant crab5walk1I 183
-#constant crab5walk2I 184
-#constant crab5walk3I 185
-#constant crab5walk4I 186
-#constant crab5walk5I 187
-#constant crab5walk6I 188
-#constant crab5walk7I 189
-#constant crab5walk8I 190
-#constant crab5jump1I 191
-#constant crab5jump2I 192
-#constant crab5death1I 193
-#constant crab5death2I 194
-#constant crab5skid1I 195
-#constant crab5skid2I 196
-#constant crab5skid3I 197
-
-#constant crab6start1I 201
-#constant crab6start2I 202
-#constant crab6walk1I 203
-#constant crab6walk2I 204
-#constant crab6walk3I 205
-#constant crab6walk4I 206
-#constant crab6walk5I 207
-#constant crab6walk6I 208
-#constant crab6walk7I 209
-#constant crab6walk8I 210
-#constant crab6jump1I 211
-#constant crab6jump2I 212
-#constant crab6death1I 213
-#constant crab6death2I 214
-#constant crab6skid1I 215
-#constant crab6skid2I 216
-#constant crab6skid3I 217
 
 #constant special4s1 225
 #constant special4s2 226
@@ -1312,20 +1224,20 @@ function LoadGameImages(loading)
 			SetFolder("/media/crabs")
 			
 			crabType = crab2Type
-			alt$ = "" //crab2Alt
+			alt$ = AltStr(crab2Alt) //crab2Alt
 			
 			if i = 1
-				if crab1type = crab2type //TODO: Add alternate checker here
+				if (crab1type = crab2type) and (crab1alt = crab2alt) //TODO: Add alternate checker here
 					//The same crab
 					i = 2
 				else
 					//Different crabs
 					crabType = crab1Type
-					alt$ = "" //crab1Alt
+					alt$ = AltStr(crab1Alt)
 				endif
 			endif
 			
-			index = crab1start1I + (crabType-1)*20
+			index = crab1start1I + (i-1)*20
 			
 			for j = 1 to 17
 				act$ = "" //The action to use in the sprite name
@@ -1345,8 +1257,13 @@ function LoadGameImages(loading)
 					act$ = "skid"
 					num = -14
 				endif
-					
-				LoadImage(index, "crab" + str(crabType) + alt$ + act$ + str(j+num) + ".png")
+				
+				file$ = "crab" + str(crabType) + alt$ + act$ + str(j+num) + ".png"
+				if GetFileExists(file$)
+					LoadImage(index, file$)
+				else
+					LoadImage(index, "white.png")
+				endif
 			
 				
 				loadedCrabSprites.insert(index)
@@ -1355,20 +1272,39 @@ function LoadGameImages(loading)
 			
 			SetFolder("/media/art")
 			
-			index = crab1attack1I - 1 + crabType
-			LoadImage(index, "crab" + str(crabType) + alt$ + "attack1.png")
-			LoadImage(index+10, "crab" + str(crabType) + alt$ + "attack2.png")
-			
-			if crabType = 3 then LoadImage(crab3attack3I, "crab3" + alt$ + "attack3.png")
-			if crabType = 5 then LoadImage(crab5attack3I, "crab5" + alt$ + "attack3.png")
+			index = crab1attack1I - 1 + i
+			file$ = "crab" + str(crabType) + alt$ + "attack1.png"
+			if GetFileExists(file$)
+				LoadImage(index, file$)
+			else
+				LoadImage(index, "white.png")
+			endif
+			file$ = "crab" + str(crabType) + alt$ + "attack2.png"
+			if GetFileExists(file$)
+				LoadImage(index+10, file$)
+			else
+				LoadImage(index+10, "white.png")
+			endif
+			file$ = "crab" + str(crabType) + alt$ + "attack3.png"
+			if GetFileExists(file$)
+				LoadImage(index+20, file$)
+			else
+				LoadImage(index+20, "white.png")
+			endif
 			
 			loadedCrabSprites.insert(index)
 			loadedCrabSprites.insert(index+10)
+			loadedCrabSprites.insert(index+20)
 			
 			//Lives loading
-			index = crab1life1I + (crabType-1)*3
+			index = crab1life1I + (i-1)*3
 			for k = 1 to 3
-				LoadImage(index, "crab" + str(crabType) + alt$ + "life" + str(k) + ".png")
+				file$ = "crab" + str(crabType) + alt$ + "life" + str(k) + ".png"
+				if GetFileExists(file$)
+					LoadImage(index, file$)
+				else
+					LoadImage(index, "white.png")
+				endif
 				loadedCrabSprites.insert(index)
 				inc index, 1
 			next k
@@ -1427,8 +1363,8 @@ function LoadGameImages(loading)
 			DeleteImage(planetVarI[planetIMax + i])
 		next i
 		
-		if GetImageExists(crab3attack3I) then DeleteImage(crab3attack3I)
-		if GetImageExists(crab5attack3I) then DeleteImage(crab5attack3I)
+		//if GetImageExists(crab3attack3I) then DeleteImage(crab3attack3I)
+		//if GetImageExists(crab5attack3I) then DeleteImage(crab5attack3I)
 		
 		cLength = loadedCrabSprites.length
 		for i = 0 to cLength
@@ -1570,5 +1506,78 @@ AddSpriteAnimationFrame(crab1, crab1start1I)	//1
 	AddSpriteAnimationFrame(crab1, crab1jump1I)	//11
 	AddSpriteAnimationFrame(crab1, crab1jump2I)
 
+
+
+#constant crab3start1I 141
+#constant crab3start2I 142
+#constant crab3walk1I 143
+#constant crab3walk2I 144
+#constant crab3walk3I 145
+#constant crab3walk4I 146
+#constant crab3walk5I 147
+#constant crab3walk6I 148
+#constant crab3walk7I 149
+#constant crab3walk8I 150
+#constant crab3jump1I 151
+#constant crab3jump2I 152
+#constant crab3death1I 153
+#constant crab3death2I 154
+#constant crab3skid1I 155
+#constant crab3skid2I 156
+#constant crab3skid3I 157
+
+#constant crab4start1I 161
+#constant crab4start2I 162
+#constant crab4walk1I 163
+#constant crab4walk2I 164
+#constant crab4walk3I 165
+#constant crab4walk4I 166
+#constant crab4walk5I 167
+#constant crab4walk6I 168
+#constant crab4walk7I 169
+#constant crab4walk8I 170
+#constant crab4jump1I 171
+#constant crab4jump2I 172
+#constant crab4death1I 173
+#constant crab4death2I 174
+#constant crab4skid1I 175
+#constant crab4skid2I 176
+#constant crab4skid3I 177
+
+#constant crab5start1I 181
+#constant crab5start2I 182
+#constant crab5walk1I 183
+#constant crab5walk2I 184
+#constant crab5walk3I 185
+#constant crab5walk4I 186
+#constant crab5walk5I 187
+#constant crab5walk6I 188
+#constant crab5walk7I 189
+#constant crab5walk8I 190
+#constant crab5jump1I 191
+#constant crab5jump2I 192
+#constant crab5death1I 193
+#constant crab5death2I 194
+#constant crab5skid1I 195
+#constant crab5skid2I 196
+#constant crab5skid3I 197
+
+#constant crab6start1I 201
+#constant crab6start2I 202
+#constant crab6walk1I 203
+#constant crab6walk2I 204
+#constant crab6walk3I 205
+#constant crab6walk4I 206
+#constant crab6walk5I 207
+#constant crab6walk6I 208
+#constant crab6walk7I 209
+#constant crab6walk8I 210
+#constant crab6jump1I 211
+#constant crab6jump2I 212
+#constant crab6death1I 213
+#constant crab6death2I 214
+#constant crab6skid1I 215
+#constant crab6skid2I 216
+#constant crab6skid3I 217
 
 */
