@@ -27,7 +27,7 @@ SC: BIFUa; 'My man', your 'pep talk' isn't working.
 RC: Well then, how about a quick battle to clear your mind?
 SC: BIFC; Wait- battle HERE? Like, with our claws??
 RC: No way, man. We'll each take our own planet, yeah? Survival style.
-BAFA; We use crashed meteor bits to send over attacks, and extra meteors too.
+BAFA; We use crashed meteor bits to send over attacks, and tracking meteors, too.
 First one to get hit three times loses. Simple, right?
 SC: BAFDb; I get it. Sure, let's blow off some steam!
 music fightA 1

@@ -82,7 +82,9 @@ global fpsr#
 global gameTime#
 
 global demo = 1
-global debug = 1
+global debug = 0
+
+if demo then SetWindowTitle("Space Crab VS Demo")
 
 CreateTweenSprite(tweenSprFadeIn, tweenFadeLen#)
 SetTweenSpriteAlpha(tweenSprFadeIn, 0, 255, TweenEaseIn1())
@@ -108,6 +110,9 @@ if dispH then SetSpriteAngle(split, 90)
 global appState = START
 
 gameTime# = 0
+
+//volumeM = 0
+//SetMusicSystemVolumeOGG(volumeM)
 
 function SaveGame()
 	SetFolder("/media")
@@ -140,17 +145,21 @@ function LoadGame()
 	CloseFile(3)
 endfunction
 
-LoadGame()
+
 //clearedChapter = 0
-curChapter = Max(curChapter, 1)
-curChapter = Min(curChapter, finalChapter)
 
 if debug
 	//curChapter = 2
-	//curScene = 1
+	//curScene = 4
 	//appState = STORY
-	//highestScene = 1
+	highestScene = 5
+else
+	LoadGame()
 endif
+
+curChapter = Max(curChapter, 1)
+curChapter = Min(curChapter, finalChapter)
+clearedChapter = (highestScene-1)/4
 
 do
 	fpsr# = 60.0/ScreenFPS()
@@ -188,9 +197,10 @@ do
 	    //Print(meteorTotal1)
 	    //Print(specialTimerAgainst2#)
 	    
-			//Print(GetDeviceBaseName())
-		//Print(GetImageMemoryUsage())
+		//Print(GetDeviceBaseName())
+		Print(highestScene)
 		
+		Print(GetImageMemoryUsage())
 		//Print(highestScene)
 	endif
     SyncG()
