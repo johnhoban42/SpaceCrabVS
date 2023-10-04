@@ -16,7 +16,7 @@ BAFDd; You should know, I don't take kindly to unplanned visitors.
 LW: BAFA1; Ah, well good thing I only need to do this once.
 BKFA1d; Space Crab is putting together a group called the Star Seekers!
 BIFA1d; We're going to explore space and solve it's many mysteries!
-BOFA1g; Do you want to join, and help us on our awesome quest?
+BOFA1g; Do you want to join and help us on our awesome quest?
 KC: BBFD; ...
 music retro5 1
 BIFL; BWAHAHAHA!!
