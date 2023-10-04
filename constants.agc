@@ -745,6 +745,8 @@ global storyTimer# = 0
 #constant PAUSE 3
 #constant RESULTS 4
 #constant STORY 5
+#constant SOUNDTEST 6
+#constant STATISTICS 7
 global spActive = 0 //Single Player active
 global aiActive = 0 //VS AI active
 global paused = 0	//Game is currently paused

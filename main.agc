@@ -6,6 +6,8 @@
 #include "results.agc"
 #include "ai.agc"
 #include "story.agc"
+#include "soundtest.agc"
+#include "statistics.agc"
 #company_name "rondovo"
 
 // Project: SpaceCrabVS 
@@ -82,7 +84,7 @@ global fpsr#
 global gameTime#
 
 global demo = 1
-global debug = 0
+global debug = 1
 
 if demo then SetWindowTitle("Space Crab VS Demo")
 
@@ -107,6 +109,8 @@ SetSpriteColor(split, 200, 200, 200, 255)
 SetSpriteMiddleScreenX(split)
 SetSpriteMiddleScreenY(split)
 if dispH then SetSpriteAngle(split, 90)
+SetSpriteVisible(split, 0)
+
 global appState = START
 
 gameTime# = 0
@@ -151,8 +155,8 @@ endfunction
 if debug
 	//curChapter = 2
 	//curScene = 4
-	//appState = STORY
-	highestScene = 5
+	//highestScene = 5
+	appState = START
 else
 	LoadGame()
 endif
@@ -182,6 +186,10 @@ do
 		appState = DoResults()
 	elseif appState = STORY
 		appState = DoStory()
+	elseif appState = SOUNDTEST
+		appState = DoSoundTest()
+	elseif appState = STATISTICS
+		appState = DoStatistics()
 	endif
 	
 	touch = GetRawFirstTouchEvent(1)
