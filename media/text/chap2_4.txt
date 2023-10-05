@@ -1,46 +1,49 @@
 bg 3
 music retro5
-LW: Who's there? I've got a re-visibility spell at the ready!
-NC: Not invisible. Only quiet.
-I will not be deceptive. Just quick.
-Stop what you are doing. Now.
-LW: I was only talking on the phone.
-If you don't have one, I'd be happy to learn a duplication spell and-
-NC: You know what I mean.
-Put an end to the Star Seekers.
-LW: Huh? What are you saying??
-NC: I am not here to judge what is right or wrong.
-Only to execute what is necessary for the future to survive.
-And the Star Seekers, as you are creating it, is incompatible with my mission.
-So I'll say it again. Put an end to the Star Seekers.
-LW: ...
-...No. I won't.
-I figured that there would be challenges.
-Maybe not this many, though...
-But if something is worth doing, it's worth doing all the way.
-I'm not even close to finishing my goal- I won't give up until I do!
-NC: I hear your words. But I don't approve.
-Battle me, if your will is as strong as your-
-RING RING
-Oh. It's my phone.
-(on phone) Yes. Yes, I told him.
-Later? Understood.
-BEEP
-We will not battle now. But later.
-LW: What? But I was just getting pumped up.
+LW: BOFDa; Who's there? I've got a re-visibility spell at the ready!
+NC: BAFA; Not invisible. Only quiet.
+BAFAc; I will not be deceptive. Just quick.
+BIFAe; Stop what you are doing. Now.
+LW: BDFIa; I was only talking on the phone.
+BCFA1d; If you don't have one, I'd be happy to learn a duplication spell and-
+NC: BAFB; You know what I mean.
+BAFAe; Put an end to the Star Seekers.
+LW: BMFC1d; Huh? What are you saying??
+NC: BAFAe; I am not here to judge what is right or wrong.
+BIFA; Only to execute what is necessary for the future to survive.
+BAFAe; And the Star Seekers, as you are creating it, is incompatible with my mission.
+BIFB; So I'll say it again. Put an end to the Star Seekers.
+LW: BMFJ1; ...
+BAFA1d; ...No. I won't.
+BDFB1; I figured that there would be challenges.
+BCFI; Maybe not this many, though...
+BAFB1; But if something is worth doing, it's worth doing all the way.
+BKFA1d; I'm not even close to finishing my goal- I won't give up until I do!
+NC: BAFA; I hear your words.
+BAFD; But I don't approve.
+BIFD; Battle me, if your will is as strong as your-
+se phone
+*ring*
+BAFA; Oh. It's my phone.
+BEFA; Yes. Yes, I told him.
+BEFA; Later? Understood.
+se phone
+*beep*
+BAFAe; We will not battle now. But later.
+LW: BBFE1d; What? But I was just getting pumped up.
 music fightB
-NC: We must wait, until the full Space Crab VS game releases.
-LW: Oh, I heard about that! More than 20 crabs will be in the full game, apparently.
-They all probably have their stories to tell, right?
-That's perfect! I hope we can get them ALL to join the Star Seekers.
-NC: You must understand that that is a grave mistake.
-There is no reason to create the Star Seekers - not when local multiplayer battles exist.
+NC: BAFA; We must wait, until the full Space Crab VS game releases.
+LW: BKFA1d; Oh, I heard about that! More than 20 crabs will be in the full game, apparently.
+BMFJ1a; They all probably have their own stories to tell, right?
+BLFJ1b; That's perfect! I hope we can get them ALL to join the Star Seekers.
+NC: BIFAc; You must understand that that is a grave mistake.
+BAFA; There is no reason to create the Star Seekers - not when local multiplayer battles exist.
 Between that, and multiple single player arcade modes, players will be busy enough as is.
-LW: We'll see when then game comes out. The Star Seekers will LIVE!
-NC: No.
+LW: BPFB1; We'll see when then game comes out. The Star Seekers will LIVE!
+NC: BAFAc; No.
 exit 2
-LW: Wait!
-I can't believe he got the last word in...
-Hey! You! The one reading my words!
-Make sure to wishlist Space Crab VS on Steam! The crab dream must live on!
-Until then, well, see you in a bit!
+LW: BPFS1; Wait!
+BAFU1; I can't believe I let him get the last word in...
+BPFD1a; Hey! You! The one reading my words!
+BKFB1; Make sure to wishlist Space Crab VS on Steam! The crab dream must live on!
+BAFJ1b; Until then, well, see you in a bit!

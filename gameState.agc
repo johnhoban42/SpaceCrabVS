@@ -679,6 +679,9 @@ function DeleteGameUI()
 	DeleteHalfExp(1)
 	DeleteHalfExp(2)
 	
+	SetParticlesVisible(par1spe1, 0)
+	SetParticlesVisible(par2spe1, 0)
+	
 	DeleteSprite(pauseButton)
 	DeleteSprite(playButton)
 	DeleteSprite(exitButton)
@@ -1243,7 +1246,7 @@ function ResumeGameAnimations()
 	//PlaySprite(expHolder2)
 endfunction
 
-function ShowSpecialAnimation(crabType, playerNum, fast)
+function ShowSpecialAnimation(crabType, crabAlt, playerNum, fast)
 	
 	fpsr# = 60.0/ScreenFPS()
 	
@@ -1288,10 +1291,10 @@ function ShowSpecialAnimation(crabType, playerNum, fast)
 		
 	next i
 	
-	if crabType = 3 or crabType = 5
+	if (crabType = 3 and crabAlt = 0) or (crabType = 5 and crabAlt = 0) or (crabType = 2 and crabAlt = 2)
 		SetFolder("/media/art")
-		LoadSprite(specialSprBacker1, "crab" + str(crabType) + "attack3.png")
-		LoadSprite(specialSprBacker2, "crab" + str(crabType) + "attack3.png")
+		LoadSprite(specialSprBacker1, "crab" + str(crabType) + AltStr(crabAlt) + "attack3.png")
+		LoadSprite(specialSprBacker2, "crab" + str(crabType) + AltStr(crabAlt) + "attack3.png")
 		SetSpriteAngle(specialSprBacker1, 180)
 		SetSpriteAngle(specialSprBacker2, 180)
 		SetSpriteDepth(specialSprBacker1, 3)
@@ -1345,8 +1348,11 @@ function ShowSpecialAnimation(crabType, playerNum, fast)
 		endif
 		SetTextDepth(i, 1)
 		SetTextSpacing(i, -20)
-		if crabType = 1 then SetTextString(i, "METEOR SHOWER")
-		if crabType = 2 then SetTextString(i, "CONJURE COMETS")
+		if crabType = 1 and crabAlt = 0 then SetTextString(i, "METEOR SHOWER")
+		if crabType = 1 and crabAlt = 2 then SetTextString(i, "METEOR EVIDENCE")
+		if crabType = 2 and crabAlt = 0 then SetTextString(i, "CONJURE COMETS")
+		if crabType = 2 and crabAlt = 1 then SetTextString(i, "ROYAL ORDERS")
+		if crabType = 2 and crabAlt = 2 then SetTextString(i, "METEOR MATH")
 		if crabType = 3 then SetTextString(i, "ORBITAL NIGHTMARE")
 		if crabType = 4 then SetTextString(i, "PARTY TIME!")
 		if crabType = 5 then SetTextString(i, "FAST FOWARD")
@@ -1371,7 +1377,7 @@ function ShowSpecialAnimation(crabType, playerNum, fast)
 		SetTextVisible(specialSprFront2, 0)
 		SetTextSize(specialSprFront1, GetTextSize(specialSprFront2) + 20)
 		SetTextY(specialSprFront1, h-20-GetTextSize(specialSprFront2))
-		if crabType = 3 or crabType = 5
+		if (crabType = 3 and crabAlt = 0) or (crabType = 5 and crabAlt = 0) or (crabType = 2 and crabAlt = 2)
 			SetSpriteFlip(specialSprBacker1, 0, 1)
 			SetSpriteMiddleScreen(specialSprFront1)
 			SetSpriteMiddleScreen(specialSprBack1)
@@ -1402,7 +1408,7 @@ function ShowSpecialAnimation(crabType, playerNum, fast)
 		
 		if i = iEnd*2/3 then PlaySoundR(specialExitS, volumeSE)
 		
-		if crabType = 1 or crabType = 2 or crabType = 4 or crabType = 6
+		if crabType = 1 or (crabType = 2 and crabAlt <> 2) or crabType = 4 or crabType = 6
 			/*
 			if crabType <> 2
 				IncSpriteXFloat(specialSprFront1, -1.2*speed)
@@ -1441,7 +1447,7 @@ function ShowSpecialAnimation(crabType, playerNum, fast)
 		endif
 		
 		//Top crab & Chrono crab
-		if crabType = 3 or crabType = 5
+		if (crabType = 3 and crabAlt = 0) or (crabType = 5 and crabAlt = 0) or (crabType = 2 and crabAlt = 2)
 			if i = 1
 				if dispH = 0
 					DrawPolar1(specialSprFront1, 0, 270)
@@ -1497,7 +1503,8 @@ function ShowSpecialAnimation(crabType, playerNum, fast)
 			endif
 			
 			//Goes around once for top, 3 times for chrono
-			for j = 3 to crabType
+			for j = 2 to crabType
+				//TODO: Make this display right
 				IncSpriteAngle(specialSprFront1, -1*fpsr# - i/(25.0*fpsr#))
 				IncSpriteAngle(specialSprFront2, -1*fpsr# - i/(25.0*fpsr#))
 				IncSpriteAngle(specialSprBack1, 1.5*fpsr# + i/(25.0*fpsr#))
@@ -1648,6 +1655,7 @@ function ActivateMeteorParticles(mType, spr, gameNum)
 		ResetParticleCount (par)
 	else
 		//For wizard sparkles
+		SetParticlesVisible(par, 1)
 	    SetParticlesActive(par, 1)
 		ResetParticleCount(par)
 		SetParticlesMax(par, 480)

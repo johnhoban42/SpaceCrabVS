@@ -6,6 +6,8 @@
 #include "results.agc"
 #include "ai.agc"
 #include "story.agc"
+#include "soundtest.agc"
+#include "statistics.agc"
 #company_name "rondovo"
 
 // Project: SpaceCrabVS 
@@ -84,6 +86,8 @@ global gameTime#
 global demo = 1
 global debug = 1
 
+if demo then SetWindowTitle("Space Crab VS Demo")
+
 CreateTweenSprite(tweenSprFadeIn, tweenFadeLen#)
 SetTweenSpriteAlpha(tweenSprFadeIn, 0, 255, TweenEaseIn1())
 CreateTweenSprite(tweenSprFadeOut, tweenFadeLen#)
@@ -105,9 +109,14 @@ SetSpriteColor(split, 200, 200, 200, 255)
 SetSpriteMiddleScreenX(split)
 SetSpriteMiddleScreenY(split)
 if dispH then SetSpriteAngle(split, 90)
+SetSpriteVisible(split, 0)
+
 global appState = START
 
 gameTime# = 0
+
+//volumeM = 0
+//SetMusicSystemVolumeOGG(volumeM)
 
 function SaveGame()
 	SetFolder("/media")
@@ -140,17 +149,21 @@ function LoadGame()
 	CloseFile(3)
 endfunction
 
-LoadGame()
+
 //clearedChapter = 0
-curChapter = Max(curChapter, 1)
-curChapter = Min(curChapter, finalChapter)
 
 if debug
 	//curChapter = 2
-	//curScene = 1
-	//appState = STORY
-	//highestScene = 1
+	//curScene = 4
+	//highestScene = 5
+	appState = START
+else
+	LoadGame()
 endif
+
+curChapter = Max(curChapter, 1)
+curChapter = Min(curChapter, finalChapter)
+clearedChapter = (highestScene-1)/4
 
 do
 	fpsr# = 60.0/ScreenFPS()
@@ -173,6 +186,10 @@ do
 		appState = DoResults()
 	elseif appState = STORY
 		appState = DoStory()
+	elseif appState = SOUNDTEST
+		appState = DoSoundTest()
+	elseif appState = STATISTICS
+		appState = DoStatistics()
 	endif
 	
 	touch = GetRawFirstTouchEvent(1)
@@ -188,9 +205,10 @@ do
 	    //Print(meteorTotal1)
 	    //Print(specialTimerAgainst2#)
 	    
-			//Print(GetDeviceBaseName())
-		//Print(GetImageMemoryUsage())
+		//Print(GetDeviceBaseName())
+		Print(highestScene)
 		
+		Print(GetImageMemoryUsage())
 		//Print(highestScene)
 	endif
     SyncG()

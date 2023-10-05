@@ -393,7 +393,8 @@ function DoStart()
 		firstFight = 0
 		//To do: take this to the character selection screen, figure out if first fight should play
 		crab1Type = 4
-		crab2Type = 4
+		crab2Type = 2
+		crab2Alt = 2
 		state = GAME
 	endif
 	

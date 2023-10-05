@@ -27,7 +27,7 @@ SC: BIFUa; 'My man', your 'pep talk' isn't working.
 RC: Well then, how about a quick battle to clear your mind?
 SC: BIFC; Wait- battle HERE? Like, with our claws??
 RC: No way, man. We'll each take our own planet, yeah? Survival style.
-BAFA; We use crashed meteor bits to send over attacks, and extra meteors too.
+BAFA; We use crashed meteor bits to send over attacks, and tracking meteors, too.
 First one to get hit three times loses. Simple, right?
 SC: BAFDb; I get it. Sure, let's blow off some steam!
 music fightA 1
@@ -42,7 +42,7 @@ BCFIa; ...More than once.
 RC: BAFW; No way, you're THAT Space Crab?! Every crab out there has heard of you!
 BAFSa; You must have seen everything in the stars by now! 
 SC: BIFAb; Seen everything? Not even close.
-BIFA; There are so many wonders out in space- new discoveries, new challanges, new music...
+BIFA; There are so many wonders out in space- new discoveries, new challenges, new music...
 BAFO; I've never had a problem I couldn't solve by seeking out the stars.
 RC: BHFPb; ...DUDE.
 That was downright poetic, man!
@@ -56,7 +56,7 @@ SC: BCFU; Woah, slow down. The biggest in the galaxy? I'm not sure about that.
 BCFI; (That would be pretty cool, though.)
 BAFA; A posse, huh? To explore the galaxy together?
 BAFAe; I'm a fan of that idea.
-BAFDc; Sure, let's do it! Today is the day that the Star Seekers oficially form!
+BAFDc; Sure, let's do it! Today is the day that the Star Seekers officially form!
 BPFB; Our mission: to explore the cosmos and discover it's infinite wonders.
 RC: BAFT; Outrageous, dude! I'll go around and see who wants to join the galaxy's biggest party!
 exit 2

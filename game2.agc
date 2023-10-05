@@ -505,13 +505,13 @@ function DoGame2()
 	//Process AI meteor and special actions
 	aiSpecial = 0
 	if aiActive = 1 then aiSpecial = AISpecial()
-	if expTotal2 >= meteorCost2 and hit1Timer# <= 0  and (ButtonMultitouchEnabled(meteorButton2) or AISpecial = 1)
+	if expTotal2 >= meteorCost2 and hit1Timer# <= 0  and ((ButtonMultitouchEnabled(meteorButton2) and aiActive = 0) or AISpecial = 1)
 		SendMeteorFrom2()
 		//Send info to AI when Special Attack has occurred
 		if aiActive = 1 then AIResetSpecial(1)
 	endif
 	
-	if expTotal2 = specialCost2 and hit1Timer# <= 0 and (ButtonMultitouchEnabled(specialButton2) or AISpecial = 2)
+	if expTotal2 = specialCost2 and hit1Timer# <= 0 and ((ButtonMultitouchEnabled(specialButton2) and aiActive = 0) or AISpecial = 2)
 		SendSpecial2()
 		//Send info to AI when Special Attack has occurred
 		if aiActive = 1 then AIResetSpecial(2)
@@ -790,7 +790,7 @@ endfunction
 
 function SendSpecial2()
 	
-	ShowSpecialAnimation(crab2Type, 2, special2Used)
+	ShowSpecialAnimation(crab2Type, crab2Alt, 2, special2Used)
 	special2Used = 1
 	
 	newMetS as meteor

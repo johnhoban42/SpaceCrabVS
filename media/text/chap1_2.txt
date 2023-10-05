@@ -2,7 +2,7 @@ bg 2
 music retro3 1
 LW: BIFDb; Space Crab! Space Crab! I'm glad I found you!
 SC: BAFA; Oh, Ladder Wizard! I actually wanted to ask you something...
-LW: Later, later! Oh boy, oh boy, you've GOT to hear this!
+LW: Later, later! Boy, oh boy, you've GOT to hear this!
 SC: BBFEb; Uh, sure, go ahead.
 LW: BAFAc; Well, I thought, the hills in the Crab Nebula, right?
 BAFDa; Meteors sneak up behind them, and always catch us!

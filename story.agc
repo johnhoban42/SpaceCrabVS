@@ -776,10 +776,10 @@ function StartEndScreen()
 	
 	SetFolder("/media/ui")
 	
-	LoadSpriteExpress(playButton, "rightarrow.png", 265, 265, 0, 0, 4)
-	if dispH then SetSpriteSizeSquare(playButton, 220)
+	LoadSpriteExpress(playButton, "storycontinue.png", 842/2.1, 317/2.1, 0, 0, 4)
+	//if dispH then SetSpriteSizeSquare(playButton, 220)
 	SetSpriteMiddleScreen(playButton)
-	IncSpriteY(playButton, 120)
+	IncSpriteY(playButton, 80)
 	if dispH = 0 then IncSpriteY(playButton, 40)
 	if dispH = 0 then IncSpriteX(playButton, 60)
 	SetSpriteColorAlpha(playButton, 0)

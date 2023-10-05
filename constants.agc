@@ -589,7 +589,7 @@ global jumpPartI as Integer[6]
 global oldSong = 0
 
 //Volume for music and sound effects
-global volumeM = 0
+global volumeM = 100
 global volumeSE = 40
 
 SetMusicSystemVolumeOGG(volumeM)
@@ -682,7 +682,7 @@ SetMusicSystemVolumeOGG(volumeM)
 global curChapter = 1
 global curScene = 0
 global highestScene = 0
-global clearedChapter = 2
+global clearedChapter = 0
 #constant finalChapter 2
 global lineSkipTo = 0
 global storyActive = 0
@@ -745,6 +745,8 @@ global storyTimer# = 0
 #constant PAUSE 3
 #constant RESULTS 4
 #constant STORY 5
+#constant SOUNDTEST 6
+#constant STATISTICS 7
 global spActive = 0 //Single Player active
 global aiActive = 0 //VS AI active
 global paused = 0	//Game is currently paused
@@ -932,6 +934,7 @@ function PlayMusicOGGSP(songID, loopYN)
 	endif
 		
 	PlayMusicOGG(songID, loopYN)
+	SetMusicVolumeOGG(songID, volumeM)
 	SetFolder("/" + oldFolder$)
 endfunction
 

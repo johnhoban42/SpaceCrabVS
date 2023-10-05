@@ -783,7 +783,7 @@ endfunction
 
 function SendSpecial1()
 	
-	ShowSpecialAnimation(crab1Type, 1, special1Used)
+	ShowSpecialAnimation(crab1Type, crab1Alt, 1, special1Used)
 	special1Used = 1
 	
 	newMetS as meteor

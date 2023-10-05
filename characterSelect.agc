@@ -214,6 +214,15 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 		
 		SetSceneImages(1)
 		
+		SetFolder("/media/ui")
+		
+		if Mod(highestScene, 4) = 1
+			SetSpriteImage(csc.sprReady, LoadImage("storystart.png"))
+		else
+			SetSpriteImage(csc.sprReady, LoadImage("storycontinue.png"))
+		endif
+		trashBag.insert(GetSpriteImageID(csc.sprReady))
+		
 		SetFolder("/media")
 	
 		if dispH
@@ -484,9 +493,9 @@ function SelectCrab(csc ref as CharacterSelectController)
 	SetSpriteVisible(csc.sprLeftArrow, 0)
 	SetSpriteVisible(csc.sprRightArrow, 0)
 	
-	PlayTweenSprite(tweenSprFadeOut, csc.sprReady, 0)
+	if spType <> STORYMODE then PlayTweenSprite(tweenSprFadeOut, csc.sprReady, 0)
 	if spType <> STORYMODE then PlayTweenText(tweenTxtFadeIn, csc.txtReady, 0)
-	PlaySprite(csc.sprReady, 12, 1, 1, 6)
+	if spType <> STORYMODE then PlaySprite(csc.sprReady, 12, 1, 1, 6)
 	
 	
 	//Text gets bigger to show that a selection has been locked in
@@ -560,7 +569,7 @@ function DoCharacterSelectController(csc ref as CharacterSelectController)
 		//The 1-crab view
 		elseif csc.stage = 2
 			// Ready button
-			if Button(csc.sprReady) and GetSpriteVisible(csc.sprReady)
+			if (Button(csc.sprReady) or (inputSelect and selectTarget = 0 and GetSpriteVisible(SPR_SCENE1) = 0)) and GetSpriteVisible(csc.sprReady) 
 				PlaySoundR(chooseS, 100)
 				SelectCrab(csc)
 				//PingColor(GetSpriteMiddleX(csc.sprCrabs+csc.crabSelected), GetSpriteMiddleY(csc.sprCrabs+csc.crabSelected), 400, 255, 100, 100, 50)
@@ -719,7 +728,7 @@ function DoCharacterSelect()
 	
 	//Going to the story mode!
 	if csc1.ready and spActive
-		if ButtonMultitouchEnabled(csc1.sprReady) and GetSpriteVisible(csc1.sprReady) then curScene = Mod(highestScene, 4)
+		if ButtonMultitouchEnabled(csc1.sprReady) and GetSpriteVisible(csc1.sprReady) then curScene = Mod(highestScene-1, 4)+1
 		spActive = 1
 		spType = STORYMODE
 		state = STORY
