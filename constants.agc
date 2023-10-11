@@ -45,6 +45,7 @@ Crab types (internal):
 
 global inputSelect = 0
 global inputExit = 0
+global inputSkip = 0
 global inputLeft = 0
 global inputRight = 0
 global inputUp = 0
@@ -384,7 +385,6 @@ global met3CD2# = 0 //400
 #constant meteorTractorI 71
 
 #constant boarderI 72
-#constant ufoI 73
 #constant clockI 74
 #constant clockMinI 75
 #constant clockHourI 76
@@ -471,8 +471,8 @@ global planetVarI as Integer[planetITotalMax]
 #constant warpI15 445
 #constant warpI16 446
 
-#constant jumpPartI1 447 //447 - 452
-global jumpPartI as Integer[6]
+#constant jumpPartI1 601		//J
+global jumpPartI as Integer[6, 4]
 
 #constant attackPartI 453
 #constant attackPartInvertI 454
@@ -492,6 +492,18 @@ global jumpPartI as Integer[6]
 #constant logoI 471
 #constant logoDemoI 472
 #constant logoFruitI 473
+
+#constant mAlt1I 481
+#constant mAlt2I 482
+#constant mAlt3I 483
+#constant mAlt4I 484
+#constant mAlt5I 485
+#constant mAlt6I 486
+#constant mAlt7I 487
+#constant mAlt8I 488
+#constant mAlt9I 489
+
+#constant mAlt2aI 490
 
 //#constant planetVar1I 51
 //#constant planetVar2I 52
@@ -554,6 +566,7 @@ global jumpPartI as Integer[6]
 #constant fruitS 27
 #constant fwipS 28
 
+#constant kingSpellS 29
 
 
 //Music Indexes
@@ -590,9 +603,9 @@ global oldSong = 0
 
 //Volume for music and sound effects
 global volumeM = 100
-global volumeSE = 40
+global volumeSE = 100
 
-SetMusicSystemVolumeOGG(volumeM)
+//SetMusicSystemVolumeOGG(volumeM)
 
 //Start screen sprites 
 #constant SPR_TITLE 200 
@@ -610,6 +623,9 @@ SetMusicSystemVolumeOGG(volumeM)
 #constant SPR_CLASSIC 215
 #constant SPR_STORY_START 216
 #constant TXT_ALONE 216
+#constant SPR_CHALLENGE 217
+
+
 
 
 //Different Crab buttons for the single player mode
@@ -677,7 +693,9 @@ SetMusicSystemVolumeOGG(volumeM)
 #constant SPR_CRAB2_FACE 615
 #constant SPR_CRAB2_COSTUME 616
 
-
+//Settings Sprites
+#constant SPR_VOLUME 801
+#constant SPR_VOLUME_SLIDER 802
 
 global curChapter = 1
 global curScene = 0
@@ -756,6 +774,7 @@ global fruitMode = 0
 #constant MIRRORMODE 1
 #constant CLASSIC 2
 #constant STORYMODE 3
+#constant CHALLENGEMODE 4
 
 global fruitUnlock# = -300
 
@@ -809,6 +828,7 @@ function LoadBaseSounds()
 		LoadSoundOGG(ufoS, "ufo.ogg")
 		LoadSoundOGG(wizardSpell1S, "wizardSpell1.ogg")
 		LoadSoundOGG(wizardSpell2S, "wizardSpell2.ogg")
+		LoadSoundOGG(kingSpellS, "kingSpell.ogg")
 		LoadSoundOGG(ninjaStarS, "ninjaStar.ogg")
 	endif
 	
@@ -841,6 +861,7 @@ function LoadBaseSounds()
 		LoadMusicOGG(ufoS, "ufo.ogg")
 		LoadMusicOGG(wizardSpell1S, "wizardSpell1.ogg")
 		LoadMusicOGG(wizardSpell2S, "wizardSpell2.ogg")
+		LoadMusicOGG(kingSpellS, "kingSpell.ogg")
 		LoadMusicOGG(ninjaStarS, "ninjaStar.ogg")
 	endif
 			
@@ -966,6 +987,8 @@ function PlayMusicOGGSPStr(str$, loopYN)
 	if str$ = "retro7" then id = retro7M
 	if str$ = "retro8" then id = retro8M
 	
+	if str$ = "" then StopGamePlayMusic()
+	
 	if id <> 0 and GetMusicPlayingOGGSP(id) = 0
 		StopGamePlayMusic()
 		PlayMusicOGGSP(id, loopYN)
@@ -978,8 +1001,8 @@ function LoadJumpSounds()
 	if GetMusicExistsOGG(jump2S) then DeleteMusicOGG(jump2S)
 	
 	SetFolder("/media/sounds")
-	LoadMusicOGG(jump1S, "jump" + str(crab1Type) + ".ogg")
-	LoadMusicOGG(jump2S, "jump" + str(crab2Type) + ".ogg")
+	LoadMusicOGG(jump1S, "jump" + str(crab1Type) + AltStr(crab1Alt) + ".ogg")
+	LoadMusicOGG(jump2S, "jump" + str(crab2Type) + AltStr(crab2Alt) + ".ogg")
 endfunction
 
 function LoadBaseImages()
@@ -1033,8 +1056,10 @@ function LoadBaseImages()
 	LoadImage(crabpingI, "crabPing.png")
 	
 	for i = 1 to 6
-		jumpPartI[i] = jumpPartI1 + i - 1
-		LoadImage(jumpPartI[i], "jumpP" + str(i) + ".png")
+		for j = 0 to 3
+			jumpPartI[i, j] = jumpPartI1 - 1 + i + j*10
+			if GetFileExists("jumpP" + str(i) + AltStr(j) + ".png") then LoadImage(jumpPartI[i, j], "jumpP" + str(i) + AltStr(j) + ".png")
+		next j
 	next i
 	
 	LoadImage(attackPartI, "attackParticle.png")
@@ -1069,6 +1094,17 @@ function LoadBaseImages()
 	LoadImage(flameI3, "flame3.png")
 	LoadImage(flameI4, "flame4.png")
 	
+	LoadImage(mAlt1I, "mAlt1.png")
+	LoadImage(mAlt2I, "mAlt2.png")
+	LoadImage(mAlt3I, "mAlt3.png")
+	LoadImage(mAlt4I, "mAlt4.png")
+	LoadImage(mAlt5I, "mAlt5.png")
+	LoadImage(mAlt6I, "mAlt6.png")
+	LoadImage(mAlt7I, "mAlt7.png")
+	LoadImage(mAlt8I, "mAlt8.png")
+	LoadImage(mAlt9I, "mAlt9.png")
+	
+	LoadImage(mAlt2aI, "mAlt2a.png")
 			
 	SetFolder("/media/ui")
 	
@@ -1089,32 +1125,7 @@ function LoadBaseImages()
 	LoadImage(expBarI6, "expBar6.png")
 	
 	LoadImage(boarderI, "boader.png")
-	LoadImage(ufoI, "spaceNed.png")
 	LoadImage(ninjaStarI, "ninjaStar.png")
-	
-endfunction
-
-function LoadStartImages(loading)
-	
-	if loading
-		//Loading all of the images
-		
-		SetFolder("/media/envi")
-		//LoadImage(bg4I, "bg4.png")
-		
-		for i = 1 to 16
-			//LoadImage(warpI1 - 1 + i, "hyperspacecolorized" + str(i) + ".png")
-		next i
-		
-	else
-		//Deleting all of the images
-		
-		//DeleteImage(bg4I)
-		for i = 1 to 16
-			//DeleteImage(warpI1 - 1 + i)
-		next i
-		
-	endif
 	
 endfunction
 
@@ -1414,7 +1425,7 @@ function SetStoryShortStrings()
 	chapterDesc[1] = "After an unfortunate event," + chr(10) + "a chance encounter leads" + chr(10) + "Space Crab down a path" + chr(10) + "he never expected!"
 	
 	chapterTitle[2] = "The Strategy"
-	chapterDesc[2] = "To fill out the founding" + chr(10) + "members of the Star Seekers," + chr(10) + "Ladder Wizard seeks the most" + chr(10) + "powerful crabs he knows."
+	chapterDesc[2] = "To fill out the founding" + chr(10) + "members of the Star Seekers," + chr(10) + "Ladder Wizard seeks the most" + chr(10) + "powerful crabs he can find."
 	
 	chapterTitle[3] = "The Fan"
 	chapterDesc[3] = "Top Crab shouldn't" + chr(10) + "be here :P" + chr(10) + "This part's not done yet." + chr(10) + "Luckily, no demo" + chr(10) + "should see this."

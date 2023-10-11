@@ -545,10 +545,11 @@ function PlaySoundR(sound, vol)
 	if GetSoundExists(sound) or GetMusicExistsOGG(sound)
 		if GetDeviceBaseName() <> "android"
 			//The normal case, for normal devices
-			PlaySound(sound, vol)
+			PlaySound(sound, vol*volumeSE/100.0)
 		else
 			//The strange case for WEIRD and PSYCHO android devices
 			PlayMusicOGG(sound, 0)
+			SetMusicVolumeOGG(sound, volumeSE)
 		endif
 	endif
 	
@@ -818,7 +819,7 @@ function PingCrab(x, y, size)
 	endif
 	
 	rnd = Random(0, 4)
-	PlaySoundR(exp1S + rnd, volumeSE/10)
+	PlaySoundR(exp1S + rnd, 40/10)
 
 endfunction
 
@@ -863,7 +864,7 @@ function PingFF()
 	endif
 	
 	rnd = Random(0, 4)
-	PlaySoundR(exp1S + rnd, volumeSE/10)
+	PlaySoundR(exp1S + rnd, 40/10)
 
 endfunction
 

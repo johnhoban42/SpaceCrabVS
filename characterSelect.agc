@@ -352,7 +352,7 @@ function InitCharacterSelect()
 	
 	PlayMusicOGGSP(characterMusic, 1)
 	PlayMusicOGGSP(fireMusic, 1)
-	SetMusicVolumeOGG(fireMusic, 20)
+	SetMusicVolumeOGG(fireMusic, 20*volumeM/100)
 	
 	characterSelectStateInitialized = 1
 	
@@ -558,7 +558,7 @@ function DoCharacterSelectController(csc ref as CharacterSelectController)
 					next j
 					SetVisibleCharacterUI(2, csc)
 					csc.crabSelected = i-1
-					PlaySoundR(arrowS, 100)
+					PlaySoundR(arrowS, 40)
 					ChangeCrabs(csc, 1, 1)
 					csc.stage = 2
 					i = NUM_CRABS
@@ -710,7 +710,7 @@ function DoCharacterSelect()
 	//Spinning the main menu button
 	IncSpriteAngle(SPR_MENU_BACK, 1*fpsr#)
 	
-	if ButtonMultitouchEnabled(SPR_MENU_BACK)
+	if ButtonMultitouchEnabled(SPR_MENU_BACK) or inputExit
 		state = START
 		spActive = 0
 		spType = 0
@@ -805,6 +805,7 @@ function ExitCharacterSelect()
 	characterSelectStateInitialized = 0
 	
 	ClearMultiTouch()
+	EmptyTrashBag()
 	
 endfunction
 

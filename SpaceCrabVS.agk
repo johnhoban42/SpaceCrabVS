@@ -64,33 +64,17 @@ FILE_11=soundtest.agc;-1
 FILE_12=statistics.agc;-1
 
 [files]
-<<<<<<< Updated upstream
-FILE_NAME_0=0;ai.agc;0;0
-FILE_NAME_1=0;characterSelect.agc;209;1
-FILE_NAME_2=0;constants.agc;76;2
-FILE_NAME_3=0;game1.agc;1004;3
-FILE_NAME_4=0;game2.agc;1010;4
-FILE_NAME_5=0;gameState.agc;928;5
-FILE_NAME_6=0;main.agc;43;6
-FILE_NAME_7=0;myLib.agc;127;7
-FILE_NAME_8=0;results.agc;8;8
-FILE_NAME_9=0;start.agc;369;9
-FILE_NAME_10=1;story.agc;509;10
-=======
-FILE_NAME_0=0;ai.agc;18;0
-FILE_NAME_1=0;characterSelect.agc;251;1
-FILE_NAME_2=0;constants.agc;683;2
-FILE_NAME_3=0;game1.agc;508;3
-FILE_NAME_4=0;game2.agc;507;4
-FILE_NAME_5=0;gameState.agc;691;5
-FILE_NAME_6=0;main.agc;8;6
-FILE_NAME_7=0;myLib.agc;545;7
-FILE_NAME_8=0;results.agc;224;8
-FILE_NAME_9=0;start.agc;104;9
-FILE_NAME_10=0;story.agc;790;10
-FILE_NAME_11=0;soundtest.agc;0;11
-FILE_NAME_12=1;statistics.agc;0;12
->>>>>>> Stashed changes
+FILE_NAME_0=0;ai.agc;55;0
+FILE_NAME_1=1;characterSelect.agc;827;1
+FILE_NAME_2=0;constants.agc;1129;2
+FILE_NAME_3=0;game1.agc;515;3
+FILE_NAME_4=0;game2.agc;25;4
+FILE_NAME_5=0;gameState.agc;10;5
+FILE_NAME_6=0;main.agc;119;6
+FILE_NAME_7=0;myLib.agc;197;7
+FILE_NAME_8=0;results.agc;208;8
+FILE_NAME_9=0;start.agc;460;9
+FILE_NAME_10=0;story.agc;558;10
 
 [watchvariables]
 watch_variable=@Version;

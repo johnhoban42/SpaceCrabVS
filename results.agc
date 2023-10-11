@@ -227,7 +227,7 @@ function DoResultsController(rc ref as ResultsController)
 		SetSpriteVisible(rc.sprCrabLose, 1)
 		SetTextVisible(rc.txtCrabMsg, 1)
 		PlayTweenSprite(rc.twnMyCrab, rc.twnMyCrab, 0)
-		PlaySoundR(chooseS, volumeSE)
+		PlaySoundR(chooseS, 40)
 		if GetSpriteExists(coverS) then DeleteSprite(coverS)
 	endif
 		

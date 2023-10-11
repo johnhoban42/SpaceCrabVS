@@ -70,8 +70,13 @@ UseNewDefaultFonts( 1 )
 
 SetVSync(1)
 
+global demo = 1
+global debug = 0
+
+if demo then SetWindowTitle("Space Crab VS Demo")
+
 if deviceType = MOBILE then SetScissor(0, 0, w, h)
-if deviceType = DESKTOP then SetScissor(0, 0, w, h)
+if deviceType = DESKTOP and debug = 0 then SetScissor(0, 0, w, h)
 SetImmersiveMode(1)
 
 LoadBaseImages()
@@ -83,10 +88,7 @@ global fpsr#
 
 global gameTime#
 
-global demo = 1
-global debug = 1
 
-if demo then SetWindowTitle("Space Crab VS Demo")
 
 CreateTweenSprite(tweenSprFadeIn, tweenFadeLen#)
 SetTweenSpriteAlpha(tweenSprFadeIn, 0, 255, TweenEaseIn1())
@@ -114,6 +116,8 @@ SetSpriteVisible(split, 0)
 global appState = START
 
 gameTime# = 0
+
+
 
 //volumeM = 0
 //SetMusicSystemVolumeOGG(volumeM)
@@ -153,12 +157,13 @@ endfunction
 //clearedChapter = 0
 
 if debug
-	//curChapter = 2
+	curChapter = 2
 	//curScene = 4
-	//highestScene = 5
+	highestScene = 9
 	appState = START
 else
 	LoadGame()
+	if highestScene <= 0 then highestScene = 1
 endif
 
 curChapter = Max(curChapter, 1)
@@ -206,7 +211,6 @@ do
 	    //Print(specialTimerAgainst2#)
 	    
 		//Print(GetDeviceBaseName())
-		Print(highestScene)
 		
 		Print(GetImageMemoryUsage())
 		//Print(highestScene)
@@ -217,6 +221,7 @@ loop
 function DoInputs()
 	inputSelect = 0
 	inputExit = 0
+	inputSkip = 0
 	inputLeft = 0
 	inputRight = 0
 	inputUp = 0
@@ -227,6 +232,7 @@ function DoInputs()
 	
 	if GetRawKeyPressed(13) or GetRawKeyPressed(32) or GetRawKeyPressed(90) then inputSelect = 1
 	if GetRawKeyPressed(27) or GetRawKeyPressed(8) or GetRawKeyPressed(46) then inputExit = 1
+	if GetRawKeyState(17) then inputSkip = 1
 	if GetRawKeyPressed(37) or GetRawKeyPressed(65) then inputLeft = 1
 	if GetRawKeyPressed(39) or GetRawKeyPressed(68) then inputRight = 1
 	if GetRawKeyPressed(38) or GetRawKeyPressed(87) then inputUp = 1
