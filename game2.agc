@@ -161,7 +161,7 @@ function CreateGame2()
 	SetSpriteColor(meteorMarker2, 30, 100, 255, 255)
 	SetSpriteAngle(meteorMarker2, 180-180*dispH)
 	
-	LoadAnimatedSprite(specialButton2, "crab" + str(crab2Type)+ "special", 5)
+	LoadAnimatedSprite(specialButton2, "crab" + str(crab2Type) + AltStr(crab2Alt) + "special", 5)
 	SetSpriteFrame(specialButton2, 5)
 	SetSpriteSize(specialButton2, 100-25*dispH, 100-25*dispH)
 	SetSpritePosition(specialButton2, GetSpriteX(expHolder2)-10-GetSpriteWidth(specialButton2)+2 + 50, 10)
@@ -234,6 +234,13 @@ function DoGame2()
 	if specialTimerAgainst2# > 0 and crab1Type = 1
 		DrawPolar2(special1Ex1, 180 + ((specialTimerAgainst2# - 100)^2)/11, 0 + specialTimerAgainst2#)
 		SetSpriteAngle(special1Ex1, 180*dispH + 180 + sin(specialTimerAgainst2#*8)*10)
+		if dispH
+			if GetSpriteX(special1Ex1) < w/2
+				SetSpriteVisible(special1Ex1, 0)
+			else
+				SetSpriteVisible(special1Ex1, 1)
+			endif
+		endif
 	endif
 
 	//The Top Crab special
@@ -254,6 +261,7 @@ function DoGame2()
 			//Phase 5 (end)
 			inc planet2RotSpeed#, 2*planetSpeedUpRate#*fpsr#
 		endif
+		nudge2R# = 0
 		IncSpriteAngle(planet2, planet2RotSpeed#)
 		inc crab2Theta#, planet2RotSpeed#
 	endif
@@ -306,19 +314,19 @@ function DoGame2()
 			spr = special1Ex1
 			SetSpriteColorAlpha(spr, 255)
 			SetSpritePosition(spr, GetSpriteMiddleX(crab1)-GetSpriteWidth(spr)/2, GetSpriteMiddleY(crab1)-GetSpriteHeight(spr)/2)
-			PlaySoundR(ninjaStarS, volumeSE)
+			PlaySoundR(ninjaStarS, 40)
 		endif
 		if specialTimerAgainst2# < ninjaCrabTimeMax*4/5 and GetSpriteColorAlpha(special1Ex2) = 0
 			spr = special1Ex2
 			SetSpriteColorAlpha(spr, 255)
 			SetSpritePosition(spr, GetSpriteMiddleX(crab1)-GetSpriteWidth(spr)/2, GetSpriteMiddleY(crab1)-GetSpriteHeight(spr)/2)
-			PlaySoundR(ninjaStarS, volumeSE)
+			PlaySoundR(ninjaStarS, 40)
 		endif
 		if specialTimerAgainst2# < ninjaCrabTimeMax*3/5 and GetSpriteColorAlpha(special1Ex3) = 0
 			spr = special1Ex3
 			SetSpriteColorAlpha(spr, 255)
 			SetSpritePosition(spr, GetSpriteMiddleX(crab1)-GetSpriteWidth(spr)/2, GetSpriteMiddleY(crab1)-GetSpriteHeight(spr)/2)
-			PlaySoundR(ninjaStarS, volumeSE)
+			PlaySoundR(ninjaStarS, 40)
 		endif
 		
 		for i = special1Ex1 to special1Ex3
@@ -353,7 +361,7 @@ function DoGame2()
 		
 		buffer2 = 0
 		if crab2Turning = 0 and crab2Type <> 6
-			if spActive = 0 then PlaySoundR(turnS, volumeSE)
+			if spActive = 0 then PlaySoundR(turnS, 40)
 			if crab2Dir# > 0
 				crab2Turning = -1
 			else
@@ -367,7 +375,10 @@ function DoGame2()
 			if  Abs(crab2Dir#) < .7 or (crab2Turning * crab2Dir# > 0) or (Abs(crab2Dir#) < 1 and specialTimerAgainst2# > 0 and crab1Type = 5) or crab2Type = 6
 				//The crab leap code
 				//crab1Turning = -1*crab1Turning	//Still not sure if you should leap forwards or backwards
-				if spActive = 0 then PlayMusicOGG(jump2S, 0)
+				if spActive = 0
+					PlayMusicOGG(jump2S, 0)
+					SetMusicVolumeOGG(jump2S, 100*volumeSE/100)
+				endif
 				crab2JumpD# = crab2JumpDMax
 				if crab2Type <> 6
 					crab2Dir# = crab2Vel#*crab2Turning
@@ -379,7 +390,7 @@ function DoGame2()
 				ActivateJumpParticles(2)
 			else
 				//Crab has turned
-				if spActive = 0 then PlaySoundR(turnS, volumeSE)
+				if spActive = 0 then PlaySoundR(turnS, 40)
 			endif
 		endif
 		
@@ -497,11 +508,7 @@ function DoGame2()
 		
 		CreateMeteor(2, 3, 0)
 	endif
-		
-	UpdateMeteor2()
 	
-	//DrawPolar2(planet2, 0, 270)
-
 	//Process AI meteor and special actions
 	aiSpecial = 0
 	if aiActive = 1 then aiSpecial = AISpecial()
@@ -516,7 +523,11 @@ function DoGame2()
 		//Send info to AI when Special Attack has occurred
 		if aiActive = 1 then AIResetSpecial(2)
 	endif
+		
+	UpdateMeteor2()
 	
+	//DrawPolar2(planet2, 0, 270)
+
 	//Death is above so that the screen nudging code activates
 	hitSpr = CheckDeath2()
 	if GetRawKeyPressed(76) and debug then crab2Deaths = 2
@@ -704,8 +715,8 @@ function UpdateMeteor2()
 			
 			DeleteSprite(spr)
 			if getSpriteExists(spr+glowS) then DeleteSprite(spr + glowS)
-			if fruitMode = 0 then PlaySoundR(explodeS, volumeSE)
-			if fruitMode = 1 then PlaySoundR(fruitS, volumeSE)
+			if fruitMode = 0 then PlaySoundR(explodeS, 40)
+			if fruitMode = 1 then PlaySoundR(fruitS, 40)
 			
 			if meteorActive2[i].cat = 3 then DeleteSprite(spr + 10000)
 			//Meteor explosion goes here
@@ -800,11 +811,11 @@ function SendSpecial2()
 		specialTimerAgainst1# = spaceCrabTimeMax
 		
 		if GetSpriteExists(special2Ex1) = 0
-			CreateSpriteExpress(special2Ex1, 70, 70, -100, -100, 19)
-			SetSpriteImage(special2Ex1, ufoI)
+			SetFolder("/media/envi")
+			LoadSpriteExpress(special2Ex1, "spaceNed" + AltStr(crab2Alt) + ".png", 70, 70, -100, -100, 19)
 		endif
 		
-		PlaySoundR(ufoS, volumeSE)
+		PlaySoundR(ufoS, 40)
 		
 		angles as float[7] = [0, 51.43, 102.86, 154.29, 205.72, 257.15, 308.58]
 		angleOff = Random(1, 51)
@@ -820,14 +831,12 @@ function SendSpecial2()
 			SetSpriteSize(meteorSprNum, metSizeX, metSizeY)
 			SetSpriteColor(meteorSprNum, 235, 20, 20, 254)
 			SetSpriteDepth(meteorSprNum, 20)
-			AddMeteorAnimation(meteorSprNum)
+			AddMeteorAnimation(meteorSprNum, 0)
 			
 			CreateSprite(meteorSprNum + 10000, meteorTractorI)
 			SetSpriteSize(meteorSprNum + 10000, 1, 1000)
 			SetSpriteColor(meteorSprNum + 10000, 255, 20, 20, 30)
 			SetSpriteDepth(meteorSprNum + 10000, 30)
-			
-			CreateMeteorGlow(meteorSprNum)
 			
 			inc meteorSprNum, 1
 			
@@ -838,12 +847,15 @@ function SendSpecial2()
 		
 	elseif crab2Type = 2
 		//Ladder Wizard
-		
-		rnd = Random(1, 2)
-		if rnd = 1
-			PlaySoundR(wizardSpell1S, volumeSE)
+		if crab2Alt <> 1
+			rnd = Random(1, 2)
+			if rnd = 1
+				PlaySoundR(wizardSpell1S, 40)
+			else
+				PlaySoundR(wizardSpell2S, 40)
+			endif
 		else
-			PlaySoundR(wizardSpell2S, volumeSE)
+			PlaySoundR(kingSpellS, 40)
 		endif
 		
 		for j = 1 to 3
@@ -861,8 +873,7 @@ function SendSpecial2()
 				SetSpriteColor(meteorSprNum, 255, 120, 40, 254)
 				SetSpriteDepth(meteorSprNum, 20)
 				SetSpriteColorRandomBright(meteorSprNum)
-				AddMeteorAnimation(meteorSprNum)
-				CreateMeteorGlow(meteorSprNum)
+				AddMeteorAnimation(meteorSprNum, crab2Alt)
 				inc meteorSprNum, 1
 				meteorActive1.insert(newMetS)
 			next i
@@ -878,7 +889,6 @@ function SendSpecial2()
 	elseif crab2Type = 4
 		//Rave Crab
 		PlayMusicOGGSP(raveBass2, 1)
-		SetMusicVolumeOGG(raveBass2, 100)
 		
 		specialTimerAgainst1# = raveCrabTimeMax
 		if GetSpriteExists(special2Ex1) = 0

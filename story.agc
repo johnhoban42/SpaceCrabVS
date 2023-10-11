@@ -31,7 +31,8 @@ function InitStory()
 		SetSpriteMiddleScreenX(i)
 		SetSpriteY(i, h/2 + 20 - (i - SPR_TEXT_BOX)*(GetSpriteHeight(i) + 50))
 		if dispH then SetSpriteY(i, h - GetSpriteHeight(i) - 90 - (i - SPR_TEXT_BOX)*(GetSpriteHeight(i) + 30))
-			
+		FixSpriteToScreen(i, 1)
+		
 		CreateTweenSprite(i, .3)
 		if i > SPR_TEXT_BOX
 			SetTweenSpriteY(i, GetSpriteY(i) + (GetSpriteHeight(i) + 50), GetSpriteY(i), TweenEaseOut2())
@@ -49,6 +50,7 @@ function InitStory()
 		SetTextSpacing(i, -14)
 		SetTextColor(i, 0, 0, 0, 255)
 		CreateTweenText(i, .3)
+		FixTextToScreen(i, 1)
 		if i > storyText
 			SetTweenTextY(i, GetTextY(i) + (GetSpriteHeight(SPR_TEXT_BOX) + 20), GetTextY(i), TweenEaseOut2())
 			SetTextColorAlpha(i, 0)
@@ -70,7 +72,7 @@ function InitStory()
 	//Load the difference faces/bodies as animation frames, then set the frame for different faces
 	//Load the costume as it comes, use the body frame number to load the correct costume file string number
 	for i = SPR_CRAB1_BODY to SPR_CRAB2_COSTUME
-		CreateSpriteExpress(i, cSize, cSize, -cSize, GetSpriteY(SPR_TEXT_BOX) + GetSpriteHeight(SPR_TEXT_BOX) + 80, 5)
+		CreateSpriteExpress(i, cSize, cSize, -cSize*3, GetSpriteY(SPR_TEXT_BOX) + GetSpriteHeight(SPR_TEXT_BOX) + 80, 5)
 		if dispH then SetSpriteY(i, h - 20 - cSize)
 		if i < SPR_CRAB2_BODY then SetSpriteFlip(i, 1, 0)
 		//if i <= SPR_CRAB1_COSTUME then Set		
@@ -112,6 +114,7 @@ function InitStory()
 	//Just need to test that these tweens work!
 	
 	
+	
 	SetFolder("/media/sounds")
 	if GetDeviceBaseName() <> "android"
 		talk1S = LoadSoundOGG("talk1.ogg")
@@ -128,6 +131,7 @@ function InitStory()
 	if GetSpriteExists(bgGame1) then DeleteSprite(bgGame1)
 	if dispH = 0 then CreateSpriteExpress(bgGame1, h, h, -h/2, 0, 99)
 	if dispH then CreateSpriteExpress(bgGame1, w*1.2, w*1.2, -w*.1, -w*.6, 99)
+	FixSpriteToScreen(bgGame1, 1)
 	
 	storyTimer# = 0
 	
@@ -168,6 +172,7 @@ function InitResultsRetry()
 		IncSpriteY(exitButton, 250)
 		IncSpriteX(exitButton, -450)
 	endif
+	if spType = CHALLENGEMODE then SetSpriteVisible(exitButton, 0)
 	//IncSpriteY(exitButton, 280)
 
 	AddButton(playButton)
@@ -230,7 +235,13 @@ function DoStory()
 		
 		if ButtonMultitouchEnabled(playButton) or (inputSelect and selectTarget = 0)
 			inc lineSkipTo, -2
-			state = ShowScene(curChapter, curScene)
+			if spType = STORYMODE
+				state = ShowScene(curChapter, curScene)
+			else
+				SetupChallenge()
+				state = GAME
+				TransitionStart(Random(1,lastTranType))
+			endif
 			
 		elseif ButtonMultitouchEnabled(exitButton)
 			state = CHARACTER_SELECT
@@ -531,6 +542,7 @@ function ShowScene(chap, scene)
 					if GetFileExists("face" + str(crab1Type) + AltStr(crab1Alt) + face$ + ".png") = 0 then SetSpriteImage(SPR_CRAB2_FACE, LoadImageR("face" + face$ + ".png"))
 				elseif cosType = 4
 					//Posed costume
+					if GetFileExists("costume" + str(crab1Type) + AltStr(crab1Alt) + costume$ + ".png") = 0 then costume$ = ""
 					SetSpriteImage(SPR_CRAB1_COSTUME, LoadImageR("costume" + str(crab1Type) + AltStr(crab1Alt) + costume$ + ".png"))
 				else
 					//Blank costume
@@ -563,6 +575,7 @@ function ShowScene(chap, scene)
 					if GetFileExists("face" + str(crab2Type) + AltStr(crab2Alt) + face$ + ".png") = 0 then SetSpriteImage(SPR_CRAB2_FACE, LoadImageR("face" + face$ + ".png"))
 				elseif cosType = 4
 					//Posed costume
+					if GetFileExists("costume" + str(crab2Type) + AltStr(crab2Alt) + costume$ + ".png") = 0 then costume$ = ""
 					SetSpriteImage(SPR_CRAB2_COSTUME, LoadImageR("costume" + str(crab2Type) + AltStr(crab2Alt) + costume$ + ".png"))
 				else
 					//Blank costume
@@ -644,8 +657,8 @@ function ShowScene(chap, scene)
 		showPos = 1
 		lineNum = 0
 		
-		PlaySoundR(fwipS, volumeSE)
-		PlaySoundR(arrowS, volumeSE)
+		PlaySoundR(fwipS, 40)
+		PlaySoundR(arrowS, 40)
 		for i = SPR_TEXT_BOX to SPR_TEXT_BOX4
 			if boxNum >= i-SPR_TEXT_BOX then PlayTweenSprite(i, i, 0)
 			if boxNum = i-SPR_TEXT_BOX then SetSpriteColorAlpha(i, 255)
@@ -694,13 +707,20 @@ function ShowScene(chap, scene)
 				exit
 			endif
 			
+			if inputSkip
+				UpdateAllTweens(.2)
+				SetViewOffset(-5 + Random(0, 10), -5 + Random(0, 10))
+			else
+				SetViewOffset(0, 0)
+			endif
+			
 		    //Print(GetSpriteWidth(SPR_TEXT_BOX))
 		    //Print(GetSpriteHeight(SPR_TEXT_BOX))
 			
 			storyInput = 0
-			if GetPointerPressed() or inputSelect then storyInput = 1
+			if GetPointerPressed() or inputSelect or inputSkip then storyInput = 1
 			if GetTextCharColorAlpha(storyText, charSounded) = 255 and GetTextCharColorAlpha(storyText, Len(displayString$)-9) = 0
-				PlaySoundR(talk1S, volumeSE/(hurryUp/2+1))
+				PlaySoundR(talk1S, 40/(hurryUp/2+1))
 				inc charSounded, 1
 			endif
 			if storyInput
@@ -722,21 +742,21 @@ function ShowScene(chap, scene)
 		
 	endwhile
 	
-	endI = trashBag.length
-	for i = 1 to endI
-		if GetImageExists(trashBag[0]) then DeleteImage(trashBag[0])
-		trashBag.remove(0)
-	next i
+	SetViewOffset(0, 0)
+	
+	EmptyTrashBag()
 	if GetSoundExists(soundeffect) then DeleteSound(soundeffect)
 	
 	CloseFile(1)
 	
 endfunction state
 
-function SetStoryCrabSprites()
-	
-	
-	
+function EmptyTrashBag()
+	endI = trashBag.length
+	for i = 1 to endI
+		if GetImageExists(trashBag[0]) then DeleteImage(trashBag[0])
+		trashBag.remove(0)
+	next i
 endfunction
 
 function StartEndScreen()
@@ -785,7 +805,11 @@ function StartEndScreen()
 	SetSpriteColorAlpha(playButton, 0)
 	AddButton(playButton)
 	
-	LoadSpriteExpress(exitButton, "crabselect.png", 240, 240, 0, 0, 4)
+	if curScene = 5 and curChapter = finalChapter
+		LoadSpriteExpress(exitButton, "mainmenu.png", 240, 240, 0, 0, 4)
+	else
+		LoadSpriteExpress(exitButton, "crabselect.png", 240, 240, 0, 0, 4)
+	endif
 	if dispH then SetSpriteSizeSquare(exitButton, 180)
 	SetSpriteMiddleScreen(exitButton)
 	IncSpriteY(exitButton, 570)
@@ -794,6 +818,8 @@ function StartEndScreen()
 	if dispH then IncSpriteX(exitButton, -170)
 	SetSpriteColorAlpha(exitButton, 0)
 	AddButton(exitButton)
+	
+	
 	
 	//TODO - Play music sting for finishing
 	
@@ -807,7 +833,6 @@ function StartEndScreen()
 		IncSpriteY(exitButton, 300)
 		if dispH then IncSpriteY(exitButton, -110)
 		clearedChapter = Max(clearedChapter, curChapter)
-		curChapter = Min(curChapter + 1, finalChapter)
 		
 		PlayTweenText(TXT_RESULT1, TXT_RESULT1, 0)
 		PlayTweenText(TXT_RESULT2, TXT_RESULT2, 0)
@@ -850,18 +875,18 @@ function DoStoryEndScreen()
 		
 		if curScene < 5
 			if GetTextX(TXT_RESULT1) > w/2-10 and GetTextColorAlpha(TXT_RESULT1) <> 255
-				PlaySoundR(chooseS, volumeSE)
+				PlaySoundR(chooseS, 40)
 				SetTextColorAlpha(TXT_RESULT1, 255)
 			endif
 			if GetTextX(TXT_RESULT2) < w/2+10 and GetTextColorAlpha(TXT_RESULT2) <> 255
-				PlaySoundR(chooseS, volumeSE)
+				PlaySoundR(chooseS, 40)
 				SetTextColorAlpha(TXT_RESULT2, 255)
 			endif
 		else
 			//End of story scene
 			for i = TXT_RESULT1 to TXT_RESULT3
 				if GetTextSize(i) > 79 and GetTextColorAlpha(i) <> 255
-					PlaySoundR(chooseS, volumeSE)
+					PlaySoundR(chooseS, 40)
 					SetTextColorAlpha(i, 255)
 				endif
 			next i
@@ -893,7 +918,15 @@ function DoStoryEndScreen()
 		if ((inputSelect and curScene < 5 and selectTarget = 0) or (ButtonMultitouchEnabled(playButton))) and GetSpriteColorAlpha(playButton) > 100
 			endDone = 1
 		elseif ((inputSelect and curScene = 5 and selectTarget = 0) or (ButtonMultitouchEnabled(exitButton))) and GetSpriteColorAlpha(exitButton) > 100
-			state = CHARACTER_SELECT
+			if curChapter = finalChapter //highestScene = finalChapter*4 + 1
+				state = START
+				spActive = 0
+				spType = 0
+			else
+				state = CHARACTER_SELECT
+			endif
+			
+			curChapter = Min(curChapter + 1, finalChapter)
 			endDone = 1
 		endif
 		
@@ -1070,7 +1103,7 @@ endfunction
 
 function GetCrabCostumeType(cT, cA)
 	cosType = 0
-	if (cT = 2 and cA = 0) or (cT = 2 and cA = 1) or (cT = 4 and cA = 2) or (cT = 4 and cA = 3) or (cT = 5 and cA = 1) or (cT = 6 and cA = 1)
+	if (cT = 2 and cA = 0) or (cT = 4 and cA = 2) or (cT = 4 and cA = 3) or (cT = 5 and cA = 1) or (cT = 6 and cA = 1)
 		//Hat type
 		cosType = 1
 	elseif (cT = 2 and cA = 2) or (cT = 3 and cA = 0) or (cT = 3 and cA = 1) or (cT = 3 and cA = 2) or (cT = 5 and cA = 3)

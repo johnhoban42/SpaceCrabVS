@@ -123,6 +123,17 @@ function InitStart()
 	AddButton(SPR_STORY_START)
 	//if demo then SetSpriteVisible(SPR_STORY_START, 0)
 	
+	if highestScene < 9
+		LoadSpriteExpress(SPR_CHALLENGE, "ultimatechallengelock.png", 250, 150, 250, 1130, 5)
+	else
+		LoadSpriteExpress(SPR_CHALLENGE, "ultimatechallenge.png", 250, 150, 250, 1130, 5)
+	endif
+	AddButton(SPR_CHALLENGE)
+	
+	LoadSpriteExpress(SPR_VOLUME, "volume.png", 300, 87, 1000, 1000, 5)
+	LoadSpriteExpress(SPR_VOLUME_SLIDER, "volumeslider.png", 300, 87, 1000, 1000, 4)
+	AddButton(SPR_VOLUME)
+	
 	SetFolder("/media")
 	
 	for i = SPR_SP_C1 to SPR_SP_C6
@@ -197,28 +208,22 @@ function InitStart()
 	endif
 	
 	spScore = 0
-		
+				
 	if dispH then HorizontalStart()
 		
 	if spActive = 0 then PlayMusicOGGSP(titleMusic, 1)
 				
 	startStateInitialized = 1
 	
-	if debug
-		for i = SPR_CRAB1_BODY to SPR_CRAB1_COSTUME
-			CreateSpriteExpress(i, 200, 200, 50, 50, 5)
+	if spType = CHALLENGEMODE
+		for i = 17 to 1 step -1
+			if GetSpriteExists(coverS) then SetSpriteColorAlpha(coverS, 15*i)
+			UpdateStartElements()
+			SyncG()
 		next i
-		SetFolder("/media/storysprites")
-		body$ = Upper("A")
-		face$ = Upper("A")
-		SetSpriteImage(SPR_CRAB1_BODY, LoadImage("body" + body$ + ".png"))
-		SetSpriteImage(SPR_CRAB1_FACE, LoadImage("face" + face$ + ".png"))
-		//if crab1Type <> 1 or crab1Alt <> 0
-		//	SetSpriteImage(SPR_CRAB1_COSTUME, LoadImage("costume" + str(2) + body$ + ".png"))
-		//else
-			SetSpriteImage(SPR_CRAB1_COSTUME, LoadImage("blank.png"))
-		//endif
 	endif
+	
+	
 	
 endfunction
 
@@ -260,7 +265,21 @@ function HorizontalStart()
 	SetSpriteMiddleScreenX(SPR_LEADERBOARD)
 	
 	SetSpriteExpress(SPR_STARTAI, 250, 150, w*3/5, h*3/5 + 100, 5)
-	SetSpriteExpress(SPR_STORY_START, 250, 150, w*3/5 + 40, h*3/5 - 100, 5)
+	SetSpriteExpress(SPR_STORY_START, 250, 150, w*3/5 + 40, h*3/5 - 100 - 120, 5)
+	SetSpriteExpress(SPR_CHALLENGE, 250, 150, w*3/5 + 40, h*3/5 + 70 - 120, 5)
+	
+	SetSpriteExpress(SPR_VOLUME, 300, 87, 780, 580, 5)
+	SetSpriteExpress(SPR_VOLUME_SLIDER, 300, 87, 780, 580, 5)
+	
+	myX = Min(Max(GetPointerX(), 875), 1045)
+	SetSpriteX(SPR_VOLUME_SLIDER, (875 + volumeM*(1045.0-875)/100) -87*3)
+	
+	//Print(myX)
+	//volumeM = (myX-875)*100/(1045-875)
+	//SetMusicSystemVolumeOGG(volumeM)
+	//volumeSE = (myX-875)*100.0/(1045-875)
+	
+		
 		
 	for i = SPR_SP_C1 to SPR_SP_C6
 		num = i-SPR_SP_C1+1
@@ -290,7 +309,6 @@ function DoStart()
 	// Initialize if we haven't done so
 	// Don't write anything before this!
 	if startStateInitialized = 0
-		LoadStartImages(1)
 		InitStart()
 		TransitionEnd()
 	endif
@@ -299,8 +317,43 @@ function DoStart()
 	UpdateStartElements()
 	
 	//Multiplayer section
-	if GetPointerPressed() and not Button(SPR_TITLE) and not Button(SPR_CLASSIC) and not Button(SPR_STORY_START) and not Button(SPR_START1) and not Button(SPR_LEADERBOARD) and not Button(SPR_MENU_BACK) and not Button(SPR_START2) and not Button(SPR_START1P) and not Button(SPR_SP_C1) and not Button(SPR_SP_C2) and not Button(SPR_SP_C3) and not Button(SPR_SP_C4) and not Button(SPR_SP_C5) and not Button(SPR_SP_C6)
+	if GetPointerPressed() and not Button(SPR_TITLE) and not Button(SPR_VOLUME) and not Button(SPR_CLASSIC) and not Button(SPR_STORY_START) and not Button(SPR_CHALLENGE) and not Button(SPR_START1) and not Button(SPR_LEADERBOARD) and not Button(SPR_MENU_BACK) and not Button(SPR_START2) and not Button(SPR_START1P) and not Button(SPR_SP_C1) and not Button(SPR_SP_C2) and not Button(SPR_SP_C3) and not Button(SPR_SP_C4) and not Button(SPR_SP_C5) and not Button(SPR_SP_C6)
 		PingCrab(GetPointerX(), GetPointerY(), Random (100, 180))
+	endif
+	
+	//875 to 1045
+	if Hover(SPR_VOLUME) and GetPointerState()
+		myX = Min(Max(GetPointerX(), 875), 1045)
+		SetSpriteX(SPR_VOLUME_SLIDER, myX-87*3)
+		
+		volumeM = (myX-875)*100/(1045-875)
+		SetMusicVolumeOGG(titleMusic, volumeM)
+		volumeSE = (myX-875)*100.0/(1045-875)
+	endif
+	
+	if ButtonMultitouchEnabled(SPR_VOLUME) and GetPointerState() = 0
+		if volumeM = 0
+			volumeM = 100
+			volumeSE = 100
+			SetSpriteX(SPR_VOLUME_SLIDER, 1045-87*3)
+		elseif volumeM < 26
+			volumeM = 0
+			volumeSE = 0
+			SetSpriteX(SPR_VOLUME_SLIDER, 875-87*3)
+		elseif volumeM < 51
+			volumeM = 25
+			volumeSE = 25
+			SetSpriteX(SPR_VOLUME_SLIDER, 875 + (1045-875)*.25 -87*3)
+		elseif volumeM < 76
+			volumeM = 50
+			volumeSE = 50
+			SetSpriteX(SPR_VOLUME_SLIDER, 875 + (1045-875)*.5 -87*3)
+		else
+			volumeM = 75
+			volumeSE = 75
+			SetSpriteX(SPR_VOLUME_SLIDER, 875 + (1045-875)*.75 -87*3)
+		endif
+		SetMusicVolumeOGG(titleMusic, volumeM)
 	endif
 	
 	if ButtonMultitouchEnabled(SPR_START1) and spActive = 0
@@ -406,6 +459,12 @@ function DoStart()
 		TransitionStart(Random(1,lastTranType))
 	endif
 	
+	//Temporary functionality for the steam demo, will be changed
+	if (Button(SPR_CHALLENGE) and GetSpriteVisible(SPR_CHALLENGE) and highestScene > 8)
+		SetupChallenge()
+		state = GAME
+	endif
+	
 	//Bringing up the leaderboard
 	if Button(SPR_LEADERBOARD) and GetSpriteVisible(SPR_LEADERBOARD)
 		ShowLeaderBoard(spType)
@@ -414,19 +473,8 @@ function DoStart()
 	// If we are leaving the state, exit appropriately
 	// Don't write anything after this!
 	if state <> START
-		if spActive = 0
-			TransitionStart(Random(1,lastTranType))
-		else
-			
-		endif
-		if state = CHARACTER_SELECT
-			//appState = CHARACTER_SELECT
-			//LoadStartImages(1)
-			//DoCharacterSelect()
-		endif
+		if spActive = 0 then TransitionStart(Random(1,lastTranType))
 		ExitStart()
-		
-		if spActive then PlaySoundR(specialS, volumeSE)
 	endif
 	
 endfunction state
@@ -447,7 +495,7 @@ function UpdateStartElements()
 	if GetSpriteVisible(SPR_TITLE)
 		if fruitUnlock# < 0
 			if GetPointerState() and GetSpriteHitTest(SPR_TITLE, GetPointerX(), GetPointerY())
-				IncSpriteAngle(SPR_TITLE, 15*(300 + fruitUnlock#) + .012*fruitUnlock#*fruitUnlock#)
+				IncSpriteAngle(SPR_TITLE, 15*(300 + fruitUnlock#) + .02*fruitUnlock#*fruitUnlock#)
 				inc fruitUnlock#, fpsr#
 			else
 				fruitUnlock# = -300
@@ -519,6 +567,7 @@ function UpdateStartElements()
 	endif
 	
 	if debug
+		/*
 		SetFolder("/media/storysprites")
 		
 		if GetRawKeyState(17)	//Alt
@@ -538,7 +587,7 @@ function UpdateStartElements()
 			//crab1Type = Val(chr(GetRawLastKey()))
 		endif
 			
-		
+		*/
 		
 		
 	endif
@@ -899,6 +948,7 @@ function ExitStart()
 	DeleteSprite(SPR_LEADERBOARD)
 	DeleteSprite(SPR_CLASSIC)
 	DeleteSprite(SPR_STORY_START)
+	DeleteSprite(SPR_CHALLENGE)
 	DeleteText(SPR_LOGO_HORIZ)
 	DeleteText(TXT_WAIT1)
 	DeleteText(TXT_WAIT2)
@@ -908,6 +958,9 @@ function ExitStart()
 	DeleteText(TXT_ALONE)
 	if GetSpriteExists(coverS) then DeleteSprite(coverS)
 	if GetTweenExists(SPR_LOGO_HORIZ) then DeleteTween(SPR_LOGO_HORIZ)
+	
+	DeleteSprite(SPR_VOLUME)
+	DeleteSprite(SPR_VOLUME_SLIDER)
 	
 	if debug
 		for i = SPR_CRAB1_BODY to SPR_CRAB1_COSTUME
@@ -928,4 +981,19 @@ function ExitStart()
 	
 	startStateInitialized = 0
 	
+endfunction
+
+function SetupChallenge()
+	aiActive = 1
+		firstFight = 0
+		spActive = 0
+		storyActive = 1
+		spType = CHALLENGEMODE
+		//To do: take this to the character selection screen, figure out if first fight should play
+		crab1Type = 3
+		crab1Alt = 0
+		crab2Type = 5
+		crab2Alt = 0
+		SetAIDifficulty(11, 0, 3, 0, 9)
+		knowingAI = 12
 endfunction
