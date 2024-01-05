@@ -181,6 +181,11 @@ function Button(sprite)
 	if selectTarget = sprite and inputSelect then returnValue = 1
 endfunction returnValue
 
+function GetSpriteVisibleR(sprite)
+	returnValue = 0
+	if GetSpriteExists(sprite) then returnValue = GetSpriteVisible(sprite)
+endfunction returnValue
+
 function CreateSpriteExpress(spr, wid, hei, x, y, depth)
 	CreateSprite(spr, 0)
 	SetSpriteSize(spr, wid, hei)
@@ -456,6 +461,8 @@ function GetMultitouchPressedTop()
 		if y < h/2 then result = 1
 	next i
 	
+	if deviceType = DESKTOP and GetPointerPressed() and GetPointerY() < h/2 then result = 1
+	
 endfunction result
 
 function GetMultitouchPressedBottom()
@@ -465,6 +472,9 @@ function GetMultitouchPressedBottom()
 		y = GetRawTouchCurrentY(currentTouch[i])		
 		if y > h/2 then result = 1
 	next i
+	
+	if deviceType = DESKTOP and GetPointerPressed() and GetPointerY() > h/2 then result = 1
+	
 	
 endfunction result
 

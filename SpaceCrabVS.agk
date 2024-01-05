@@ -58,23 +58,23 @@ FILE_5=gameState.agc;-1
 FILE_6=main.agc;-1
 FILE_7=myLib.agc;-1
 FILE_8=results.agc;-1
-FILE_9=start.agc;-1
-FILE_10=story.agc;-1
-FILE_11=soundtest.agc;-1
-FILE_12=statistics.agc;-1
+FILE_9=soundtest.agc;-1
+FILE_10=start.agc;-1
+FILE_11=statistics.agc;-1
+FILE_12=story.agc;-1
 
 [files]
-FILE_NAME_0=0;ai.agc;55;0
-FILE_NAME_1=1;characterSelect.agc;827;1
-FILE_NAME_2=0;constants.agc;1129;2
-FILE_NAME_3=0;game1.agc;515;3
-FILE_NAME_4=0;game2.agc;25;4
-FILE_NAME_5=0;gameState.agc;10;5
-FILE_NAME_6=0;main.agc;119;6
-FILE_NAME_7=0;myLib.agc;197;7
-FILE_NAME_8=0;results.agc;208;8
+FILE_NAME_0=0;ai.agc;67;0
+FILE_NAME_1=0;characterSelect.agc;495;1
+FILE_NAME_2=0;constants.agc;1261;2
+FILE_NAME_3=0;game1.agc;350;3
+FILE_NAME_4=0;game2.agc;845;4
+FILE_NAME_5=0;gameState.agc;18;5
+FILE_NAME_6=1;main.agc;108;6
+FILE_NAME_7=0;myLib.agc;4;7
+FILE_NAME_8=0;results.agc;32;8
 FILE_NAME_9=0;start.agc;460;9
-FILE_NAME_10=0;story.agc;558;10
+FILE_NAME_10=0;story.agc;216;10
 
 [watchvariables]
 watch_variable=@Version;

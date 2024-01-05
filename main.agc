@@ -71,7 +71,7 @@ UseNewDefaultFonts( 1 )
 SetVSync(1)
 
 global demo = 1
-global debug = 0
+global debug = 1
 
 if demo then SetWindowTitle("Space Crab VS Demo")
 
@@ -159,7 +159,7 @@ endfunction
 if debug
 	curChapter = 2
 	//curScene = 4
-	highestScene = 9
+	highestScene = 101
 	appState = START
 else
 	LoadGame()

@@ -62,6 +62,8 @@ global startTimer# = 0
 
 //Number of crabs in the game - made a constant in case we add/remove crabs
 #constant NUM_CRABS 6
+#constant NUM_CHAPTERS 25
+#constant STORY_CS_BONUS 19
 
 //Gameplay constants & variables
 #constant planetSize 220
@@ -646,7 +648,7 @@ global volumeSE = 100
 #constant TXT_CS_CRAB_DESC_1 304 
 #constant TXT_CS_CRAB_STATS_1 306
 #constant TXT_CS_READY_1 305 
-#constant SPR_CS_CRABS_1 390
+#constant SPR_CS_CRABS_1 4390
 #constant SPR_CS_TXT_BACK_1 389
 
 #constant SPR_SCENE1 321 
@@ -697,11 +699,11 @@ global volumeSE = 100
 #constant SPR_VOLUME 801
 #constant SPR_VOLUME_SLIDER 802
 
-global curChapter = 1
+global curChapter = 3
 global curScene = 0
 global highestScene = 0
 global clearedChapter = 0
-#constant finalChapter 2
+#constant finalChapter 25
 global lineSkipTo = 0
 global storyActive = 0
 global storyMinScore = 0
@@ -1138,15 +1140,17 @@ function LoadCharacterSelectImages(loading)
 		SetFolder("/media/art")
 	
 		//Loading the start screen images
-		for i = 1 to 6
-			//if i = 1 or i = 2 or i = 4 or i = 6
-				for j = 1 to 6
-					LoadImage(crab1select1I - 1 + j + i*10, "crab" + str(i) + "select" + str(j) + ".png")
-					SyncG() //This is here so that the particles can keep on moving
-				next j
-				//Sync() //This is here so that the particles can keep on moving
-			//endif
-		next i
+		if spActive = 0
+			for i = 1 to 6
+				//if i = 1 or i = 2 or i = 4 or i = 6
+					for j = 1 to 6
+						LoadImage(crab1select1I - 1 + j + i*10, "crab" + str(i) + "select" + str(j) + ".png")
+						SyncG() //This is here so that the particles can keep on moving
+					next j
+					//Sync() //This is here so that the particles can keep on moving
+				//endif
+			next i
+		endif
 		
 		SetFolder("/media/envi")
 		//LoadImage(bg5I, "bg5.png")
@@ -1243,7 +1247,7 @@ function LoadGameImages(loading)
 			if i = 1
 				if (crab1type = crab2type) and (crab1alt = crab2alt) //TODO: Add alternate checker here
 					//The same crab
-					i = 2
+					//i = 2
 				else
 					//Different crabs
 					crabType = crab1Type
@@ -1457,43 +1461,43 @@ function SetStoryShortStrings()
 	chapterTitle[12] = "The Cosmic Cook"
 	chapterDesc[12] = ""
 	
-	chapterTitle[13] = "New Crab 1"
+	chapterTitle[13] = "Single & Mingling"
 	chapterDesc[13] = ""
 	
-	chapterTitle[14] = "Single & Mingling"
+	chapterTitle[14] = "The Calculator?"
 	chapterDesc[14] = ""
 	
-	chapterTitle[15] = "The Calculator?"
+	chapterTitle[15] = "The Party...?"
 	chapterDesc[15] = ""
 	
-	chapterTitle[16] = "The Party...?"
+	chapterTitle[16] = "The Voice of Reason"
 	chapterDesc[16] = ""
 	
-	chapterTitle[17] = "The Voice of Reason"
+	chapterTitle[17] = "The Divine Eye-in-the-Sky"
 	chapterDesc[17] = ""
 	
-	chapterTitle[18] = "The Divine Eye-in-the-Sky"
+	chapterTitle[18] = "The Crab Resources Department"
 	chapterDesc[18] = ""
 	
-	chapterTitle[19] = "The Crab Resources Department"
+	chapterTitle[19] = "The Other Side of the Paw"
 	chapterDesc[19] = ""
 	
-	chapterTitle[20] = "New Crab 2"
+	chapterTitle[20] = "The Valiant Defender"
 	chapterDesc[20] = ""
 	
-	chapterTitle[21] = "The Other Side of the Paw"
+	chapterTitle[21] = "The Starlight Rival"
 	chapterDesc[21] = ""
 	
-	chapterTitle[22] = "The Valiant Defender"
+	chapterTitle[22] = "Fight for the Future!"
 	chapterDesc[22] = ""
 	
-	chapterTitle[23] = "The Starlight Rival"
+	chapterTitle[23] = "Bonus 1: "
 	chapterDesc[23] = ""
 	
-	chapterTitle[24] = "Fight for the Future!"
+	chapterTitle[24] = "Bonus 2: "
 	chapterDesc[24] = ""
 	
-	chapterTitle[25] = "The Future"
+	chapterTitle[25] = "Bonus 3: The Future"
 	chapterDesc[25] = ""
 	
 endfunction

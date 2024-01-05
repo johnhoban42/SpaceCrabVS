@@ -395,7 +395,7 @@ function ShowScene(chap, scene)
 				ReadLine(2)
 			next i
 			st$ = Mid(GetStringToken(ReadLine(2), " ", curScene), 1, 2)
-			SetCrabFromString(st$, 2)
+			SetCrabFromStringChap(st$, 0, 2)
 			CloseFile(2)
 			lineSkipTo = lineOverall+1
 			TransitionStart(Random(1,lastTranType))
@@ -454,7 +454,7 @@ function ShowScene(chap, scene)
 		if CompareString(":", Mid(wholeRow$, 3, 1))
 			newCrabTalk = 1
 			if GetStringToken(wholeRow$, ":", 1) <> "??"
-				SetCrabFromString(GetStringToken(wholeRow$, ":", 1), 3)
+				SetCrabFromStringChap(GetStringToken(wholeRow$, ":", 1), 0, 3)
 				if crabRefType <> crab1Type or crabRefAlt <> crab1Alt
 					//Crab 2 is changing
 					if crabRType = 0
@@ -1119,97 +1119,97 @@ function GetCrabCostumeType(cT, cA)
 		
 endfunction cosType
 
-function SetCrabFromString(str$, crabNum)
-
+function SetCrabFromStringChap(str$, chapNum, crabNum)
+	//This will either use 
 	myType = 0
 	myAlt = 0
 
 	
-	if str$ = "SC"	//Space Crab
+	if str$ = "SC" or chapNum = 1  or chapNum = 22	//Space Crab
 		mType = 1
 		mAlt = 0
 		
-	elseif str$ = "LW" //Ladder Wizard
+	elseif str$ = "LW" or chapNum = 2 //Ladder Wizard
 		mType = 2
 		mAlt = 0
 		
-	elseif str$ = "FC"	//#1 Fan Crab
+	elseif str$ = "FC" or chapNum = 3	//#1 Fan Crab
 		mType = 4
 		mAlt = 1
 		
-	elseif str$ = "TC"	//Top Crab
+	elseif str$ = "TC" or chapNum = 4	//Top Crab
 		mType = 3
 		mAlt = 0
 		
-	elseif str$ = "KC"	//King Crab
+	elseif str$ = "KC" or chapNum = 5	//King Crab
 		mType = 2
 		mAlt = 1
 		
-	elseif str$ = "IJ"	//Inianda Jeff
+	elseif str$ = "IJ" or chapNum = 6	//Inianda Jeff
 		mType = 5
 		mAlt = 1
 		
-	elseif str$ = "TX"	//Taxi Crab
+	elseif str$ = "TX" or chapNum = 7	//Taxi Crab
 		mType = 3
 		mAlt = 1
 		
-	elseif str$ = "HC"	//Hawaiian Crab
+	elseif str$ = "HC" or chapNum = 8	//Hawaiian Crab
 		mType = 4
 		mAlt = 2
 		
-	elseif str$ = "TP"	//Team Player
+	elseif str$ = "TP" or chapNum = 9	//Team Player
 		mType = 6
 		mAlt = 1
 		
-	elseif str$ = "RL"	//Rock Lobster
+	elseif str$ = "RL" or chapNum = 10	//Rock Lobster
 		mType = 5
 		mAlt = 2
 		
-	elseif str$ = "NC"	//Ninja Crab
+	elseif str$ = "NC" or chapNum = 11	//Ninja Crab
 		mType = 6
 		mAlt = 0
 		
-	elseif str$ = "CE"	//Crab Cake
+	elseif str$ = "CA" or chapNum = 12	//Crab Cake
 		mType = 5
 		mAlt = 3
 		
-	elseif str$ = "CR"	//Cranime
+	elseif str$ = "CN" or chapNum = 13	//Cranime
 		mType = 6
 		mAlt = 2
 		
-	elseif str$ = "CB"	//Crabicus
+	elseif str$ = "CB" or chapNum = 14	//Crabicus
 		mType = 2
 		mAlt = 2
 		
-	elseif str$ = "RC"	//Rave Crab
+	elseif str$ = "RC" or chapNum = 15	//Rave Crab
 		mType = 4
 		mAlt = 0
 		
-	elseif str$ = "MC"	//Mad Crab
+	elseif str$ = "MC" or chapNum = 16	//Mad Crab
 		mType = 1
 		mAlt = 1
 		
-	elseif str$ = "HO"	//Holy Crab
+	elseif str$ = "HO" or chapNum = 17	//Holy Crab
 		mType = 4
 		mAlt = 3
 		
-	elseif str$ = "AL"	//Al Legal
+	elseif str$ = "AL" or chapNum = 18	//Al Legal
 		mType = 1
 		mAlt = 2
 		
-	elseif str$ = "SB"	//Space Barc
+	elseif str$ = "SB" or chapNum = 19	//Space Barc
 		mType = 3
 		mAlt = 2
 		
-	elseif str$ = "CK"	//Crabyss Knight
+	elseif str$ = "CK" or chapNum = 20	//Crabyss Knight
 		mType = 2
 		mAlt = 3
 		
-	elseif str$ = "CC"	//Chrono Crab
+	elseif str$ = "CC" or chapNum = 21	//Chrono Crab
 		mType = 5
 		mAlt = 0
 		
-	elseif str$ = "FU"	//Future Crab
+	elseif str$ = "FU" or chapNum = 25	//Future Crab
 		mType = 1
 		mAlt = 3
 		

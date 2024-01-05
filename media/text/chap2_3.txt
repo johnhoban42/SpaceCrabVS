@@ -31,7 +31,7 @@ exit 1
 KC: BOFBd; HEY! My new property is getting away!
 GUARDS! Help me take him down!
 music retro5 1
-fight 68252
+fight 58252
 music retro1 1
 LW: BGFIa; So, funny story, it looks like King Crab won't be joining the Star Seekers. Oh well.
 SC: BEFPa; WHAT?!? You asked KING Crab?

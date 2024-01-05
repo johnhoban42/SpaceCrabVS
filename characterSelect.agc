@@ -18,6 +18,34 @@ global crabNames as string[NUM_CRABS] = [
 
 global crabDescs as string[NUM_CRABS]
 
+global chapNames as string[NUM_CHAPTERS] = [
+	"NULL CRAB",
+	"SPACE CRAB",
+	"LADDER WIZARD",
+	"#1 FAN CRAB",
+	"TOP CRAB",
+	"KING CRAB",
+	"INIANDA JEFF",
+	"TAXI CRAB",
+	"HAWAIIAN CRAB",
+	"TEAM PLAYER",
+	"ROCK LOBSTER",
+	"NINJA CRAB",
+	"CRAB CAKE",
+	"CRANIME",
+	"CRABACUS",
+	"RAVE CRAB",
+	"MAD CRAB",
+	"HOLY CRAB",
+	"AL LEGAL",
+	"SPACE BARC",
+	"CRABYSS KNIGHT",
+	"CHRONO CRAB",
+	"SPACE CRAB 2",
+	"SK8R CRAB",
+	"KYLE CRAB",
+	"FUTURE CRAB"]
+
 // Controller that holds state data for each screen
 type CharacterSelectController
 	
@@ -109,14 +137,24 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 	SetSpriteDepth(csc.sprBGB, 99)
 	SetSpriteColorAlpha(csc.sprBGB, 255) 
 	
-	for i = 0 to NUM_CRABS-1
+
+	for i = 0 to NUM_CRABS-1 + spActive*STORY_CS_BONUS
 		SyncG()
 		//if i = 0 or i = 1 or i = 3 or i = 5
 			CreateSprite(csc.sprCrabs + i, 0)
-			for j = 1 to 6
-				AddSpriteAnimationFrame(csc.sprCrabs + i, crab1select1I - 1 + j + (i+1)*10)
-			next j
-			PlaySprite(csc.sprCrabs + i, 18, 1, 1, 6)
+			if spActive = 0
+				for j = 1 to 6
+					//Make these below frames only load (in the constants file) if there is no story mode
+					//If it's story mode, then only the current chapter should have loaded sprites
+					AddSpriteAnimationFrame(csc.sprCrabs + i, crab1select1I - 1 + j + (i+1)*10)
+				next j
+				PlaySprite(csc.sprCrabs + i, 18, 1, 1, 6)
+			else
+				SetSpriteVisible(csc.sprCrabs + i, 0)
+			
+			endif
+			
+			//Do a get sprite frame count to check if a story sprite has frames, then add the frames
 			
 		//else
 		//	LoadSprite(csc.sprCrabs + i, "crab1.png")
@@ -187,12 +225,12 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 	
 	if spActive = 1
 		//Creating the story mode exclusive stuff
-		CreateTextExpress(TXT_CS_CRAB_STATS_2, "Chapter " + str(curChapter), 90, fontDescItalI, 0, 40, 100, 10)
-		CreateTextExpress(TXT_CS_CRAB_NAME_2, chapterTitle[curChapter], 110, fontDescI, 2, w-40, 190, 10)
+		CreateTextExpress(TXT_CS_CRAB_STATS_2, "Chapter " + str(curChapter), 96, fontDescItalI, 0, 40, 100, 10)
+		CreateTextExpress(TXT_CS_CRAB_NAME_2, chapterTitle[curChapter], 90, fontDescI, 2, w-40, 190, 10)
 		CreateTextExpress(TXT_CS_CRAB_DESC_2, chapterDesc[curChapter], 64, fontDescI, 1, w/2, 370, 10)
 		
-		SetTextSpacing(TXT_CS_CRAB_STATS_2, -24)
-		SetTextSpacing(TXT_CS_CRAB_NAME_2, -29)
+		SetTextSpacing(TXT_CS_CRAB_STATS_2, -27)
+		SetTextSpacing(TXT_CS_CRAB_NAME_2, -24)
 		SetTextSpacing(TXT_CS_CRAB_DESC_2, -17)
 		
 		SetSpriteSize(csc.sprTxtBack, w, 140)
@@ -381,27 +419,49 @@ function ChangeCrabs(csc ref as CharacterSelectController, dir as integer, start
 		//The change of the crab is done up here to make the glide work
 		csc.crabSelected = csc.crabSelected + dir
 		//This is moved up so that people can see the names quicker
-		SetTextString(csc.txtCrabName, crabNames[csc.crabSelected+1])
-		SetTextString(csc.txtCrabDesc, crabDescs[csc.crabSelected])
-		if spActive
+		if spActive = 0
+			SetTextString(csc.txtCrabName, crabNames[csc.crabSelected+1])
+			SetTextString(csc.txtCrabDesc, crabDescs[csc.crabSelected])
+			
+			space = 12
+			for i = Len(GetTextString(csc.txtCrabDesc)) to FindStringReverse(GetTextString(csc.txtCrabDesc), chr(10))-1 step -1
+				SetTextCharY(csc.txtCrabDesc, i, GetTextSize(csc.txtCrabDesc)*3*p + space*p - GetTextSize(csc.txtCrabDesc)*f)
+			next i
+			
+		else
 			curChapter = csc.crabSelected+1
-			SetTextString(csc.txtCrabDesc, crabPause1[csc.crabSelected+1])
+			SetCrabFromStringChap("", curChapter, 3)
+			SetTextString(csc.txtCrabName, chapNames[csc.crabSelected+1])
+			SetTextString(csc.txtCrabDesc, crabPause1[crabRefType])
 			SetTextString(TXT_CS_CRAB_STATS_2, "Chapter " + str(curChapter))
 			SetTextString(TXT_CS_CRAB_NAME_2, chapterTitle[curChapter])
 			SetTextString(TXT_CS_CRAB_DESC_2, chapterDesc[curChapter])
+			SetSceneImages(0)
+			
+			//This loads in the crab's images, if they haven't already been loaded in
+			if GetSpriteFrameCount(csc.sprCrabs + csc.crabSelected) <> 6
+				SetFolder("/media/art")
+				SetCrabFromStringChap("", curChapter, 3)
+				SetSpriteVisible(csc.sprCrabs + csc.crabSelected, 1)
+				for i = 1 to 6
+					img = LoadImageR("crab" + str(crabRefType) + AltStr(crabRefAlt) + "select" + Str(i) + ".png")
+					if img <> 0
+						AddSpriteAnimationFrame(csc.sprCrabs + csc.crabSelected, img)
+						trashBag.insert(img)
+					
+					endif
+				next i
+				PlaySprite(csc.sprCrabs + csc.crabSelected, 18, 1, 1, 6)
+			endif
 		endif
 		
 		space = 12
-		for i = 0 to FindString(crabDescs[csc.crabSelected], chr(10))-1
+		for i = 0 to FindString(GetTextString(csc.txtCrabDesc), chr(10))-1
 			SetTextCharY(csc.txtCrabDesc, i, -space*p - GetTextSize(csc.txtCrabDesc)*f)
 			//SetTextCharColor(csc.txtCrabDesc, i, 255, 100, 100, 255)
 		next i
 		
-		for i = Len(crabDescs[csc.crabSelected])to FindStringReverse(crabDescs[csc.crabSelected], chr(10))-1 step -1
-			SetTextCharY(csc.txtCrabDesc, i, GetTextSize(csc.txtCrabDesc)*3*p + space*p - GetTextSize(csc.txtCrabDesc)*f)
-		next i
 		
-		SetSceneImages(0)
 		
 	endif
 	
@@ -410,7 +470,7 @@ function ChangeCrabs(csc ref as CharacterSelectController, dir as integer, start
 	//if GetSpriteWidth(csc.sprCrabs+csc.crabSelected) < charWid/2+1 then SetSpriteMiddleScreenX(csc.sprCrabs+csc.crabSelected)
 	
 	// Glide
-	for spr = csc.sprCrabs to csc.sprCrabs + NUM_CRABS-1
+	for spr = csc.sprCrabs to csc.sprCrabs + NUM_CRABS-1 + spActive*STORY_CS_BONUS 
 		num = spr - csc.sprCrabs
 		//SnapbackToX(spr, glideMax - csc.glideFrame, glideMax, w/2 - GetSpriteWidth(spr)/2 - (cNum-num)*1000*p, -40*dir*p, 4, 5)	//Andy Version
 		//SnapbackToX(spr, csc.glideFrame, glideMax, w/2 - GetSpriteWidth(spr)/2 * cNum*1000, 30, 10)
@@ -468,7 +528,7 @@ function ChangeCrabs(csc ref as CharacterSelectController, dir as integer, start
 			if csc.CrabSelected <> 0
 				SetSpriteVisible(csc.sprLeftArrow, 1)
 			endif
-			if csc.CrabSelected <> NUM_CRABS-1
+			if csc.CrabSelected <> NUM_CRABS-1 + spActive*STORY_CS_BONUS
 				SetSpriteVisible(csc.sprRightArrow, 1)
 			endif
 			SetSpriteVisible(csc.sprReady, 1)
@@ -550,10 +610,10 @@ function DoCharacterSelectController(csc ref as CharacterSelectController)
 		
 		//The 6-crab view
 		if csc.stage = 1
-			for i = 0 to NUM_CRABS-1
+			for i = 0 to NUM_CRABS-1 + spActive*STORY_CS_BONUS
 				spr = csc.sprCrabs + i
 				if ButtonMultitouchEnabled(spr)
-					for j = 0 to NUM_CRABS-1
+					for j = 0 to NUM_CRABS-1 + spActive*STORY_CS_BONUS
 						StopTweenSprite(csc.sprCrabs + j, csc.sprCrabs + j)
 					next j
 					SetVisibleCharacterUI(2, csc)
@@ -561,7 +621,7 @@ function DoCharacterSelectController(csc ref as CharacterSelectController)
 					PlaySoundR(arrowS, 40)
 					ChangeCrabs(csc, 1, 1)
 					csc.stage = 2
-					i = NUM_CRABS
+					i = NUM_CRABS + spActive*STORY_CS_BONUS
 					ClearMultiTouch()
 				endif
 			next i
@@ -569,7 +629,7 @@ function DoCharacterSelectController(csc ref as CharacterSelectController)
 		//The 1-crab view
 		elseif csc.stage = 2
 			// Ready button
-			if (Button(csc.sprReady) or (inputSelect and selectTarget = 0 and GetSpriteVisible(SPR_SCENE1) = 0)) and GetSpriteVisible(csc.sprReady) 
+			if (Button(csc.sprReady) or (inputSelect and selectTarget = 0 and GetSpriteVisibleR(SPR_SCENE1) = 0)) and GetSpriteVisible(csc.sprReady) 
 				PlaySoundR(chooseS, 100)
 				SelectCrab(csc)
 				//PingColor(GetSpriteMiddleX(csc.sprCrabs+csc.crabSelected), GetSpriteMiddleY(csc.sprCrabs+csc.crabSelected), 400, 255, 100, 100, 50)
@@ -578,7 +638,7 @@ function DoCharacterSelectController(csc ref as CharacterSelectController)
 				PlaySoundR(arrowS, 100)
 				ChangeCrabs(csc, -1, 1)
 			// Scroll right
-			elseif (ButtonMultitouchEnabled(csc.sprRightArrow) or (GetMultitouchPressedTopLeft() and csc.player = 2 and dispH = 0) or (GetMultitouchPressedBottomRight() and csc.player = 1 and dispH = 0)) and ((csc.crabSelected < NUM_CRABS-1 and spType <> STORYMODE) or (csc.crabSelected < Min(clearedChapter, finalChapter-1) and spType = STORYMODE))
+			elseif (ButtonMultitouchEnabled(csc.sprRightArrow) or (GetMultitouchPressedTopLeft() and csc.player = 2 and dispH = 0) or (GetMultitouchPressedBottomRight() and csc.player = 1 and dispH = 0)) and ((csc.crabSelected < NUM_CRABS-1+spActive*STORY_CS_BONUS and spType <> STORYMODE) or (csc.crabSelected < Min(clearedChapter, finalChapter-1) and spType = STORYMODE))
 				ChangeCrabs(csc, 1, 1)
 				PlaySoundR(arrowS, 100)
 			endif
@@ -608,16 +668,16 @@ function DoCharacterSelectController(csc ref as CharacterSelectController)
 				endif
 			endif
 			
-			for i = 0 to NUM_CRABS-1
+			for i = 0 to NUM_CRABS-1 + spActive*STORY_CS_BONUS
 				spr = csc.sprCrabs + i
 				if ButtonMultitouchEnabled(spr) and spActive = 0
 					SetVisibleCharacterUI(1, csc)
-					for j = 0 to NUM_CRABS-1
+					for j = 0 to NUM_CRABS-1 + spActive*STORY_CS_BONUS
 						PlayTweenSprite(csc.sprCrabs + j, csc.sprCrabs + j, 0)
 					next j
 					PlaySoundR(arrowS, 100)
 					csc.stage = 1
-					spr = NUM_CRABS
+					spr = NUM_CRABS + spActive*STORY_CS_BONUS
 				endif
 			next i
 		endif
@@ -657,11 +717,11 @@ function DoCharacterSelect()
 	if spActive = 0 then DoCharacterSelectController(csc2)
 		
 	//Unselects the crab if the screen is touched again (only works on mobile for testing)
-	if csc1.ready = 1 and GetMultitouchPressedBottom()
+	if csc1.ready = 1 and (GetMultitouchPressedBottom() and deviceType = MOBILE)
 		UnselectCrab(csc1)
 		ClearMultiTouch()
 	endif
-	if csc2.ready = 1 and GetMultitouchPressedTop()
+	if csc2.ready = 1 and (GetMultitouchPressedTop() and deviceType = MOBILE)
 		UnselectCrab(csc2)
 		ClearMultiTouch()
 	endif
@@ -771,10 +831,11 @@ function CleanupCharacterSelectController(csc ref as CharacterSelectController)
 	DeleteText(csc.txtCrabStats)
 	DeleteText(csc.txtReady)
 	DeleteSprite(csc.sprTxtBack)
-	for spr = csc.sprCrabs to csc.sprCrabs + NUM_CRABS-1
-		DeleteSprite(spr)
-		DeleteTween(spr)
+	for spr = csc.sprCrabs to csc.sprCrabs + NUM_CRABS-1 + STORY_CS_BONUS
+		if GetSpriteExists(spr) then DeleteSprite(spr)
+		if GetTweenExists(spr) then DeleteTween(spr)
 	next spr
+	
 	
 endfunction
 
@@ -821,7 +882,7 @@ function SetSceneImages(new)
 		spr = SPR_SCENE1 - 1 + i
 		if new = 0 then DeleteImage(GetSpriteImageID(spr))
 		
-		SetCrabFromString(Mid(GetStringToken(line$, " ", i), 1, 2), 3)
+		SetCrabFromStringChap(Mid(GetStringToken(line$, " ", i), 1, 2), 0, 3)
 		
 		SetFolder("/media/art")
 		imgStr$ = "crab" + str(crabRefType) + AltStr(crabRefAlt) + "life" + Mid(GetStringToken(line$, " ", i), 3, 1) + ".png"

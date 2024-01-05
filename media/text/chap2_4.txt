@@ -19,32 +19,10 @@ BDFB1; I figured that there would be challenges.
 BCFI; Maybe not this many, though...
 BAFB1; But if something is worth doing, it's worth doing all the way.
 BKFA1d; I'm not even close to finishing my goal- I won't give up until I do!
+music
 NC: BAFA; I hear your words.
 BAFD; But I don't approve.
-BIFD; Battle me, if your will is as strong as your-
-music
-se phone
-*ring*
-BAFA; Oh. It's my phone.
-BEFA; Yes. Yes, I told him.
-BEFA; Later? Understood.
-se phone
-*beep*
-BAFAe; We will not battle now. But later.
-LW: BBFE1d; What? But I was just getting pumped up.
-music fightB
-NC: BAFA; We must wait, until the full Space Crab VS game releases.
-LW: BKFA1d; Oh, I heard about that! More than 20 crabs will be in the full game, apparently.
-BMFJ1a; They all probably have their own stories to tell, right?
-BLFJ1b; That's perfect! I hope we can get them ALL to join the Star Seekers.
-NC: BIFAc; You must understand that that is a grave mistake.
-BAFA; There is no reason to create the Star Seekers - not when local multiplayer battles exist.
-Between that, and multiple single player arcade modes, players will be busy enough as is.
-LW: BPFB1; We'll see when then game comes out. The Star Seekers will LIVE!
-NC: BAFAc; No.
-exit 2
-LW: BPFS1; Wait!
-BAFU1; I can't believe I let him get the last word in...
-BPFD1a; Hey! You! The one reading my words!
-BKFB1; Make sure to wishlist Space Crab VS on Steam! The crab dream must live on!
-BAFJ1b; Until then, well, see you in a bit!
+music tomato
+BIFD; Battle me, if your will is as strong as your sentiment.
+music tomato
+fight 53525
