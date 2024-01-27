@@ -1,2 +1,19 @@
-music fightJ 1
-TP: Scene 3
+bg 5
+music chromecoast
+TP: This is the place!
+It smells... metallic?
+Not a deterrent!
+Back to the training plan...
+Next, I'll up my meteor dodging count by 10.
+Go in, get my 60 dodges, and keep going as long as I can.
+Here goes nothing!
+exit 1
+CC: Wait! Don't go in there!
+music chromecoast
+mirror 60
+music chromecoast
+TP: Whew! Now that's a challenge!
+Moving 12 legs instead of 6 is tough, but I feel so coordinated now.
+It's starting to get late though- maybe I should pack it in for the night.
+??: You IMBECILE!
+TP: Huh?

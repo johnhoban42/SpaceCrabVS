@@ -1,3 +1,4 @@
+bg 2
 music fightJ 1
 TP: So, your training is going well?
 ...

@@ -1,0 +1,31 @@
+bg 2
+music retro2
+1F: Top Crab! You won't believe the big news! The lastest scoop!
+TC: Is this about your idol again? I think you're getting a bit obsessed.
+1F: He's not my idol, I just... like reading about him.
+Plus, I'm a completionist! If I don't know all of the news, then what am I doing this for?
+TC: You could just spend your time doing something else.
+As for me, I got asked to join a group - I'm putting all of my time into my spinning practice.
+If I'm going to be apart of them, then I need to be useful!
+Or consistant, at least.
+1F: A group, a group...
+THATS IT! Maybe we heard about the same group!
+Buddy, do you remember who asked you to join?
+TC: Now that you mention it, I don't think I asked his name.
+What kind of crab was he? Spade Crab? Shade Crab?
+Maybe I'll remember the name if we recreate the situation.
+1F: Of course! I NEED the info you have.
+What were you doing doing before he asked you to join?
+TC: Battling!
+music fightA
+fight 47194
+music retro2
+TC: Space Crab! It was Space Crab.
+1F: I KNEW IT!!
+He asked YOU to join the Star Seekers?? That's incredible!
+Maybe there's hope for me to join, too!
+TC: Uhh, yeah, I think so - he seemed pretty open to let anyone join.
+I think you're making a bigger deal out of this than-
+exit 1
+Ah- nevermind, then.
+I need to get back to my spin training, anyways.

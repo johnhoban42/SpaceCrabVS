@@ -1,0 +1,24 @@
+bg 2
+music rag
+TC: I can't join the Star Seekers! I'm way too clumsy!
+SB: Arf!
+TC: Ever since Space Crab asked me to be a part of them, I've been so stressed!
+I can barely stay upright, how can I seek out the stars?
+SB: Bark!
+TC: But why ask me specifically?
+I don't LOOK capable. I feel pretty weak...
+SB: Woof!
+You're right! It must be a strength issue!
+I guess I need to build mine up...
+You'll help me, won't you Space Barc?
+Let's have a battle!
+SB: Arf?
+music fightA
+fight 13783
+music rag
+Oh jeez! Sorry, Space Barc...
+I should probably have battled someone a little less... soft, huh?
+SB: ...
+TC: I, uh, hope you'll be fine.
+exit 1
+SB: ...woof...

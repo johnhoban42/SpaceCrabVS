@@ -1,0 +1,34 @@
+bg 6
+music retro6
+HC: Now that I'm checked in, I can really, TRULY, start my vacation.
+The beach seems like a good first stop. It's close, too!
+...Actually, it looks a little crowded.
+Wait, is it full of... shrimp?
+KC: Yes, my minions! Build me a palace of sand!
+No domain shall forget the name King Crab, whether it be space or sea!
+HC: W-wait! I thought this was neutral territory!
+I checked the booking site, the reviews, the-
+KC: Hohoho, fear not, feeble citizen!
+I AM here on official business-
+Of taking a vacation.
+While we normally are EONS removed on the social ladder,
+Here, we are simply both vacationers.
+HC: Oh. Alright then.
+KC: Here, why not play some quaint beach funtime games with me?
+My 'fellow vacation partner'?
+HC: Ah! Uh, yes sir! I mean, Your Magestey!
+music retro6
+fight 58484
+music retro5
+HC: (Shoot! I should NOT have actually tried!)
+(King Crab is gonna have me executed!!)
+music
+KC: ...
+music fightJ
+Hohoho! What a wonderful spar!
+I must say, Hawaiian Crab, you really know how to make vacation fun!
+If anyone else had tried that hard to win...
+I would have them locked away forever.
+But you make it all, so delightful! Ahhahaha!
+HC: ... (shocked)
+...Glad to hear it. (Smiling, eyes closed, blushing expression)

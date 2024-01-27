@@ -1,0 +1,31 @@
+bg 6
+music retro6
+HC: That worked up an appetite.
+Good thing the resort has a 5 claw resturaunt on property!
+Featuring the chef with a galaxy wide reputation-
+Crab Cake!
+I wonder why he's called that? Is that his signature dish?
+CK: Ah, welcome, welcome! Can I show you to a seat?
+HC: (The crabs you meet on vacation.) (smiling, amused)
+CK: You see, you see, we have a marvelous selection of sweets!
+Pastries, soufles, cookies, and more!
+But no cakes, no no no!
+...
+I kid, I kid! If it's a dessert, we have it!
+HC: Oh! Uh, anything for dinner? No sugar yet, please.
+CK: Hmmm, a request I'm not used to recieving.
+You will help me by rattling my noodle to create an on-the-spot brainstorm!
+Your first course, then? A battle!
+music mcb
+fight 56334
+music mcb
+HC: As great as that was, it made me even hungrier.
+Please... tell me you thought of something!
+CK: Ah, ah ah, I actually got my idea before the fight started!
+Using my 'noodle', I thought of the perfect dish-
+and whipped it up during our fight!
+Presenting- Pineapple Pasta, perfect for our Hawaiian guest!
+HC: ...
+Wow. That's really, really great.
+Maybe that's the starvation talking.
+CK: So, have room for dessert?

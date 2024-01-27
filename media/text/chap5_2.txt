@@ -1,0 +1,28 @@
+bg 3
+music retro3
+KC: Great, another loon who screams for the stars.
+CC: Don't mistake my distaste for enthusiasm.
+I share a determination with you - eradication of the Star Seekers.
+Why not join with me, and the #1 Fan Crab, in unwinding that devilish group?
+KC: Well, as much as I would hate to do that...
+You are the next in line for those who have discussed the Star Seekers with me.
+And I'm nothing, if not a man of my word.
+Have at you! Rot in the dungeon of your own insolence!
+music retro3
+fight 58735
+music retro5
+KC: You're being taken in! 
+Enjoy your 30 year prison sentence.
+Enough time to turn you into a loyal and worthy subject!
+CC: Heeheehee! How ill prepared you are...
+music
+se specialstart
+I've just fast forwarded through time - and already completed my prison sentence!
+music retro6
+KC: WHAT?! That's an option?
+Hmm... Clever one you are.
+You are free to go. Actually, no.
+I implore you to leave. Now.
+CC: Well, I'll stick around.
+I have a feeling that at least two more interesting guests will walk through that door...
+Just forget I'm here, for now.

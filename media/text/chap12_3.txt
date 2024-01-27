@@ -1,0 +1,32 @@
+bg 4
+music mcb
+CA: Al Legal said that the ingredient delivery would be done by a young child...
+My, the youth of today sure set my heart a-flutter! Such wonder in their eyes.
+Oh! Is that the child now? What speedy service!
+FC: Hello sir! I was told these ingredients go to a big pink guy.
+CA: Yes, guilty as charged! I'm ready for my baking supplies.
+FC: Just let me get your signature and you'll be all set!
+What do you need this many eggs for, anyways?
+CA: I'm filling a cake order for the new premiere exploration group, the Star Seekers.
+Or so I'm told that they're the premiere group, anyways.
+music
+FC: ...
+If that's the case, then I can't let you sign for these ingredients.
+music retro3
+CA: Hmm?
+FC: The Star Seekers are my sworn enemies. I can't bring myself to help them in any way.
+Even if it's something as small as... delivering ingredients for their cakes!
+CA: Don't be silly, son. Just let me sign for the shipment...
+FC: NO! If you want to sign the delivery slip, you'll have to pry it from my claws!
+music retro3
+fight 43284
+music mcb
+FC: ...
+CA: Geez, Star Seeker this, Star Seeker that...
+So many obsessives!
+I'm just trying to bake, for goodness sake.
+But even if I have the ingredients, I still need to bake all of the cakes so quickly.
+...Oh no...
+I won't have to ask HIM for help, will I?
+Of course I will! I am a professional!
+No amount of setbacks will keep me away from the finish line!
