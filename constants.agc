@@ -1432,73 +1432,73 @@ function SetStoryShortStrings()
 	chapterDesc[2] = "To fill out the founding" + chr(10) + "members of the Star Seekers," + chr(10) + "Ladder Wizard seeks the most" + chr(10) + "powerful crabs he can find."
 	
 	chapterTitle[3] = "The Fan"
-	chapterDesc[3] = "Top Crab shouldn't" + chr(10) + "be here :P" + chr(10) + "This part's not done yet." + chr(10) + "Luckily, no demo" + chr(10) + "should see this."
+	chapterDesc[3] = "Something big has happened" + chr(10) + "in the galaxy, and the" + chr(10) + "#1 Fan Crab is sure it's" + chr(10) + "because of Space Crab!"
 	
-	chapterTitle[4] = ""
-	chapterDesc[4] = ""
+	chapterTitle[4] = "The Trainee"
+	chapterDesc[4] = "Top Crab is eager to" + chr(10) + "prove his worth, but does" + chr(10) + "he even HAVE worth?" + chr(10) + "Let's find out!"
 	
 	chapterTitle[5] = "Political Influence"
-	chapterDesc[5] = ""
+	chapterDesc[5] = "Royalty, meddling in the" + chr(10) + "affairs of commoners?" + chr(10) + "It's a thankless job, and" + chr(10) + "he won't let you forget it."
 	
 	chapterTitle[6] = "The Adventurer"
-	chapterDesc[6] = ""
+	chapterDesc[6] = "Daring escapes!" + chr(10) + "Multiplying meteors!" + chr(10) + "It's all here, and more!" + chr(10) + ""
 	
-	chapterTitle[7] = "The Transportation Expert"
-	chapterDesc[7] = ""
+	chapterTitle[7] = "The Transport Guy"
+	chapterDesc[7] = "Does Taxi Crab have" + chr(10) + "what it takes to" + chr(10) + "'roll' with the youth" + chr(10) + "of today?"
 	
-	chapterTitle[8] = ""
-	chapterDesc[8] = ""
+	chapterTitle[8] = "The Vacation"
+	chapterDesc[8] = "Experience the luxaries of" + chr(10) + "the Garra Bonito with the" + chr(10) + "galaxy's 'Most Likely to" + chr(10) + "Take a Vacation'!"
 	
 	chapterTitle[9] = "The Physical Fitness"
-	chapterDesc[9] = ""
+	chapterDesc[9] = "The life of an athlete never" + chr(10) + "ends, especially with the" + chr(10) + "planetary marathon's" + chr(10) + "approaching start date."
 	
 	chapterTitle[10] = "Mister Music"
-	chapterDesc[10] = ""
+	chapterDesc[10] = "Sound check, one, two." + chr(10) + "Rock Lobster's got a new" + chr(10) + "set, and you've got" + chr(10) + "front row seats."
 	
-	chapterTitle[11] = ""
-	chapterDesc[11] = ""
+	chapterTitle[11] = "The History"
+	chapterDesc[11] = "A generational legacy comes" + chr(10) + "to a head after" + chr(10) + "family gets involved." + chr(10) + ""
 	
 	chapterTitle[12] = "The Cosmic Cook"
-	chapterDesc[12] = ""
+	chapterDesc[12] = "'Space Crab placed an" + chr(10) + "order? With ME? That must" + chr(10) + "be a prank. Throw that" + chr(10) + "one in the trash.'"
 	
 	chapterTitle[13] = "Single & Mingling"
-	chapterDesc[13] = ""
+	chapterDesc[13] = "Cranime Wants to Indulge /" + chr(10) + "Crabacus Makes a Choice / " + chr(10) + "Cranime Finds Love Pt. 1 /" + chr(10) + "Cranime Finds Love Pt. 2"
 	
 	chapterTitle[14] = "The Calculator?"
-	chapterDesc[14] = ""
+	chapterDesc[14] = "It's the opening day" + chr(10) + "of the Star Seekers!" + chr(10) + "But is it everything" + chr(10) + "that was promised...?"
 	
 	chapterTitle[15] = "The Party...?"
-	chapterDesc[15] = ""
+	chapterDesc[15] = "Rave Crab's eternal party" + chr(10) + "may end sooner than" + chr(10) + "he anticipated." + chr(10) + ""
 	
-	chapterTitle[16] = "The Voice of Reason"
-	chapterDesc[16] = ""
+	chapterTitle[16] = "Voice of Reason"
+	chapterDesc[16] = "'SOMEONE'S GOTTA PUT" + chr(10) + "SPACE CRAB IN " + chr(10) + "HIS PLACE, AND I DON'T" + chr(10) + "SEE YOU STEPPING UP!!'"
 	
 	chapterTitle[17] = "The Divine Eye-in-the-Sky"
-	chapterDesc[17] = ""
+	chapterDesc[17] = "" + chr(10) + "" + chr(10) + "" + chr(10) + ""
 	
 	chapterTitle[18] = "The Crab Resources Department"
-	chapterDesc[18] = ""
+	chapterDesc[18] = "" + chr(10) + "" + chr(10) + "" + chr(10) + ""
 	
 	chapterTitle[19] = "The Other Side of the Paw"
-	chapterDesc[19] = ""
+	chapterDesc[19] = "" + chr(10) + "" + chr(10) + "" + chr(10) + ""
 	
 	chapterTitle[20] = "The Valiant Defender"
-	chapterDesc[20] = ""
+	chapterDesc[20] = "" + chr(10) + "" + chr(10) + "" + chr(10) + ""
 	
 	chapterTitle[21] = "The Starlight Rival"
-	chapterDesc[21] = ""
+	chapterDesc[21] = "" + chr(10) + "" + chr(10) + "" + chr(10) + ""
 	
 	chapterTitle[22] = "Fight for the Future!"
-	chapterDesc[22] = ""
+	chapterDesc[22] = "" + chr(10) + "" + chr(10) + "" + chr(10) + ""
 	
 	chapterTitle[23] = "Bonus 1: "
-	chapterDesc[23] = ""
+	chapterDesc[23] = "" + chr(10) + "" + chr(10) + "" + chr(10) + ""
 	
 	chapterTitle[24] = "Bonus 2: "
-	chapterDesc[24] = ""
+	chapterDesc[24] = "" + chr(10) + "" + chr(10) + "" + chr(10) + ""
 	
 	chapterTitle[25] = "Bonus 3: The Future"
-	chapterDesc[25] = ""
+	chapterDesc[25] = "" + chr(10) + "" + chr(10) + "" + chr(10) + ""
 	
 endfunction
 

@@ -237,9 +237,9 @@ function HorizontalStart()
 	
 	//CreateTextExpress(SPR_LOGO_HORIZ, "MIRROR MODE", 130, fontCrabI, 1, w/2, 360, 5)
 	
-	SetSpriteSize(SPR_START1, 842*.7, 317*.7)
+	SetSpriteSize(SPR_START1, 842*.4, 317*.4)
 	SetSpriteMiddleScreenX(SPR_START1)
-	SetSpriteY(SPR_START1, h/2 + 480)
+	SetSpriteY(SPR_START1, h/2 + 180)
 	
 	SetSpriteSize(SPR_START2, 842*.7, 317*.7)
 	SetSpriteMiddleScreenX(SPR_START2)
@@ -356,7 +356,7 @@ function DoStart()
 		SetMusicVolumeOGG(titleMusic, volumeM)
 	endif
 	
-	if ButtonMultitouchEnabled(SPR_START1) and spActive = 0
+	if ButtonMultitouchEnabled(SPR_START1) and spActive = 0 and dispH = 0
 		if GetSpriteColorAlpha(SPR_START1) = 255
 			//Pressing player one
 			PlayTweenSprite(tweenSprFadeOut, SPR_START1, 0)
@@ -394,6 +394,12 @@ function DoStart()
 			PlaySprite(SPR_START2, 11, 1, 15, 22)
 			p2Ready = 0
 		endif
+	endif
+	
+	if ButtonMultitouchEnabled(SPR_START1) and spActive = 0 and dispH = 1
+		spActive = 0
+		aiActive = 0
+		state = CHARACTER_SELECT
 	endif
 	
 	if p1Ready and p2Ready

@@ -137,6 +137,15 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 	SetSpriteDepth(csc.sprBGB, 99)
 	SetSpriteColorAlpha(csc.sprBGB, 255) 
 	
+	//Big plan for the future of character selection:
+	/*
+	The crabs will ALL be loaded in at once! Using load image resized, they will be loaded in at .1 size
+	Then, when zoomed in, the full sprite sheet will be loaded in, and added to the trash bag
+	This way, we can have all 24 crabs on the selection screen
+	We'll check for the highest alt unlocked, and make that many rows/columns present
+	For nothing unlocked, we can have the original layout of 2 x 3
+	Will need to create an 'unlocked crab' array for this, though (6 variables, highestAlt1, highestAlt2...
+	*/
 
 	for i = 0 to NUM_CRABS-1 + spActive*STORY_CS_BONUS
 		SyncG()
@@ -243,11 +252,11 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 		
 		for i = 1 to 4
 			spr = SPR_SCENE1 - 1 + i
-			CreateSpriteExpress(spr, 100, 100, w*3/4 + GetSpriteHeight(split)/4 - 50 + (i-2.5)*130, h - 130, 10)
+			CreateSpriteExpress(spr, 100, 100, w*2/4 + GetSpriteHeight(split)/4 - 50 + (i-2.5)*130, h - 120, 10)
 			CreateTextExpress(spr, Str(i), 60, fontScoreI, 1, GetSpriteX(spr) + 90, GetSpriteY(spr) + 50,  9)
 			AddButton(spr)
 		next i
-		CreateTextExpress(TXT_SCENE, "Scene Select:", 54, fontDescI, 0, w/2 + 100, h-200, 10)
+		CreateTextExpress(TXT_SCENE, "Scene Select:", 54, fontDescI, 0, 50, h-180, 10)
 		SetTextSpacing(TXT_SCENE, -14)
 		
 		SetSceneImages(1)
@@ -267,7 +276,10 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 			for i = 1 to 4
 				spr = SPR_SCENE1 - 1 + i
 				//SetSpriteExpress(spr, 75, 75, w/2
+				SetSpritePosition(spr, w*3/4 + GetSpriteHeight(split)/4 - 50 + (i-2.5)*130, h - 130)
+				SetTextPosition(spr, GetSpriteX(spr) + 90, GetSpriteY(spr) + 50)
 			next i
+			SetTextPosition(TXT_SCENE, w/2 + 100, h-200)
 			
 			for i = TXT_CS_CRAB_NAME_2 to TXT_CS_CRAB_STATS_2
 				if i <> TXT_CS_READY_2
