@@ -53,6 +53,14 @@ global inputDown = 0
 global inputAttack1 = 0
 global inputSpecial1 = 0
 global inputTurn1 = 0
+
+global inputSelect2 = 0
+global inputExit2 = 0
+global inputSkip2 = 0
+global inputLeft2 = 0
+global inputRight2 = 0
+global inputUp2 = 0
+global inputDown2 = 0
 global inputAttack2 = 0
 global inputSpecial2 = 0
 global inputTurn2 = 0
@@ -61,9 +69,9 @@ global inputTurn2 = 0
 global startTimer# = 0
 
 //Number of crabs in the game - made a constant in case we add/remove crabs
-#constant NUM_CRABS 6
+#constant NUM_CRABS 24 //6
 #constant NUM_CHAPTERS 25
-#constant STORY_CS_BONUS 19
+#constant STORY_CS_BONUS 1
 
 //Gameplay constants & variables
 #constant planetSize 220
@@ -272,6 +280,12 @@ global met3CD2# = 0 //400
 #constant SPR_SELECT3 23
 #constant SPR_SELECT4 24
 
+//This is for the player 2 selection
+#constant SPR_SELECT5 25
+#constant SPR_SELECT6 26
+#constant SPR_SELECT7 27
+#constant SPR_SELECT8 28
+
 #constant planet1 101
 #constant planet2 102
 
@@ -334,7 +348,8 @@ global met3CD2# = 0 //400
 #constant starParticleI 11
 
 //The indexs are reserved, but no constants are needed
-#constant crab1select1I 301
+#constant crab1select1I 20301
+/*
 #constant crab1select2I 302
 #constant crab1select3I 303
 #constant crab1select4I 304
@@ -354,6 +369,7 @@ global met3CD2# = 0 //400
 #constant crab6select4I 354
 #constant crab6select5I 355
 #constant crab6select6I 356
+*/
 
 #constant crab1life1I 371
 #constant crab1life2I 372
@@ -669,7 +685,7 @@ global volumeSE = 100
 #constant TXT_CS_CRAB_DESC_2 404 
 #constant TXT_CS_CRAB_STATS_2 406
 #constant TXT_CS_READY_2 405
-#constant SPR_CS_CRABS_2 490 
+#constant SPR_CS_CRABS_2 4900 
 #constant SPR_CS_TXT_BACK_2 489
 
 //Story Sprites/Text and variable
@@ -703,12 +719,15 @@ global curChapter = 3
 global curScene = 0
 global highestScene = 0
 global clearedChapter = 0
-#constant finalChapter 25
+#constant finalChapter 2
 global lineSkipTo = 0
 global storyActive = 0
 global storyMinScore = 0
 global storyRetry = 0
 global storyTimer# = 0
+
+//Overall game unlocks
+global unlockedCrab = 6
 
 //Ping sprites - 701 through 750
 
@@ -1144,8 +1163,8 @@ function LoadCharacterSelectImages(loading)
 			for i = 1 to 6
 				//if i = 1 or i = 2 or i = 4 or i = 6
 					for j = 1 to 6
-						LoadImage(crab1select1I - 1 + j + i*10, "crab" + str(i) + "select" + str(j) + ".png")
-						SyncG() //This is here so that the particles can keep on moving
+						//LoadImage(crab1select1I - 1 + j + i*10, "crab" + str(i) + "select" + str(j) + ".png")
+						//SyncG() //This is here so that the particles can keep on moving
 					next j
 					//Sync() //This is here so that the particles can keep on moving
 				//endif
@@ -1166,9 +1185,9 @@ function LoadCharacterSelectImages(loading)
 		//Deleting all of the images
 		
 		for i = 1 to 6
-			for j = 1 to 6
-				if GetImageExists(crab1select1I - 1 + j + i*10) then DeleteImage(crab1select1I - 1 + j + i*10)
-			next j
+			//for j = 1 to 6
+			//	if GetImageExists(crab1select1I - 1 + j + i*10) then DeleteImage(crab1select1I - 1 + j + i*10)
+			//next j
 		next i
 		
 		//DeleteImage(bg5I)

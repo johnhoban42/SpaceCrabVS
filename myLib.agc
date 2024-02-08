@@ -609,6 +609,11 @@ function LoadImageR(txt$)
 	if GetFileExists(txt$) then img = LoadImage(txt$)
 endfunction img
 
+function LoadImageResizedR(txt$, scale#)
+	img = 0
+	if GetFileExists(txt$) then img = LoadImageResized(txt$, scale#, scale#, 0)
+endfunction img
+
 function LoadImageR2(index, txt$)
 	if GetFileExists(txt$) then index = LoadImage(txt$)
 endfunction

@@ -2183,7 +2183,7 @@ function StopGamePlayMusic()
 		if GetMusicPlayingOGGSP(i) then StopMusicOGGSP(i)
 	next i
 	
-	if GetMusicPlayingOGGSP(resultsMusic) then StopMusicOGGSP(resultsMusic)
+	//if GetMusicPlayingOGGSP(resultsMusic) then StopMusicOGGSP(resultsMusic)
 	
 endfunction
 
@@ -2250,6 +2250,12 @@ function PlayOpeningScene()
 		for i = 1 to 3
 			SetSpriteDepth(crab2PlanetS[i], GetSpriteDepth(crab2PlanetS[i]) + 10)
 		next i
+		
+		if dispH
+			//Repsitioning for the intro cutscene
+			
+		endif
+		
 		
 		phase = 1
 		

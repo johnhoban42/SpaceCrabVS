@@ -230,6 +230,8 @@ function DoInputs()
 	inputAttack1 = 0
 	inputSpecial1 = 0
 	
+
+	
 	if GetRawKeyPressed(13) or GetRawKeyPressed(32) or GetRawKeyPressed(90) then inputSelect = 1
 	if GetRawKeyPressed(27) or GetRawKeyPressed(8) or GetRawKeyPressed(46) then inputExit = 1
 	if GetRawKeyState(17) then inputSkip = 1
@@ -256,6 +258,34 @@ function DoInputs()
 		if GetRawJoystickButtonPressed(1, 15) then inputRight = 1
 		if GetRawJoystickButtonPressed(1, 14) then inputUp = 1
 		if GetRawJoystickButtonPressed(1, 16) then inputDown = 1
+	endif
+	
+	
+	inputSelect2 = 0
+	inputExit2 = 0
+	inputSkip2 = 0
+	inputLeft2 = 0
+	inputRight2 = 0
+	inputUp2 = 0
+	inputDown2 = 0
+	inputTurn2 = 0
+	inputAttack2 = 0
+	inputSpecial2 = 0
+	
+	if GetRawJoystickConnected(2)
+		//for i = 1 to 64
+			//For testing controller inputs
+		//	if GetRawJoystickButtonState(1, i) then Print(i)
+		//next i
+		if GetRawJoystickButtonPressed(2, 1) or GetRawJoystickButtonPressed(2, 4) then inputSelect2 = 1
+		if GetRawJoystickButtonPressed(2, 7) or GetRawJoystickButtonPressed(2, 8) then inputExit2 = 1
+		if GetRawJoystickButtonPressed(2, 3) or GetRawJoystickButtonPressed(2, 5) then inputAttack2 = 1
+		if GetRawJoystickButtonPressed(2, 2) or GetRawJoystickButtonPressed(2, 6) then inputSpecia2 = 1
+		if GetRawJoystickButtonPressed(2, 1) or GetRawJoystickButtonPressed(2, 4) then inputTurn2 = 1
+		if GetRawJoystickButtonPressed(2, 13) then inputLeft2 = 1
+		if GetRawJoystickButtonPressed(2, 15) then inputRight2 = 1
+		if GetRawJoystickButtonPressed(2, 14) then inputUp2 = 1
+		if GetRawJoystickButtonPressed(2, 16) then inputDown2 = 1
 	endif
 	
 endfunction
@@ -461,6 +491,7 @@ function CreateSelectButtons()
 		CreateSpriteExpressImage(spr, img, 40, 40, -99, -99, 1) 
 		CreateTweenSprite(spr, .16)
 		SetSpriteAngle(spr, 90 * (i-1))
+		//SetSpriteColor(spr, 255, 255, 255, 255)
 	next i
 	
 endfunction
@@ -570,6 +601,127 @@ function TurnOffSelect()
 	selectTarget = 0
 	UpdateAllTweens(.4)
 	for i = SPR_SELECT1 to SPR_SELECT4
+		SetSpriteColorAlpha(i, 0)
+	next i
+endfunction
+
+function CreateSelectButtons2()
+	SetFolder("/media/ui")
+	img = LoadImage("select.png")
+	for i = 1 to 4
+		spr = SPR_SELECT5-1+i
+		CreateSpriteExpressImage(spr, img, 40, 40, -99, -99, 1) 
+		CreateTweenSprite(spr, .16)
+		SetSpriteAngle(spr, 90 * (i-1))
+		SetSpriteColor(spr, 255, 210, 225, 255)
+	next i
+	
+	//Setting the other select buttons to a different color
+	for i = 1 to 4
+		spr = SPR_SELECT1-1+i
+		if GetSpriteExists(spr) then SetSpriteColor(spr, 200, 230, 255, 255)
+	next i
+	
+endfunction
+
+function MoveSelect2()
+	
+	for i = SPR_SELECT5 to SPR_SELECT8
+		SetSpriteSize(i, 40, 40)
+		ClearTweenSprite(i)
+	next i
+	
+	if selectTarget = 0
+		
+		//If you're pressing the arrow key for the first time
+		if appState = START
+			selectTarget = SPR_START2
+		elseif appState = CHARACTER_SELECT
+			selectTarget = SPR_CS_CRABS_2 + 1
+		elseif appState = GAME and paused = 1
+			selectTarget = playButton
+		endif
+		if selectTarget <> 0
+			sel = selectTarget
+			SetTweenSpriteX(SPR_SELECT1, GetSpriteMiddleX(sel), GetSpriteX(sel)-GetSpriteWidth(SPR_SELECT1)/2, TweenOvershoot())
+			SetTweenSpriteY(SPR_SELECT1, GetSpriteMiddleY(sel), GetSpriteY(sel)-GetSpriteHeight(SPR_SELECT1)/2, TweenOvershoot())
+			SetTweenSpriteX(SPR_SELECT2, GetSpriteMiddleX(sel), GetSpriteX(sel)+GetSpriteWidth(sel)-GetSpriteWidth(SPR_SELECT1)/2, TweenOvershoot())
+			SetTweenSpriteY(SPR_SELECT2, GetSpriteMiddleY(sel), GetSpriteY(sel)-GetSpriteHeight(SPR_SELECT1)/2, TweenOvershoot())
+			SetTweenSpriteX(SPR_SELECT3, GetSpriteMiddleX(sel), GetSpriteX(sel)+GetSpriteWidth(sel)-GetSpriteWidth(SPR_SELECT1)/2, TweenOvershoot())
+			SetTweenSpriteY(SPR_SELECT3, GetSpriteMiddleY(sel), GetSpriteY(sel)+GetSpriteHeight(sel)-GetSpriteHeight(SPR_SELECT1)/2, TweenOvershoot())
+			SetTweenSpriteX(SPR_SELECT4, GetSpriteMiddleX(sel), GetSpriteX(sel)-GetSpriteWidth(SPR_SELECT1)/2, TweenOvershoot())
+			SetTweenSpriteY(SPR_SELECT4, GetSpriteMiddleY(sel), GetSpriteY(sel)+GetSpriteHeight(sel)-GetSpriteHeight(SPR_SELECT1)/2, TweenOvershoot())
+			//TODO Sound effect
+			for i = SPR_SELECT1 to SPR_SELECT4
+				PlayTweenSprite(i, i, 0)
+				PlayTweenSprite(tweenSprFadeIn, i, 0)
+			next i
+		endif
+	else
+		
+		newT = selectTarget
+		for j = 1 to 2
+			for i = 0 to buttons.length
+				if GetSpriteExists(buttons[i])
+					
+					spr = buttons[i]
+					if GetSpriteVisible(spr) and GetSpriteColorAlpha(spr) <> 0 and spr <> selectTarget and GetSpriteX(spr) > 0 and GetSpriteX(spr) < w and GetSpriteY(spr) > 0 and GetSpriteY(spr) < h and spr <> SPR_TITLE
+						rightT = inputRight and GetSpriteX(spr) > GetSpriteX(selectTarget) and (GetSpriteX(spr) < GetSpriteX(newT) or newT = selectTarget)
+						leftT = inputLeft and GetSpriteX(spr) < GetSpriteX(selectTarget) and (GetSpriteX(spr) > GetSpriteX(newT) or newT = selectTarget)
+						upT = inputUp and GetSpriteY(spr) < GetSpriteY(selectTarget) and (GetSpriteY(spr) > GetSpriteY(newT) or newT = selectTarget)
+						downT = inputDown and GetSpriteY(spr) > GetSpriteY(selectTarget) and (GetSpriteY(spr) < GetSpriteY(newT) or newT = selectTarget)
+						
+						if newT <> selectTarget
+							if GetSpriteDistance(spr, selectTarget) > GetSpriteDistance(newT, selectTarget)
+								rightT = 0
+								leftT = 0
+								upT = 0
+								downT = 0
+							endif
+							if Abs(GetSpriteMiddleX(spr) - GetSpriteMiddleX(selectTarget)) < Abs(GetSpriteMiddleY(spr) - GetSpriteMiddleY(selectTarget))
+								rightT = 0
+								leftT = 0
+							else
+								upT = 0
+								downT = 0
+							endif
+						endif
+						
+						if rightT or leftT or upT or downT then newT = spr
+					endif
+				endif
+			next i
+		next j
+		
+		if newT <> selectTarget
+			selectTarget = newT
+			sel = selectTarget
+			twn = TweenEaseOut1()
+			SetTweenSpriteX(SPR_SELECT5, GetSpriteX(SPR_SELECT5), GetSpriteX(sel)-GetSpriteWidth(SPR_SELECT5)/2, twn)
+			SetTweenSpriteY(SPR_SELECT5, GetSpriteY(SPR_SELECT5), GetSpriteY(sel)-GetSpriteHeight(SPR_SELECT5)/2, twn)
+			SetTweenSpriteX(SPR_SELECT6, GetSpriteX(SPR_SELECT6), GetSpriteX(sel)+GetSpriteWidth(sel) - GetSpriteWidth(SPR_SELECT5)/2, twn)
+			SetTweenSpriteY(SPR_SELECT6, GetSpriteY(SPR_SELECT6), GetSpriteY(sel)-GetSpriteHeight(SPR_SELECT5)/2, twn)
+			SetTweenSpriteX(SPR_SELECT7, GetSpriteX(SPR_SELECT7), GetSpriteX(sel)+GetSpriteWidth(sel) - GetSpriteWidth(SPR_SELECT5)/2, twn)
+			SetTweenSpriteY(SPR_SELECT7, GetSpriteY(SPR_SELECT7), GetSpriteY(sel)+GetSpriteHeight(sel) - GetSpriteHeight(SPR_SELECT5)/2, twn)
+			SetTweenSpriteX(SPR_SELECT8, GetSpriteX(SPR_SELECT8), GetSpriteX(sel)-GetSpriteWidth(SPR_SELECT5)/2, twn)
+			SetTweenSpriteY(SPR_SELECT8, GetSpriteY(SPR_SELECT8), GetSpriteY(sel)+GetSpriteHeight(sel) - GetSpriteHeight(SPR_SELECT5)/2, twn)
+			
+			UpdateAllTweens(.4)
+			for i = SPR_SELECT5 to SPR_SELECT8
+				PlayTweenSprite(i, i, 0)
+			next i
+		
+			//TODO Sound effect
+		endif
+		
+	endif
+	
+endfunction
+
+function TurnOffSelect2()
+	selectTarget = 0
+	UpdateAllTweens(.4)
+	for i = SPR_SELECT5 to SPR_SELECT8
 		SetSpriteColorAlpha(i, 0)
 	next i
 endfunction

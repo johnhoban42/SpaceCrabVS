@@ -81,14 +81,21 @@ endtype
 #constant charVerSmall 370
 #constant charVerSmallGap 250
 #constant charHorSmallGap 250
-
+#constant dispHM1 290 //(w/2-GetSpriteHeight(split)/2)/2
+#constant dispHM2 990 //(w/2-GetSpriteHeight(split)/2)/2
 // Initialize the sprites within a CSC
 // "player" -> 1 or 2
 function InitCharacterSelectController(csc ref as CharacterSelectController)
 	
-	p as integer, f as integer
+	p as integer, f as integer, m as integer
 	if csc.player = 1 then p = 1 else p = -1 // makes the position calculations easier
 	if csc.player = 1 then f = 0 else f = 1 // makes the flip calculations easier
+		
+	if dispH = 1
+		p = 1
+		f = 0
+		if csc.player = 2 then m = 700 else m = 0 // makes the horizontal offset calculations easier
+	endif
 	
 	csc.stage = 1
 		
@@ -100,6 +107,7 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 	SetSpriteMiddleScreenOffset(csc.sprReady, 0, p*7*h/16 + p*32)
 	SetSpriteFlip(csc.sprReady, f, f)
 	AddButton(csc.sprReady)
+	SetSpriteVisible(csc.sprReady, 0)
 	
 	LoadAnimatedSprite(csc.sprLeftArrow, "lr", 22)
 	PlaySprite(csc.sprLeftArrow, 12, 1, 1, 22)
@@ -135,7 +143,7 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 	LoadSprite(csc.sprBGB, "bg5B.png")
 	SetBGRandomPosition(csc.sprBGB)
 	SetSpriteDepth(csc.sprBGB, 99)
-	SetSpriteColorAlpha(csc.sprBGB, 255) 
+	SetSpriteColorAlpha(csc.sprBGB, 255)
 	
 	//Big plan for the future of character selection:
 	/*
@@ -147,40 +155,63 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 	Will need to create an 'unlocked crab' array for this, though (6 variables, highestAlt1, highestAlt2...
 	*/
 
-	for i = 0 to NUM_CRABS-1 + spActive*STORY_CS_BONUS
+	for i = 0 to NUM_CRABS-1 + spActive*STORY_CS_BONUS 
 		SyncG()
 		//if i = 0 or i = 1 or i = 3 or i = 5
 			CreateSprite(csc.sprCrabs + i, 0)
 			if spActive = 0
+				
+				//Loading images for the crabs in, the first time; however, they will be SMALLER!
+				SetFolder("/media/art")
+				crabRefType = Mod(i, 6)+1
+				crabRefAlt = (i)/6
+				//Will eventually put a check here 
 				for j = 1 to 6
-					//Make these below frames only load (in the constants file) if there is no story mode
-					//If it's story mode, then only the current chapter should have loaded sprites
-					AddSpriteAnimationFrame(csc.sprCrabs + i, crab1select1I - 1 + j + (i+1)*10)
+					img = LoadImageResizedR("crab" + str(crabRefType) + AltStr(crabRefAlt) + "select" + Str(j) + ".png", .4)
+					if img <> 0
+						AddSpriteAnimationFrame(csc.sprCrabs + i, img)
+						trashBag.insert(img)
+					endif
 				next j
+				
 				PlaySprite(csc.sprCrabs + i, 18, 1, 1, 6)
 			else
 				SetSpriteVisible(csc.sprCrabs + i, 0)
 			
 			endif
-			
-			//Do a get sprite frame count to check if a story sprite has frames, then add the frames
-			
-		//else
-		//	LoadSprite(csc.sprCrabs + i, "crab1.png")
-		//endif
+		
+		if i > unlockedCrab-1 then SetSpriteVisible(csc.sprCrabs + i, 0)
+		
 		SetSpriteSize(csc.sprCrabs + i, charWid*3/5, charHei*3/5)
 		//SetSpriteSize(csc.sprCrabs + i, charWid*4/7, charHei*4/7) //Slightly bigger crab size
 		//SetSpriteMiddleScreenOffset(csc.sprCrabs + i, p*(i-csc.crabSelected)*w, p*335)	//The old way to position the sprites
 		SetSpriteFlip(csc.sprCrabs + i, f, f)
 		SetSpriteDepth(csc.sprCrabs, 40)
 		
+		
 		CreateTweenSprite(csc.sprCrabs + i, selectTweenTime#)
-		SetTweenSpriteSizeX(csc.sprCrabs + i, charWid, charWid*3/5, TweenOvershoot())
-		SetTweenSpriteSizeY(csc.sprCrabs + i, charHei, charHei*3/5, TweenOvershoot())
-		SetTweenSpriteX(csc.sprCrabs + i, w/2-charWid/2, w/2 - charWid/4 + p*charHorSmallGap*(Mod(i,3)-1), TweenOvershoot())
-		SetTweenSpriteY(csc.sprCrabs + i, h/2-charHei/2 + p*charVer, h/2 - charHei/4 + p*charVerSmall + p*charVerSmallGap*((i)/3), TweenOvershoot())
+		if dispH = 0
+			//Vertical layout: creating the crab layout/tweens
+			SetTweenSpriteSizeX(csc.sprCrabs + i, charWid, charWid*3/5, TweenOvershoot())
+			SetTweenSpriteSizeY(csc.sprCrabs + i, charHei, charHei*3/5, TweenOvershoot())
+			SetTweenSpriteX(csc.sprCrabs + i, w/2-charWid/2, w/2 - charWid/4 + p*charHorSmallGap*(Mod(i,3)-1), TweenOvershoot())
+			SetTweenSpriteY(csc.sprCrabs + i, h/2-charHei/2 + p*charVer, h/2 - charHei/4 + p*charVerSmall + p*charVerSmallGap*((i)/3), TweenOvershoot())
+				
+			SetSpritePosition(csc.sprCrabs + i, w/2 - GetSpriteWidth(csc.sprCrabs + i)/2 + p*charHorSmallGap*(Mod(i,3)-1), h/2 - charHei/4 + p*charVerSmall + p*charVerSmallGap*((i)/3))
+		
+		else
+			//Horizontal layout: creating the crab layout/tweens
+			SetSpriteSize(csc.sprCrabs + i, charWid*4/9, charHei*4/9)
+			SetTweenSpriteSizeX(csc.sprCrabs + i, charWid, charWid*4/9, TweenOvershoot())
+			SetTweenSpriteSizeY(csc.sprCrabs + i, charHei, charHei*4/9, TweenOvershoot())
+			SetTweenSpriteX(csc.sprCrabs + i, dispHM1 - charWid/2 + m, dispHM1 - charWid*2/9 + charHorSmallGap/1.4*(Mod(i,3)-1) + m, TweenOvershoot())
+			SetTweenSpriteY(csc.sprCrabs + i, h/2 - charHei/3, h/2 - charHei/3 + 0.8*charVerSmallGap*((i)/3), TweenOvershoot())
+				
+			SetSpritePosition(csc.sprCrabs + i, dispHM1 - charWid*2/9 + charHorSmallGap/1.4*(Mod(i,3)-1) + m, h/2 - charHei/3 + 0.8*charVerSmallGap*((i)/3))
 			
-		SetSpritePosition(csc.sprCrabs + i, w/2 - GetSpriteWidth(csc.sprCrabs + i)/2 + p*charHorSmallGap*(Mod(i,3)-1), h/2 - charHei/4 + p*charVerSmall + p*charVerSmallGap*((i)/3))
+		endif
+	
+		//Change the crab tweens here, if there are more crab alts unlocked
 	
 	next i
 		
@@ -199,10 +230,8 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 	SetTextFontImage(csc.txtCrabName, fontCrabI)
 	SetTextSpacing(csc.txtCrabName, -22)
 	SetTextMiddleScreenOffset(csc.txtCrabName, f, 0, p*130)
-	//SetTextMiddleScreenOffset(csc.txtCrabName, f, 0, p*100)
 	SetTextAlignment(csc.txtCrabName, 1)
 	
-	//CreateText(csc.txtCrabDesc, crabDescs[csc.crabSelected])
 	CreateText(csc.txtCrabDesc, crabDescs[csc.crabSelected] )
 	SetTextSize(csc.txtCrabDesc, 40)
 	SetTextAngle(csc.txtCrabDesc, f*180)
@@ -210,16 +239,15 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 	SetTextSpacing(csc.txtCrabDesc, -10)
 	SetTextMiddleScreenOffset(csc.txtCrabDesc, f, -w/5, p*3*h/8.5)
 	SetTextMiddleScreenOffset(csc.txtCrabDesc, f, 0, p*3*h/8.5)
-	//SetTextMiddleScreenOffset(csc.txtCrabDesc, f, 0, p*3*h/8)
 	SetTextAlignment(csc.txtCrabDesc, 1)
 	
+	//Mostly depreciated, just used for the story stuff
 	CreateText(csc.txtCrabStats, "Speed: {{}}" + chr(10) + "Turn: {{{}" + chr(10) + "Special:" + chr(10) + "Meteor Shower")
 	SetTextSize(csc.txtCrabStats, 40)
 	SetTextAngle(csc.txtCrabStats, f*180)
 	SetTextFontImage(csc.txtCrabStats, fontDescI)
 	SetTextSpacing(csc.txtCrabStats, -10)
 	SetTextMiddleScreenOffset(csc.txtCrabStats, f, w/2-w/5, p*3*h/8.5)
-	//SetTextMiddleScreenOffset(csc.txtCrabDesc, f, 0, p*3*h/8)
 	SetTextAlignment(csc.txtCrabStats, 1)
 	SetTextVisible(csc.txtCrabStats, 0)
 	
@@ -231,6 +259,77 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 	SetTextSpacing(csc.txtReady, -30)
 	SetTextMiddleScreenOffset(csc.txtReady, f, 0, p*7*h/16)
 	SetTextColorAlpha(csc.txtReady, 0)
+	
+	
+	
+	if dispH
+		//Most of these elements are resized in similar ways; just the x's are different
+		SetSpriteSizeSquare(csc.sprBG, h*1.1)
+		SetSpriteMiddleScreenY(csc.sprBG)
+		SetSpriteSizeSquare(csc.sprBGB, h*1.1)
+		SetSpriteMiddleScreenY(csc.sprBGB)
+		
+		SetTextY(csc.txtCrabName, 100)
+		SetTextSize(csc.txtCrabName, 82)
+		SetTextSpacing(csc.txtCrabName, -23)
+		
+		SetTextSize(csc.txtCrabDesc, 32)
+		SetTextSpacing(csc.txtCrabStats, -10)
+		IncTextY(csc.txtCrabDesc, -62)
+		SetSpriteSize(csc.sprTxtBack, w/2, 220)
+		SetSpriteDepth(csc.sprTxtBack, 50)
+		IncSpriteY(csc.sprTxtBack, -70)
+		
+		SetSpriteSize(csc.sprLeftArrow, 100*gameScale#, 100*gameScale#)
+		SetSpriteY(csc.sprLeftArrow, GetSpriteY(csc.sprTxtBack)+GetSpriteHeight(csc.sprLeftArrow)/2 - 90)
+		
+		SetSpriteSize(csc.sprRightArrow, 100*gameScale#, 100*gameScale#)
+		SetSpriteY(csc.sprRightArrow, GetSpriteY(csc.sprTxtBack)+GetSpriteHeight(csc.sprRightArrow)/2 - 90)
+				
+		SetSpriteSize(csc.sprReady, 214, 80)
+		SetSpriteY(csc.sprReady, h - GetSpriteHeight(csc.sprReady) - 20)
+		
+		SetTextSize(csc.txtReady, 60)
+	SetTextSpacing(csc.txtReady, -21)
+				
+		if csc.player = 1
+			//Player 1
+			SetSpriteMiddleScreenXDispH1(csc.sprBG)
+			SetSpriteMiddleScreenXDispH1(csc.sprBGB)
+			SetSpriteMiddleScreenXDispH1(csc.sprTxtBack)
+			SetSpriteMiddleScreenXDispH1(csc.sprReady)
+			
+			SetTextMiddleScreenXDispH1(csc.txtCrabName)
+			SetTextMiddleScreenXDispH1(csc.txtCrabDesc)
+			SetTextMiddleScreenXDispH1(csc.txtReady)
+			
+			SetSpriteMiddleScreenXDispH1(csc.sprLeftArrow)
+			IncSpriteX(csc.sprLeftArrow, -w/4+86)
+			
+			SetSpriteMiddleScreenXDispH1(csc.sprRightArrow)
+			IncSpriteX(csc.sprRightArrow, w/4-86)
+					
+		elseif csc.player = 2
+			//Player 2
+			
+			SetSpriteMiddleScreenXDispH2(csc.sprBG)
+			SetSpriteMiddleScreenXDispH2(csc.sprBGB)
+			SetSpriteMiddleScreenXDispH2(csc.sprTxtBack)
+			SetSpriteMiddleScreenXDispH2(csc.sprReady)
+			
+			SetTextMiddleScreenXDispH2(csc.txtCrabName)
+			SetTextMiddleScreenXDispH2(csc.txtCrabDesc)
+			SetTextMiddleScreenXDispH2(csc.txtReady)
+			
+			SetSpriteMiddleScreenXDispH2(csc.sprLeftArrow)
+			IncSpriteX(csc.sprLeftArrow, -w/4+86)
+			
+			SetSpriteMiddleScreenXDispH2(csc.sprRightArrow)
+			IncSpriteX(csc.sprRightArrow, w/4-86)
+		
+		endif
+	endif
+	
 	
 	if spActive = 1
 		//Creating the story mode exclusive stuff
@@ -258,6 +357,8 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 		next i
 		CreateTextExpress(TXT_SCENE, "Scene Select:", 54, fontDescI, 0, 50, h-180, 10)
 		SetTextSpacing(TXT_SCENE, -14)
+		
+		SetSpriteVisible(csc.sprReady, 1)
 		
 		SetSceneImages(1)
 		
@@ -304,41 +405,6 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 						
 		endif
 	
-	endif
-	
-	if dispH
-		if p = 1
-			SetSpriteSizeSquare(csc.sprBG, h*1.1)
-			SetSpriteMiddleScreenXDispH1(csc.sprBG)
-			SetSpriteMiddleScreenY(csc.sprBG)
-			SetSpriteSizeSquare(csc.sprBGB, h*1.1)
-			SetSpriteMiddleScreenXDispH1(csc.sprBGB)
-			SetSpriteMiddleScreenY(csc.sprBGB)
-			
-			SetTextMiddleScreenXDispH1(csc.txtCrabName)
-			SetTextY(csc.txtCrabName, 100)
-			SetTextSize(csc.txtCrabName, 82)
-			SetTextSpacing(csc.txtCrabName, -23)
-						
-			SetTextMiddleScreenXDispH1(csc.txtCrabDesc)
-			SetTextSize(csc.txtCrabDesc, 34)
-			IncTextY(csc.txtCrabDesc, -62)
-			SetSpriteSize(csc.sprTxtBack, w/2, 140)
-			SetSpriteDepth(csc.sprTxtBack, 50)
-			IncSpriteY(csc.sprTxtBack, -70)
-			
-			SetSpriteSize(csc.sprLeftArrow, 100*gameScale#, 100*gameScale#)
-			SetSpriteMiddleScreenXDispH1(csc.sprLeftArrow)
-			IncSpriteX(csc.sprLeftArrow, -w/4+86)
-			SetSpriteY(csc.sprLeftArrow, GetSpriteY(csc.sprTxtBack)+GetSpriteHeight(csc.sprLeftArrow)/2 + 30)
-			
-			SetSpriteSize(csc.sprRightArrow, 100*gameScale#, 100*gameScale#)
-			SetSpriteMiddleScreenXDispH1(csc.sprRightArrow)
-			IncSpriteX(csc.sprRightArrow, w/4-86)
-			SetSpriteY(csc.sprRightArrow, GetSpriteY(csc.sprTxtBack)+GetSpriteHeight(csc.sprRightArrow)/2 + 30)
-			
-			SetSpriteVisible(csc.sprReady, 0)
-		endif
 	endif
 	
 	SetVisibleCharacterUI(1, csc)
@@ -395,6 +461,7 @@ function InitCharacterSelect()
 		InitCharacterSelectController(csc2)
 	endif
 	
+	SetFolder("/media")
 	LoadSpriteExpress(SPR_MENU_BACK, "ui/mainmenu.png", 140, 140, 0, 0, 3)
 	SetSpriteMiddleScreen(SPR_MENU_BACK)
 	AddButton(SPR_MENU_BACK)
@@ -417,6 +484,11 @@ function ChangeCrabs(csc ref as CharacterSelectController, dir as integer, start
 	if csc.player = 1 then p = 1 else p = -1 // makes the position calculations easier
 	if csc.player = 1 then f = 0 else f = 1 // makes the flip calculations easier
 		
+	if dispH
+		p = 1
+		f = 0
+	endif
+		
 	//This goes on the outside so it can be used for the glide loop
 	glideMax = 24/fpsr#
 		
@@ -430,7 +502,29 @@ function ChangeCrabs(csc ref as CharacterSelectController, dir as integer, start
 		
 		//The change of the crab is done up here to make the glide work
 		csc.crabSelected = csc.crabSelected + dir
-		//This is moved up so that people can see the names quicker
+		//Now that we've changed the selected crab, we're going to update the game screen:
+		
+		//FIRST: Loading in the high def crab images, if they aren't in already
+		//Only unfortunate thing is that we can't reuse images from one side into another side; if memory becomes an issue, we'll do this
+		if GetSpriteFrameCount(csc.sprCrabs + csc.crabSelected) <> 12 - 6*spActive
+			SetFolder("/media/art")
+			if spActive
+				curChapter = csc.crabSelected+1
+				SetCrabFromStringChap("", curChapter, 3)
+			else
+				crabRefType = Mod(csc.crabSelected, 6)+1
+				crabRefAlt = (csc.crabSelected-1)/6
+			endif
+			for i = 1 to 6
+				img = LoadImageResizedR("crab" + str(crabRefType) + AltStr(crabRefAlt) + "select" + Str(i) + ".png", .8)
+				if img <> 0
+					AddSpriteAnimationFrame(csc.sprCrabs + csc.crabSelected, img)
+					trashBag.insert(img)
+				endif
+			next i
+		endif
+		
+		//SECOND: The text & crab animation
 		if spActive = 0
 			SetTextString(csc.txtCrabName, crabNames[csc.crabSelected+1])
 			SetTextString(csc.txtCrabDesc, crabDescs[csc.crabSelected])
@@ -439,6 +533,8 @@ function ChangeCrabs(csc ref as CharacterSelectController, dir as integer, start
 			for i = Len(GetTextString(csc.txtCrabDesc)) to FindStringReverse(GetTextString(csc.txtCrabDesc), chr(10))-1 step -1
 				SetTextCharY(csc.txtCrabDesc, i, GetTextSize(csc.txtCrabDesc)*3*p + space*p - GetTextSize(csc.txtCrabDesc)*f)
 			next i
+			
+			PlaySprite(csc.sprCrabs + csc.crabSelected, 18, 1, 7, 12)
 			
 		else
 			curChapter = csc.crabSelected+1
@@ -451,7 +547,7 @@ function ChangeCrabs(csc ref as CharacterSelectController, dir as integer, start
 			SetSceneImages(0)
 			
 			//This loads in the crab's images, if they haven't already been loaded in
-			if GetSpriteFrameCount(csc.sprCrabs + csc.crabSelected) <> 6
+			/*if GetSpriteFrameCount(csc.sprCrabs + csc.crabSelected) <> 6
 				SetFolder("/media/art")
 				SetCrabFromStringChap("", curChapter, 3)
 				SetSpriteVisible(csc.sprCrabs + csc.crabSelected, 1)
@@ -464,7 +560,10 @@ function ChangeCrabs(csc ref as CharacterSelectController, dir as integer, start
 					endif
 				next i
 				PlaySprite(csc.sprCrabs + csc.crabSelected, 18, 1, 1, 6)
-			endif
+			endif*/
+			
+			SetSpriteVisible(csc.sprCrabs + csc.crabSelected, 1)
+			PlaySprite(csc.sprCrabs + csc.crabSelected, 18, 1, 1, 6)
 		endif
 		
 		space = 12
@@ -503,10 +602,12 @@ function ChangeCrabs(csc ref as CharacterSelectController, dir as integer, start
 			GlideToX(spr, w/2 - GetSpriteWidth(spr)/2 - (cNum-num)*1000*p, 4)
 			if csc.player = 1 then GlideToY(spr, h/2 - GetSpriteHeight(spr)/2 + charVer, 2)
 			if csc.player = 2 then GlideToY(spr, h/2 - GetSpriteHeight(spr)/2 - charVer, 2)
+			//if csc.player = 2 and dispH = 1 then GlideToY(spr, h/2 - GetSpriteHeight(spr)/2 + charVer, 2)
 		endif
 		if dispH
 			if csc.player = 1 then GlideToX(spr, w/4 - GetSpriteHeight(split)/4 - GetSpriteWidth(spr)/2 - (cNum-num)*500*p, 4)
-			if csc.player = 2 then GlideToX(spr, w*3/4 + GetSpriteHeight(split)/4 - GetSpriteWidth(spr)/2 - (cNum-num)*500*p, 4)
+			if csc.player = 2 and dispH = 0 then GlideToX(spr, w*3/4 + GetSpriteHeight(split)/4 - GetSpriteWidth(spr)/2 - (cNum-num)*500*p, 4)
+			if csc.player = 2 and dispH = 1 then GlideToX(spr, w*3/4 - GetSpriteHeight(split)/4 - GetSpriteWidth(spr)/2 - (cNum-num)*500*p, 4)
 			GlideToY(spr, h/2 - GetSpriteHeight(spr)/2 - 60, 2)
 			
 			if (cNum-num) <> 0
@@ -540,7 +641,7 @@ function ChangeCrabs(csc ref as CharacterSelectController, dir as integer, start
 			if csc.CrabSelected <> 0
 				SetSpriteVisible(csc.sprLeftArrow, 1)
 			endif
-			if csc.CrabSelected <> NUM_CRABS-1 + spActive*STORY_CS_BONUS
+			if csc.CrabSelected <> unlockedCrab-1 //NUM_CRABS-1 +  //+ spActive*STORY_CS_BONUS
 				SetSpriteVisible(csc.sprRightArrow, 1)
 			endif
 			SetSpriteVisible(csc.sprReady, 1)
@@ -650,7 +751,8 @@ function DoCharacterSelectController(csc ref as CharacterSelectController)
 				PlaySoundR(arrowS, 100)
 				ChangeCrabs(csc, -1, 1)
 			// Scroll right
-			elseif (ButtonMultitouchEnabled(csc.sprRightArrow) or (GetMultitouchPressedTopLeft() and csc.player = 2 and dispH = 0) or (GetMultitouchPressedBottomRight() and csc.player = 1 and dispH = 0)) and ((csc.crabSelected < NUM_CRABS-1+spActive*STORY_CS_BONUS and spType <> STORYMODE) or (csc.crabSelected < Min(clearedChapter, finalChapter-1) and spType = STORYMODE))
+			elseif (ButtonMultitouchEnabled(csc.sprRightArrow) or (GetMultitouchPressedTopLeft() and csc.player = 2 and dispH = 0) or (GetMultitouchPressedBottomRight() and csc.player = 1 and dispH = 0)) and ((csc.crabSelected < 5 and spType <> STORYMODE) or (csc.crabSelected < Min(clearedChapter, finalChapter-1) and spType = STORYMODE))
+			//elseif (ButtonMultitouchEnabled(csc.sprRightArrow) or (GetMultitouchPressedTopLeft() and csc.player = 2 and dispH = 0) or (GetMultitouchPressedBottomRight() and csc.player = 1 and dispH = 0)) and ((csc.crabSelected < NUM_CRABS-1+spActive*STORY_CS_BONUS and spType <> STORYMODE) or (csc.crabSelected < Min(clearedChapter, finalChapter-1) and spType = STORYMODE))
 				ChangeCrabs(csc, 1, 1)
 				PlaySoundR(arrowS, 100)
 			endif
@@ -682,10 +784,11 @@ function DoCharacterSelectController(csc ref as CharacterSelectController)
 			
 			for i = 0 to NUM_CRABS-1 + spActive*STORY_CS_BONUS
 				spr = csc.sprCrabs + i
-				if ButtonMultitouchEnabled(spr) and spActive = 0
+				if ButtonMultitouchEnabled(spr) and spActive = 0 and i = csc.crabSelected 
 					SetVisibleCharacterUI(1, csc)
 					for j = 0 to NUM_CRABS-1 + spActive*STORY_CS_BONUS
 						PlayTweenSprite(csc.sprCrabs + j, csc.sprCrabs + j, 0)
+						if j < unlockedCrab then SetSpriteColorAlpha(csc.sprCrabs + j, 255)
 					next j
 					PlaySoundR(arrowS, 100)
 					csc.stage = 1
@@ -767,9 +870,9 @@ function DoCharacterSelect()
 		if csc2.ready = 0 and doJit
 			txt = csc2.txtCrabName
 			for i = 0 to GetTextLength(txt)
-				SetTextCharY(txt, i, -102 -1 * (jitterNum + csc2.glideFrame) + Random(0, (jitterNum + csc2.glideFrame)*2))
-				if csc2.stage = 1 and i > 12 then SetTextCharY(csc2.txtCrabName, i, -102 -1 * (jitterNum + csc2.glideFrame) + Random(0, (jitterNum + csc2.glideFrame)*2) - GetTextSize(txt))
-				SetTextCharAngle(txt, i, 180 - 1*(jitterNum + csc2.glideFrame) + Random(0, jitterNum + csc2.glideFrame)*2)
+				SetTextCharY(txt, i, -102 + 102*dispH -1 * (jitterNum + csc2.glideFrame) + Random(0, (jitterNum + csc2.glideFrame)*2))
+				if csc2.stage = 1 and i > 12 then SetTextCharY(csc2.txtCrabName, i, -102 + 102*dispH -1 * (jitterNum + csc2.glideFrame) + Random(0, (jitterNum + csc2.glideFrame)*2) - (1-dispH*2)*GetTextSize(txt))
+				SetTextCharAngle(txt, i, 180*(1-dispH) - 1*(jitterNum + csc2.glideFrame) + Random(0, jitterNum + csc2.glideFrame)*2)
 			next i
 		else
 			txt = csc2.txtReady
