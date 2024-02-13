@@ -220,10 +220,15 @@ function CreateGame2()
 	endif
 	
 	if dispH and aiActive = 0
-		CreateTextExpress(meteorButton2, "Z", 40, fontScoreI, 1, GetSpriteMiddleX(meteorButton2) - 2, GetSpriteY(meteorButton2) - 40, 10)
-		CreateTextExpress(specialButton2, "X", 40, fontScoreI, 1, GetSpriteMiddleX(specialButton2) - 2, GetSpriteY(specialButton2) - 40, 10)
+		CreateTextExpress(meteorButton2, "N", 40, fontScoreI, 1, GetSpriteMiddleX(meteorButton2) - 2, GetSpriteY(meteorButton2) - 40, 10)
+		CreateTextExpress(specialButton2, "M", 40, fontScoreI, 1, GetSpriteMiddleX(specialButton2) - 2, GetSpriteY(specialButton2) - 40, 10)
 		SetTextColor(meteorButton2, 100, 100, 100, 255)
 		SetTextColor(specialButton2, 100, 100, 100, 255)
+		
+		if GetRawJoystickConnected(2)
+			SetTextString(meteorButton2, "X")
+			SetTextString(specialButton2, "B")
+		endif
 	endif
 	
 endfunction
@@ -513,13 +518,13 @@ function DoGame2()
 	//Process AI meteor and special actions
 	aiSpecial = 0
 	if aiActive = 1 then aiSpecial = AISpecial()
-	if expTotal2 >= meteorCost2 and hit1Timer# <= 0  and ((ButtonMultitouchEnabled(meteorButton2) and aiActive = 0) or AISpecial = 1)
+	if expTotal2 >= meteorCost2 and hit1Timer# <= 0  and (((ButtonMultitouchEnabled(meteorButton2) or inputAttack2) and aiActive = 0) or AISpecial = 1)
 		SendMeteorFrom2()
 		//Send info to AI when Special Attack has occurred
 		if aiActive = 1 then AIResetSpecial(1)
 	endif
 	
-	if expTotal2 = specialCost2 and hit1Timer# <= 0 and ((ButtonMultitouchEnabled(specialButton2) and aiActive = 0) or AISpecial = 2)
+	if expTotal2 = specialCost2 and hit1Timer# <= 0 and (((ButtonMultitouchEnabled(specialButton2) or inputSpecial2) and aiActive = 0) or AISpecial = 2)
 		SendSpecial2()
 		//Send info to AI when Special Attack has occurred
 		if aiActive = 1 then AIResetSpecial(2)

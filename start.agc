@@ -123,6 +123,7 @@ function InitStart()
 	AddButton(SPR_STORY_START)
 	//if demo then SetSpriteVisible(SPR_STORY_START, 0)
 	
+	highestScene = 9
 	if highestScene < 9
 		LoadSpriteExpress(SPR_CHALLENGE, "ultimatechallengelock.png", 250, 150, 250, 1130, 5)
 	else
@@ -243,6 +244,7 @@ function HorizontalStart()
 	
 	SetSpriteSize(SPR_START2, 842*.7, 317*.7)
 	SetSpriteMiddleScreenX(SPR_START2)
+	SetSpriteY(SPR_START2, h/2 - 180)
 	
 	//CreateTextExpress(TXT_WAIT1, "Waiting for your opponent...", 90, fontDescItalI, 1, w/2, GetSpriteY(SPR_START1)+48, 3)
 	//CreateTextExpress(TXT_WAIT2, "Waiting for your opponent...", 90, fontDescItalI, 1, w/2, GetSpriteY(SPR_START2)-48+GetSpriteHeight(SPR_START2), 3)
@@ -299,6 +301,28 @@ function HorizontalStart()
 		//SetSpritePosition(i, w/2 - GetSpriteWidth(i)/2 - 250 + 250*(Mod(num-1,3)), 1080*5 + 250*((num-1)/3))
 	next i
 	
+	//Temporary, for Playcrafting NYC 2024
+	IncSpriteX(SPR_STORY_START, 9999)
+	IncSpriteX(SPR_CHALLENGE, 9999)
+	IncSpriteX(SPR_VOLUME, 9999)
+	IncSpriteX(SPR_VOLUME_SLIDER, 9999)
+	IncSpriteX(SPR_START1, 9999)
+	IncSpriteX(SPR_START2, 9999)
+	
+	SetSpriteY(SPR_STORY_START, 530)
+	SetSpriteMiddleScreenX(SPR_STORY_START)
+	IncSpriteX(SPR_STORY_START, 300)
+	
+	SetSpriteMiddleScreenX(SPR_TITLE)
+	IncSpriteY(SPR_TITLE, -70)
+	SetSpriteMiddleScreenX(SPR_CLASSIC)
+	IncSpriteX(SPR_CLASSIC, -300)
+	SetSpriteY(SPR_CLASSIC, 530)
+	//IncSpriteX(SPR_CHALLENGE, 9999)
+	
+	SetSpriteY(SPR_CHALLENGE, 530)
+	SetSpriteMiddleScreenX(SPR_CHALLENGE)
+	IncSpriteY(SPR_CHALLENGE, 20)
 	
 endfunction
 
@@ -356,7 +380,8 @@ function DoStart()
 		SetMusicVolumeOGG(titleMusic, volumeM)
 	endif
 	
-	if ButtonMultitouchEnabled(SPR_START1) and spActive = 0 and dispH = 0
+	//if ButtonMultitouchEnabled(SPR_START1) and spActive = 0 and dispH = 0
+	if ButtonMultitouchEnabled(SPR_CLASSIC) and spActive = 0 and dispH = 0
 		if GetSpriteColorAlpha(SPR_START1) = 255
 			//Pressing player one
 			PlayTweenSprite(tweenSprFadeOut, SPR_START1, 0)
@@ -396,7 +421,8 @@ function DoStart()
 		endif
 	endif
 	
-	if ButtonMultitouchEnabled(SPR_START1) and spActive = 0 and dispH = 1
+	//if ButtonMultitouchEnabled(SPR_START1) and spActive = 0 and dispH = 1
+	if ButtonMultitouchEnabled(SPR_CLASSIC) and spActive = 0 and dispH = 1
 		spActive = 0
 		aiActive = 0
 		state = CHARACTER_SELECT
@@ -411,21 +437,21 @@ function DoStart()
 	endif
 	
 	//Transition into mirror mode
-	if Button(SPR_START1P) and GetSpriteVisible(SPR_START1P)
+	if ButtonMultitouchEnabled(SPR_START1P) and GetSpriteVisible(SPR_START1P)
 		spActive = 1
 		spType = MIRRORMODE
 		ToggleStartScreen(MIRRORMODE_START, 1)
 	endif
 	
 	//Transition into classic
-	if Button(SPR_CLASSIC) and GetSpriteVisible(SPR_CLASSIC)
+	/*if Button(SPR_CLASSIC) and GetSpriteVisible(SPR_CLASSIC)
 		spActive = 1
 		spType = CLASSIC
 		ToggleStartScreen(CLASSICMODE_START, 1)
-	endif
+	endif*/
 	
 	//Transition to main screen
-	if Button(SPR_MENU_BACK) and GetSpriteVisible(SPR_MENU_BACK)
+	if ButtonMultitouchEnabled(SPR_MENU_BACK) and GetSpriteVisible(SPR_MENU_BACK)
 		spActive = 0
 		spType = 0
 		ToggleStartScreen(MAINSCREEN, 1)

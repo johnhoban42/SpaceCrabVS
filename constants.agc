@@ -275,16 +275,16 @@ global met3CD2# = 0 //400
 #constant curtain 12
 #constant curtainB 13
 
-#constant SPR_SELECT1 21
-#constant SPR_SELECT2 22
-#constant SPR_SELECT3 23
-#constant SPR_SELECT4 24
+#constant SPR_SELECT1 921
+#constant SPR_SELECT2 922
+#constant SPR_SELECT3 923
+#constant SPR_SELECT4 924
 
 //This is for the player 2 selection
-#constant SPR_SELECT5 25
-#constant SPR_SELECT6 26
-#constant SPR_SELECT7 27
-#constant SPR_SELECT8 28
+#constant SPR_SELECT5 925
+#constant SPR_SELECT6 926
+#constant SPR_SELECT7 927
+#constant SPR_SELECT8 928
 
 #constant planet1 101
 #constant planet2 102

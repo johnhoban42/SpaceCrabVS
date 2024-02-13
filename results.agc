@@ -42,7 +42,10 @@ function InitResultsController(rc ref as ResultsController)
 	p as integer, f as integer
 	if rc.player = 1 then p = 1 else p = -1 // makes the position calculations easier
 	if rc.player = 1 then f = 0 else f = 1 // makes the flip calculations easier
-	
+	if dispH
+		p = 1
+		f = 0
+	endif
 	// Determine which crab type won and lost
 	if resultsWinner = 1
 		winnerCrab = crab1Type
@@ -70,7 +73,7 @@ function InitResultsController(rc ref as ResultsController)
 	
 	winMsg as string
 	if rc.isWinner
-		winMsg = "Winning boy!"
+		winMsg = "Crampion!"
 	else
 		winMsg = "Loser XD"
 	endif
@@ -119,6 +122,76 @@ function InitResultsController(rc ref as ResultsController)
 	
 	// Kick off the controller's tweens
 	PlayTweenText(rc.twnWinMsg, rc.txtWinMsg, .8)
+	
+	cenOff = 30
+	if dispH 
+		
+		SetTextY(rc.txtWinMsg, h/2-60)
+		
+		SetTweenTextSize(rc.twnWinMsg, 120, 96, TweenSmooth2())
+		SetTweenTextSpacing(rc.twnWinMsg, -28, -22, TweenSmooth2())
+		SetTweenTextY(rc.twnWinMsg, GetTextY(rc.txtWinMsg), GetTextY(rc.txtWinMsg) + 160, TweenSmooth2())
+		
+		SetTextY(rc.txtCrabMsg, 40)
+		SetTextSize(rc.txtCrabMsg, 40)
+		SetTextSpacing(rc.txtCrabMsg, -12)
+			
+		SetSpriteColor(rc.sprCrabLose, 230, 230, 230, 255)
+		SetSpriteColor(rc.sprCrabWin, 255, 255, 255, 255)
+		
+		if rc.player = 1
+			SetTextMiddleScreenXDispH1(rc.txtWinMsg)
+			IncTextX(rc.txtWinMsg, cenOff)
+			SetTextMiddleScreenXDispH1(rc.txtCrabMsg)
+			IncTextX(rc.txtCrabMsg, cenOff)
+			
+			SetSpriteSizeSquare(rc.sprCrabWin, 325)
+			SetSpriteSizeSquare(rc.sprCrabLose, 325)
+			
+			SetSpriteY(rc.sprCrabWin, h/2-210)
+			SetSpriteY(rc.sprCrabLose, h/2-210)
+			if resultsWinner = 1
+				SetSpriteMiddleScreenXDispH1(rc.sprCrabWin)
+				IncSpriteX(rc.sprCrabWin, cenOff)
+				
+				SetSpriteMiddleScreenXDispH2(rc.sprCrabLose)
+				IncSpriteX(rc.sprCrabLose, -cenOff)
+			else
+				SetSpriteMiddleScreenXDispH2(rc.sprCrabWin)
+				IncSpriteX(rc.sprCrabWin, -cenOff)
+				
+				SetSpriteMiddleScreenXDispH1(rc.sprCrabLose)
+				IncSpriteX(rc.sprCrabLose, cenOff)
+			endif
+			
+			//SetSpriteMiddleScreenOffset(rc.sprCrabWin, 50, 40)
+			//SetSpriteMiddleScreenOffset(rc.sprCrabLose, -60, -100)
+		else
+			SetTextMiddleScreenXDispH2(rc.txtWinMsg)
+			IncTextX(rc.txtWinMsg, -cenOff)
+			SetTextMiddleScreenXDispH2(rc.txtCrabMsg)
+			IncTextX(rc.txtCrabMsg, -cenOff)
+			
+			//Dumping all of the P2 stuff out
+			IncSpriteX(rc.sprCrabWin, 9999)
+			IncSpriteX(rc.sprCrabLose, 9999)
+		endif
+		
+		DeleteTween(rc.twnMyCrab)
+		CreateTweenSprite(rc.sprCrabWin, 1)
+		SetTweenSpriteSizeX(rc.sprCrabWin, GetSpriteWidth(rc.sprCrabWin)/1.4, GetSpriteWidth(rc.sprCrabWin), TweenOvershoot())
+		SetTweenSpriteSizeY(rc.sprCrabWin, GetSpriteHeight(rc.sprCrabWin)/1.4, GetSpriteHeight(rc.sprCrabWin), TweenOvershoot())
+		SetTweenSpriteX(rc.sprCrabWin, GetSpriteMiddleX(rc.sprCrabWin)-(GetSpriteWidth(rc.sprCrabWin)/1.4)/2, GetSpriteX(rc.sprCrabWin), TweenOvershoot())
+		SetTweenSpriteY(rc.sprCrabWin, GetSpriteMiddleY(rc.sprCrabWin)-(GetSpriteHeight(rc.sprCrabWin)/1.4)/2, GetSpriteY(rc.sprCrabWin), TweenOvershoot())
+		
+		CreateTweenSprite(rc.sprCrabLose, 1)
+		SetTweenSpriteSizeX(rc.sprCrabLose, GetSpriteWidth(rc.sprCrabLose)/1.4, GetSpriteWidth(rc.sprCrabLose), TweenOvershoot())
+		SetTweenSpriteSizeY(rc.sprCrabLose, GetSpriteHeight(rc.sprCrabLose)/1.4, GetSpriteHeight(rc.sprCrabLose), TweenOvershoot())
+		SetTweenSpriteX(rc.sprCrabLose, GetSpriteMiddleX(rc.sprCrabLose)-(GetSpriteWidth(rc.sprCrabLose)/1.4)/2, GetSpriteX(rc.sprCrabLose), TweenOvershoot())
+		SetTweenSpriteY(rc.sprCrabLose, GetSpriteMiddleY(rc.sprCrabLose)-(GetSpriteHeight(rc.sprCrabLose)/1.4)/2, GetSpriteY(rc.sprCrabLose), TweenOvershoot())
+		
+	endif
+	
 	
 endfunction
 
@@ -189,6 +262,21 @@ function InitResults()
 	SetSpriteMiddleScreenOffset(SPR_R_MAIN_MENU, w/3, 0)
 	SetSpriteVisible(SPR_R_MAIN_MENU, 0)
 	
+	if dispH
+		SetSpriteVisible(split, 0)
+		SetSpriteScale(SPR_R_REMATCH, .7, .7)
+		SetSpriteScale(SPR_R_CRAB_SELECT, .7, .7)
+		SetSpriteScale(SPR_R_MAIN_MENU, .7, .7)
+		
+		SetSpriteMiddleScreen(SPR_R_REMATCH)
+		SetSpriteMiddleScreenOffset(SPR_R_CRAB_SELECT, -1*w/7, 0)
+		SetSpriteMiddleScreenOffset(SPR_R_MAIN_MENU, w/7, 0)
+		
+		IncSpriteY(SPR_R_REMATCH, 250)
+		IncSpriteY(SPR_R_CRAB_SELECT, 250)
+		IncSpriteY(SPR_R_MAIN_MENU, 250)
+	endif
+	
 	AddButton(SPR_R_REMATCH)
 	AddButton(SPR_R_CRAB_SELECT)
 	AddButton(SPR_R_MAIN_MENU)
@@ -196,8 +284,10 @@ function InitResults()
 	// Background
 	SetFolder("/media/envi")
 	LoadSprite(SPR_R_BACKGROUND, "bg3.png")
-	SetSpriteSize(SPR_R_BACKGROUND, w, h)
+	SetSpriteSize(SPR_R_BACKGROUND, h, h)
+	if dispH then SetSpriteSize(SPR_R_BACKGROUND, w, w)
 	SetSpriteDepth(SPR_R_BACKGROUND, 1000)
+	SetSpriteMiddleScreen(SPR_R_BACKGROUND)
 	SetFolder("/media/art")
 	
 	if GetMusicPlayingOGGSP(resultsMusic) = 0 then PlayMusicOGGSP(resultsMusic, 1)
@@ -226,7 +316,12 @@ function DoResultsController(rc ref as ResultsController)
 		SetSpriteVisible(rc.sprCrabWin, 1)
 		SetSpriteVisible(rc.sprCrabLose, 1)
 		SetTextVisible(rc.txtCrabMsg, 1)
-		PlayTweenSprite(rc.twnMyCrab, rc.twnMyCrab, 0)
+		if dispH = 0
+			PlayTweenSprite(rc.twnMyCrab, rc.twnMyCrab, 0)
+		elseif rc.player = 1
+			PlayTweenSprite(rc.sprCrabWin, rc.sprCrabWin, 0)
+			PlayTweenSprite(rc.sprCrabLose, rc.sprCrabLose, 0)
+		endif
 		PlaySoundR(chooseS, 40)
 		if GetSpriteExists(coverS) then DeleteSprite(coverS)
 	endif
@@ -264,13 +359,13 @@ function DoResults()
 	endif
 	
 	// Check mid-screen buttons for activity
-	if Button(SPR_R_REMATCH)
+	if ButtonMultitouchEnabled(SPR_R_REMATCH)
 		state = GAME
 		TransitionStart(Random(1,lastTranType))
-	elseif Button(SPR_R_CRAB_SELECT)
+	elseif ButtonMultitouchEnabled(SPR_R_CRAB_SELECT)
 		state = CHARACTER_SELECT
 		TransitionStart(Random(1,lastTranType))
-	elseif Button(SPR_R_MAIN_MENU)
+	elseif ButtonMultitouchEnabled(SPR_R_MAIN_MENU)
 		state = START
 		TransitionStart(Random(1,lastTranType))
 	endif
@@ -292,6 +387,13 @@ function CleanupResultsController(rc ref as ResultsController)
 	DeleteSprite(rc.sprCrabLose)
 	DeleteTween(rc.twnWinMsg)
 	DeleteTween(rc.twnMyCrab)
+	
+	if dispH
+		DeleteTween(rc.sprCrabWin)
+		DeleteTween(rc.sprCrabLose)
+	else
+		DeleteTween(rc.twnMyCrab)
+	endif
 	
 endfunction
 

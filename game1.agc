@@ -13,6 +13,22 @@ function DrawPolar1(spr, rNum, theta#)
 			if spType = CLASSIC then cenX = w/2
 			//Placeholder line for extra theta offset
 		endif
+		/*
+		avgS# = 0
+		avgC# = 0
+		num = 0
+		camX# = 0
+		camY# = 0
+		for i = 1 to meteorActive1.length
+			inc avgS#, sin(meteorActive1[i].theta)
+			inc avgC#, cos(meteorActive1[i].theta)
+			inc num, 1
+		next i
+		avg# = Mod(atan2(avgS#, avgC#)+360, 360)
+		if avg# <> 0
+			camX# = 0
+			camY# = 0
+		endif	*/
 		SetSpritePosition(spr, rNum*cos(theta#) + cenX - GetSpriteWidth(spr)/2, rNum*sin(theta#) + cenY - GetSpriteHeight(spr)/2)
 		SetSpriteAngle(spr, theta#+90)
 	endif
@@ -224,6 +240,11 @@ function CreateGame1()
 		CreateTextExpress(specialButton1, "X", 40, fontScoreI, 1, GetSpriteMiddleX(specialButton1) - 2, GetSpriteY(specialButton1) - 40, 10)
 		SetTextColor(meteorButton1, 100, 100, 100, 255)
 		SetTextColor(specialButton1, 100, 100, 100, 255)
+		
+		if GetRawJoystickConnected(1)
+			SetTextString(meteorButton1, "X")
+			SetTextString(specialButton1, "B")
+		endif
 	endif
 		
 endfunction

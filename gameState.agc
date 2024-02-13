@@ -198,7 +198,7 @@ function DoGame()
 			meteorSprNum = 1050
 		endif
 	
-		if ButtonMultitouchEnabled(pauseButton) or inputExit
+		if ButtonMultitouchEnabled(pauseButton) or inputExit or inputExit2
 			if paused = 0 then PauseGame()
 			paused = 1
 		endif
@@ -988,6 +988,7 @@ endfunction
 function UnpauseGame()
 	
 	TurnOffSelect()
+	TurnOffSelect2()
 	
 	//Only playing the button sound if the game wasn't exited
 	if GetParticlesExists(11) = 0 then PlaySoundR(buttonSound, 100)
@@ -2253,7 +2254,18 @@ function PlayOpeningScene()
 		
 		if dispH
 			//Repsitioning for the intro cutscene
+			SetTextY(TXT_INTRO1, 80)
+			SetTextSize(TXT_INTRO1, 56)
+			SetTextSpacing(TXT_INTRO1, -14)
+			SetSpriteY(met1S, 205)
 			
+			for i = expBar1 to specialButton1
+				IncSpriteX(i, 350)
+				IncSpriteY(i, -30)
+			next i
+			
+			SetTextX(TXT_INTRO2, 9999)
+			SetSpriteY(met2S, 9999)
 		endif
 		
 		
@@ -2320,7 +2332,8 @@ function PlayOpeningScene()
 				SetMusicVolumeOGG(tutorialMusic, Max(oTimer#/3, 0))
 			endif
 			
-			if GetPointerPressed()
+			DoInputs()
+			if GetPointerPressed() or inputSelect or inputSelect2 or inputTurn1 or inputTurn2
 				inc oTimer#, -oMax#/5
 				PingFF()
 			endif
@@ -2344,6 +2357,15 @@ function PlayOpeningScene()
 			IncSpriteY(i, -200)
 			SetSpriteDepth(i, GetSpriteDepth(i) + 11)
 		next i
+		
+		if dispH
+			//Un-repsitioning for the intro cutscene
+			for i = expBar1 to specialButton1
+				IncSpriteX(i, -350)
+				IncSpriteY(i, 30)
+			next i
+		endif
+		
 		for i = 1 to 3
 			SetSpriteDepth(crab1PlanetS[i], GetSpriteDepth(crab1PlanetS[i]) - 10)
 			SetSpriteDepth(crab2PlanetS[i], GetSpriteDepth(crab2PlanetS[i]) - 10)

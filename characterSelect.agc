@@ -98,7 +98,7 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 	endif
 	
 	csc.stage = 1
-		
+	
 	SetFolder("/media/ui")
 	
 	LoadAnimatedSprite(csc.sprReady, "ready", 22)
@@ -180,7 +180,13 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 			
 			endif
 		
-		if i > unlockedCrab-1 then SetSpriteVisible(csc.sprCrabs + i, 0)
+		if i > unlockedCrab-1
+			//Crab is not unlocked
+			SetSpriteVisible(csc.sprCrabs + i, 0)
+		else
+			//Crab is unlocked
+			AddButton(csc.sprCrabs + i)
+		endif
 		
 		SetSpriteSize(csc.sprCrabs + i, charWid*3/5, charHei*3/5)
 		//SetSpriteSize(csc.sprCrabs + i, charWid*4/7, charHei*4/7) //Slightly bigger crab size
@@ -290,7 +296,7 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 		SetSpriteY(csc.sprReady, h - GetSpriteHeight(csc.sprReady) - 20)
 		
 		SetTextSize(csc.txtReady, 60)
-	SetTextSpacing(csc.txtReady, -21)
+		SetTextSpacing(csc.txtReady, -21)
 				
 		if csc.player = 1
 			//Player 1
@@ -465,7 +471,7 @@ function InitCharacterSelect()
 	LoadSpriteExpress(SPR_MENU_BACK, "ui/mainmenu.png", 140, 140, 0, 0, 3)
 	SetSpriteMiddleScreen(SPR_MENU_BACK)
 	AddButton(SPR_MENU_BACK)
-	
+	if dispH then IncSpriteY(SPR_MENU_BACK, -200)
 	
 	PlayMusicOGGSP(characterMusic, 1)
 	PlayMusicOGGSP(fireMusic, 1)
@@ -606,8 +612,10 @@ function ChangeCrabs(csc ref as CharacterSelectController, dir as integer, start
 		endif
 		if dispH
 			if csc.player = 1 then GlideToX(spr, w/4 - GetSpriteHeight(split)/4 - GetSpriteWidth(spr)/2 - (cNum-num)*500*p, 4)
-			if csc.player = 2 and dispH = 0 then GlideToX(spr, w*3/4 + GetSpriteHeight(split)/4 - GetSpriteWidth(spr)/2 - (cNum-num)*500*p, 4)
-			if csc.player = 2 and dispH = 1 then GlideToX(spr, w*3/4 - GetSpriteHeight(split)/4 - GetSpriteWidth(spr)/2 - (cNum-num)*500*p, 4)
+			if csc.player = 2 then GlideToX(spr, w*3/4 + GetSpriteHeight(split)/4 - GetSpriteWidth(spr)/2 - (cNum-num)*500, 4)
+			
+			//SetSpriteX(csc.sprCrabs+csc.crabSelected, w*3/4 + GetSpriteHeight(split)/4 - GetSpriteWidth(csc.sprCrabs+csc.crabSelected)/2)
+			
 			GlideToY(spr, h/2 - GetSpriteHeight(spr)/2 - 60, 2)
 			
 			if (cNum-num) <> 0
@@ -672,7 +680,7 @@ function SelectCrab(csc ref as CharacterSelectController)
 	
 	
 	//Text gets bigger to show that a selection has been locked in
-	SetTextSize(csc.txtCrabName, GetTextSize(csc.txtCrabName) + 10)
+	if csc.crabSelected <> 1 then SetTextSize(csc.txtCrabName, GetTextSize(csc.txtCrabName) + 10)
 	
 	csc.ready = 1
 	
@@ -701,7 +709,7 @@ function UnselectCrab(csc ref as CharacterSelectController)
 	PlaySprite(csc.sprReady, 9+csc.player, 1, 7+8*(csc.player-1), 14+8*(csc.player-1))
 	
 	//Text gets smaller again
-	SetTextSize(csc.txtCrabName, GetTextSize(csc.txtCrabName) - 10)
+	if csc.crabSelected <> 1 then SetTextSize(csc.txtCrabName, GetTextSize(csc.txtCrabName) - 10)
 	
 	csc.ready = 0
 	
@@ -734,6 +742,8 @@ function DoCharacterSelectController(csc ref as CharacterSelectController)
 					PlaySoundR(arrowS, 40)
 					ChangeCrabs(csc, 1, 1)
 					csc.stage = 2
+					if csc.player = 1 then TurnOffSelect()
+					if csc.player = 2 then TurnOffSelect2()
 					i = NUM_CRABS + spActive*STORY_CS_BONUS
 					ClearMultiTouch()
 				endif
@@ -742,9 +752,11 @@ function DoCharacterSelectController(csc ref as CharacterSelectController)
 		//The 1-crab view
 		elseif csc.stage = 2
 			// Ready button
-			if (Button(csc.sprReady) or (inputSelect and selectTarget = 0 and GetSpriteVisibleR(SPR_SCENE1) = 0)) and GetSpriteVisible(csc.sprReady) 
+			if (ButtonMultitouchEnabled(csc.sprReady) or (inputSelect and csc.player = 1 and selectTarget = 0 and GetSpriteVisibleR(SPR_SCENE1) = 0) or (inputSelect2 and csc.player = 2 and selectTarget2 = 0 and GetSpriteVisibleR(SPR_SCENE2) = 0)) and GetSpriteVisible(csc.sprReady) 
 				PlaySoundR(chooseS, 100)
 				SelectCrab(csc)
+				if csc.player = 1 then TurnOffSelect()
+				if csc.player = 2 then TurnOffSelect2()
 				//PingColor(GetSpriteMiddleX(csc.sprCrabs+csc.crabSelected), GetSpriteMiddleY(csc.sprCrabs+csc.crabSelected), 400, 255, 100, 100, 50)
 			// Scroll left
 			elseif (ButtonMultitouchEnabled(csc.sprLeftArrow) or (GetMultitouchPressedTopRight() and csc.player = 2 and dispH = 0) or (GetMultitouchPressedBottomLeft() and csc.player = 1 and dispH = 0)) and csc.crabSelected > 0
@@ -784,7 +796,7 @@ function DoCharacterSelectController(csc ref as CharacterSelectController)
 			
 			for i = 0 to NUM_CRABS-1 + spActive*STORY_CS_BONUS
 				spr = csc.sprCrabs + i
-				if ButtonMultitouchEnabled(spr) and spActive = 0 and i = csc.crabSelected 
+				if (ButtonMultitouchEnabled(spr) or (csc.player = 1 and (inputAttack1 or inputSpecial1)) or (csc.player = 2 and (inputAttack2 or inputSpecial2))) and spActive = 0 and i = csc.crabSelected and csc.glideFrame < 5
 					SetVisibleCharacterUI(1, csc)
 					for j = 0 to NUM_CRABS-1 + spActive*STORY_CS_BONUS
 						PlayTweenSprite(csc.sprCrabs + j, csc.sprCrabs + j, 0)
@@ -792,6 +804,8 @@ function DoCharacterSelectController(csc ref as CharacterSelectController)
 					next j
 					PlaySoundR(arrowS, 100)
 					csc.stage = 1
+					if csc.player = 1 then TurnOffSelect()
+					if csc.player = 2 then TurnOffSelect2()
 					spr = NUM_CRABS + spActive*STORY_CS_BONUS
 				endif
 			next i
@@ -828,18 +842,28 @@ function DoCharacterSelect()
 	endif
 	state = CHARACTER_SELECT
 	
-	DoCharacterSelectController(csc1)
-	if spActive = 0 then DoCharacterSelectController(csc2)
-		
-	//Unselects the crab if the screen is touched again (only works on mobile for testing)
-	if csc1.ready = 1 and (GetMultitouchPressedBottom() and deviceType = MOBILE)
+	//Unselects the crab if the screen is touched again
+	if csc1.ready = 1 and ((GetMultitouchPressedBottom() and deviceType = MOBILE) or (deviceType = DESKTOP and (inputSelect or inputExit or inputAttack1 or inputSpecial1)))
 		UnselectCrab(csc1)
 		ClearMultiTouch()
+		inputSelect = 0
+		inputExit = 0
+		inputAttack1 = 0
+		inputSpecial1 = 0
+		//TurnOffSelect()
 	endif
-	if csc2.ready = 1 and (GetMultitouchPressedTop() and deviceType = MOBILE)
+	if csc2.ready = 1 and ((GetMultitouchPressedTop() and deviceType = MOBILE) or (deviceType = DESKTOP and (inputSelect2 or inputExit2 or inputAttack2 or inputSpecial2)))
 		UnselectCrab(csc2)
 		ClearMultiTouch()
+		inputSelect2 = 0
+		inputExit2 = 0
+		inputAttack2 = 0
+		inputSpecial2 = 0
+		//TurnOffSelect2()
 	endif
+	
+	DoCharacterSelectController(csc1)
+	if spActive = 0 then DoCharacterSelectController(csc2)
 	
 	doJit = 0
 	inc TextJitterTimer#, GetFrameTime()
@@ -863,6 +887,7 @@ function DoCharacterSelect()
 		txt = csc1.txtReady
 		for i = 0 to GetTextLength(txt)
 			SetTextCharY(txt, GetTextLength(txt)-i, 58.0 - 8.0*abs(8*cos(GetMusicPositionOGG(characterMusic)*200+i*10 )))	//Code from SnowTunes
+			if dispH then SetTextCharY(txt, GetTextLength(txt)-i, 28.0 - 5.0*abs(8*cos(GetMusicPositionOGG(characterMusic)*200+i*10 )))	//Code from SnowTunes
 		next i		
 	endif
 	
@@ -878,6 +903,7 @@ function DoCharacterSelect()
 			txt = csc2.txtReady
 			for i = 0 to GetTextLength(txt)
 				SetTextCharY(txt, GetTextLength(txt)-i, -140.0 + 8.0*abs(8*cos(GetMusicPositionOGG(characterMusic)*200+i*10 )))	//Code from SnowTunes
+				if dispH then SetTextCharY(txt, GetTextLength(txt)-i, 28.0 - 5.0*abs(8*cos(GetMusicPositionOGG(characterMusic)*200+i*10 )))	//Code from SnowTunes
 			next i
 		endif
 	endif

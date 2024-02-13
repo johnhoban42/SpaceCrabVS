@@ -179,6 +179,7 @@ endfunction returnValue
 function Button(sprite) 
 	returnValue = GetPointerPressed() and Hover(sprite)
 	if selectTarget = sprite and inputSelect then returnValue = 1
+	if selectTarget2 = sprite and inputSelect2 then returnValue = 1
 endfunction returnValue
 
 function GetSpriteVisibleR(sprite)
@@ -528,7 +529,7 @@ endfunction result
 
 function ButtonMultitouchEnabled(spr)
 	if GetSpriteExists(spr)
-	    if (Button(spr) and (GetPointerPressed() or inputSelect) and deviceType = DESKTOP) or (GetMulitouchPressedButton(spr) and deviceType = MOBILE)
+	    if (Button(spr) and (GetPointerPressed() or inputSelect or inputSelect2) and deviceType = DESKTOP) or (GetMulitouchPressedButton(spr) and deviceType = MOBILE)
 	        returnValue = 1
 	    else
 	        returnValue = 0
@@ -855,27 +856,30 @@ function PingFF()
 		SetSpriteSizeSquare(spr, 150)
 		SetSpriteMiddleScreenX(spr)
 		SetSpriteY(spr, h*3/4 - GetSpriteHeight(spr)/2)
+		if dispH then SetSpriteMiddleScreenY(spr)
 		SetSpriteDepth(spr, 1)
 		SetSpriteColorAlpha(spr, 180)
 	endif
 	
 	//For the top screen
-	spr = 0
-	for i = pingStart to pingEnd
-		if GetSpriteExists(i) = 0
-			spr = i
-			i = pingEnd + 1
+	if dispH = 0
+		spr = 0
+		for i = pingStart to pingEnd
+			if GetSpriteExists(i) = 0
+				spr = i
+				i = pingEnd + 1
+			endif
+		next i
+	
+		if spr <> 0
+			LoadSprite(spr, "ff.png")
+			SetSpriteSizeSquare(spr, 150)
+			SetSpriteMiddleScreenX(spr)
+			SetSpriteY(spr, h/4 - GetSpriteHeight(spr)/2)
+			SetSpriteAngle(spr, 180)
+			SetSpriteDepth(spr, 1)
+			SetSpriteColorAlpha(spr, 180)
 		endif
-	next i
-
-	if spr <> 0
-		LoadSprite(spr, "ff.png")
-		SetSpriteSizeSquare(spr, 150)
-		SetSpriteMiddleScreenX(spr)
-		SetSpriteY(spr, h/4 - GetSpriteHeight(spr)/2)
-		SetSpriteAngle(spr, 180)
-		SetSpriteDepth(spr, 1)
-		SetSpriteColorAlpha(spr, 180)
 	endif
 	
 	rnd = Random(0, 4)
@@ -908,6 +912,7 @@ function ButtonsUpdate()
 				skip = 0
 				for i = 15 to 35
 					if GetTweenSpritePlaying(i, spr) then skip = 1
+					if spr >= SPR_CS_CRABS_1 then skip = 1
 				next i
 				
 				//The case for playing the tween
