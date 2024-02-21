@@ -1805,7 +1805,7 @@ function AddMeteorAnimation(spr, animType)
 		SetSpriteColorGreen(spr, 255)
 		SetSpriteColorBlue(spr, 255)
 	elseif animType = 2
-		//Crabicus numbers
+		//Crabacus numbers
 		AddSpriteAnimationFrame(spr, mAlt1I + Random(0,8))
 		PlaySprite(spr, 15, 0, 1, 1)
 		SetSpriteColorRed(spr, 255)
@@ -1856,7 +1856,7 @@ function CreateMeteorGlow(spr, animType)
 		
 		SetSpriteSize(spr+glowS, GetSpriteWidth(spr), GetSpriteHeight(spr))
 	elseif animType = 2
-		//Crabicus
+		//Crabacus
 		AddSpriteAnimationFrame(spr+glowS, flameI1)
 		AddSpriteAnimationFrame(spr+glowS, flameI2)
 		AddSpriteAnimationFrame(spr+glowS, flameI3)

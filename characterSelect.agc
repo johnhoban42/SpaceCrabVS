@@ -14,7 +14,25 @@ global crabNames as string[NUM_CRABS] = [
 	"TOP CRAB",
 	"RAVE CRAB",
 	"CHRONO CRAB",
-	"NINJA CRAB"]
+	"NINJA CRAB",
+	"MAD CRAB", //Row 2
+	"KING CRAB",
+	"TAXI CRAB",
+	"#1 FAN CRAB",
+	"INIANDA JEFF",
+	"TEAM PLAYER",
+	"AL LEGAL", //Row 3
+	"CRABACUS",
+	"SPACE BARC",
+	"HAWAIIAN CRAB",
+	"ROCK LOBSTER",
+	"CRANIME",
+	"FUTURE CRAB", //Row 4
+	"CRABYSS KNIGHT",
+	"SK8R CRAB",
+	"HOLY CRAB",
+	"CRAB CAKE",
+	"KYLE CRAB"]
 
 global crabDescs as string[NUM_CRABS]
 
@@ -126,7 +144,7 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 	SetSpriteSize(csc.sprRightArrow, 100, 100)
 	SetSpriteMiddleScreenOffset(csc.sprRightArrow, p*3*w/8, p*3*h/16)
 	SetSpriteFlip(csc.sprRightArrow, f, f)
-	if csc.crabSelected = 5 then SetSpriteVisible(csc.sprRightArrow, 0)
+	if csc.crabSelected = NUM_CRABS-1 + spActive*STORY_CS_BONUS then SetSpriteVisible(csc.sprRightArrow, 0)
 	AddButton(csc.sprRightArrow)
 	
 	//The background on the Descriptions
@@ -154,9 +172,18 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 	For nothing unlocked, we can have the original layout of 2 x 3
 	Will need to create an 'unlocked crab' array for this, though (6 variables, highestAlt1, highestAlt2...
 	*/
+	SetFolder("/media/art")
+	mysteryI = LoadImage("mystery.png")
+	trashBag.insert(mysteryI)
 
+	highAlt = GetHighAlt()
+	scale# = 1
+	if highAlt >= 1 then scale# = .6
 	for i = 0 to NUM_CRABS-1 + spActive*STORY_CS_BONUS 
 		SyncG()
+		locked = 0
+		if altUnlocked[Mod(i, 6)+1] < (i)/6 then locked = 1
+		
 		//if i = 0 or i = 1 or i = 3 or i = 5
 			CreateSprite(csc.sprCrabs + i, 0)
 			if spActive = 0
@@ -165,69 +192,132 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 				SetFolder("/media/art")
 				crabRefType = Mod(i, 6)+1
 				crabRefAlt = (i)/6
-				//Will eventually put a check here 
-				for j = 1 to 6
-					img = LoadImageResizedR("crab" + str(crabRefType) + AltStr(crabRefAlt) + "select" + Str(j) + ".png", .4)
-					if img <> 0
-						AddSpriteAnimationFrame(csc.sprCrabs + i, img)
-						trashBag.insert(img)
-					endif
-				next j
-				
-				PlaySprite(csc.sprCrabs + i, 18, 1, 1, 6)
+				//Will eventually put a check here, for if that crab is unlocked
+				if locked = 0
+					for j = 1 to 6
+						img = LoadImageResizedR("crab" + str(crabRefType) + AltStr(crabRefAlt) + "select" + Str(j) + ".png", .4*scale#)
+						if img <> 0
+							AddSpriteAnimationFrame(csc.sprCrabs + i, img)
+							trashBag.insert(img)
+						endif
+					next j
+					PlaySprite(csc.sprCrabs + i, 18, 1, 1, 6)
+				else
+					//This red coloration means that the sprite is locked
+					SetSpriteGroup(csc.sprCrabs + i, mysteryI)
+					SetSpriteImage(csc.sprCrabs + i, mysteryI)
+				endif
 			else
 				SetSpriteVisible(csc.sprCrabs + i, 0)
 			
 			endif
 		
-		if i > unlockedCrab-1
+		if i > 6*(1+highAlt) - 1
 			//Crab is not unlocked
 			SetSpriteVisible(csc.sprCrabs + i, 0)
-		else
+		elseif locked = 0
 			//Crab is unlocked
 			AddButton(csc.sprCrabs + i)
 		endif
 		
-		SetSpriteSize(csc.sprCrabs + i, charWid*3/5, charHei*3/5)
+		
 		//SetSpriteSize(csc.sprCrabs + i, charWid*4/7, charHei*4/7) //Slightly bigger crab size
 		//SetSpriteMiddleScreenOffset(csc.sprCrabs + i, p*(i-csc.crabSelected)*w, p*335)	//The old way to position the sprites
 		SetSpriteFlip(csc.sprCrabs + i, f, f)
 		SetSpriteDepth(csc.sprCrabs, 40)
 		
 		
+		//For below:
+		//cSizeW/H is the size of the crab when in the smaller view
+		//posX/Y is the X/Y of the crab in the smaller view
+		//The tween X/Y is set in the dispH if statement, big size is left on the outside
+		
 		CreateTweenSprite(csc.sprCrabs + i, selectTweenTime#)
 		if dispH = 0
 			//Vertical layout: creating the crab layout/tweens
-			SetTweenSpriteSizeX(csc.sprCrabs + i, charWid, charWid*3/5, TweenOvershoot())
-			SetTweenSpriteSizeY(csc.sprCrabs + i, charHei, charHei*3/5, TweenOvershoot())
-			SetTweenSpriteX(csc.sprCrabs + i, w/2-charWid/2, w/2 - charWid/4 + p*charHorSmallGap*(Mod(i,3)-1), TweenOvershoot())
-			SetTweenSpriteY(csc.sprCrabs + i, h/2-charHei/2 + p*charVer, h/2 - charHei/4 + p*charVerSmall + p*charVerSmallGap*((i)/3), TweenOvershoot())
-				
-			SetSpritePosition(csc.sprCrabs + i, w/2 - GetSpriteWidth(csc.sprCrabs + i)/2 + p*charHorSmallGap*(Mod(i,3)-1), h/2 - charHei/4 + p*charVerSmall + p*charVerSmallGap*((i)/3))
+			if highAlt = 0
+				cSizeW = charWid*3/5
+				cSizeH = charHei*3/5
+				posX# = w/2 - cSizeW/2 + p*charHorSmallGap*(Mod(i,3)-1)
+				posY# = h/2 - charHei/4 + p*charVerSmall + p*charVerSmallGap*((i)/3)
+			elseif highAlt = 1
+				cSizeW = charWid*2.4/5
+				cSizeH = charHei*2.4/5
+				posX# = w/2 - cSizeW/2 + p*charHorSmallGap/2.3*(Mod(i,6)-3) + cSizeW/4*p
+				posY# = h/2 - charHei/4 + p*charVerSmall*0.8 + p*charVerSmallGap*((i)/6)*1.1
+				if Mod(i, 2) then inc posY#, 130*p
+			elseif highAlt = 2
+				cSizeW = charWid*2.2/5
+				cSizeH = charHei*2.2/5
+				posX# = w/2 - cSizeW/2 + p*charHorSmallGap/2.3*(Mod(i,6)-3) + cSizeW/4*p
+				posY# = h/2 - charHei/4 + p*charVerSmall*0.8 + p*charVerSmallGap*((i)/6)*0.7
+				if Mod(i, 2) then inc posY#, 80*p
+			elseif highAlt = 3
+				cSizeW = charWid*1.9/5
+				cSizeH = charHei*1.9/5
+				posX# = w/2 - cSizeW/2 + p*charHorSmallGap/2.3*(Mod(i,6)-3) + cSizeW/4*p
+				posY# = h/2 - charHei/4 + p*charVerSmall*0.8 + p*charVerSmallGap*((i)/6)*0.5
+				if Mod(i, 2) then inc posY#, 60*p
+			endif
 		
+			SetTweenSpriteX(csc.sprCrabs + i, w/2-charWid/2, posX#, TweenOvershoot())
+			SetTweenSpriteY(csc.sprCrabs + i, h/2-charHei/2 + p*charVer, posY#, TweenOvershoot())
 		else
 			//Horizontal layout: creating the crab layout/tweens
-			SetSpriteSize(csc.sprCrabs + i, charWid*4/9, charHei*4/9)
-			SetTweenSpriteSizeX(csc.sprCrabs + i, charWid, charWid*4/9, TweenOvershoot())
-			SetTweenSpriteSizeY(csc.sprCrabs + i, charHei, charHei*4/9, TweenOvershoot())
-			SetTweenSpriteX(csc.sprCrabs + i, dispHM1 - charWid/2 + m, dispHM1 - charWid*2/9 + charHorSmallGap/1.4*(Mod(i,3)-1) + m, TweenOvershoot())
-			SetTweenSpriteY(csc.sprCrabs + i, h/2 - charHei/3, h/2 - charHei/3 + 0.8*charVerSmallGap*((i)/3), TweenOvershoot())
+			if highAlt = 0
+				cSizeW = charWid*4/9
+				cSizeH = charHei*4/9
+				posX# = dispHM1 - cSizeW/2 + charHorSmallGap/1.4*(Mod(i,3)-1) + m
+				posY# = h/2 - charHei/3 + 0.8*charVerSmallGap*((i)/3)
 				
-			SetSpritePosition(csc.sprCrabs + i, dispHM1 - charWid*2/9 + charHorSmallGap/1.4*(Mod(i,3)-1) + m, h/2 - charHei/3 + 0.8*charVerSmallGap*((i)/3))
+			elseif highAlt = 1
+				cSizeW = charWid*4/11
+				cSizeH = charHei*4/11
+				posX# = dispHM1 + charHorSmallGap/2.9*(Mod(i,6)-3) + m - cSizeW/6
+				posY# = h/2 - charHei/3 + .9*charVerSmallGap*((i)/6)
+				if Mod(i, 2) then inc posY#, 110
+				
+			elseif highAlt = 2
+				cSizeW = charWid*3.4/11
+				cSizeH = charHei*3.4/11
+				posX# = dispHM1 + charHorSmallGap/2.9*(Mod(i,6)-3) + m - cSizeW/6
+				posY# = h/2 - charHei/3 + .6*charVerSmallGap*((i)/6)
+				if Mod(i, 2) then inc posY#, 60
+				
+			else
+				cSizeW = charWid*3/11
+				cSizeH = charHei*3/11
+				posX# = dispHM1 + charHorSmallGap/2.9*(Mod(i,6)-3) + m - cSizeW/6
+				posY# = h/2 - charHei/3 + .45*charVerSmallGap*((i)/6)
+				if Mod(i, 2) then inc posY#, 40
+				
+			endif
 			
+			SetTweenSpriteX(csc.sprCrabs + i, dispHM1 - charWid/2 + m, posX#, TweenOvershoot())
+			SetTweenSpriteY(csc.sprCrabs + i, h/2 - charHei/3, posY#, TweenOvershoot())
 		endif
-	
-		//Change the crab tweens here, if there are more crab alts unlocked
+
+		SetSpriteSize(csc.sprCrabs + i, cSizeW, cSizeH)
+		SetSpritePosition(csc.sprCrabs + i, posX#, posY#)
+		SetTweenSpriteSizeX(csc.sprCrabs + i, charWid, cSizeW, TweenOvershoot())
+		SetTweenSpriteSizeY(csc.sprCrabs + i, charHei, cSizeH, TweenOvershoot())
+		
+		if Mod(i+1, 6) = 1 then crabDescs[i] = "Speed: {{{}} Turn: {{{}}" + chr(10)
+		if Mod(i+1, 6) = 2 then crabDescs[i] = "Speed: {{}}} Turn: {{{{}" + chr(10)
+		if Mod(i+1, 6) = 3 then crabDescs[i] = "Speed: {{{{{ Turn: {}}}}" + chr(10)
+		if Mod(i+1, 6) = 4 then crabDescs[i] = "Speed: {{{{} Turn: {{}}}" + chr(10)
+		if Mod(i+1, 6) = 5 then crabDescs[i] = "Speed: {{{}} Turn: {{{}}" + chr(10)
+		if Mod(i+1, 6) = 0 then crabDescs[i] = "Speed: {{{}} Turn: {{{{{" + chr(10)
 	
 	next i
-		
+	
 	//Descriptions were moved down here to include newline characters
-	crabDescs[0] = "Speed: {{{}} Turn: {{{}}" + chr(10) + "Known far and wide, he's ready to claim his fame!" + chr(10) + "Double-tap for his galaxy famous quick-dodge!" + chr(10) + "Special Attack: Meteor Shower"
-	crabDescs[1] = "Speed: {{}}} Turn: {{{{}" + chr(10) + "The most magical being this side of the nebula." + chr(10) + "Launch into the skies with a double-tap spell!" + chr(10) + "Special Attack: Conjure Comets"
-	crabDescs[2] = "Speed: {{{{{ Turn: {}}}}" + chr(10) + "Grew up at the Rotation Station, and it shows." + chr(10) + "Very fast! Double-tap to skid & stop a sec'." + chr(10) + "Special Attack: Orbital Nightmare"
-	crabDescs[3] = "Speed: {{{{} Turn: {{}}}" + chr(10) + "Always ready to party!! How can you say no?" + chr(10) + "He'll stop and mosh when he hears a double-tap." + chr(10) + "Special Attack: Party Time!"
-	crabDescs[4] = "Speed: {{{}} Turn: {{{}}" + chr(10) + "A clockwork master! Sends his opponents forward" + chr(10) + "in time, and rewinds his clock by double-tapping." + chr(10) + "Special Attack: Fast Forward"
-	crabDescs[5] = "Speed: {{{}} Turn: {{{{{" + chr(10) + "Quieter than a rising sun, deadlier than a black" + chr(10) + "hole! Instantly turns but has no double-tap move." + chr(10) + "Special Attack: Shuri-Krustacean"
+	crabDescs[0] = crabDescs[0] + "Known far and wide, he's ready to claim his fame!" + chr(10) + "Double-tap for his galaxy famous quick-dodge!" + chr(10) + "Special Attack: Meteor Shower"
+	crabDescs[1] = crabDescs[1] + "The most magical being this side of the nebula." + chr(10) + "Launch into the skies with a double-tap spell!" + chr(10) + "Special Attack: Conjure Comets"
+	crabDescs[2] = crabDescs[2] + "Grew up at the Rotation Station, and it shows." + chr(10) + "Very fast! Double-tap to skid & stop a sec'." + chr(10) + "Special Attack: Orbital Nightmare"
+	crabDescs[3] = crabDescs[3] + "Always ready to party!! How can you say no?" + chr(10) + "He'll stop and mosh when he hears a double-tap." + chr(10) + "Special Attack: Party Time!"
+	crabDescs[4] = crabDescs[4] + "A clockwork master! Sends his opponents forward" + chr(10) + "in time, and rewinds his clock by double-tapping." + chr(10) + "Special Attack: Fast Forward"
+	crabDescs[5] = crabDescs[5] + "Quieter than a rising sun, deadlier than a black" + chr(10) + "hole! Instantly turns but has no double-tap move." + chr(10) + "Special Attack: Shuri-Krustacean"
 	
 	// The offset mumbo-jumbo with f-coefficients is because AGK's text rendering is awful
 	CreateText(csc.txtCrabName, crabNames[csc.crabSelected+1])
@@ -424,6 +514,9 @@ function InitCharacterSelect()
 	if spActive = 1 then spType = STORYMODE
 	if spType = STORYMODE then spActive = 1
 	
+	crab1Alt = 0
+	crab2Alt = 0
+	
 	lineSkipTo = 0
 	
 	SetSpriteVisible(split, 1)
@@ -507,7 +600,12 @@ function ChangeCrabs(csc ref as CharacterSelectController, dir as integer, start
 		SetSpriteVisible(csc.sprReady, 0)
 		
 		//The change of the crab is done up here to make the glide work
-		csc.crabSelected = csc.crabSelected + dir
+		good = 0
+		while good = 0
+			csc.crabSelected = csc.crabSelected + dir
+			if GetSpriteGroup(csc.sprCrabs + csc.crabSelected) = 0 then good = 1 
+		endwhile
+		
 		//Now that we've changed the selected crab, we're going to update the game screen:
 		
 		//FIRST: Loading in the high def crab images, if they aren't in already
@@ -536,16 +634,16 @@ function ChangeCrabs(csc ref as CharacterSelectController, dir as integer, start
 			SetTextString(csc.txtCrabDesc, crabDescs[csc.crabSelected])
 			
 			space = 12
-			for i = Len(GetTextString(csc.txtCrabDesc)) to FindStringReverse(GetTextString(csc.txtCrabDesc), chr(10))-1 step -1
-				SetTextCharY(csc.txtCrabDesc, i, GetTextSize(csc.txtCrabDesc)*3*p + space*p - GetTextSize(csc.txtCrabDesc)*f)
-			next i
+			//for i = Len(GetTextString(csc.txtCrabDesc)) to FindStringReverse(GetTextString(csc.txtCrabDesc), chr(10))-1 step -1
+			//	SetTextCharY(csc.txtCrabDesc, i, GetTextSize(csc.txtCrabDesc)*3*p + space*p - GetTextSize(csc.txtCrabDesc)*f)
+			//next i
 			
 			PlaySprite(csc.sprCrabs + csc.crabSelected, 18, 1, 7, 12)
 			
 		else
 			curChapter = csc.crabSelected+1
 			SetCrabFromStringChap("", curChapter, 3)
-			SetTextString(csc.txtCrabName, chapNames[csc.crabSelected+1])
+			SetTextString (csc.txtCrabName, chapNames[csc.crabSelected+1])
 			SetTextString(csc.txtCrabDesc, crabPause1[crabRefType])
 			SetTextString(TXT_CS_CRAB_STATS_2, "Chapter " + str(curChapter))
 			SetTextString(TXT_CS_CRAB_NAME_2, chapterTitle[curChapter])
@@ -589,12 +687,10 @@ function ChangeCrabs(csc ref as CharacterSelectController, dir as integer, start
 	// Glide
 	for spr = csc.sprCrabs to csc.sprCrabs + NUM_CRABS-1 + spActive*STORY_CS_BONUS 
 		num = spr - csc.sprCrabs
-		//SnapbackToX(spr, glideMax - csc.glideFrame, glideMax, w/2 - GetSpriteWidth(spr)/2 - (cNum-num)*1000*p, -40*dir*p, 4, 5)	//Andy Version
+		//SnapbackToX(spr, glideMax - csc.glideFrame, glideMax, w/2 - GetSpriteWidth(spr)/2 - (cNum-num)*1000*p, -40*dir*p, 4, 5)	//Andy Version (very old)
 		//SnapbackToX(spr, csc.glideFrame, glideMax, w/2 - GetSpriteWidth(spr)/2 * cNum*1000, 30, 10)
 		//GlideToX(spr, GetSpriteX(spr) + -1*p*dir*w, 30)
 		//Print(GetSPriteX(spr))
-		
-		
 		
 		if csc.glideFrame > glideMax/2
 			SetSpriteSize(spr, charWid - 45 + (glideMax - csc.glideFrame)/glideMax*90, charHei - 30 + (glideMax - csc.glideFrame)/glideMax*60)
@@ -608,7 +704,6 @@ function ChangeCrabs(csc ref as CharacterSelectController, dir as integer, start
 			GlideToX(spr, w/2 - GetSpriteWidth(spr)/2 - (cNum-num)*1000*p, 4)
 			if csc.player = 1 then GlideToY(spr, h/2 - GetSpriteHeight(spr)/2 + charVer, 2)
 			if csc.player = 2 then GlideToY(spr, h/2 - GetSpriteHeight(spr)/2 - charVer, 2)
-			//if csc.player = 2 and dispH = 1 then GlideToY(spr, h/2 - GetSpriteHeight(spr)/2 + charVer, 2)
 		endif
 		if dispH
 			if csc.player = 1 then GlideToX(spr, w/4 - GetSpriteHeight(split)/4 - GetSpriteWidth(spr)/2 - (cNum-num)*500*p, 4)
@@ -627,37 +722,52 @@ function ChangeCrabs(csc ref as CharacterSelectController, dir as integer, start
 			endif
 			
 		endif
+			
 		
 	next spr
 	dec csc.glideFrame
 	
+	
 	//Print(cNum)
 	//Sleep(500)
-	
 	// Finish the glide and change the displayed crab
 	if csc.glideFrame = 0
 		
-		if spType = STORYMODE
-			if csc.CrabSelected <> 0
-				SetSpriteVisible(csc.sprLeftArrow, 1)
-			endif
-			if csc.CrabSelected <> Min(clearedChapter, finalChapter-1)
-				SetSpriteVisible(csc.sprRightArrow, 1)
-			endif
-			//SetSpriteVisible(csc.sprReady, 1)
-		else
-			if csc.CrabSelected <> 0
-				SetSpriteVisible(csc.sprLeftArrow, 1)
-			endif
-			if csc.CrabSelected <> unlockedCrab-1 //NUM_CRABS-1 +  //+ spActive*STORY_CS_BONUS
-				SetSpriteVisible(csc.sprRightArrow, 1)
-			endif
-			SetSpriteVisible(csc.sprReady, 1)
-		endif
+		SetArrowVisibility(csc)
+		
 	endif
 	
 endfunction
 
+global lastChar = 0
+
+function SetArrowVisibility(csc ref as CharacterSelectController)
+	if spType = STORYMODE
+		if csc.CrabSelected <> 0
+			SetSpriteVisible(csc.sprLeftArrow, 1)
+		endif
+		if csc.CrabSelected <> Min(clearedChapter, finalChapter-1)
+			SetSpriteVisible(csc.sprRightArrow, 1)
+		endif
+		//SetSpriteVisible(csc.sprReady, 1)
+	else
+		if csc.CrabSelected <> 0
+			SetSpriteVisible(csc.sprLeftArrow, 1)
+		endif
+		
+		highA = GetHighAlt()
+		endP = 1
+		for i = 1 to 6
+			if altUnlocked[i] = highA then endP = i 
+		next i
+		lastChar = endP + highA*6 - 1
+		
+		if csc.CrabSelected <> lastChar //6*(1+GetHighAlt())-1  //NUM_CRABS-1 +  //+ spActive*STORY_CS_BONUS
+			SetSpriteVisible(csc.sprRightArrow, 1)
+		endif
+		SetSpriteVisible(csc.sprReady, 1)
+	endif
+endfunction
 
 // Select a crab, cannot be undone by the player
 function SelectCrab(csc ref as CharacterSelectController)
@@ -688,18 +798,7 @@ endfunction
 
 function UnselectCrab(csc ref as CharacterSelectController)
 	
-	// We need this off-by-one adjustment because the crab types are based on 1-based indexing,
-	// whereas the selected crabs are based on 0-based indexing
-	//if csc.player = 1
-	//	crab1Type = csc.crabSelected + 1
-	//else
-	//	crab2Type = csc.crabSelected + 1
-	//endif
-	
-	//SetSpriteVisible(csc.sprReady, 1)
-	
-	if csc.crabSelected <> 0 then SetSpriteVisible(csc.sprLeftArrow, 1)
-	if csc.crabSelected <> 5 then SetSpriteVisible(csc.sprRightArrow, 1)
+	SetArrowVisibility(csc)
 	
 	StopTweenSprite(tweenSprFadeOut, csc.sprReady)
 	StopTweenText(tweenTxtFadeIn, csc.txtReady)
@@ -714,7 +813,6 @@ function UnselectCrab(csc ref as CharacterSelectController)
 	csc.ready = 0
 	
 endfunction
-
 
 // Game loop for a single screen
 function DoCharacterSelectController(csc ref as CharacterSelectController)
@@ -733,7 +831,7 @@ function DoCharacterSelectController(csc ref as CharacterSelectController)
 		if csc.stage = 1
 			for i = 0 to NUM_CRABS-1 + spActive*STORY_CS_BONUS
 				spr = csc.sprCrabs + i
-				if ButtonMultitouchEnabled(spr)
+				if ButtonMultitouchEnabled(spr) and GetSpriteVisible(spr) and GetSpriteGroup(spr) = 0
 					for j = 0 to NUM_CRABS-1 + spActive*STORY_CS_BONUS
 						StopTweenSprite(csc.sprCrabs + j, csc.sprCrabs + j)
 					next j
@@ -746,6 +844,7 @@ function DoCharacterSelectController(csc ref as CharacterSelectController)
 					if csc.player = 2 then TurnOffSelect2()
 					i = NUM_CRABS + spActive*STORY_CS_BONUS
 					ClearMultiTouch()
+					i = NUM_CRABS + spActive*STORY_CS_BONUS
 				endif
 			next i
 		
@@ -757,16 +856,16 @@ function DoCharacterSelectController(csc ref as CharacterSelectController)
 				SelectCrab(csc)
 				if csc.player = 1 then TurnOffSelect()
 				if csc.player = 2 then TurnOffSelect2()
+				
 				//PingColor(GetSpriteMiddleX(csc.sprCrabs+csc.crabSelected), GetSpriteMiddleY(csc.sprCrabs+csc.crabSelected), 400, 255, 100, 100, 50)
 			// Scroll left
 			elseif (ButtonMultitouchEnabled(csc.sprLeftArrow) or (GetMultitouchPressedTopRight() and csc.player = 2 and dispH = 0) or (GetMultitouchPressedBottomLeft() and csc.player = 1 and dispH = 0)) and csc.crabSelected > 0
 				PlaySoundR(arrowS, 100)
 				ChangeCrabs(csc, -1, 1)
 			// Scroll right
-			elseif (ButtonMultitouchEnabled(csc.sprRightArrow) or (GetMultitouchPressedTopLeft() and csc.player = 2 and dispH = 0) or (GetMultitouchPressedBottomRight() and csc.player = 1 and dispH = 0)) and ((csc.crabSelected < 5 and spType <> STORYMODE) or (csc.crabSelected < Min(clearedChapter, finalChapter-1) and spType = STORYMODE))
-			//elseif (ButtonMultitouchEnabled(csc.sprRightArrow) or (GetMultitouchPressedTopLeft() and csc.player = 2 and dispH = 0) or (GetMultitouchPressedBottomRight() and csc.player = 1 and dispH = 0)) and ((csc.crabSelected < NUM_CRABS-1+spActive*STORY_CS_BONUS and spType <> STORYMODE) or (csc.crabSelected < Min(clearedChapter, finalChapter-1) and spType = STORYMODE))
-				ChangeCrabs(csc, 1, 1)
+			elseif (ButtonMultitouchEnabled(csc.sprRightArrow) or (GetMultitouchPressedTopLeft() and csc.player = 2 and dispH = 0) or (GetMultitouchPressedBottomRight() and csc.player = 1 and dispH = 0)) and ((csc.crabSelected < lastChar and spType <> STORYMODE) or (csc.crabSelected < Min(clearedChapter, finalChapter-1) and spType = STORYMODE))
 				PlaySoundR(arrowS, 100)
+				ChangeCrabs(csc, 1, 1)
 			endif
 			
 			if spType = STORYMODE
@@ -794,21 +893,22 @@ function DoCharacterSelectController(csc ref as CharacterSelectController)
 				endif
 			endif
 			
-			for i = 0 to NUM_CRABS-1 + spActive*STORY_CS_BONUS
-				spr = csc.sprCrabs + i
-				if (ButtonMultitouchEnabled(spr) or (csc.player = 1 and (inputAttack1 or inputSpecial1)) or (csc.player = 2 and (inputAttack2 or inputSpecial2))) and spActive = 0 and i = csc.crabSelected and csc.glideFrame < 5
-					SetVisibleCharacterUI(1, csc)
-					for j = 0 to NUM_CRABS-1 + spActive*STORY_CS_BONUS
-						PlayTweenSprite(csc.sprCrabs + j, csc.sprCrabs + j, 0)
-						if j < unlockedCrab then SetSpriteColorAlpha(csc.sprCrabs + j, 255)
-					next j
-					PlaySoundR(arrowS, 100)
-					csc.stage = 1
-					if csc.player = 1 then TurnOffSelect()
-					if csc.player = 2 then TurnOffSelect2()
-					spr = NUM_CRABS + spActive*STORY_CS_BONUS
-				endif
-			next i
+			//for i = 0 to NUM_CRABS-1 + spActive*STORY_CS_BONUS
+				//spr = csc.sprCrabs + i
+			if (ButtonMultitouchEnabled(csc.crabSelected+csc.sprCrabs) or (csc.player = 1 and (inputAttack1 or inputSpecial1)) or (csc.player = 2 and (inputAttack2 or inputSpecial2))) and spActive = 0 and csc.glideFrame < 5
+				SetVisibleCharacterUI(1, csc)
+				for j = 0 to NUM_CRABS-1 + spActive*STORY_CS_BONUS
+					PlayTweenSprite(csc.sprCrabs + j, csc.sprCrabs + j, 0.003*j)
+					//if j < unlockedCrab then SetSpriteColorAlpha(csc.sprCrabs + j, 255)
+					SetSpriteColorAlpha(csc.sprCrabs + j, 255)
+				next j
+				PlaySoundR(arrowS, 100)
+				csc.stage = 1
+				if csc.player = 1 then TurnOffSelect()
+				if csc.player = 2 then TurnOffSelect2()
+				//i = NUM_CRABS + spActive*STORY_CS_BONUS
+			endif
+			//next i
 		endif
 	endif
 		
@@ -820,7 +920,11 @@ function DoCharacterSelectController(csc ref as CharacterSelectController)
 	
 	// Continue an existing glide
 	if csc.glideFrame > 0
-		ChangeCrabs(csc, csc.glideDirection, 0)
+		if csc.glideFrame < (24/fpsr#)-1
+			ChangeCrabs(csc, csc.glideDirection, 0)
+		else
+			dec csc.glideFrame
+		endif
 	endif
 	
 endfunction

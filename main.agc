@@ -49,7 +49,7 @@ global h = 1600
 SetVirtualResolution(w, h) // doesn't have to match the window
 
 global dispH = 0		//Variable for horizontal display
-if deviceType = DESKTOP
+if deviceType = 99//DESKTOP
 	dispH = 1
 	w = 1280
 	h = 720
@@ -71,7 +71,7 @@ UseNewDefaultFonts( 1 )
 SetVSync(1)
 
 global demo = 1
-global debug = 0
+global debug = 1
 
 if demo then SetWindowTitle("Space Crab VS Demo")
 
@@ -133,6 +133,9 @@ function SaveGame()
 	WriteInteger(3, curChapter)
 	WriteInteger(3, highestScene)
 	WriteInteger(3, clearedChapter)
+	for i = 1 to 6
+		WriteInteger(3, altUnlocked[i])
+	next i
 	
 	CloseFile(3)
 endfunction
@@ -149,6 +152,9 @@ function LoadGame()
 	curChapter = ReadInteger(3)
 	highestScene = ReadInteger(3)
 	clearedChapter = ReadInteger(3)
+	for i = 1 to 6
+		altUnlocked[i] = ReadInteger(3)
+	next i
 	
 	CloseFile(3)
 endfunction
@@ -161,6 +167,7 @@ if debug
 	//curScene = 4
 	highestScene = 101
 	appState = START
+	altUnlocked[2] = 1
 else
 	LoadGame()
 	if highestScene <= 0 then highestScene = 1
@@ -482,6 +489,24 @@ function ShowLeaderBoard(num)
 	endif
 endfunction
 
+
+
+
+function UnlockCrab(cType, cAlt, animation)
+	if animation
+		//Popup for crab
+		
+	endif
+	altUnlocked[1] = 1
+endfunction
+
+function GetHighAlt()
+	highAlt = 0
+	for i = 1 to 6
+		if altUnlocked[i] > highAlt then highAlt = altUnlocked[i]
+	next i
+endfunction highAlt
+
 global selectTarget = 0
 global selectTarget2 = 0
 #constant LEFTS 1
@@ -617,11 +642,13 @@ function MoveSelect()
 endfunction
 
 function TurnOffSelect()
-	selectTarget = 0
-	UpdateAllTweens(.2)
-	for i = SPR_SELECT1 to SPR_SELECT4
-		SetSpriteColorAlpha(i, 0)
-	next i
+	if selectTarget <> 0
+		selectTarget = 0
+		UpdateAllTweens(.2)
+		for i = SPR_SELECT1 to SPR_SELECT4
+			SetSpriteColorAlpha(i, 0)
+		next i
+	endif
 endfunction
 
 function CreateSelectButtons2()
@@ -753,11 +780,13 @@ function MoveSelect2()
 endfunction
 
 function TurnOffSelect2()
-	selectTarget2 = 0
-	UpdateAllTweens(.2)
-	for i = SPR_SELECT5 to SPR_SELECT8
-		if GetSpriteExists(i) then SetSpriteColorAlpha(i, 0)
-	next i
+	if selectTarget2 <> 0
+		selectTarget2 = 0
+		UpdateAllTweens(.2)
+		for i = SPR_SELECT5 to SPR_SELECT8
+			if GetSpriteExists(i) then SetSpriteColorAlpha(i, 0)
+		next i
+	endif
 endfunction
 
 /*

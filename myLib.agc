@@ -906,7 +906,7 @@ function ButtonsUpdate()
 	for i = 0 to buttons.length
 		if GetSpriteExists(buttons[i])
 			spr = buttons[i]
-			if (GetMulitouchPressedButton(spr) or Button(spr)) and GetSpriteVisible(spr)
+			if (GetMulitouchPressedButton(spr) or Button(spr)) and GetSpriteVisible(spr) and spr < SPR_CS_CRABS_1
 				
 				//Skips the current tween on an existing sprite, if still playing
 				skip = 0
@@ -931,8 +931,10 @@ function ButtonsUpdate()
 					inc tweenButton, 1
 					if tweenButton > 35 then tweenButton = 15
 					
+					//if appState <> CHARACTER_SELECT then PlaySoundR(buttonSound, 100)
 					PlaySoundR(buttonSound, 100)
 				else
+					//if GetSoundPlayingR(buttonSound) = 0 and appState <> CHARACTER_SELECT then PlaySoundR(buttonSound, 100)
 					if GetSoundPlayingR(buttonSound) = 0 then PlaySoundR(buttonSound, 100)
 				endif
 				

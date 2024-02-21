@@ -13,6 +13,10 @@ function InitStart()
 	SetCrabPauseStrings()
 	SetStoryShortStrings()
 	
+	spActive = 0
+	aiActive = 0
+	spType = 0
+	
 	SetSpriteVisible(split, 0)
 	
 	SetFolder("/media/ui")
@@ -123,7 +127,6 @@ function InitStart()
 	AddButton(SPR_STORY_START)
 	//if demo then SetSpriteVisible(SPR_STORY_START, 0)
 	
-	highestScene = 9
 	if highestScene < 9
 		LoadSpriteExpress(SPR_CHALLENGE, "ultimatechallengelock.png", 250, 150, 250, 1130, 5)
 	else
@@ -422,9 +425,11 @@ function DoStart()
 	endif
 	
 	//if ButtonMultitouchEnabled(SPR_START1) and spActive = 0 and dispH = 1
-	if ButtonMultitouchEnabled(SPR_CLASSIC) and spActive = 0 and dispH = 1
+	if ButtonMultitouchEnabled(SPR_CLASSIC) and spActive = 0 //and dispH = 1
 		spActive = 0
 		aiActive = 0
+		storyActive = 0
+		spType = 0
 		state = CHARACTER_SELECT
 	endif
 	

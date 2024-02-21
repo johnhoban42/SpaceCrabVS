@@ -727,8 +727,7 @@ global storyRetry = 0
 global storyTimer# = 0
 
 //Overall game unlocks
-global unlockedCrab = 6
-
+global altUnlocked as integer[6]
 //Ping sprites - 701 through 750
 
 //Tweens
