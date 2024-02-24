@@ -49,19 +49,23 @@ function InitResultsController(rc ref as ResultsController)
 	// Determine which crab type won and lost
 	if resultsWinner = 1
 		winnerCrab = crab1Type
+		winnerAlt = crab1Alt
 		loserCrab = crab2Type
+		loserAlt = crab2Alt
 	else
 		winnerCrab = crab2Type
+		winnerAlt = crab2Alt
 		loserCrab = crab1Type
+		loserAlt = crab1Alt
 	endif
 	
 	rc.frame = 0
 	
 	// The offset mumbo-jumbo with f-coefficients is because AGK's text rendering is awful
 	if rc.isWinner
-		CreateText(rc.txtCrabMsg, winText[winnerCrab - 1])
+		CreateText(rc.txtCrabMsg, winText[winnerCrab+winnerAlt*6 - 1])
 	else
-		CreateText(rc.txtCrabMsg, loseText[loserCrab - 1])
+		CreateText(rc.txtCrabMsg, loseText[loserCrab+loserAlt*6 - 1])
 	endif
 	SetTextSize(rc.txtCrabMsg, 48)
 	SetTextAngle(rc.txtCrabMsg, f*180)
@@ -91,15 +95,23 @@ function InitResultsController(rc ref as ResultsController)
 	SetTweenTextSpacing(rc.twnWinMsg, -28, -22, TweenSmooth2())
 	SetTweenTextY(rc.twnWinMsg, GetTextY(rc.txtWinMsg), GetTextY(rc.txtWinMsg) + p*325, TweenSmooth2())
 	
-	sprCrabLose$ = "/media/art/crab" + Str(loserCrab) + "rLose.png"
-	LoadSprite(rc.sprCrabLose, sprCrabLose$)
+	sprCrabLose$ = "/media/art/crab" + Str(loserCrab) + AltStr(loserAlt) + "rLose.png"
+	if GetFileExists(sprCrabLose$)
+		LoadSprite(rc.sprCrabLose, sprCrabLose$)
+	else
+		CreateSprite(rc.sprCrabLose, 0)
+	endif
 	SetSpriteSize(rc.sprCrabLose, 195, 195)
 	SetSpriteMiddleScreenOffset(rc.sprCrabLose, p*-1*w/4, p*375)
 	SetSpriteFlip(rc.sprCrabLose, f, f)
 	SetSpriteVisible(rc.sprCrabLose, 0)
 	
-	sprCrabWin$ = "/media/art/crab" + Str(winnerCrab) + "rWin.png"
-	LoadSprite(rc.sprCrabWin, sprCrabWin$)
+	sprCrabWin$ = "/media/art/crab" + Str(winnerCrab) + AltStr(winnerAlt) + "rWin.png"
+	if GetFileExists(sprCrabWin$)
+		LoadSprite(rc.sprCrabWin, sprCrabWin$)
+	else
+		CreateSprite(rc.sprCrabWin, 0)
+	endif
 	SetSpriteSize(rc.sprCrabWin, 425, 425)
 	SetSpriteMiddleScreenOffset(rc.sprCrabWin, p*w/8, p*450)
 	SetSpriteFlip(rc.sprCrabWin, f, f)

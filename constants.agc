@@ -593,16 +593,18 @@ global jumpPartI as Integer[6, 4]
 #constant resultsMusic 103
 #constant loserMusic 109
 
-#constant fightAMusic 104	//Andy's fight song
-#constant fightBMusic 105	//Brad's fight song
-#constant fightJMusic 106	//John's fight song
+#constant fightAMusic 104	//Andy's fight song (Twelve Legged Tango)
+#constant fightBMusic 105	//Brad's fight song (Starlight Rivals)
+#constant fightJMusic 106	//John's fight song (The Final Remuloude)
 #constant tutorialMusic 107	//The tutorial song
-#constant spMusic 108		//Mirror Music 
+#constant spMusic 108		//Mirror Music (Chrome Coast)
+#constant tomatoMusic 110 	//End of Chapter song (Marigold Tomato)
 
-#constant dangerAMusic 111
-#constant dangerBMusic 112
-#constant dangerJMusic 113
-#constant dangerCMusic 114
+#constant dangerAMusic 211
+#constant dangerBMusic 212
+#constant dangerJMusic 213
+#constant dangerCMusic 214
+#constant dangerTMusic 215
 
 #constant raveBass1 121
 #constant raveBass2 122
@@ -937,6 +939,10 @@ function PlayMusicOGGSP(songID, loopYN)
 			LoadMusicOGG(fightJMusic, "fightJ.ogg")
 			SetMusicLoopTimesOGG(fightJMusic, 6.0, -1)
 		endif
+		if songID = tomatoMusic
+			LoadMusicOGG(tomatoMusic, "tomato.ogg")
+			SetMusicLoopTimesOGG(tomatoMusic, 24.0, -1)
+		endif
 		if songID = tutorialMusic then LoadMusicOGG(tutorialMusic, "fightD.ogg")
 		if songID = characterMusic
 			LoadMusicOGG(characterMusic, "character.ogg")
@@ -958,6 +964,7 @@ function PlayMusicOGGSP(songID, loopYN)
 		if songID = dangerBMusic then LoadMusicOGG(dangerBMusic, "dangerB.ogg")
 		if songID = dangerJMusic then LoadMusicOGG(dangerJMusic, "dangerJ.ogg")
 		if songID = dangerCMusic then LoadMusicOGG(dangerCMusic, "dangerC.ogg")
+		if songID = dangerTMusic then LoadMusicOGG(dangerTMusic, "dangerT.ogg")
 		
 		if songID = raveBass1 then LoadMusicOGG(raveBass1, "raveBass.ogg")
 		if songID = raveBass2 then LoadMusicOGG(raveBass2, "raveBass2.ogg")
@@ -987,6 +994,7 @@ function PlayMusicOGGSPStr(str$, loopYN)
 	if str$ = "fightB" then id = fightBMusic
 	if str$ = "fightJ" then id = fightJMusic
 	if str$ = "fightD" then id = tutorialMusic
+	if str$ = "tomato" then id = tomatoMusic
 	if str$ = "characterSelect" then id = characterMusic
 	if str$ = "results" then id = resultsMusic
 	if str$ = "loserXD" then id = loserMusic
@@ -1021,8 +1029,16 @@ function LoadJumpSounds()
 	if GetMusicExistsOGG(jump2S) then DeleteMusicOGG(jump2S)
 	
 	SetFolder("/media/sounds")
-	LoadMusicOGG(jump1S, "jump" + str(crab1Type) + AltStr(crab1Alt) + ".ogg")
-	LoadMusicOGG(jump2S, "jump" + str(crab2Type) + AltStr(crab2Alt) + ".ogg")
+	if GetFileExists("jump" + str(crab1Type) + AltStr(crab1Alt) + ".ogg")
+		LoadMusicOGG(jump1S, "jump" + str(crab1Type) + AltStr(crab1Alt) + ".ogg")
+	else
+		LoadMusicOGG(jump1S, "jump" + str(crab1Type) + ".ogg")
+	endif
+	if GetFileExists("jump" + str(crab2Type) + AltStr(crab2Alt) + ".ogg")
+		LoadMusicOGG(jump2S, "jump" + str(crab2Type) + AltStr(crab2Alt) + ".ogg")
+	else
+		LoadMusicOGG(jump2S, "jump" + str(crab2Type) + ".ogg")
+	endif
 endfunction
 
 function LoadBaseImages()
@@ -1078,7 +1094,11 @@ function LoadBaseImages()
 	for i = 1 to 6
 		for j = 0 to 3
 			jumpPartI[i, j] = jumpPartI1 - 1 + i + j*10
-			if GetFileExists("jumpP" + str(i) + AltStr(j) + ".png") then LoadImage(jumpPartI[i, j], "jumpP" + str(i) + AltStr(j) + ".png")
+			if GetFileExists("jumpP" + str(i) + AltStr(j) + ".png")
+				LoadImage(jumpPartI[i, j], "jumpP" + str(i) + AltStr(j) + ".png")
+			else
+				LoadImage(jumpPartI[i, j], "jumpP" + str(i) + ".png")
+			endif
 		next j
 	next i
 	
@@ -1421,7 +1441,7 @@ endfunction
 
 
 global crabPause1 as string[6]
-global crabPause2 as string[6]
+global crabPause2 as string[24]
 
 function SetCrabPauseStrings()
 	crabPause1[1] = "Speed: {{{}} Turn: {{{}}" + chr(10) + "Double-tap: Roll Forward"
@@ -1437,7 +1457,23 @@ function SetCrabPauseStrings()
 	crabPause2[4] = "Special: Party Time!" + chr(10) + "Obscure your opponent's vision" + chr(10) + "with intense rave lights."
 	crabPause2[5] = "Special: Fast Forward" + chr(10) + "Speed up your enemy's" + chr(10) + "game for a short while."
 	crabPause2[6] = "Special: Shuri-Krustacean" + chr(10) + "Fling deadly projecticles" + chr(10) + "directly up the screen."
+	crabPause2[7] = "Special: Mad-eor Shower" + chr(10) + "" + chr(10) + ""
+	crabPause2[8] = "Special: Royal Order" + chr(10) + "" + chr(10) + ""
+	crabPause2[9] = "Special: Stardust Spinout" + chr(10) + "" + chr(10) + ""
+	crabPause2[11] = "Special: Hourglass Curse" + chr(10) + "" + chr(10) + ""
+	crabPause2[12] = "Special: Claw-Ball Toss" + chr(10) + "" + chr(10) + ""
+	crabPause2[13] = "Special: Termination Claws" + chr(10) + "" + chr(10) + ""
+	crabPause2[14] = "Special: Meteor Math" + chr(10) + "" + chr(10) + ""
+	crabPause2[22] = "Special: Heavenly Light" + chr(10) + "" + chr(10) + ""
+	//crabPause2[] = "Special: " + chr(10) + "" + chr(10) + ""
 endfunction
+
+function GetSpecialName(crabNum)
+	name$ = ""
+	if len(crabPause2[crabNum]) <> 0
+		name$ = Mid(GetStringToken(crabPause2[crabNum], chr(10), 1), 10, -1)
+	endif
+endfunction name$
 
 global chapterTitle as string[25]
 global chapterDesc as string[25]

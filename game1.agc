@@ -176,8 +176,12 @@ function CreateGame1()
 	//Placeholder for game 2 X
 	SetSpriteColor(meteorMarker1, 30, 100, 255, 255)
 	//Placeholder for game 2 angle
-	
-	LoadAnimatedSprite(specialButton1, "crab" + str(crab1Type) + AltStr(crab1Alt) + "special", 5)
+		
+	if GetFileExists("crab" + str(crab1Type) + AltStr(crab1Alt) + "special1.png")
+		LoadAnimatedSprite(specialButton1, "crab" + str(crab1Type) + AltStr(crab1Alt) + "special", 5)
+	else
+		LoadAnimatedSprite(specialButton1, "crab" + str(crab1Type) + "special", 5)
+	endif
 	SetSpriteFrame(specialButton1, 5)
 	SetSpriteSize(specialButton1, 100-25*dispH, 100-25*dispH)
 	SetSpritePosition(specialButton1, GetSpriteX(expHolder1) + GetSpriteWidth(expHolder1) + 7 - 50, h-20-GetSpriteHeight(meteorButton1))

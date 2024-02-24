@@ -49,7 +49,7 @@ global h = 1600
 SetVirtualResolution(w, h) // doesn't have to match the window
 
 global dispH = 0		//Variable for horizontal display
-if deviceType = 99//DESKTOP
+if deviceType = DESKTOP
 	dispH = 1
 	w = 1280
 	h = 720
@@ -71,7 +71,7 @@ UseNewDefaultFonts( 1 )
 SetVSync(1)
 
 global demo = 1
-global debug = 1
+global debug = 0
 
 if demo then SetWindowTitle("Space Crab VS Demo")
 
@@ -167,9 +167,20 @@ if debug
 	//curScene = 4
 	highestScene = 101
 	appState = START
-	altUnlocked[2] = 1
+	altUnlocked[1] = 2
+	altUnlocked[2] = 2
+	altUnlocked[3] = 1
+	altUnlocked[4] = 1
+	altUnlocked[5] = 1
+	altUnlocked[6] = 1
 else
 	LoadGame()
+	altUnlocked[1] = 2
+	altUnlocked[2] = 2
+	altUnlocked[3] = 1
+	altUnlocked[4] = 0
+	altUnlocked[5] = 1
+	altUnlocked[6] = 0
 	if highestScene <= 0 then highestScene = 1
 endif
 

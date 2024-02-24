@@ -173,8 +173,18 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 	Will need to create an 'unlocked crab' array for this, though (6 variables, highestAlt1, highestAlt2...
 	*/
 	SetFolder("/media/art")
-	mysteryI = LoadImage("mystery.png")
-	trashBag.insert(mysteryI)
+	mysteryI1 = LoadImage("crab0aselect1.png")
+	mysteryI2 = LoadImage("crab0aselect2.png")
+	mysteryI3 = LoadImage("crab0aselect3.png")
+	mysteryI4 = LoadImage("crab0aselect4.png")
+	mysteryI5 = LoadImage("crab0aselect5.png")
+	mysteryI6 = LoadImage("crab0aselect6.png")
+	trashBag.insert(mysteryI1)
+	trashBag.insert(mysteryI2)
+	trashBag.insert(mysteryI3)
+	trashBag.insert(mysteryI4)
+	trashBag.insert(mysteryI5)
+	trashBag.insert(mysteryI6)
 
 	highAlt = GetHighAlt()
 	scale# = 1
@@ -204,8 +214,14 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 					PlaySprite(csc.sprCrabs + i, 18, 1, 1, 6)
 				else
 					//This red coloration means that the sprite is locked
-					SetSpriteGroup(csc.sprCrabs + i, mysteryI)
-					SetSpriteImage(csc.sprCrabs + i, mysteryI)
+					SetSpriteGroup(csc.sprCrabs + i, mysteryI1)
+					AddSpriteAnimationFrame(csc.sprCrabs + i, mysteryI1)
+					AddSpriteAnimationFrame(csc.sprCrabs + i, mysteryI2)
+					AddSpriteAnimationFrame(csc.sprCrabs + i, mysteryI3)
+					AddSpriteAnimationFrame(csc.sprCrabs + i, mysteryI4)
+					AddSpriteAnimationFrame(csc.sprCrabs + i, mysteryI5)
+					AddSpriteAnimationFrame(csc.sprCrabs + i, mysteryI6)
+					PlaySprite(csc.sprCrabs + i, 18, 1, 1, 6)
 				endif
 			else
 				SetSpriteVisible(csc.sprCrabs + i, 0)
@@ -213,10 +229,10 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 			endif
 		
 		if i > 6*(1+highAlt) - 1
-			//Crab is not unlocked
+			//Crab is not in unlocked row
 			SetSpriteVisible(csc.sprCrabs + i, 0)
 		elseif locked = 0
-			//Crab is unlocked
+			//Crab is in unlocked rpw
 			AddButton(csc.sprCrabs + i)
 		endif
 		
@@ -312,12 +328,24 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 	next i
 	
 	//Descriptions were moved down here to include newline characters
-	crabDescs[0] = crabDescs[0] + "Known far and wide, he's ready to claim his fame!" + chr(10) + "Double-tap for his galaxy famous quick-dodge!" + chr(10) + "Special Attack: Meteor Shower"
-	crabDescs[1] = crabDescs[1] + "The most magical being this side of the nebula." + chr(10) + "Launch into the skies with a double-tap spell!" + chr(10) + "Special Attack: Conjure Comets"
-	crabDescs[2] = crabDescs[2] + "Grew up at the Rotation Station, and it shows." + chr(10) + "Very fast! Double-tap to skid & stop a sec'." + chr(10) + "Special Attack: Orbital Nightmare"
-	crabDescs[3] = crabDescs[3] + "Always ready to party!! How can you say no?" + chr(10) + "He'll stop and mosh when he hears a double-tap." + chr(10) + "Special Attack: Party Time!"
-	crabDescs[4] = crabDescs[4] + "A clockwork master! Sends his opponents forward" + chr(10) + "in time, and rewinds his clock by double-tapping." + chr(10) + "Special Attack: Fast Forward"
-	crabDescs[5] = crabDescs[5] + "Quieter than a rising sun, deadlier than a black" + chr(10) + "hole! Instantly turns but has no double-tap move." + chr(10) + "Special Attack: Shuri-Krustacean"
+	crabDescs[0] = crabDescs[0] + "Known far and wide, he's ready to claim his fame!" + chr(10) + "Double-tap for his galaxy famous quick-dodge!"
+	crabDescs[1] = crabDescs[1] + "The most magical being this side of the nebula." + chr(10) + "Launch into the skies with a double-tap spell!"
+	crabDescs[2] = crabDescs[2] + "Grew up at the Rotation Station, and it shows." + chr(10) + "Very fast! Double-tap to skid & stop a sec'."
+	crabDescs[3] = crabDescs[3] + "Always ready to party!! How can you say no?" + chr(10) + "He'll stop and mosh when he hears a double-tap."
+	crabDescs[4] = crabDescs[4] + "A clockwork master! Sends his opponents forward" + chr(10) + "in time, and rewinds his clock by double-tapping."
+	crabDescs[5] = crabDescs[5] + "Quieter than a rising sun, deadlier than a black" + chr(10) + "hole! Instantly turns but has no double-tap move."
+	crabDescs[6] = crabDescs[6] + "It's Mad Crab!" + chr(10) + ""
+	crabDescs[7] = crabDescs[7] + "It's King Crab! " + chr(10) + ""
+	crabDescs[8] = crabDescs[8] + "It's Taxi Crab!" + chr(10) + ""
+	crabDescs[10] = crabDescs[10] + "It's Inianda Jeff!" + chr(10) + ""
+	crabDescs[11] = crabDescs[11] + "It's Team Player!" + chr(10) + ""
+	crabDescs[12] = crabDescs[12] + "It's Al Legal!" + chr(10) + ""
+	crabDescs[13] = crabDescs[13] + "It's Crabacus" + chr(10) + ""
+	crabDescs[21] = crabDescs[21] + "It's Holy Crab" + chr(10) + ""
+	//crabDescs[] = crabDescs[] + " " + chr(10) + ""
+	for i = 0 to NUM_CRABS-1
+		crabDescs[i] = crabDescs[i] + chr(10) + "Special Attack: " + GetSpecialName(i+1)
+	next i
 	
 	// The offset mumbo-jumbo with f-coefficients is because AGK's text rendering is awful
 	CreateText(csc.txtCrabName, crabNames[csc.crabSelected+1])
@@ -617,7 +645,7 @@ function ChangeCrabs(csc ref as CharacterSelectController, dir as integer, start
 				SetCrabFromStringChap("", curChapter, 3)
 			else
 				crabRefType = Mod(csc.crabSelected, 6)+1
-				crabRefAlt = (csc.crabSelected-1)/6
+				crabRefAlt = (csc.crabSelected)/6
 			endif
 			for i = 1 to 6
 				img = LoadImageResizedR("crab" + str(crabRefType) + AltStr(crabRefAlt) + "select" + Str(i) + ".png", .8)
@@ -775,9 +803,11 @@ function SelectCrab(csc ref as CharacterSelectController)
 	// We need this off-by-one adjustment because the crab types are based on 1-based indexing,
 	// whereas the selected crabs are based on 0-based indexing
 	if csc.player = 1
-		crab1Type = csc.crabSelected + 1
+		crab1Type = Mod(csc.crabSelected, 6) + 1
+		crab1Alt = csc.crabSelected/6
 	else
-		crab2Type = csc.crabSelected + 1
+		crab2Type = Mod(csc.crabSelected, 6) + 1
+		crab2Alt = csc.crabSelected/6
 	endif
 	
 	//SetSpriteVisible(csc.sprReady, 0)

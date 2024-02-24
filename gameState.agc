@@ -884,16 +884,16 @@ function PauseGame()
 	next i
 	
 	//Making the crab title and description
-	SetTextString(pauseTitle1, crabNames[crab1Type])
+	SetTextString(pauseTitle1, crabNames[crab1Type+crab1Alt*6])
 	SetTextString(pauseDesc1, crabPause1[crab1Type])
-	if spActive = 0 then SetTextString(pauseDesc1, GetTextString(pauseDesc1) + chr(10) + chr(10) + crabPause2[crab1Type])
+	if spActive = 0 then SetTextString(pauseDesc1, GetTextString(pauseDesc1) + chr(10) + chr(10) + crabPause2[crab1Type+crab1Alt*6])
 	
 	if (spActive = 0 and aiActive = 0)
 		//For a multiplayer game
 		SetTextY(pauseTitle2, h/2 - (GetTextY(pauseTitle1)-h/2))
 		SetTextY(pauseDesc2, h/2 - (GetTextY(pauseDesc1)-h/2))
-		SetTextString(pauseTitle2, crabNames[crab2Type])
-		SetTextString(pauseDesc2, crabPause1[crab2Type] + chr(10) + chr(10) + crabPause2[crab2Type])
+		SetTextString(pauseTitle2, crabNames[crab2Type+crab2Alt*6])
+		SetTextString(pauseDesc2, crabPause1[crab2Type] + chr(10) + chr(10) + crabPause2[crab2Type+crab2Alt*6])
 	endif
 	
 	//The single player special text
@@ -1294,7 +1294,7 @@ function ShowSpecialAnimation(crabType, crabAlt, playerNum, fast)
 		if i >= specialSprFront2 then SetSpriteAngle(i, 180)
 		
 	next i
-	
+	animType = 0
 	if (crabType = 3 and crabAlt = 0) or (crabType = 5 and crabAlt = 0) or (crabType = 2 and crabAlt = 2)
 		SetFolder("/media/art")
 		LoadSprite(specialSprBacker1, "crab" + str(crabType) + AltStr(crabAlt) + "attack3.png")
@@ -1305,7 +1305,9 @@ function ShowSpecialAnimation(crabType, crabAlt, playerNum, fast)
 		SetSpriteDepth(specialSprBacker2, 3)
 		SetSpriteSizeSquare(specialSprBacker1, specSize)
 		SetSpriteSizeSquare(specialSprBacker2, specSize)
+		animType = 1
 	endif
+	if (crabType = 4 and crabAlt = 0) then animType = 2
 	
 	//Offsetting the clock hands so that they rotate properly
 	if crabType = 5
@@ -1352,15 +1354,21 @@ function ShowSpecialAnimation(crabType, crabAlt, playerNum, fast)
 		endif
 		SetTextDepth(i, 1)
 		SetTextSpacing(i, -20)
-		if crabType = 1 and crabAlt = 0 then SetTextString(i, "METEOR SHOWER")
-		if crabType = 1 and crabAlt = 2 then SetTextString(i, "METEOR EVIDENCE")
+		SetTextString(i, Upper(GetSpecialName(crabType + crabAlt*6)))
+		/*if crabType = 1 and crabAlt = 0 then SetTextString(i, "METEOR SHOWER")
+		if crabType = 1 and crabAlt = 1 then SetTextString(i, "MAD-EOR SHOWER")
+		if crabType = 1 and crabAlt = 2 then SetTextString(i, "TERMINATION CLAWS")
 		if crabType = 2 and crabAlt = 0 then SetTextString(i, "CONJURE COMETS")
-		if crabType = 2 and crabAlt = 1 then SetTextString(i, "ROYAL ORDERS")
+		if crabType = 2 and crabAlt = 1 then SetTextString(i, "ROYAL ORDER")
 		if crabType = 2 and crabAlt = 2 then SetTextString(i, "METEOR MATH")
-		if crabType = 3 then SetTextString(i, "ORBITAL NIGHTMARE")
-		if crabType = 4 then SetTextString(i, "PARTY TIME!")
-		if crabType = 5 then SetTextString(i, "FAST FOWARD")
-		if crabType = 6 then SetTextString(i, "SHURI-KRUSTACEAN")
+		if crabType = 3 and crabAlt = 0 then SetTextString(i, "ORBITAL NIGHTMARE")
+		if crabType = 3 and crabAlt = 1 then SetTextString(i, "STARDUST SPINOUT")
+		if crabType = 4 and crabAlt = 0 then SetTextString(i, "PARTY TIME!")
+		if crabType = 4 and crabAlt = 3 then SetTextString(i, "HEAVENLY LIGHT")
+		if crabType = 5 and crabAlt = 0 then SetTextString(i, "FAST FOWARD")
+		if crabType = 5 and crabAlt = 1 then SetTextString(i, "HOURGLASS CURSE")
+		if crabType = 6 and crabAlt = 0 then SetTextString(i, "SHURI-KRUSTACEAN")
+		if crabType = 6 and crabAlt = 1 then SetTextString(i, "CLAW-BALL TOSS")*/
 	next i
 	
 	
@@ -1412,7 +1420,7 @@ function ShowSpecialAnimation(crabType, crabAlt, playerNum, fast)
 		
 		if i = iEnd*2/3 then PlaySoundR(specialExitS, 40)
 		
-		if crabType = 1 or (crabType = 2 and crabAlt <> 2) or crabType = 4 or crabType = 6
+		if animType = 0
 			/*
 			if crabType <> 2
 				IncSpriteXFloat(specialSprFront1, -1.2*speed)
@@ -1428,7 +1436,7 @@ function ShowSpecialAnimation(crabType, crabAlt, playerNum, fast)
 			//endif
 		endif
 		
-		if crabType = 4
+		if animType = 2
 			SetSpriteMiddleScreenX(specialSprBack1)
 			SetSpriteMiddleScreenX(specialSprBack2)
 			
@@ -1451,7 +1459,7 @@ function ShowSpecialAnimation(crabType, crabAlt, playerNum, fast)
 		endif
 		
 		//Top crab & Chrono crab
-		if (crabType = 3 and crabAlt = 0) or (crabType = 5 and crabAlt = 0) or (crabType = 2 and crabAlt = 2)
+		if animType = 1
 			if i = 1
 				if dispH = 0
 					DrawPolar1(specialSprFront1, 0, 270)
@@ -2103,7 +2111,7 @@ function StartGameMusic()
 		if spActive = 0
 			pass = 0
 			while pass = 0
-				rnd = Random(1, 3)
+				rnd = Random(1, 5)
 				if rnd = 1 and oldSong <> fightAMusic
 					PlayMusicOGGSP(fightAMusic, 1)
 					oldSong = fightAMusic
@@ -2115,6 +2123,14 @@ function StartGameMusic()
 				elseif rnd = 3 and oldSong <> fightJMusic
 					PlayMusicOGGSP(fightJMusic, 1)
 					oldSong = fightJMusic
+					pass = 1
+				elseif rnd = 4 and oldSong <> spMusic
+					PlayMusicOGGSP(spMusic, 1)
+					oldSong = spMusic
+					pass = 1
+				elseif rnd = 5 and oldSong <> tomatoMusic
+					PlayMusicOGGSP(tomatoMusic, 1)
+					oldSong = tomatoMusic
 					pass = 1
 				endif
 			endwhile
@@ -2152,6 +2168,7 @@ function PlayDangerMusic(startNew)
 			if GetMusicPlayingOGGSP(fightBMusic) then oldSong = fightBMusic
 			if GetMusicPlayingOGGSP(fightJMusic) then oldSong = fightJMusic
 			if GetMusicPlayingOGGSP(spMusic) then oldSong = spMusic
+			if GetMusicPlayingOGGSP(tomatoMusic) then oldSong = tomatoMusic
 			
 			if oldSong <> 0 then StopGamePlayMusic()
 			
@@ -2161,6 +2178,7 @@ function PlayDangerMusic(startNew)
 			if oldSong = fightBMusic then PlayMusicOGGSP(dangerBMusic, 1)
 			if oldSong = fightJMusic then PlayMusicOGGSP(dangerJMusic, 1)
 			if oldSong = spMusic then PlayMusicOGGSP(dangerCMusic, 1)
+			if oldSong = tomatoMusic then PlayMusicOGGSP(dangerTMusic, 1)
 			
 		endif
 		
@@ -2175,8 +2193,9 @@ function StopGamePlayMusic()
 	next i
 	
 	if GetMusicPlayingOGGSP(spMusic) then StopMusicOGGSP(spMusic)
+	if GetMusicPlayingOGGSP(tomatoMusic) then StopMusicOGGSP(tomatoMusic)
 	
-	for i = dangerAMusic to dangerCMusic
+	for i = dangerAMusic to dangerTMusic
 		if GetMusicPlayingOGGSP(i) then StopMusicOGGSP(i)
 	next i
 	

@@ -7,7 +7,7 @@ global talkBS
 global trashBag as integer[0]
 
 #constant textSideSpacingX 35
-#constant textSideSpacingY 19
+#constant textSideSpacingY 22
 // Initialize the story screen
 function InitStory()
 	
@@ -45,9 +45,9 @@ function InitStory()
 	SetTweenSpriteAlpha(SPR_TEXT_BOX, 0, 255, TweenEaseOut2())	
 	
 	for i = storyText to storyFitter
-		CreateTextExpress(i, "", 60, fontDescI, 0, GetSpriteX(SPR_TEXT_BOX)+textSideSpacingX, GetSpriteY(SPR_TEXT_BOX)+textSideSpacingY, 15-(i-storyText))
+		CreateTextExpress(i, "", 56, fontDescI, 0, GetSpriteX(SPR_TEXT_BOX)+textSideSpacingX, GetSpriteY(SPR_TEXT_BOX)+textSideSpacingY, 15-(i-storyText))
 		if i < storyFitter then SetTextY(i, GetSpriteY(i - storyText + SPR_TEXT_BOX)+textSideSpacingY)
-		SetTextSpacing(i, -14)
+		SetTextSpacing(i, -13)
 		SetTextColor(i, 0, 0, 0, 255)
 		CreateTweenText(i, .3)
 		FixTextToScreen(i, 1)
