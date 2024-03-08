@@ -71,7 +71,7 @@ UseNewDefaultFonts( 1 )
 SetVSync(1)
 
 global demo = 1
-global debug = 0
+global debug = 1
 
 if demo then SetWindowTitle("Space Crab VS Demo")
 
@@ -128,6 +128,7 @@ function SaveGame()
 	
 	WriteInteger(3, spHighScore)
 	WriteString(3, spHighCrab$)
+	WriteString(3, spHighCrab$)
 	WriteInteger(3, spHighScoreClassic)
 	WriteString(3, spHighCrabClassic$)
 	WriteInteger(3, curChapter)
@@ -164,13 +165,13 @@ endfunction
 
 if debug
 	curChapter = 2
-	//curScene = 4
+	curScene = 4
 	highestScene = 101
 	appState = START
-	altUnlocked[1] = 2
+	altUnlocked[1] = 3
 	altUnlocked[2] = 2
 	altUnlocked[3] = 1
-	altUnlocked[4] = 1
+	altUnlocked[4] = 0
 	altUnlocked[5] = 1
 	altUnlocked[6] = 1
 else

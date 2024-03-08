@@ -173,12 +173,12 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 	Will need to create an 'unlocked crab' array for this, though (6 variables, highestAlt1, highestAlt2...
 	*/
 	SetFolder("/media/art")
-	mysteryI1 = LoadImage("crab0aselect1.png")
-	mysteryI2 = LoadImage("crab0aselect2.png")
-	mysteryI3 = LoadImage("crab0aselect3.png")
-	mysteryI4 = LoadImage("crab0aselect4.png")
-	mysteryI5 = LoadImage("crab0aselect5.png")
-	mysteryI6 = LoadImage("crab0aselect6.png")
+	mysteryI1 = LoadImageResizedR("crab0aselect1.png", .5)
+	mysteryI2 = LoadImageResizedR("crab0aselect2.png", .5)
+	mysteryI3 = LoadImageResizedR("crab0aselect3.png", .5)
+	mysteryI4 = LoadImageResizedR("crab0aselect4.png", .5)
+	mysteryI5 = LoadImageResizedR("crab0aselect5.png", .5)
+	mysteryI6 = LoadImageResizedR("crab0aselect6.png", .5)
 	trashBag.insert(mysteryI1)
 	trashBag.insert(mysteryI2)
 	trashBag.insert(mysteryI3)
@@ -188,7 +188,9 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 
 	highAlt = GetHighAlt()
 	scale# = 1
-	if highAlt >= 1 then scale# = .6
+	if highAlt = 1 then scale# = .8
+	if highAlt = 2 then scale# = .5
+	if highAlt = 3 then scale# = .4
 	for i = 0 to NUM_CRABS-1 + spActive*STORY_CS_BONUS 
 		SyncG()
 		locked = 0
@@ -205,7 +207,16 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 				//Will eventually put a check here, for if that crab is unlocked
 				if locked = 0
 					for j = 1 to 6
-						img = LoadImageResizedR("crab" + str(crabRefType) + AltStr(crabRefAlt) + "select" + Str(j) + ".png", .4*scale#)
+						if csc.player = 1
+							img = LoadImageResizedR("crab" + str(crabRefType) + AltStr(crabRefAlt) + "select" + Str(j) + ".png", .4*scale#)
+							if j = 1 then IMG_CS_CRAB[i] = img
+						else
+							if IMG_CS_CRAB[i] <> 0
+								img = IMG_CS_CRAB[i]+j-1		//Re-using the images from player one
+							else
+								img = 0
+							endif
+						endif
 						if img <> 0
 							AddSpriteAnimationFrame(csc.sprCrabs + i, img)
 							trashBag.insert(img)
@@ -275,7 +286,8 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 				posY# = h/2 - charHei/4 + p*charVerSmall*0.8 + p*charVerSmallGap*((i)/6)*0.5
 				if Mod(i, 2) then inc posY#, 60*p
 			endif
-		
+			if p = -1 then inc posY#, charHei/8
+			
 			SetTweenSpriteX(csc.sprCrabs + i, w/2-charWid/2, posX#, TweenOvershoot())
 			SetTweenSpriteY(csc.sprCrabs + i, h/2-charHei/2 + p*charVer, posY#, TweenOvershoot())
 		else
@@ -328,21 +340,21 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 	next i
 	
 	//Descriptions were moved down here to include newline characters
-	crabDescs[0] = crabDescs[0] + "Known far and wide, he's ready to claim his fame!" + chr(10) + "Double-tap for his galaxy famous quick-dodge!"
-	crabDescs[1] = crabDescs[1] + "The most magical being this side of the nebula." + chr(10) + "Launch into the skies with a double-tap spell!"
-	crabDescs[2] = crabDescs[2] + "Grew up at the Rotation Station, and it shows." + chr(10) + "Very fast! Double-tap to skid & stop a sec'."
-	crabDescs[3] = crabDescs[3] + "Always ready to party!! How can you say no?" + chr(10) + "He'll stop and mosh when he hears a double-tap."
-	crabDescs[4] = crabDescs[4] + "A clockwork master! Sends his opponents forward" + chr(10) + "in time, and rewinds his clock by double-tapping."
-	crabDescs[5] = crabDescs[5] + "Quieter than a rising sun, deadlier than a black" + chr(10) + "hole! Instantly turns but has no double-tap move."
-	crabDescs[6] = crabDescs[6] + "It's Mad Crab!" + chr(10) + ""
-	crabDescs[7] = crabDescs[7] + "It's King Crab! " + chr(10) + ""
-	crabDescs[8] = crabDescs[8] + "It's Taxi Crab!" + chr(10) + ""
-	crabDescs[10] = crabDescs[10] + "It's Inianda Jeff!" + chr(10) + ""
-	crabDescs[11] = crabDescs[11] + "It's Team Player!" + chr(10) + ""
-	crabDescs[12] = crabDescs[12] + "It's Al Legal!" + chr(10) + ""
-	crabDescs[13] = crabDescs[13] + "It's Crabacus" + chr(10) + ""
-	crabDescs[21] = crabDescs[21] + "It's Holy Crab" + chr(10) + ""
-	//crabDescs[] = crabDescs[] + " " + chr(10) + ""
+	crabDescs[0] = crabDescs[0] + 	"Known far and wide, he's ready to claim his fame!" + chr(10) +	"Double-tap for his galaxy famous quick-dodge!"
+	crabDescs[1] = crabDescs[1] + 	"The most magical being this side of the nebula." + chr(10) + 	"Launch into the skies with a double-tap spell!"
+	crabDescs[2] = crabDescs[2] + 	"Grew up at the Rotation Station, and it shows." + chr(10) + 	"Very fast! Double-tap to skid & stop a sec'."
+	crabDescs[3] = crabDescs[3] + 	"Always ready to party!! How can you say no?" + chr(10) + 		"He'll stop and mosh when he hears a double-tap."
+	crabDescs[4] = crabDescs[4] + 	"A clockwork master! Sends his opponents forward" + chr(10) + 	"in time, and rewinds his clock by double-tapping."
+	crabDescs[5] = crabDescs[5] + 	"Quieter than a rising sun, deadlier than a black" + chr(10) + 	"hole! Instantly turns but has no double-tap move."
+	crabDescs[6] = crabDescs[6] + 	"It's true that anger can be weaponized-" + chr(10) + 			"just ask this guy! He has no need for meditation."
+	crabDescs[7] = crabDescs[7] + 	"'Opulence is dish best served cold.'" + chr(10) + 				"'What do you mean that doesn't make sense??'"
+	crabDescs[8] = crabDescs[8] + 	"Having chauffeured half the galaxy," + chr(10) + 				"this crab has learned many attacks & counters."
+	crabDescs[10] = crabDescs[10] + 	"(Mis)hearing whisperings of an otherworldy" + chr(10) +			"movie, this young adventurer took the mantle!"
+	crabDescs[11] = crabDescs[11] + 	"A quarterback at heart, this Team Player" + chr(10) + 			"has no trouble going solo to beat his opponent."
+	crabDescs[12] = crabDescs[12] + 	"The pen is mightier than the sword, yes - but" + chr(10) + 		"will it stand up to a swarm of incoming meteors?"
+	crabDescs[13] = crabDescs[13] + 	"It's always been numbers. The angles, velocities," + chr(10) + 	"polar coordinates. This crab figured it all out!"
+	crabDescs[21] = crabDescs[21] + 	"An angelic presence, from on high. Will they" + chr(10) + 		"show mercy, or smite us for our wrongdoings?"
+	//crabDescs[] = crabDescs[] + "" + chr(10) + 													""
 	for i = 0 to NUM_CRABS-1
 		crabDescs[i] = crabDescs[i] + chr(10) + "Special Attack: " + GetSpecialName(i+1)
 	next i
@@ -361,7 +373,7 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 	SetTextAngle(csc.txtCrabDesc, f*180)
 	SetTextFontImage(csc.txtCrabDesc, fontDescI)
 	SetTextSpacing(csc.txtCrabDesc, -10)
-	SetTextMiddleScreenOffset(csc.txtCrabDesc, f, -w/5, p*3*h/8.5)
+	//SetTextMiddleScreenOffset(csc.txtCrabDesc, f, -w/5, p*3*h/8.5)
 	SetTextMiddleScreenOffset(csc.txtCrabDesc, f, 0, p*3*h/8.5)
 	SetTextAlignment(csc.txtCrabDesc, 1)
 	

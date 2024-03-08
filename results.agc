@@ -220,6 +220,14 @@ function InitResults()
 	winText[3] = "Rave Crab moshed and never let up," + chr(10) + "and barely noticed that he won!"
 	winText[4] = "Chrono Crab bent time and the results" + chr(10) + "of the battle to his favor!"
 	winText[5] = "As swift as a nighttime breeze, Ninja" + chr(10) + "Crab has downed his worthless foe."
+	winText[6] = "Mad Crab is angry about this" + chr(10) + "win, as he should be."
+	winText[7] = "Truly, was there ever any doubt?" + chr(10) + "Of COURSE King Crab is the winner!"
+	winText[8] = "Taxi Crab collects his cab fare," + chr(10) + "as well as his win!"
+	winText[10] = "Inianda Jeff has secured the" + chr(10) + "treasure, and a win, too!"
+	winText[11] = "Team Player has secured" + chr(10) + "his solo victory!"
+	winText[12] = "The gavel of justice declares" + chr(10) + "Al Legal the winner!"
+	winText[13] = "Crabacus' win was calculated" + chr(10) + "from the very start!"
+	winText[21] = "Holy Crab ascends to the winner's" + chr(10) + "circle, purifing all who witness it!"
 	
 	loseText[0] = "Space Crab's orbital ordnance was" + chr(10) + "overpowered by a mightier opponent..."
 	loseText[1] = "Ladder Wizard was vexed, hexed," + chr(10) + "and wrecked in this battle..."
@@ -227,6 +235,14 @@ function InitResults()
 	loseText[3] = "Rave Crab partied too hard" + chr(10) + "and paid the price..."
 	loseText[4] = "Chrono Crab must accept that" + chr(10) + "time has passed him by..."
 	loseText[5] = "Ninja Crab has been sent back" + chr(10) + "to the shadows in shame..."
+	loseText[6] = "Mad Crab won't let his anger" + chr(10) + "show for such an embarrasing event..."
+	loseText[7] = "Greed has overtaken King Crab," + chr(10) + "stuck in the grasp of Midas' touch..."
+	loseText[8] = "A broken down car is nothing" + chr(10) + "compared to his broken down spirit..."
+	loseText[10] = "In the search for treasure and" + chr(10) + "victory, Inianda Jeff is empty handed..."
+	loseText[11] = "Team Player needed team" + chr(10) + "support after all..."
+	loseText[12] = "Al Legal should have spent" + chr(10) + "more time building a case..."
+	loseText[13] = "Crabacus couldn't calculate" + chr(10) + "a win this time..."
+	loseText[21] = "Holy Crab subcummed to the" + chr(10) + "devil on their sholder..."
 	
 	// Determine the winner
 	if crab1Deaths = 3

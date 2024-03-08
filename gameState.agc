@@ -412,6 +412,8 @@ function EndGameScene()
 		elseif hitTimer# > 0
 			
 			if endStage = 3
+				if GetSpriteExists(hitSpr1) then DeleteSprite(hitSpr1)
+				if GetSpriteExists(hitSpr2) then DeleteSprite(hitSpr2)
 				CreateSpriteExpress(coverS, w, h, 0, 0, 1)
 				SetSpriteColor(coverS, 255, 255, 255, 0)
 				SetViewOffset(0, 0)
@@ -522,6 +524,8 @@ function EndMirrorScene()
 		elseif hitTimer# > 0
 			
 			if endStage = 3
+				if GetSpriteExists(hitSpr1) then DeleteSprite(hitSpr1)
+				if GetSpriteExists(hitSpr2) then DeleteSprite(hitSpr2)
 				CreateSpriteExpress(coverS, w, h, 0, 0, 1)
 				SetSpriteColor(coverS, 255, 255, 255, 0)
 				SetViewOffset(0, 0)
@@ -605,6 +609,8 @@ function EndClassicScene()
 		elseif hitTimer# > 0
 			
 			if endStage = 3
+				if GetSpriteExists(hitSpr1) then DeleteSprite(hitSpr1)
+				if GetSpriteExists(hitSpr2) then DeleteSprite(hitSpr2)
 				CreateSpriteExpress(coverS, w, h, 0, 0, 1)
 				SetSpriteColor(coverS, 255, 255, 255, 0)
 				SetViewOffset(0, 0)
@@ -979,6 +985,14 @@ function PauseGame()
 			IncTextY(pauseTitle2, 20)
 			IncTextY(pauseDesc2, 20)
 			
+		endif
+		
+		if dispH = 0
+			SetTextAngle(pauseTitle2, 0)
+			SetTextAngle(pauseDesc2, 0)
+			
+			SetTextY(pauseTitle2, 180)
+			SetTextY(pauseDesc2, 380)
 		endif
 	endif
 	
@@ -1355,20 +1369,6 @@ function ShowSpecialAnimation(crabType, crabAlt, playerNum, fast)
 		SetTextDepth(i, 1)
 		SetTextSpacing(i, -20)
 		SetTextString(i, Upper(GetSpecialName(crabType + crabAlt*6)))
-		/*if crabType = 1 and crabAlt = 0 then SetTextString(i, "METEOR SHOWER")
-		if crabType = 1 and crabAlt = 1 then SetTextString(i, "MAD-EOR SHOWER")
-		if crabType = 1 and crabAlt = 2 then SetTextString(i, "TERMINATION CLAWS")
-		if crabType = 2 and crabAlt = 0 then SetTextString(i, "CONJURE COMETS")
-		if crabType = 2 and crabAlt = 1 then SetTextString(i, "ROYAL ORDER")
-		if crabType = 2 and crabAlt = 2 then SetTextString(i, "METEOR MATH")
-		if crabType = 3 and crabAlt = 0 then SetTextString(i, "ORBITAL NIGHTMARE")
-		if crabType = 3 and crabAlt = 1 then SetTextString(i, "STARDUST SPINOUT")
-		if crabType = 4 and crabAlt = 0 then SetTextString(i, "PARTY TIME!")
-		if crabType = 4 and crabAlt = 3 then SetTextString(i, "HEAVENLY LIGHT")
-		if crabType = 5 and crabAlt = 0 then SetTextString(i, "FAST FOWARD")
-		if crabType = 5 and crabAlt = 1 then SetTextString(i, "HOURGLASS CURSE")
-		if crabType = 6 and crabAlt = 0 then SetTextString(i, "SHURI-KRUSTACEAN")
-		if crabType = 6 and crabAlt = 1 then SetTextString(i, "CLAW-BALL TOSS")*/
 	next i
 	
 	
@@ -1381,7 +1381,7 @@ function ShowSpecialAnimation(crabType, crabAlt, playerNum, fast)
 		fastM# = 1
 	endif
 	
-	if dispH
+	if dispH or spType = STORYMODE
 		iEnd = iEnd * 1.2
 		SetSpriteVisible(specialSprFront2, 0)
 		SetSpriteVisible(specialSprBack2, 0)
@@ -1389,6 +1389,13 @@ function ShowSpecialAnimation(crabType, crabAlt, playerNum, fast)
 		SetTextVisible(specialSprFront2, 0)
 		SetTextSize(specialSprFront1, GetTextSize(specialSprFront2) + 20)
 		SetTextY(specialSprFront1, h-20-GetTextSize(specialSprFront2))
+		if spType = STORYMODE and dispH = 0
+			SetSpriteMiddleScreenY(specialSprFront1)
+			SetSpriteMiddleScreenY(specialSprBack1)
+			if GetSpriteExists(specialSprBacker1) then SetSpriteMiddleScreenY(specialSprBacker1)
+			SetTextY(specialSprFront1, h/2 + GetSpriteHeight(specialSprFront1)/2)
+			SetTextSize(specialSprFront1, GetTextSize(specialSprFront2))
+		endif
 		if (crabType = 3 and crabAlt = 0) or (crabType = 5 and crabAlt = 0) or (crabType = 2 and crabAlt = 2)
 			SetSpriteFlip(specialSprBacker1, 0, 1)
 			SetSpriteMiddleScreen(specialSprFront1)
@@ -1396,6 +1403,7 @@ function ShowSpecialAnimation(crabType, crabAlt, playerNum, fast)
 			SetSpriteMiddleScreen(specialSprBacker1)
 		endif
 	endif
+	
 	
 	for i = 1 to iEnd
 		
@@ -1461,7 +1469,7 @@ function ShowSpecialAnimation(crabType, crabAlt, playerNum, fast)
 		//Top crab & Chrono crab
 		if animType = 1
 			if i = 1
-				if dispH = 0
+				if dispH = 0 and spType <> STORYMODE
 					DrawPolar1(specialSprFront1, 0, 270)
 					DrawPolar1(specialSprBack1, 0, 270)
 					DrawPolar1(specialSprBacker1, 0, 270)
@@ -1473,7 +1481,7 @@ function ShowSpecialAnimation(crabType, crabAlt, playerNum, fast)
 				if crabType = 5
 					IncSpritePosition(specialSprFront2, -2*(specSize*700/1356.0 - specSize/2)-500*dispH, -2*(specSize*932/1356.0 - specSize/2))
 					IncSpritePosition(specialSprBack2, -2*(specSize*700/1356.0 - specSize/2)-500*dispH, -2*(specSize*932/1356.0 - specSize/2))
-					if dispH
+					if dispH or spType = STORYMODE
 						IncSpriteX(specialSprFront1, -2*(specSize*700/1356.0 - specSize/2)-1*dispH)
 						IncSpriteX(specialSprBack1, -2*(specSize*700/1356.0 - specSize/2)-1*dispH)
 					endif
@@ -1508,7 +1516,7 @@ function ShowSpecialAnimation(crabType, crabAlt, playerNum, fast)
 			if crabType = 5
 				IncSpritePosition(specialSprFront2, -.125*fpsr#, -.25*fpsr#)
 				IncSpritePosition(specialSprBack2, -.125*fpsr#, -.25*fpsr#)
-				if dispH
+				if dispH or spType = STORYMODE
 					IncSpritePosition(specialSprFront1, -.125*fpsr#, .25*fpsr#*0)
 					IncSpritePosition(specialSprBack1, -.125*fpsr#, .25*fpsr#*0)
 				endif
@@ -1650,12 +1658,22 @@ function InitAttackParticles()
 	    	SetParticlesStartZone(i, -metSizeX/4*gameScale#, -metSizeX/4*gameScale#, metSizeX/4*gameScale#, metSizeX/4*gameScale#) //The box that the particles can start from
 		endif
 		if i = par1spe1
-			SetParticlesPosition (i, w/4, h/2)
-			SetParticlesStartZone(i, -w/2, -h/2, w/4, h/2)
+			if dispH
+				SetParticlesPosition (i, w/4, h/2)
+				SetParticlesStartZone(i, -w/2, -h/2, w/4, h/2)
+			else
+				SetParticlesPosition (i, w/2, h*3/4)
+				SetParticlesStartZone(i, -w/2, -h/4, w/2, h/4)
+			endif
 		endif
 		if i = par2spe1
-			SetParticlesPosition (i, w*3/4, h/2)
-			SetParticlesStartZone(i, -w/4, -h/2, w/4, h/2)
+			if dispH
+				SetParticlesPosition (i, w*3/4, h/2)
+				SetParticlesStartZone(i, -w/4, -h/2, w/4, h/2)
+			else
+				SetParticlesPosition (i, w/2, h/4)
+				SetParticlesStartZone(i, -w/2, -h/4, w/2, h/4)
+			endif
 		endif
 	next i
 endfunction
@@ -2473,3 +2491,7 @@ function PlayOpeningScene()
 		
 	
 endfunction
+
+//function SetCrabStats(cType as integer, cAlt as integer, framerate ref as Integer, specialCost ref as Integer, vel# ref as Float, accel# ref as float, jumpHMax# ref as float, jumpSpeed# ref as float, jumpDMax# ref as float)
+	
+//endfunction

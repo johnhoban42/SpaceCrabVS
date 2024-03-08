@@ -84,19 +84,16 @@ global metSizeY = 80
 #constant chronoCrabTimeMax 1900	//Is longer because the timer goes down faster
 #constant ninjaCrabTimeMax 500	
 
-#constant specialPrice1 20
-#constant specialPrice2 20
-#constant specialPrice3 25
-#constant specialPrice4 23
-#constant specialPrice5 30
-#constant specialPrice6 18
+//										D		D		D		D		D		D																																
+//									Nul	Space	Wizard	Top		Rave	Chrono	Ninja	Mad		King	Taxi	Fan		Jeff	Team P	Al		Cbcus	Barc	Hwaii	Rock	Crnme	Future	Knight	Sk8r	Holy	Cake	Kyle
+global crabVel as float [24] = 		[0,	 1.28,	1.08,	2.48,	1.59,	1.38,	1.5,	1.3,	1.06,	1,		1,		1,		1,		1.30,	1.12,	1,		1,		1,		1,		1,		1,		1,		1,		1,		1]
+global crabAccel as float [24] = 	[0,	 0.1,	0.13,	0.03,	0.08,	0.1,	0.1,	0.09,	0.13,	1,		1,		1,		1,		0.1,	0.12,	1,		1,		1,		1,		1,		1,		1,		1,		1,		1]	
+global crabJumpHMax as float [24] = 	[0,	 5,		10.5,	8.0,	10.0,	5.0,	6.0,	4,		11.5,	1,		1,		1,		1,		6,		10.5,		1,		1,		1,		1,		1,		1,		1,		1,		1,		1]
+global crabJumpSpeed as float [24] =	[0,	 1.216,	1.516,	-3,		-1.28,	-3.216,	.816,	1.2,	1.516,	1,		1,		1,		1,		1.116,	1.516,		1,		1,		1,		1,		1,		1,		1,		1,		1,		1]
+global crabJumpDMax as float [24] =	[0,	 28,	40,		32,		43,		28,		26,		29,		38,		1,		1,		1,		1,		28,		40,		1,		1,		1,		1,		1,		1,		1,		1,		1,		1]
+global crabFramerate as integer[24]=	[0,  10,	13,		10,		18,		10,		15,		14,		12,		1,		1,		1,		1,		12,		12,		1,		1,		1,		1,		1,		1,		1,		1,		1,		1]
+global crabSPAtck as integer[24] = 	[0,	 20,	20,		25,		23,		30,		18,		20,		20,		1,		1,		1,		1,		20,		20,		1,		1,		1,		1,		1,		1,		1,		1,		1,		1]
 
-#constant frameratecrab1 10
-#constant frameratecrab2 13
-#constant frameratecrab3 10
-#constant frameratecrab4 18
-#constant frameratecrab5 10
-#constant frameratecrab6 15
 
 #constant lastTranType 2
 
@@ -189,6 +186,9 @@ global specialTimerAgainst1# = 0
 
 #constant meteorMult# 1.3
 #constant specialMult# 1.8
+
+global hitSpr1
+global hitSpr2
 
 //The in game check to see if a special has been used once that game
 global special1Used = 0
@@ -690,6 +690,9 @@ global volumeSE = 100
 #constant SPR_CS_CRABS_2 4900 
 #constant SPR_CS_TXT_BACK_2 489
 
+//Character select sprite indexes
+global IMG_CS_CRAB as Integer[NUM_CRABS]
+
 //Story Sprites/Text and variable
 #constant SPR_TEXT_BOX 601
 #constant SPR_TEXT_BOX2 602
@@ -713,6 +716,9 @@ global volumeSE = 100
 #constant SPR_CRAB2_FACE 615
 #constant SPR_CRAB2_COSTUME 616
 
+#constant SPR_STORY_EXIT 621
+#constant SPR_STORY_SKIP 622
+
 //Settings Sprites
 #constant SPR_VOLUME 801
 #constant SPR_VOLUME_SLIDER 802
@@ -721,7 +727,7 @@ global curChapter = 3
 global curScene = 0
 global highestScene = 0
 global clearedChapter = 0
-#constant finalChapter 2
+#constant finalChapter 25
 global lineSkipTo = 0
 global storyActive = 0
 global storyMinScore = 0
@@ -1456,15 +1462,15 @@ function SetCrabPauseStrings()
 	crabPause2[3] = "Special: Orbital Nightmare" + chr(10) + "Make everything (planets, meteors," + chr(10) + "crabs) on the other screen spin."
 	crabPause2[4] = "Special: Party Time!" + chr(10) + "Obscure your opponent's vision" + chr(10) + "with intense rave lights."
 	crabPause2[5] = "Special: Fast Forward" + chr(10) + "Speed up your enemy's" + chr(10) + "game for a short while."
-	crabPause2[6] = "Special: Shuri-Krustacean" + chr(10) + "Fling deadly projecticles" + chr(10) + "directly up the screen."
-	crabPause2[7] = "Special: Mad-eor Shower" + chr(10) + "" + chr(10) + ""
-	crabPause2[8] = "Special: Royal Order" + chr(10) + "" + chr(10) + ""
-	crabPause2[9] = "Special: Stardust Spinout" + chr(10) + "" + chr(10) + ""
-	crabPause2[11] = "Special: Hourglass Curse" + chr(10) + "" + chr(10) + ""
-	crabPause2[12] = "Special: Claw-Ball Toss" + chr(10) + "" + chr(10) + ""
-	crabPause2[13] = "Special: Termination Claws" + chr(10) + "" + chr(10) + ""
-	crabPause2[14] = "Special: Meteor Math" + chr(10) + "" + chr(10) + ""
-	crabPause2[22] = "Special: Heavenly Light" + chr(10) + "" + chr(10) + ""
+	crabPause2[6] = "Special: Shuri-Krustacean" + chr(10) + "Fling deadly projecticles" + chr(10) + "directly through the screen."
+	crabPause2[7] = "Special: Mad-eor Shower" + chr(10) + "Call Angry Ned to rain down" + chr(10) + "fast meteors on your opponent."
+	crabPause2[8] = "Special: Royal Order" + chr(10) + "Order shrimp to fire three" + chr(10) + "rounds of canons on your enemy."
+	crabPause2[9] = "Special: Stardust Spinout" + chr(10) + "Twists the opponent to make" + chr(10) + "all of their stuff spinout."
+	crabPause2[11] = "Special: Hourglass Curse" + chr(10) + "Speed up your enemy's" + chr(10) + "game with a cursed artifact."
+	crabPause2[12] = "Special: Claw-Ball Toss" + chr(10) + "Fling flaming projecticles" + chr(10) + "directly through the screen."
+	crabPause2[13] = "Special: Termination Claws" + chr(10) + "Incite The Law to catch" + chr(10) + "your opponent off gaurd."
+	crabPause2[14] = "Special: Meteor Math" + chr(10) + "Send dangerous numbers to" + chr(10) + "the opposite screen."
+	crabPause2[22] = "Special: Heavenly Light" + chr(10) + "Blind your adversary with" + chr(10) + "the power of the holy glow."
 	//crabPause2[] = "Special: " + chr(10) + "" + chr(10) + ""
 endfunction
 
@@ -1525,7 +1531,7 @@ function SetStoryShortStrings()
 	chapterDesc[15] = "Rave Crab's eternal party" + chr(10) + "may end sooner than" + chr(10) + "he anticipated." + chr(10) + ""
 	
 	chapterTitle[16] = "Voice of Reason"
-	chapterDesc[16] = "'SOMEONE'S GOTTA PUT" + chr(10) + "SPACE CRAB IN " + chr(10) + "HIS PLACE, AND I DON'T" + chr(10) + "SEE YOU STEPPING UP!!'"
+	chapterDesc[16] = "'SOMEONE'S GOTTA PUT" + chr(10) + "SPACE CRAB IN " + chr(10) + "HIS PLACE, AND I DON'T" + chr(10) + "SEE THEM STEPPING UP!!'"
 	
 	chapterTitle[17] = "The Divine Eye-in-the-Sky"
 	chapterDesc[17] = "" + chr(10) + "" + chr(10) + "" + chr(10) + ""
@@ -1555,6 +1561,7 @@ function SetStoryShortStrings()
 	chapterDesc[25] = "" + chr(10) + "" + chr(10) + "" + chr(10) + ""
 	
 endfunction
+
 
 function AltStr(alt)
 	myStr$ = ""
@@ -1651,5 +1658,190 @@ AddSpriteAnimationFrame(crab1, crab1start1I)	//1
 #constant crab6skid1I 215
 #constant crab6skid2I 216
 #constant crab6skid3I 217
+
+#constant specialPrice1 20
+#constant specialPrice2 20
+#constant specialPrice3 25
+#constant specialPrice4 23
+#constant specialPrice5 30
+#constant specialPrice6 18
+
+#constant frameratecrab1 10
+#constant frameratecrab2 13
+#constant frameratecrab3 10
+#constant frameratecrab4 18
+#constant frameratecrab5 10
+#constant frameratecrab6 15
+
+Old crab stat value setting
+if crab1Type = 1		//Space
+		//for i = crab1start1I to crab1skid3I
+			//AddSpriteAnimationFrame(crab1, i)
+		//next i
+		crab1framerate = frameratecrab1
+		specialCost1 = specialPrice1
+		crab1Vel# = 1.28
+		crab1Accel# = .1
+		crab1JumpHMax# = 5
+		crab1JumpSpeed# = 1.216
+		crab1JumpDMax = 28
+		
+	elseif crab1Type = 2	//Wizard
+		
+		crab1framerate = frameratecrab2
+		specialCost1 = specialPrice2
+		crab1Vel# = 1.08
+		crab1Accel# = .13
+		crab1JumpHMax# = 10.5
+		crab1JumpSpeed# = 1.516
+		crab1JumpDMax = 40
+		
+	elseif crab1Type = 3	//Top
+		//for i = crab3start1I to crab3skid3I
+			//AddSpriteAnimationFrame(crab1, i)
+		//next i
+		crab1framerate = frameratecrab3
+		specialCost1 = specialPrice3
+		crab1Vel# = 2.48
+		crab1Accel# = .03
+		crab1JumpHMax# = 8
+		crab1JumpSpeed# = -3 //-2 //-3.4 //-2
+		crab1JumpDMax = 32
+		
+	elseif crab1Type = 4	//Rave
+		//for i = crab4start1I to crab4skid3I
+			//AddSpriteAnimationFrame(crab1, i)
+		//next i
+		crab1framerate = frameratecrab4
+		specialCost1 = specialPrice4
+		crab1Vel# = 1.59
+		crab1Accel# = .08
+		crab1JumpHMax# = 10
+		crab1JumpSpeed# = -1.28
+		crab1JumpDMax = 43
+		
+	elseif crab1Type = 5	//Chrono
+		//for i = crab5start1I to crab5skid3I
+			//AddSpriteAnimationFrame(crab1, i)
+		//next i
+		crab1framerate = frameratecrab5
+		specialCost1 = specialPrice5
+		crab1Vel# = 1.38
+		crab1Accel# = .1
+		crab1JumpHMax# = 5
+		crab1JumpSpeed# = -3.216
+		crab1JumpDMax = 28
+		
+	elseif crab1Type = 6	//Ninja
+		//for i = crab6start1I to crab6skid3I
+			//AddSpriteAnimationFrame(crab1, i)
+		//next i
+		crab1framerate = frameratecrab6
+		specialCost1 = specialPrice6
+		crab1Vel# = 1.5
+		crab1Accel# = .1
+		crab1JumpHMax# = 6
+		crab1JumpSpeed# = .816
+		crab1JumpDMax = 26
+		
+	else
+		//The debug option, no crab selected
+		for i = crab1start1I to crab1death2I
+			//AddSpriteAnimationFrame(crab1, i)
+		next i
+		specialCost1 = 1
+	endif
+	
+	if crab2Type = 1		//Space
+		//for i = crab1start1I to crab1skid3I
+			//AddSpriteAnimationFrame(crab2, i)
+		//next i
+		crab2framerate = frameratecrab1
+		specialCost2 = specialPrice1
+		crab2Vel# = 1.28
+		crab2Accel# = .1
+		crab2JumpHMax# = 5
+		crab2JumpSpeed# = 1.216
+		crab2JumpDMax = 28
+		
+	elseif crab2Type = 2	//Wizard
+		crab2framerate = frameratecrab2
+		specialCost2 = specialPrice2
+		crab2Vel# = 1.08
+		crab2Accel# = .13
+		crab2JumpHMax# = 10.5
+		crab2JumpSpeed# = 1.516
+		crab2JumpDMax = 40
+		
+	elseif crab2Type = 3	//Top
+		//for i = crab3start1I to crab3skid3I
+			//AddSpriteAnimationFrame(crab2, i)
+		//next i
+		crab2framerate = frameratecrab3
+		specialCost2 = specialPrice3
+		crab2Vel# = 2.48
+		crab2Accel# = .03
+		crab2JumpHMax# = 8
+		crab2JumpSpeed# = -3
+		crab2JumpDMax = 32
+		
+	elseif crab2Type = 4	//Rave
+		//for i = crab4start1I to crab4skid3I
+			//AddSpriteAnimationFrame(crab2, i)
+		//next i
+		crab2framerate = frameratecrab4
+		specialCost2 = specialPrice4
+		crab2Vel# = 1.59
+		crab2Accel# = .08
+		crab2JumpHMax# = 10
+		crab2JumpSpeed# = -1.28
+		crab2JumpDMax = 43
+		
+	elseif crab2Type = 5	//Chrono
+		//for i = crab5start1I to crab5skid3I
+			//AddSpriteAnimationFrame(crab2, i)
+		//next i
+		crab2framerate = frameratecrab5
+		specialCost2 = specialPrice5
+		crab2Vel# = 1.38
+		crab2Accel# = .1
+		crab2JumpHMax# = 5
+		crab2JumpSpeed# = -3.216
+		crab2JumpDMax = 28
+		
+	elseif crab2Type = 6	//Ninja
+		//for i = crab6start1I to crab6skid3I
+			//AddSpriteAnimationFrame(crab2, i)
+		//next i
+		crab2framerate = frameratecrab6
+		specialCost2 = specialPrice6
+		crab2Vel# = 1.5
+		crab2Accel# = .1
+		crab2JumpHMax# = 6
+		crab2JumpSpeed# = .816
+		crab2JumpDMax = 26
+		
+	else
+		//The debug option, no crab selected
+		for i = crab1start1I to crab1death2I
+			//AddSpriteAnimationFrame(crab2, i)
+		next i
+		specialCost2 = 1
+	endif
+
+		if crabType = 1 and crabAlt = 0 then SetTextString(i, "METEOR SHOWER")
+		if crabType = 1 and crabAlt = 1 then SetTextString(i, "MAD-EOR SHOWER")
+		if crabType = 1 and crabAlt = 2 then SetTextString(i, "TERMINATION CLAWS")
+		if crabType = 2 and crabAlt = 0 then SetTextString(i, "CONJURE COMETS")
+		if crabType = 2 and crabAlt = 1 then SetTextString(i, "ROYAL ORDER")
+		if crabType = 2 and crabAlt = 2 then SetTextString(i, "METEOR MATH")
+		if crabType = 3 and crabAlt = 0 then SetTextString(i, "ORBITAL NIGHTMARE")
+		if crabType = 3 and crabAlt = 1 then SetTextString(i, "STARDUST SPINOUT")
+		if crabType = 4 and crabAlt = 0 then SetTextString(i, "PARTY TIME!")
+		if crabType = 4 and crabAlt = 3 then SetTextString(i, "HEAVENLY LIGHT")
+		if crabType = 5 and crabAlt = 0 then SetTextString(i, "FAST FOWARD")
+		if crabType = 5 and crabAlt = 1 then SetTextString(i, "HOURGLASS CURSE")
+		if crabType = 6 and crabAlt = 0 then SetTextString(i, "SHURI-KRUSTACEAN")
+		if crabType = 6 and crabAlt = 1 then SetTextString(i, "CLAW-BALL TOSS")
 
 */

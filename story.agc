@@ -8,6 +8,7 @@ global trashBag as integer[0]
 
 #constant textSideSpacingX 35
 #constant textSideSpacingY 22
+#constant textLineSpacing -6
 // Initialize the story screen
 function InitStory()
 	
@@ -24,12 +25,12 @@ function InitStory()
 			LoadSpriteExpress(i, "dBox_D.png", w-80 - cSize*2, 190, 0, 0, 15-(i-SPR_TEXT_BOX))
 		else
 			//TODO - make the image dBox_M
-			LoadSpriteExpress(i, "dBox_D.png", w-80, 280, 0, 0, 15-(i-SPR_TEXT_BOX))
+			LoadSpriteExpress(i, "dBox_M.png", w-80, 280, 0, 0, 15-(i-SPR_TEXT_BOX))
 		endif
 			
 		//SetSpriteSize(i, GetSpriteWidth(i), GetSpriteHeight(i) + 30)	//Originally for the bottom one
 		SetSpriteMiddleScreenX(i)
-		SetSpriteY(i, h/2 + 20 - (i - SPR_TEXT_BOX)*(GetSpriteHeight(i) + 50))
+		SetSpriteY(i, h/2 + 70 - (i - SPR_TEXT_BOX)*(GetSpriteHeight(i) + 60))
 		if dispH then SetSpriteY(i, h - GetSpriteHeight(i) - 90 - (i - SPR_TEXT_BOX)*(GetSpriteHeight(i) + 30))
 		FixSpriteToScreen(i, 1)
 		
@@ -48,6 +49,7 @@ function InitStory()
 		CreateTextExpress(i, "", 56, fontDescI, 0, GetSpriteX(SPR_TEXT_BOX)+textSideSpacingX, GetSpriteY(SPR_TEXT_BOX)+textSideSpacingY, 15-(i-storyText))
 		if i < storyFitter then SetTextY(i, GetSpriteY(i - storyText + SPR_TEXT_BOX)+textSideSpacingY)
 		SetTextSpacing(i, -13)
+		SetTextLineSpacing(i, textLineSpacing)
 		SetTextColor(i, 0, 0, 0, 255)
 		CreateTweenText(i, .3)
 		FixTextToScreen(i, 1)
@@ -72,7 +74,7 @@ function InitStory()
 	//Load the difference faces/bodies as animation frames, then set the frame for different faces
 	//Load the costume as it comes, use the body frame number to load the correct costume file string number
 	for i = SPR_CRAB1_BODY to SPR_CRAB2_COSTUME
-		CreateSpriteExpress(i, cSize, cSize, -cSize*3, GetSpriteY(SPR_TEXT_BOX) + GetSpriteHeight(SPR_TEXT_BOX) + 80, 5)
+		CreateSpriteExpress(i, cSize, cSize, -cSize*3, GetSpriteY(SPR_TEXT_BOX) + GetSpriteHeight(SPR_TEXT_BOX) - 10, 5)
 		if dispH then SetSpriteY(i, h - 20 - cSize)
 		if i < SPR_CRAB2_BODY then SetSpriteFlip(i, 1, 0)
 		//if i <= SPR_CRAB1_COSTUME then Set		
@@ -83,8 +85,8 @@ function InitStory()
 	CreateTweenSprite(SPR_CRAB2_BODY, .5)
 	SetTweenSpriteX(SPR_CRAB2_BODY, w, w-cSize-20, TweenSmooth1())
 	
-	SetSpritePosition(SPR_CRAB1_FACE, 20, GetSpriteY(SPR_TEXT_BOX) + GetSpriteHeight(SPR_TEXT_BOX) + 80)
-	SetSpritePosition(SPR_CRAB2_FACE, w-cSize-20, GetSpriteY(SPR_TEXT_BOX) + GetSpriteHeight(SPR_TEXT_BOX) + 80)
+	SetSpritePosition(SPR_CRAB1_FACE, 20, GetSpriteY(SPR_TEXT_BOX) + GetSpriteHeight(SPR_TEXT_BOX) - 10)
+	SetSpritePosition(SPR_CRAB2_FACE, w-cSize-20, GetSpriteY(SPR_TEXT_BOX) + GetSpriteHeight(SPR_TEXT_BOX) - 10)
 	if dispH
 		SetSpriteY(SPR_CRAB1_FACE, h-20-cSize)
 		SetSpriteY(SPR_CRAB2_FACE, h-20-cSize)
@@ -134,6 +136,19 @@ function InitStory()
 	FixSpriteToScreen(bgGame1, 1)
 	
 	storyTimer# = 0
+	
+	//Creating the buttons
+	SetFolder("/media")
+	LoadSpriteExpress(SPR_STORY_EXIT, "ui/back8.png", 130, 130, 40, 20, 5)
+	FixSpriteToScreen(SPR_STORY_EXIT, 1)
+	AddButton(SPR_STORY_EXIT)
+	LoadSpriteExpress(SPR_STORY_SKIP, "ui/skip.png", 130, 130, w-130-40, 20, 5)
+	FixSpriteToScreen(SPR_STORY_SKIP, 1)
+	AddButton(SPR_STORY_SKIP)
+	if dispH 
+		IncSpriteY(SPR_STORY_EXIT, 9999)
+		IncSpriteY(SPR_STORY_SKIP, 9999)
+	endif
 	
 	storyStateInitialized = 1
 endfunction
@@ -288,7 +303,8 @@ function ExitStory(deleteBG)
 			DeleteMusicOGG(talk1S)
 			DeleteMusicOGG(talkBS)
 		endif
-		
+		DeleteSprite(SPR_STORY_EXIT)
+		DeleteSprite(SPR_STORY_SKIP)
 	else
 		
 		DeleteText(storyText)
@@ -507,9 +523,9 @@ function ShowScene(chap, scene)
 			body$ = Mid(str$, FindString(str$, "B")+1, 1)
 			face$ = Mid(str$, FindString(str$, "F")+1, -1)
 			
-			folderS$ = ""
 			//For the shiny eyes
-			if FindString(face$, "1") > 0 then folderS$ = "blueeyes/"
+			folderF$ = ""
+			if FindString(face$, "1") > 0 then folderF$ = "blueeyes/"
 			
 			//Make an "if face contains 1, get from other folder" statement (organizing)
 			costume$ = body$
@@ -518,8 +534,9 @@ function ShowScene(chap, scene)
 				body$ = body$ + "r"
 				closedEye = 1
 			endif
-			//For the closed eyes
-			if FindString(body$, "r") > 0 then folderS$ = "closedeyes/"
+			//For the closed eyes body
+			folderB$ = ""
+			if FindString(body$, "r") > 0 then folderB$ = "closedeyes/"
 			
 			hatBonus$ = ""
 			if (Mid(face$, 2, 1) = "1" or closedEye) and ((targetCrab = 1 and crab1Type = 2 and crab1Alt = 0) or (targetCrab = 2 and crab2Type = 2 and crab2Alt = 0))
@@ -537,8 +554,8 @@ function ShowScene(chap, scene)
 				cosType = GetCrabCostumeType(crab1Type, crab1Alt)
 				
 				if cosType <> 2
-					SetSpriteImage(SPR_CRAB1_BODY, LoadImageR(folderS$ + "body" + body$ + phoneBonus$ + ".png"))
-					SetSpriteImage(SPR_CRAB1_FACE, LoadImageR(folderS$ + "face" + face$ + ".png"))
+					SetSpriteImage(SPR_CRAB1_BODY, LoadImageR(folderB$ + "body" + body$ + phoneBonus$ + ".png"))
+					SetSpriteImage(SPR_CRAB1_FACE, LoadImageR(folderF$ + "face" + face$ + ".png"))
 				endif
 				if cosType = 1
 					//Hat costume
@@ -546,9 +563,9 @@ function ShowScene(chap, scene)
 				elseif cosType = 2
 					//Unique sprite (WIP)
 					SetSpriteImage(SPR_CRAB1_COSTUME, LoadImageR("blank.png"))
-					SetSpriteImage(SPR_CRAB1_BODY, LoadImageR(folderS$ + "body" + str(crab1Type) + AltStr(crab1Alt) + body$ + phoneBonus$ + ".png"))
-					SetSpriteImage(SPR_CRAB1_FACE, LoadImageR(folderS$ + "face" + str(crab1Type) + AltStr(crab1Alt) + face$ + ".png"))
-					if GetFileExists(folderS$ + "face" + str(crab1Type) + AltStr(crab1Alt) + face$ + ".png") = 0 then SetSpriteImage(SPR_CRAB2_FACE, LoadImageR(folderS$ + "face" + face$ + ".png"))
+					SetSpriteImage(SPR_CRAB1_BODY, LoadImageR(folderB$ + "body" + str(crab1Type) + AltStr(crab1Alt) + body$ + phoneBonus$ + ".png"))
+					SetSpriteImage(SPR_CRAB1_FACE, LoadImageR(folderF$ + "face" + str(crab1Type) + AltStr(crab1Alt) + face$ + ".png"))
+					if GetFileExists(folderF$ + "face" + str(crab1Type) + AltStr(crab1Alt) + face$ + ".png") = 0 then SetSpriteImage(SPR_CRAB2_FACE, LoadImageR(folderF$ + "face" + face$ + ".png"))
 				elseif cosType = 4
 					//Posed costume
 					if GetFileExists("costume/costume" + str(crab1Type) + AltStr(crab1Alt) + costume$ + ".png") = 0 then costume$ = ""
@@ -570,8 +587,8 @@ function ShowScene(chap, scene)
 				cosType = GetCrabCostumeType(crab2Type, crab2Alt)
 				
 				if cosType <> 2
-					SetSpriteImage(SPR_CRAB2_BODY, LoadImageR(folderS$ + "body" + body$ + phoneBonus$ + ".png"))
-					SetSpriteImage(SPR_CRAB2_FACE, LoadImageR(folderS$ + "face" + face$ + ".png"))
+					SetSpriteImage(SPR_CRAB2_BODY, LoadImageR(folderB$ + "body" + body$ + phoneBonus$ + ".png"))
+					SetSpriteImage(SPR_CRAB2_FACE, LoadImageR(folderF$ + "face" + face$ + ".png"))
 				endif
 				if cosType = 1
 					//Hat costume
@@ -579,9 +596,9 @@ function ShowScene(chap, scene)
 				elseif cosType = 2
 					//Unique sprite (WIP)
 					SetSpriteImage(SPR_CRAB2_COSTUME, LoadImageR("blank.png"))
-					SetSpriteImage(SPR_CRAB2_BODY, LoadImageR(folderS$ + "body" + str(crab2Type) + AltStr(crab2Alt) + body$ + phoneBonus$ + ".png"))
-					SetSpriteImage(SPR_CRAB2_FACE, LoadImageR(folderS$ + "face" + str(crab2Type) + AltStr(crab2Alt) + face$ + ".png"))
-					if GetFileExists(folderS$ + "face" + str(crab2Type) + AltStr(crab2Alt) + face$ + ".png") = 0 then SetSpriteImage(SPR_CRAB2_FACE, LoadImageR(folderS$ + "face" + face$ + ".png"))
+					SetSpriteImage(SPR_CRAB2_BODY, LoadImageR(folderB$ + "body" + str(crab2Type) + AltStr(crab2Alt) + body$ + phoneBonus$ + ".png"))
+					SetSpriteImage(SPR_CRAB2_FACE, LoadImageR(folderF$ + "face" + str(crab2Type) + AltStr(crab2Alt) + face$ + ".png"))
+					if GetFileExists(folderF$ + "face" + str(crab2Type) + AltStr(crab2Alt) + face$ + ".png") = 0 then SetSpriteImage(SPR_CRAB2_FACE, LoadImageR(folderF$ + "face" + face$ + ".png"))
 				elseif cosType = 4
 					//Posed costume
 					if GetFileExists("costume/costume" + str(crab2Type) + AltStr(crab2Alt) + costume$ + ".png") = 0 then costume$ = ""
@@ -682,7 +699,7 @@ function ShowScene(chap, scene)
 			if GetTweenExists(storyFitter + i) then DeleteTween(storyFitter + i)
 			CreateTweenChar(storyFitter + i, .05)
 			SetTweenCharAlpha(storyFitter + i, 0, 255, TweenSmooth1())
-			SetTweenCharY(storyFitter + i, -GetTextSize(storyText) + GetTextSize(storyText)*(i-.7), GetTextSize(storyText)*i, TweenOvershoot())
+			SetTweenCharY(storyFitter + i, -GetTextSize(storyText) + GetTextSize(storyText)*(i-.7) + i*textLineSpacing, GetTextSize(storyText)*i + i*textLineSpacing, TweenOvershoot())
 		next i
 		
 		//The delay for punctuation
@@ -708,7 +725,7 @@ function ShowScene(chap, scene)
 		while nextLine = 0
 			DoInputs()
 			
-			if inputExit and fightDone = 0
+			if (inputExit or ButtonMultitouchEnabled(SPR_STORY_EXIT)) and fightDone = 0
 				state = CHARACTER_SELECT
 				TransitionStart(Random(1,lastTranType))
 				nextLine = 1
@@ -716,6 +733,7 @@ function ShowScene(chap, scene)
 				exit
 			endif
 			
+			if dispH = 0 and GetSpriteHitTest(SPR_STORY_SKIP, GetPointerX(), GetPointerY()) and GetPointerState() then inputSkip = 1
 			if inputSkip
 				UpdateAllTweens(.2)
 				SetViewOffset(-5 + Random(0, 10), -5 + Random(0, 10))
@@ -780,6 +798,11 @@ function StartEndScreen()
 		if dispH then SetTextY(TXT_RESULT1 + i, 130 + 95*i)
 		SetTextColorAlpha(TXT_RESULT1 + i, 254)
 		SetTextSpacing(TXT_RESULT1 + i, -20)
+		if dispH = 0
+			SetTextSize(TXT_RESULT1 + i, 120)
+			SetTextSpacing(TXT_RESULT1 + i, -26)
+			IncTextY(TXT_RESULT1 + i, 30 + 30*i)
+		endif
 	next i
 	if curScene = 5	//This is set to one higher than 4, because the scene will increment before calling this scene
 		SetTextString(TXT_RESULT1, crab1Str$)
@@ -806,11 +829,11 @@ function StartEndScreen()
 	SetFolder("/media/ui")
 	
 	LoadSpriteExpress(playButton, "storycontinue.png", 842/2.1, 317/2.1, 0, 0, 4)
-	//if dispH then SetSpriteSizeSquare(playButton, 220)
+	if dispH = 0 then SetSpriteSize(playButton, 842/1.6, 317/1.6)
 	SetSpriteMiddleScreen(playButton)
 	IncSpriteY(playButton, 80)
-	if dispH = 0 then IncSpriteY(playButton, 40)
-	if dispH = 0 then IncSpriteX(playButton, 60)
+	if dispH = 0 then IncSpriteY(playButton, -40)
+	//if dispH = 0 then IncSpriteX(playButton, 60)
 	SetSpriteColorAlpha(playButton, 0)
 	AddButton(playButton)
 	
@@ -822,6 +845,7 @@ function StartEndScreen()
 	if dispH then SetSpriteSizeSquare(exitButton, 180)
 	SetSpriteMiddleScreen(exitButton)
 	IncSpriteY(exitButton, 570)
+	if dispH = 0 then IncSpriteY(exitButton, -60)
 	if dispH then IncSpriteY(exitButton, -350)
 	IncSpriteX(exitButton, -210)
 	if dispH then IncSpriteX(exitButton, -170)

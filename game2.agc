@@ -16,6 +16,22 @@ function DrawPolar2(spr, rNum, theta#)
 		SetSpritePosition(spr, rNum*cos(theta#) + cenX - GetSpriteWidth(spr)/2, rNum*sin(theta#) + cenY - GetSpriteHeight(spr)/2)
 		SetSpriteAngle(spr, theta#+90)
 	endif
+	
+	
+	
+	
+	
+	//Temporary space for camera work
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 endfunction
 
 function CreateGame2()
@@ -44,82 +60,15 @@ function CreateGame2()
 		AddSpriteAnimationFrame(crab2, i)
 	next i
 	
-	if crab2Type = 1		//Space
-		//for i = crab1start1I to crab1skid3I
-			//AddSpriteAnimationFrame(crab2, i)
-		//next i
-		crab2framerate = frameratecrab1
-		specialCost2 = specialPrice1
-		crab2Vel# = 1.28
-		crab2Accel# = .1
-		crab2JumpHMax# = 5
-		crab2JumpSpeed# = 1.216
-		crab2JumpDMax = 28
-		
-	elseif crab2Type = 2	//Wizard
-		crab2framerate = frameratecrab2
-		specialCost2 = specialPrice2
-		crab2Vel# = 1.08
-		crab2Accel# = .13
-		crab2JumpHMax# = 10.5
-		crab2JumpSpeed# = 1.516
-		crab2JumpDMax = 40
-		
-	elseif crab2Type = 3	//Top
-		//for i = crab3start1I to crab3skid3I
-			//AddSpriteAnimationFrame(crab2, i)
-		//next i
-		crab2framerate = frameratecrab3
-		specialCost2 = specialPrice3
-		crab2Vel# = 2.48
-		crab2Accel# = .03
-		crab2JumpHMax# = 8
-		crab2JumpSpeed# = -3
-		crab2JumpDMax = 32
-		
-	elseif crab2Type = 4	//Rave
-		//for i = crab4start1I to crab4skid3I
-			//AddSpriteAnimationFrame(crab2, i)
-		//next i
-		crab2framerate = frameratecrab4
-		specialCost2 = specialPrice4
-		crab2Vel# = 1.59
-		crab2Accel# = .08
-		crab2JumpHMax# = 10
-		crab2JumpSpeed# = -1.28
-		crab2JumpDMax = 43
-		
-	elseif crab2Type = 5	//Chrono
-		//for i = crab5start1I to crab5skid3I
-			//AddSpriteAnimationFrame(crab2, i)
-		//next i
-		crab2framerate = frameratecrab5
-		specialCost2 = specialPrice5
-		crab2Vel# = 1.38
-		crab2Accel# = .1
-		crab2JumpHMax# = 5
-		crab2JumpSpeed# = -3.216
-		crab2JumpDMax = 28
-		
-	elseif crab2Type = 6	//Ninja
-		//for i = crab6start1I to crab6skid3I
-			//AddSpriteAnimationFrame(crab2, i)
-		//next i
-		crab2framerate = frameratecrab6
-		specialCost2 = specialPrice6
-		crab2Vel# = 1.5
-		crab2Accel# = .1
-		crab2JumpHMax# = 6
-		crab2JumpSpeed# = .816
-		crab2JumpDMax = 26
-		
-	else
-		//The debug option, no crab selected
-		for i = crab1start1I to crab1death2I
-			//AddSpriteAnimationFrame(crab2, i)
-		next i
-		specialCost2 = 1
-	endif
+	crabFNum = crab2Type + crab2Alt*6
+	crab2framerate = 	crabFramerate[crabFNum]
+	specialCost2 = 		crabSPAtck[crabFNum]
+	crab2Vel# = 		crabVel[crabFNum]
+	crab2Accel# = 		crabAccel[crabFNum]
+	crab2JumpHMax# = 	crabJumpHMax[crabFNum]
+	crab2JumpSpeed# = 	crabJumpSpeed[crabFNum]
+	crab2JumpDMax = 		crabJumpDMax[crabFNum]
+	
 	crab2JumpHMax# = crab2JumpHMax#*gameScale#
 	
 	PlaySprite(crab2, crab2framerate, 1, 3, 10)
@@ -469,7 +418,7 @@ function DoGame2()
 	//Cleaning up Top Crab's special
 	if specialTimerAgainst2# < 0 and crab1Type = 3
 		if Abs(GetSpriteAngle(planet2)-180) > 1
-			ang# = GlideNumToZero(GetSpriteAngle(planet2)-180, 10)
+			ang# = GlideNumToZero(GetSpriteAngle(planet2)-180+180*dispH, 10)
 			SetSpriteAngle(planet2, ang#+180)
 		else
 			specialTimerAgainst2# = 0
@@ -542,7 +491,11 @@ function DoGame2()
 	hitSpr = CheckDeath2()
 	if GetRawKeyPressed(76) and debug then crab2Deaths = 2
 	if hitSpr <> 0 or (GetRawKeyPressed(76) and debug)
-		DeleteSprite(hitSpr)
+		hitSpr2 = hitSpr
+		SetSpriteVisible(hitSpr2, 0) //This is here because leaving the sprite in looks bad
+		SetSpriteDepth(hitSpr2, 1)
+		StopSprite(hitSpr2)
+		//DeleteSprite(hitSpr)
 		if getSpriteExists(hitSpr+glowS) then DeleteSprite(hitSpr + glowS)
 		//Kill crab
 		inc crab2Deaths, 1
@@ -1089,6 +1042,8 @@ function HitScene2()
 				UpdateMeteor2()
 				
 				//Flying off the planet
+				DeleteSprite(hitSpr2)
+				crab2JumpD# = 0
 				inc crab2R#, 25*fpsr#
 				SetSpriteDepth(crab2, 11)
 				
@@ -1197,6 +1152,9 @@ function HitScene2()
 	
 	//The visual update code, based on what is happening above
 	DrawPolar2(crab2, crab2R#, crab2Theta#)
+	if crab2JumpD# > 0
+		//DrawPolar2(crab2, GetCrabDefaultR(crab2) + crab2JumpHMax# * (crab2JumpD# - (crab2JumpD#^2)/crab2JumpDMax), crab2Theta#)
+	endif
 	
 	if hit2Timer# > hitSceneMax*11/12
 		//The Smash Bros Freeze
