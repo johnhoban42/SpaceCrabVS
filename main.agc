@@ -53,11 +53,14 @@ if deviceType = DESKTOP
 	dispH = 1
 	w = 1280
 	h = 720
-	gameScale# = .7
+	gameScale# = regDScale
 	//SetPhysicsDebugOn()
 	SetWindowSize(w, h, 0)
 endif
 CreateSelectButtons()
+
+
+
 
 SetAntialiasMode( 1 )
 
@@ -235,6 +238,10 @@ do
 		//Print(GetDeviceBaseName())
 		
 		Print(GetImageMemoryUsage())
+		
+		Print(GetPointerX())
+		Print(GetPointerY())
+		
 		//Print(highestScene)
 	endif
     SyncG()
@@ -615,7 +622,7 @@ function MoveSelect()
 							endif
 						endif
 						
-						if (appState = CHARACTER_SELECT) and GetSpriteX(spr) > w/2 and spActive = 0
+						if (appState = CHARACTER_SELECT) and GetSpriteX(spr) > w/2 and spType = 0
 							rightT = 0
 							leftT = 0
 							upT = 0
@@ -799,6 +806,15 @@ function TurnOffSelect2()
 			if GetSpriteExists(i) then SetSpriteColorAlpha(i, 0)
 		next i
 	endif
+endfunction
+
+#constant G1 1
+#constant G2 2
+#constant MIDDLE 3
+function Popup(area)
+	
+	
+	
 endfunction
 
 /*

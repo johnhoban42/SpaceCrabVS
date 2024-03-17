@@ -13,8 +13,7 @@ global gameStateInitialized as integer = 0
 
 // Initialize the game
 function InitGame()
-	
-	
+		
 	gameDifficulty1 = 1
 	gameDifficulty2 = 1
 	CreateGame1()
@@ -32,13 +31,12 @@ function InitGame()
 	SetSpriteVisible(split, 1)
 	TransitionEnd()
 	
-	if spActive = 0 then PlayOpeningScene()
+	if spType = 0 or spType = STORYMODE or spType = AIBATTLE then PlayOpeningScene()
 	
 	//The pause button
 	SetFolder("/media/ui")
 	LoadSpriteExpress(pauseButton, "pause.png", 100, 100, 0, 0, 9)
 	SetSpriteMiddleScreen(pauseButton)
-	//if spActive then SetSpritePosition(pauseButton, 30, 30)
 	
 	LoadSpriteExpress(playButton, "resume.png", 185, 185, 0, 0, 1)
 	SetSpriteMiddleScreen(playButton)
@@ -63,6 +61,12 @@ function InitGame()
 	
 	difficultyMax = 7
 	difficultyBar = 9 - aiActive*(knowingAI/3)
+	
+	if spType = MIRRORMODE and dispH
+		SetTextPosition(TXT_SP_SCORE, w/2 - 120, 40)
+		SetTextPosition(TXT_SP_DANGER, w/2, GetTextY(TXT_SP_SCORE) + GetTextSize(TXT_SP_SCORE))
+	endif
+	
 	//The special classic mode setup
 	if spType = CLASSIC
 		SetSpriteVisible(split, 0)
@@ -70,14 +74,16 @@ function InitGame()
 		SetViewZoom(1.3)
 		
 		//The game screen adjustments
-		SetTextSize(TXT_SP_SCORE, spScoreMinSize-10)
-		SetTextSize(TXT_SP_DANGER, spScoreMinSize-10)
-		SetTextSpacing(TXT_SP_SCORE, -10)
-		SetTextSpacing(TXT_SP_DANGER, -10)
+		SetTextSize(TXT_SP_SCORE, spScoreMinSize-10-dispH*10)
+		SetTextSize(TXT_SP_DANGER, spScoreMinSize-10-dispH*10)
+		SetTextSpacing(TXT_SP_SCORE, -10+dispH*2)
+		SetTextSpacing(TXT_SP_DANGER, -10+dispH*2)
 		SetTextPosition(TXT_SP_SCORE, 130, 280)
+		if dispH then SetTextPosition(TXT_SP_SCORE, 180, 100)
 		SetTextPosition(TXT_SP_DANGER, GetTextX(TXT_SP_SCORE) - 10, GetTextY(TXT_SP_SCORE) + GetTextSize(TXT_SP_SCORE))
 		SetTextAlignment(TXT_SP_DANGER, 0)
 		SetSpriteSize(bgGame1, h, h)
+		if dispH then SetSpriteSize(bgGame1, w, w)
 		SetSpriteMiddleScreen(bgGame1)
 		difficultyMax = 9
 		difficultyBar = 9
@@ -98,11 +104,19 @@ function InitGame()
 		IncSpriteSizeCenteredMult(playButton, 1/zoom#)
 		SetSpriteShapeCircle(playButton, GetSpriteWidth(playButton)/2, GetSpriteHeight(playButton)/2, GetSpriteWidth(playButton)*zoom#)
 		
-		IncSpriteX(exitButton, -70)
+		if dispH = 0 then IncSpriteX(exitButton, -70)
 		LoadSpriteExpress(phantomExitButton, "crabselect.png", GetSpriteWidth(exitButton)*zoom#, GetSpriteHeight(exitButton)*zoom#, 659-GetSpriteWidth(exitButton)/2, 803-GetSpriteWidth(exitButton)/2, 1)
 		SetSpriteColorAlpha(phantomExitButton, 0)
 		SetSpriteVisible(phantomExitButton, 0)
-		AddButton(phantomPauseButton)
+		AddButton(phantomExitButton)
+		
+		if dispH
+			SetSpritePosition(pauseButton, w - 180 - GetSpriteWidth(pauseButton), 110)
+			SetSpritePosition(phantomPauseButton, 1178-GetSpriteWidth(pauseButton)/2, 94-GetSpriteWidth(pauseButton)/2)
+			
+			IncSpriteY(exitButton, -50)
+			SetSpritePosition(phantomExitButton, 639-GetSpriteWidth(pauseButton)/2, 582-GetSpriteWidth(pauseButton)/2)
+		endif
 		
 		StartGameMusic()
 	endif
@@ -185,7 +199,7 @@ function DoGame()
 			DisableAttackButtons()
 		endif
 		
-		if spActive
+		if spType = MIRRORMODE or spType = CLASSIC
 			UpdateSPScore(0)
 			if hit1Timer# > 0 or hit2Timer# > 0
 				//The single player game is over
@@ -243,7 +257,7 @@ function DoGame()
 			TransitionStart(Random(1,lastTranType))
 			SetViewZoom(1)
 			state = CHARACTER_SELECT
-			if spActive then state = START
+			if spType <> 0 then state = START
 			UnpauseGame()
 		endif
 		
@@ -268,7 +282,7 @@ function DoGame()
 		endif
 	endif
 	
-	if spActive = 1 and crab1Deaths > 0 or crab2Deaths > 0 and state = START and spType <> CHALLENGEMODE
+	if (spType <> 0 and spType <> STORYMODE and spType <> AIBATTLE) and crab1Deaths > 0 or crab2Deaths > 0 and state = START
 		if spType = MIRRORMODE then EndMirrorScene()
 		if spType = CLASSIC then EndClassicScene()
 		if storyActive
@@ -412,8 +426,8 @@ function EndGameScene()
 		elseif hitTimer# > 0
 			
 			if endStage = 3
-				if GetSpriteExists(hitSpr1) then DeleteSprite(hitSpr1)
-				if GetSpriteExists(hitSpr2) then DeleteSprite(hitSpr2)
+				//if GetSpriteExists(hitSpr1) then DeleteSprite(hitSpr1)
+				//if GetSpriteExists(hitSpr2) then DeleteSprite(hitSpr2)
 				CreateSpriteExpress(coverS, w, h, 0, 0, 1)
 				SetSpriteColor(coverS, 255, 255, 255, 0)
 				SetViewOffset(0, 0)
@@ -524,8 +538,8 @@ function EndMirrorScene()
 		elseif hitTimer# > 0
 			
 			if endStage = 3
-				if GetSpriteExists(hitSpr1) then DeleteSprite(hitSpr1)
-				if GetSpriteExists(hitSpr2) then DeleteSprite(hitSpr2)
+				//if GetSpriteExists(hitSpr1) then DeleteSprite(hitSpr1)
+				//if GetSpriteExists(hitSpr2) then DeleteSprite(hitSpr2)
 				CreateSpriteExpress(coverS, w, h, 0, 0, 1)
 				SetSpriteColor(coverS, 255, 255, 255, 0)
 				SetViewOffset(0, 0)
@@ -609,8 +623,8 @@ function EndClassicScene()
 		elseif hitTimer# > 0
 			
 			if endStage = 3
-				if GetSpriteExists(hitSpr1) then DeleteSprite(hitSpr1)
-				if GetSpriteExists(hitSpr2) then DeleteSprite(hitSpr2)
+				//if GetSpriteExists(hitSpr1) then DeleteSprite(hitSpr1)
+				//if GetSpriteExists(hitSpr2) then DeleteSprite(hitSpr2)
 				CreateSpriteExpress(coverS, w, h, 0, 0, 1)
 				SetSpriteColor(coverS, 255, 255, 255, 0)
 				SetViewOffset(0, 0)
@@ -696,7 +710,7 @@ function DeleteGameUI()
 	if GetSpriteExists(phantomPauseButton) then DeleteSprite(phantomPauseButton)
 	if GetSpriteExists(phantomExitButton) then DeleteSprite(phantomExitButton)
 	
-	if spActive
+	if spType <> 0
 		DeleteSprite(SPR_SP_SCORE)
 		DeleteText(TXT_SP_SCORE)
 		DeleteText(TXT_SP_DANGER)
@@ -707,7 +721,7 @@ endfunction
 function ExitGame()
 	
 	//Updating the scores for the single player game
-	if spActive
+	if spType <> 0
 		if spType = MIRRORMODE
 			if spHighScore < spScore
 				spHighScore = spScore
@@ -848,7 +862,7 @@ function PauseGame()
 	SetSpriteVisible(playButton, 1)
 	SetSpriteVisible(exitButton, 1)
 	if GetSpriteExists(phantomExitButton) then SetSpriteVisible(phantomExitButton, 1)
-	if spActive = 0 then SetSpriteVisible(mainmenuButton, 1)
+	if spType = 0 then SetSpriteVisible(mainmenuButton, 1)
 	
 	if spType = CHALLENGEMODE then SetSpriteVisible(exitButton, 0)
 	
@@ -892,9 +906,9 @@ function PauseGame()
 	//Making the crab title and description
 	SetTextString(pauseTitle1, crabNames[crab1Type+crab1Alt*6])
 	SetTextString(pauseDesc1, crabPause1[crab1Type])
-	if spActive = 0 then SetTextString(pauseDesc1, GetTextString(pauseDesc1) + chr(10) + chr(10) + crabPause2[crab1Type+crab1Alt*6])
+	if spType = 0 or spType = STORY or spType = AIBATTLE then SetTextString(pauseDesc1, GetTextString(pauseDesc1) + chr(10) + chr(10) + crabPause2[crab1Type+crab1Alt*6])
 	
-	if (spActive = 0 and aiActive = 0)
+	if (spType = 0 and aiActive = 0)
 		//For a multiplayer game
 		SetTextY(pauseTitle2, h/2 - (GetTextY(pauseTitle1)-h/2))
 		SetTextY(pauseDesc2, h/2 - (GetTextY(pauseDesc1)-h/2))
@@ -905,7 +919,7 @@ function PauseGame()
 	//The single player special text
 	if spType = MIRRORMODE
 		SetTextString(pauseTitle2, "Mirror Mode")
-			SetTextString(pauseDesc2, "A mysterious reflective surface split our" + chr(10) + "hero into two! Souls split across space," + chr(10) + "the crab still acts as one. Prove" + chr(10) + "that you can live to fight another day!")
+		SetTextString(pauseDesc2, "A mysterious reflective surface split our" + chr(10) + "hero into two! Souls split across space," + chr(10) + "the crab still acts as one. Prove" + chr(10) + "that you can live to fight another day!")
 		
 		IncTextY(pauseTitle1, 100)
 		IncTextY(pauseDesc1, 120)
@@ -918,11 +932,15 @@ function PauseGame()
 		SetTextY(pauseDesc2, 380)
 		SetTextSize(pauseDesc2, 50/zoom#)
 	
+		if dispH
+			SetTextSpacing(pauseTitle2, GetTextSpacing(pauseTitle2) - 8)
+		endif
+	
 	endif
 	
 	if spType = CLASSIC
-		SetTextString(pauseTitle2, "Classic Mode")
-		SetTextSpacing(pauseTitle2, GetTextSpacing(pauseTitle2) - 3)
+		SetTextString(pauseTitle2, "SPACE CRAB"+chr(10)+"TRIVIA")
+		SetTextSpacing(pauseTitle2, GetTextSpacing(pauseTitle2) - 5)
 		SetTextSpacing(pauseDesc2, GetTextSpacing(pauseDesc2) + 1)
 		IncTextY(pauseTitle2, 190)
 		IncTextY(pauseDesc2, 100)
@@ -948,6 +966,7 @@ function PauseGame()
 		IncTextY(pauseDesc1, -145)
 		
 		IncSpriteSizeCenteredMult(curtainB, GetViewZoom())
+		
 	endif
 	
 	
@@ -956,8 +975,8 @@ function PauseGame()
 			SetTextSize(i, GetTextSize(i) - 11)
 			SetTextSpacing(i, GetTextSpacing(i) + 2)
 			if i = pauseTitle1
-				SetTextSize(i, GetTextSize(i) - 15)
-				SetTextSpacing(i, GetTextSpacing(i) + 2)
+				//SetTextSize(i, GetTextSize(i) - 15)
+				//SetTextSpacing(i, GetTextSpacing(i) + 2)
 			endif
 		next i
 		
@@ -972,6 +991,26 @@ function PauseGame()
 		
 		SetTextAngle(pauseTitle2, 0)
 		SetTextAngle(pauseDesc2, 0)
+		
+		if spType = CLASSIC
+			for i = pauseTitle1 to pauseDesc2
+				if Mod(i, 2)
+					IncTextX(i, -65)
+				else
+					IncTextX(i, 65)
+				endif
+				if i < pauseDesc1
+					IncTextY(i, 65)
+				else
+					IncTextY(i, 40)
+				endif
+				SetTextSize(i, GetTextSize(i)-3)
+				SetTextSpacing(i, GetTextSpacing(i))
+			next i
+			SetTextLineSpacing(pauseTitle2, -10)
+			//IncTextY(pauseTitle1, -30)
+			IncTextY(pauseDesc2, 20)
+		endif
 		
 	endif
 	
@@ -1927,7 +1966,7 @@ function UpdateSPScore(added)
 		if gameDifficulty1 = difficultyMax
 			SetTextString(TXT_SP_DANGER, "MAX DANGER")
 			if spType = MIRRORMODE
-				SetTextSize(TXT_SP_DANGER, 58)
+				SetTextSize(TXT_SP_DANGER, 58-dispH*10)
 				SetTextY(TXT_SP_DANGER, h/2 - GetTextSize(TXT_SP_DANGER)/2)
 				SetTextX(TXT_SP_DANGER, 622)
 			endif
@@ -2030,6 +2069,17 @@ function InitJumpParticles()
 			SetParticlesFrequency(i, 300)
 			SetParticlesMax (i, 20)
 			SetParticlesAngle(i, 40)
+		elseif cType = 13	//Taxi Crab
+			AddParticlesColorKeyFrame (i, 0.0, 255, 0, 0, 255 )
+			AddParticlesColorKeyFrame (i, lifeEnd#/3, 100, 100, 100, 255 )
+			AddParticlesColorKeyFrame (i, lifeEnd#/2, 40, 40, 40, 0 )
+			SetParticlesFrequency(i, 300)
+			SetParticlesLife(i, lifeEnd#)	//Time in seconds that the particles stick around
+			SetParticlesSize(i, 14*gameScale#)
+			SetParticlesStartZone(i, -5*gameScale#, -5*gameScale#, 5*gameScale#, 5*gameScale#) //The box that the particles can start from
+			SetParticlesDirection(i, 100*gameScale#, 100*gameScale#)
+			SetParticlesAngle(i, 10)
+			SetParticlesMax (i, 80)
 		elseif cType = 4
 			AddParticlesColorKeyFrame (i, 0.0, 0, 255, 0, 255 )
 			AddParticlesColorKeyFrame (i, lifeEnd#/3, 0, 255, 255, 255 )
@@ -2126,7 +2176,7 @@ endfunction
 function StartGameMusic()
 	
 	if storyActive = 0 and spType <> CHALLENGEMODE
-		if spActive = 0
+		if spType = 0
 			pass = 0
 			while pass = 0
 				rnd = Random(1, 5)
@@ -2154,7 +2204,7 @@ function StartGameMusic()
 			endwhile
 		endif
 		
-		if spActive = 1 
+		if spType <> 0 
 			if spType = MIRRORMODE
 				PlayMusicOGGSP(spMusic, 1)
 			
@@ -2176,7 +2226,7 @@ endfunction
 function PlayDangerMusic(startNew)
 
 	//Checking to make sure that the change should happen
-	if spActive = 0 and crab1Deaths = 2 and crab2Deaths = 2
+	if spType <> MIRRORMODE and spType <> CLASSIC and crab1Deaths = 2 and crab2Deaths = 2
 
 		if startNew = 0
 			

@@ -143,7 +143,7 @@ function CreateGame2()
 	crab2Deaths = 0
 	special2Used = 0
 	
-	if spActive
+	if spType = MIRRORMODE or spType = CLASSIC
 		for i = 1 to 3
 			SetSpriteVisible(crab2PlanetS[i], 0)
 		next i
@@ -152,7 +152,7 @@ function CreateGame2()
 		SetSpriteVisible(meteorButton2, 0)
 		SetSpriteVisible(meteorMarker2, 0)
 		SetSpriteVisible(specialButton2, 0)
-		crab2theta# = 270
+		if dispH = 0 then crab2theta# = 270
 	
 	
 	
@@ -172,7 +172,7 @@ function CreateGame2()
 	
 	endif
 	
-	if dispH and aiActive = 0
+	if dispH and aiActive = 0 and spType = 0
 		CreateTextExpress(meteorButton2, "N", 40, fontScoreI, 1, GetSpriteMiddleX(meteorButton2) - 2, GetSpriteY(meteorButton2) - 40, 10)
 		CreateTextExpress(specialButton2, "M", 40, fontScoreI, 1, GetSpriteMiddleX(specialButton2) - 2, GetSpriteY(specialButton2) - 40, 10)
 		SetTextColor(meteorButton2, 100, 100, 100, 255)
@@ -309,7 +309,7 @@ function DoGame2()
 	if (GetMulitouchPressedButton(split) = 0 and GetMulitouchPressedButton(meteorButton2) = 0 and GetMulitouchPressedButton(specialButton2) = 0 and GetMultitouchPressedTop()) then true2 = 1
 	//if (GetMulitouchPressedButton(split) = 0 and GetMulitouchPressedButton(meteorButton2) = 0 and GetMulitouchPressedButton(specialButton2) = 0 and GetMultitouchPressedTop() and deviceType = MOBILE) then true2 = 1
 	true3 = 0
-	if spActive = 1 and (GetMultitouchPressedTop() or GetMultitouchPressedBottom()) and deviceType = MOBILE and not ButtonMultitouchEnabled(pauseButton) then true3 = 1
+	if spType = MIRRORMODE and (((GetMultitouchPressedTop() or GetMultitouchPressedBottom()) and deviceType = MOBILE) or (inputTurn1 and deviceType = DESKTOP)) and not ButtonMultitouchEnabled(pauseButton) then true3 = 1
 	//Activating the crab turn at an input
 	
 	//Process AI turning
@@ -320,7 +320,7 @@ function DoGame2()
 		
 		buffer2 = 0
 		if crab2Turning = 0 and crab2Type <> 6
-			if spActive = 0 then PlaySoundR(turnS, 40)
+			if spType = 0 or spType = STORYMODE then PlaySoundR(turnS, 40)
 			if crab2Dir# > 0
 				crab2Turning = -1
 			else
@@ -334,7 +334,7 @@ function DoGame2()
 			if  Abs(crab2Dir#) < .7 or (crab2Turning * crab2Dir# > 0) or (Abs(crab2Dir#) < 1 and specialTimerAgainst2# > 0 and crab1Type = 5) or crab2Type = 6
 				//The crab leap code
 				//crab1Turning = -1*crab1Turning	//Still not sure if you should leap forwards or backwards
-				if spActive = 0
+				if spType = 0 or spType = STORYMODE
 					PlayMusicOGG(jump2S, 0)
 					SetMusicVolumeOGG(jump2S, 100*volumeSE/100)
 				endif
@@ -349,7 +349,7 @@ function DoGame2()
 				ActivateJumpParticles(2)
 			else
 				//Crab has turned
-				if spActive = 0 then PlaySoundR(turnS, 40)
+				if spType = 0 or spType = STORYMODE then PlaySoundR(turnS, 40)
 			endif
 		endif
 		
@@ -402,7 +402,7 @@ function DoGame2()
 		DrawPolar2(crab2, GetCrabDefaultR(crab2) + crab2JumpHMax# * (crab2JumpD# - (crab2JumpD#^2)/crab2JumpDMax), crab2Theta#)
 	endif
 	//Adjusting the crab angle for the dive, cosmetic
-	if crab2JumpD# > 0
+	if crab2JumpD# > 0 and (crab2Type <> 3 or crab2Alt <> 1)
 		SetSpriteAngle(crab2, GetSpriteAngle(crab2) + crab2JumpD#/crab2JumpDMax*360 * -1 * crab2Dir#)
 	endif
 	
@@ -491,12 +491,8 @@ function DoGame2()
 	hitSpr = CheckDeath2()
 	if GetRawKeyPressed(76) and debug then crab2Deaths = 2
 	if hitSpr <> 0 or (GetRawKeyPressed(76) and debug)
-		hitSpr2 = hitSpr
-		SetSpriteVisible(hitSpr2, 0) //This is here because leaving the sprite in looks bad
-		SetSpriteDepth(hitSpr2, 1)
-		StopSprite(hitSpr2)
-		//DeleteSprite(hitSpr)
-		if getSpriteExists(hitSpr+glowS) then DeleteSprite(hitSpr + glowS)
+		if GetSpriteExists(hitSpr) then DeleteSprite(hitSpr)
+		if GetSpriteExists(hitSpr+glowS) then DeleteSprite(hitSpr + glowS)
 		//Kill crab
 		inc crab2Deaths, 1
 		hit2Timer# = hitSceneMax
@@ -575,7 +571,8 @@ function UpdateMeteor2()
 			else
 				//Slowing the meteors at certain angles
 				if (Abs(Mod(meteorActive2[i].theta+slowMetWidth, 90)-slowMetWidth) < slowMetWidth) then meteorActive2[i].r = meteorActive2[i].r + 1.0*met1speed/slowMetSpeedDen
-			
+				
+				
 			endif
 			
 		elseif cat = 2	//Rotating meteor
@@ -661,7 +658,7 @@ function UpdateMeteor2()
 				if GetSpriteColorAlpha(spr) = 255
 					minusOne = 0
 					if specialTimerAgainst2# > 0 and crab1Type = 5 then minusOne = 1
-					if spActive = 0 then CreateExp(spr, cat, crab2Deaths + 1 - minusOne)	//Only non-special meteors give EXP
+					if spType = 0 or spType = STORYMODE then CreateExp(spr, cat, crab2Deaths + 1 - minusOne)	//Only non-special meteors give EXP
 					nonSpecMet = 1
 				endif
 				ActivateMeteorParticles(cat, spr, 2)
@@ -671,7 +668,7 @@ function UpdateMeteor2()
 				nudge2Theta# = meteorActive2[i].theta
 			endif
 			
-			if spActive
+			if spType = MIRRORMODE or spType = CLASSIC
 				inc spScore, 1
 				UpdateSPScore(2)
 			endif
@@ -1042,7 +1039,7 @@ function HitScene2()
 				UpdateMeteor2()
 				
 				//Flying off the planet
-				DeleteSprite(hitSpr2)
+				//DeleteSprite(hitSpr2)
 				crab2JumpD# = 0
 				inc crab2R#, 25*fpsr#
 				SetSpriteDepth(crab2, 11)

@@ -86,13 +86,13 @@ global metSizeY = 80
 
 //										D		D		D		D		D		D																																
 //									Nul	Space	Wizard	Top		Rave	Chrono	Ninja	Mad		King	Taxi	Fan		Jeff	Team P	Al		Cbcus	Barc	Hwaii	Rock	Crnme	Future	Knight	Sk8r	Holy	Cake	Kyle
-global crabVel as float [24] = 		[0,	 1.28,	1.08,	2.48,	1.59,	1.38,	1.5,	1.3,	1.06,	1,		1,		1,		1,		1.30,	1.12,	1,		1,		1,		1,		1,		1,		1,		1,		1,		1]
-global crabAccel as float [24] = 	[0,	 0.1,	0.13,	0.03,	0.08,	0.1,	0.1,	0.09,	0.13,	1,		1,		1,		1,		0.1,	0.12,	1,		1,		1,		1,		1,		1,		1,		1,		1,		1]	
-global crabJumpHMax as float [24] = 	[0,	 5,		10.5,	8.0,	10.0,	5.0,	6.0,	4,		11.5,	1,		1,		1,		1,		6,		10.5,		1,		1,		1,		1,		1,		1,		1,		1,		1,		1]
-global crabJumpSpeed as float [24] =	[0,	 1.216,	1.516,	-3,		-1.28,	-3.216,	.816,	1.2,	1.516,	1,		1,		1,		1,		1.116,	1.516,		1,		1,		1,		1,		1,		1,		1,		1,		1,		1]
-global crabJumpDMax as float [24] =	[0,	 28,	40,		32,		43,		28,		26,		29,		38,		1,		1,		1,		1,		28,		40,		1,		1,		1,		1,		1,		1,		1,		1,		1,		1]
-global crabFramerate as integer[24]=	[0,  10,	13,		10,		18,		10,		15,		14,		12,		1,		1,		1,		1,		12,		12,		1,		1,		1,		1,		1,		1,		1,		1,		1,		1]
-global crabSPAtck as integer[24] = 	[0,	 20,	20,		25,		23,		30,		18,		20,		20,		1,		1,		1,		1,		20,		20,		1,		1,		1,		1,		1,		1,		1,		1,		1,		1]
+global crabVel as float [24] = 		[0,	 1.28,	1.08,	2.48,	1.59,	1.38,	1.5,	1.3,	1.06,	2.78,	1,		1,		1,		1.30,	1.12,	1,		1,		1,		1,		1,		1,		1,		1,		1,		1]
+global crabAccel as float [24] = 	[0,	 0.1,	0.13,	0.03,	0.08,	0.1,	0.1,	0.09,	0.13,	0.024,	1,		1,		1,		0.1,	0.12,	1,		1,		1,		1,		1,		1,		1,		1,		1,		1]	
+global crabJumpHMax as float [24] = 	[0,	 5,		10.5,	8.0,	10.0,	5.0,	6.0,	4,		11.5,	7.0,	1,		1,		1,		6,		10.5,		1,		1,		1,		1,		1,		1,		1,		1,		1,		1]
+global crabJumpSpeed as float [24] =	[0,	 1.216,	1.516,	-3,		-1.28,	-3.216,	.816,	1.2,	1.516,	-2,		1,		1,		1,		1.116,	1.516,		1,		1,		1,		1,		1,		1,		1,		1,		1,		1]
+global crabJumpDMax as float [24] =	[0,	 28,	40,		32,		43,		28,		26,		29,		38,		32,		1,		1,		1,		28,		40,		1,		1,		1,		1,		1,		1,		1,		1,		1,		1]
+global crabFramerate as integer[24]=	[0,  10,	13,		10,		18,		10,		15,		14,		12,		15,		1,		1,		1,		12,		12,		1,		1,		1,		1,		1,		1,		1,		1,		1,		1]
+global crabSPAtck as integer[24] = 	[0,	 20,	20,		25,		23,		30,		18,		20,		16,		25,		1,		1,		1,		20,		20,		1,		1,		1,		1,		1,		1,		1,		1,		1,		1]
 
 
 #constant lastTranType 2
@@ -105,6 +105,9 @@ global firstFight = 1
 global gameTimer# = 0
 
 global gameScale# = 1
+#constant regMScale 1
+#constant regDScale .7
+#constant classicScaleMod 1.3
 
 global crab1R# = 1
 global crab1Rdefault# = 1
@@ -186,9 +189,6 @@ global specialTimerAgainst1# = 0
 
 #constant meteorMult# 1.3
 #constant specialMult# 1.8
-
-global hitSpr1
-global hitSpr2
 
 //The in game check to see if a special has been used once that game
 global special1Used = 0
@@ -632,7 +632,7 @@ global volumeSE = 100
 #constant SPR_START1 201
 #constant SPR_START2 203
 #constant SPR_BG_START 202
-#constant SPR_START1P 204
+#constant SPR_STARTMIRROR 204
 #constant TXT_WAIT1 201
 #constant TXT_WAIT2 202
 #constant TXT_HIGHSCORE 203
@@ -645,16 +645,18 @@ global volumeSE = 100
 #constant TXT_ALONE 216
 #constant SPR_CHALLENGE 217
 
-
+#constant SPR_BACK_1P 221
+#constant SPR_BACK_2P 222
+#constant SPR_BACK_VAULT 223
 
 
 //Different Crab buttons for the single player mode
-#constant SPR_SP_C1 205
-#constant SPR_SP_C2 206
-#constant SPR_SP_C3 207
-#constant SPR_SP_C4 208
-#constant SPR_SP_C5 209
-#constant SPR_SP_C6 210
+#constant SPR_SP_C1 255
+#constant SPR_SP_C2 256
+#constant SPR_SP_C3 257
+#constant SPR_SP_C4 258
+#constant SPR_SP_C5 259
+#constant SPR_SP_C6 260
  
 //Character select screen sprites - player 1 
 #constant SPR_CS_READY_1 300 
@@ -803,6 +805,7 @@ global fruitMode = 0
 #constant CLASSIC 2
 #constant STORYMODE 3
 #constant CHALLENGEMODE 4
+#constant AIBATTLE 5
 
 global fruitUnlock# = -300
 
@@ -1172,59 +1175,6 @@ function LoadBaseImages()
 	
 	LoadImage(boarderI, "boader.png")
 	LoadImage(ninjaStarI, "ninjaStar.png")
-	
-endfunction
-
-function LoadCharacterSelectImages(loading)
-	
-	if loading
-		//Loading all of the images
-		
-		
-		SetFolder("/media/art")
-	
-		//Loading the start screen images
-		if spActive = 0
-			for i = 1 to 6
-				//if i = 1 or i = 2 or i = 4 or i = 6
-					for j = 1 to 6
-						//LoadImage(crab1select1I - 1 + j + i*10, "crab" + str(i) + "select" + str(j) + ".png")
-						//SyncG() //This is here so that the particles can keep on moving
-					next j
-					//Sync() //This is here so that the particles can keep on moving
-				//endif
-			next i
-		endif
-		
-		SetFolder("/media/envi")
-		//LoadImage(bg5I, "bg5.png")
-		
-//~		if GetDeviceBaseName() = "android"
-//~			SetFolder("/media/sounds")
-//~			
-//~			LoadMusicOGG(arrowS, "arrow.ogg")
-//~			LoadMusicOGG(chooseS, "choose.ogg")
-//~		endif
-		
-	else
-		//Deleting all of the images
-		
-		for i = 1 to 6
-			//for j = 1 to 6
-			//	if GetImageExists(crab1select1I - 1 + j + i*10) then DeleteImage(crab1select1I - 1 + j + i*10)
-			//next j
-		next i
-		
-		//DeleteImage(bg5I)
-		
-//~		if GetDeviceBaseName() = "android"
-//~			StopMusicOGGSP(arrowS)
-//~			StopMusicOGGSP(chooseS)
-//~		endif
-		
-	endif
-	
-	
 	
 endfunction
 

@@ -12,6 +12,8 @@ global trashBag as integer[0]
 // Initialize the story screen
 function InitStory()
 	
+	storyActive = 1
+	
 	SetSpriteVisible(split, 0)
 	
 	//Size of the crab drawings
@@ -747,7 +749,7 @@ function ShowScene(chap, scene)
 			storyInput = 0
 			if GetPointerPressed() or inputSelect or inputSkip then storyInput = 1
 			if GetTextCharColorAlpha(storyText, charSounded) = 255 and GetTextCharColorAlpha(storyText, Len(displayString$)-9) = 0
-				PlaySoundR(talk1S, 40/(hurryUp/2+1))
+				if Mod(charSounded, 2) then PlaySoundR(talk1S, 40/(hurryUp/2+1))
 				inc charSounded, 1
 			endif
 			if storyInput
@@ -775,7 +777,7 @@ function ShowScene(chap, scene)
 	if GetSoundExists(soundeffect) then DeleteSound(soundeffect)
 	
 	CloseFile(1)
-	
+		
 endfunction state
 
 function EmptyTrashBag()
@@ -973,6 +975,7 @@ function DoStoryEndScreen()
 	endwhile
 	
 	StopGamePlayMusic()
+	if GetMusicPlayingOGGSP(resultsMusic) then StopMusicOGGSP(resultsMusic)
 	
 	TransitionStart(Random(1, lastTranType))
 	for i = TXT_RESULT1 to TXT_RESULT3

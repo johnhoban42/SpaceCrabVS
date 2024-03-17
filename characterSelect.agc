@@ -551,8 +551,11 @@ endfunction
 // Does nothing right now, just a placeholder
 function InitCharacterSelect()
 	
+	//if spType <> 0 then spActive = 1
+	
 	if spActive = 1 then spType = STORYMODE
 	if spType = STORYMODE then spActive = 1
+	storyActive = 0
 	
 	crab1Alt = 0
 	crab2Alt = 0
@@ -982,7 +985,6 @@ function DoCharacterSelect()
 	// Initialize if we haven't done so
 	// Don't write anything before this!
 	if characterSelectStateInitialized = 0
-		LoadCharacterSelectImages(1)
 		InitCharacterSelect()
 		TransitionEnd()
 	endif
@@ -1086,7 +1088,6 @@ function DoCharacterSelect()
 	// Don't write anything after this!
 	if state <> CHARACTER_SELECT
 		ExitCharacterSelect()
-		LoadCharacterSelectImages(0)
 	endif
 	
 endfunction state

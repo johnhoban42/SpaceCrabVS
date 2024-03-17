@@ -13,9 +13,10 @@ function InitStart()
 	SetCrabPauseStrings()
 	SetStoryShortStrings()
 	
-	spActive = 0
+	//spActive = 0
 	aiActive = 0
-	spType = 0
+	//spType = 0
+	storyActive = 0
 	
 	SetSpriteVisible(split, 0)
 	
@@ -32,18 +33,112 @@ function InitStart()
 	SetSpriteFrame(SPR_TITLE, 1)
 	if fruitMode then SetSpriteFrame(SPR_TITLE, 2)
 	SetSpriteShape(SPR_TITLE, 1)
-	//if demo
-	//	LoadAnimatedSprite(SPR_TITLE, "titleDemo", 2)
-	//else
-	//	LoadAnimatedSprite(SPR_TITLE, "title", 1)
-	//endif
+
 	SetSpriteSize(SPR_TITLE, w*2/3, w*2/3)
 	SetSpriteMiddleScreen(SPR_TITLE)
-	//IncSpriteY(SPR_TITLE, -50)
 	SetSpriteAngle(SPR_TITLE, 90)
 	SetSpriteDepth(SPR_TITLE, 5)
 	AddButton(SPR_TITLE)
+
 	
+	//P1 Start Button
+	LoadAnimatedSprite(SPR_START1, "ready", 22)
+	PlaySprite(SPR_START1, 10, 1, 7, 14)
+	SetSpriteSize(SPR_START1, 842*.7, 317*.7)
+	SetSpriteMiddleScreenX(SPR_START1)
+	SetSpriteY(SPR_START1, h/2 + 480)
+	SetSpriteAngle(SPR_START1, 0)
+	SetSpriteDepth(SPR_START1, 75)
+	AddButton(SPR_START1)
+	
+	//P2 Start Button
+	CreateSpriteExistingAnimation(SPR_START2, SPR_START1)
+	PlaySprite(SPR_START2, 11, 1, 15, 22)
+	SetSpriteSize(SPR_START2, 842*.7, 317*.7)
+	SetSpriteMiddleScreenX(SPR_START2)
+	SetSpriteY(SPR_START2, h/2 - 480 - GetSpriteHeight(SPR_START2))	//This is the true good distance
+	SetSpriteAngle(SPR_START2, 180)
+	SetSpriteDepth(SPR_START2, 75)
+	AddButton(SPR_START2)
+		
+	CreateTextExpress(TXT_WAIT1, "Waiting for your opponent...", 90, fontDescItalI, 1, w/2, GetSpriteY(SPR_START1)+48, 3)
+	SetTextColorAlpha(TXT_WAIT1, 0)
+	SetTextSpacing(TXT_WAIT1, -32)
+	CreateTextExpress(TXT_WAIT2, "Waiting for your opponent...", 90, fontDescItalI, 1, w/2, GetSpriteY(SPR_START2)-48+GetSpriteHeight(SPR_START2), 3)
+	SetTextColorAlpha(TXT_WAIT2, 0)
+	SetTextSpacing(TXT_WAIT2, -32)
+	SetTextAngle(TXT_WAIT2, 180)
+	
+	//Mirror Enter Button
+	LoadAnimatedSpriteReversible(SPR_STARTMIRROR, "mirror", 8)
+	SetSpriteExpress(SPR_STARTMIRROR, 250, 138, 520, 1030, 10)
+	AddButton(SPR_STARTMIRROR)
+	
+	//Classic Enter Button
+	LoadSpriteExpress(SPR_CLASSIC, "classic1.png", 250, 138, 520, 1180, 10)
+	AddButton(SPR_CLASSIC)
+	
+	CreateTextExpress(TXT_ALONE, "Playing alone?" + chr(10) + "Try these!", 80, fontCrabI, 1, 250, GetSpriteY(SPR_START1)+ GetSpriteHeight(SPR_START1)+100, 4)
+	SetTextSpacing(TXT_ALONE, -23)
+	
+	//Enter VS AI Button
+	LoadSpriteExpress(SPR_STARTAI, "vsAI.png", 250, 150, 50, 1130, 5)
+	AddButton(SPR_STARTAI)
+	
+	//Enter Story Mode Button
+	LoadSpriteExpress(SPR_STORY_START, "story.png", 250, 150, 250, 1130, 5)
+	AddButton(SPR_STORY_START)
+	
+	//The demo adjustments
+	if demo
+		IncSpriteY(SPR_START2, -50)
+		IncSpriteY(SPR_TITLE, -150)
+		IncSpriteY(SPR_START1, -250)
+		SetSpritePosition(SPR_STARTMIRROR, 490, GetSpriteY(SPR_START1) + GetSpriteHeight(SPR_START1) + 35)
+		SetSpritePosition(SPR_CLASSIC, 490, GetSpriteY(SPR_STARTMIRROR) + GetSpriteHeight(SPR_STARTMIRROR) + 10)
+	endif
+	
+	//Remnant of the Ultimate Challenge, probably to be removed
+	if highestScene < 9
+		LoadSpriteExpress(SPR_CHALLENGE, "ultimatechallengelock.png", 250, 150, 250, 1130, 5)
+	else
+		LoadSpriteExpress(SPR_CHALLENGE, "ultimatechallenge.png", 250, 150, 250, 1130, 5)
+	endif
+	AddButton(SPR_CHALLENGE)
+	
+	
+	//Might get moved to the settings menu
+	LoadSpriteExpress(SPR_VOLUME, "volume.png", 300, 87, 1000, 1000, 5)
+	LoadSpriteExpress(SPR_VOLUME_SLIDER, "volumeslider.png", 300, 87, 1000, 1000, 4)
+	AddButton(SPR_VOLUME)
+	
+	
+	
+	
+	CreateMirrorClassic()
+	
+	if dispH then HorizontalStart()
+		
+	if spType = 0 or spType = STORYMODE then PlayMusicOGGSP(titleMusic, 1)
+			
+				
+	//Probably to be removed with challenge mode
+	if spType = CHALLENGEMODE
+		for i = 17 to 1 step -1
+			if GetSpriteExists(coverS) then SetSpriteColorAlpha(coverS, 15*i)
+			UpdateStartElements()
+			SyncG()
+		next i
+	endif
+	
+	spScore = 0
+	
+	startStateInitialized = 1
+	
+	
+endfunction
+
+function CreateMirrorClassic()
 	LoadSpriteExpress(SPR_LOGO_HORIZ, "logoHoriz.png", w-40, (w-40)/2, 0, 80, 5)
 	SetSpriteMiddleScreen(SPR_LOGO_HORIZ)
 	SetSpriteY(SPR_LOGO_HORIZ, 10)
@@ -56,52 +151,6 @@ function InitStart()
 	CreateTextExpress(TXT_SP_DESC, "WARNING: Magic mirror ahead." + chr(10) + "Soul split is likely. Keep" + chr(10) + "both halves safe to survive.", 59, fontDescI, 1, w/2, 510, 5)
 	SetTextSpacing(TXT_SP_DESC, -17)
 	SetTextVisible(TXT_SP_DESC, 0)
-	
-	LoadAnimatedSprite(SPR_START1, "ready", 22)
-	PlaySprite(SPR_START1, 10, 1, 7, 14)
-	SetSpriteSize(SPR_START1, 842*.7, 317*.7)
-	SetSpriteMiddleScreenX(SPR_START1)
-	SetSpriteY(SPR_START1, h/2 + 480)
-	SetSpriteAngle(SPR_START1, 0)
-	SetSpriteDepth(SPR_START1, 75)
-	AddButton(SPR_START1)
-	
-	CreateSpriteExistingAnimation(SPR_START2, SPR_START1)
-	PlaySprite(SPR_START2, 11, 1, 15, 22)
-	SetSpriteSize(SPR_START2, 842*.7, 317*.7)
-	SetSpriteMiddleScreenX(SPR_START2)
-	SetSpriteY(SPR_START2, h/2 - 480 - GetSpriteHeight(SPR_START2))	//This is the true good distance
-	SetSpriteAngle(SPR_START2, 180)
-	SetSpriteDepth(SPR_START2, 75)
-	AddButton(SPR_START2)
-	
-	//The demo adjustments
-	IncSpriteY(SPR_START2, -50)
-	IncSpriteY(SPR_TITLE, -150)
-	IncSpriteY(SPR_START1, -250)
-		
-	CreateTextExpress(TXT_WAIT1, "Waiting for your opponent...", 90, fontDescItalI, 1, w/2, GetSpriteY(SPR_START1)+48, 3)
-	SetTextColorAlpha(TXT_WAIT1, 0)
-	SetTextSpacing(TXT_WAIT1, -32)
-	CreateTextExpress(TXT_WAIT2, "Waiting for your opponent...", 90, fontDescItalI, 1, w/2, GetSpriteY(SPR_START2)-48+GetSpriteHeight(SPR_START2), 3)
-	SetTextColorAlpha(TXT_WAIT2, 0)
-	SetTextSpacing(TXT_WAIT2, -32)
-	SetTextAngle(TXT_WAIT2, 180)
-	
-	LoadAnimatedSpriteReversible(SPR_START1P, "mirror", 8)
-	SetSpriteExpress(SPR_START1P, 250, 138, 520, 1030, 10)
-	AddButton(SPR_START1P)
-	
-	LoadSpriteExpress(SPR_CLASSIC, "classic1.png", 250, 138, 520, 1180, 10)
-	AddButton(SPR_CLASSIC)
-	
-	//The demo adjustments
-	SetSpritePosition(SPR_START1P, 490, GetSpriteY(SPR_START1) + GetSpriteHeight(SPR_START1) + 35)
-	SetSpritePosition(SPR_CLASSIC, 490, GetSpriteY(SPR_START1P) + GetSpriteHeight(SPR_START1P) + 10)
-	//IncSpriteY(SPR_START1, -200)
-	
-	CreateTextExpress(TXT_ALONE, "Playing alone?" + chr(10) + "Try these!", 80, fontCrabI, 1, 250, GetSpriteY(SPR_START1)+ GetSpriteHeight(SPR_START1)+100, 4)
-	SetTextSpacing(TXT_ALONE, -23)
 	
 	HS_Offset = -140
 	
@@ -117,27 +166,7 @@ function InitStart()
 	SetSpriteVisible(SPR_LEADERBOARD, 0)
 	AddButton(SPR_LEADERBOARD)
 	
-	LoadSpriteExpress(SPR_STARTAI, "vsAI.png", 250, 150, 50, 1130, 5)
-	SetSpriteSize(SPR_STARTAI, 250, 150)
-	SetSpritePosition(SPR_STARTAI, 50, 1130)
-	AddButton(SPR_STARTAI)
-	SetSpriteVisible(SPR_STARTAI, 0)
-	
-	LoadSpriteExpress(SPR_STORY_START, "story.png", 250, 150, 250, 1130, 5)
-	AddButton(SPR_STORY_START)
-	//if demo then SetSpriteVisible(SPR_STORY_START, 0)
-	
-	if highestScene < 9
-		LoadSpriteExpress(SPR_CHALLENGE, "ultimatechallengelock.png", 250, 150, 250, 1130, 5)
-	else
-		LoadSpriteExpress(SPR_CHALLENGE, "ultimatechallenge.png", 250, 150, 250, 1130, 5)
-	endif
-	AddButton(SPR_CHALLENGE)
-	
-	LoadSpriteExpress(SPR_VOLUME, "volume.png", 300, 87, 1000, 1000, 5)
-	LoadSpriteExpress(SPR_VOLUME_SLIDER, "volumeslider.png", 300, 87, 1000, 1000, 4)
-	AddButton(SPR_VOLUME)
-	
+	//Mostly incomprehensible below here
 	SetFolder("/media")
 	
 	for i = SPR_SP_C1 to SPR_SP_C6
@@ -147,7 +176,8 @@ function InitStart()
 		SetSpritePosition(i, w/2 - GetSpriteWidth(i)/2 - 250 + 250*(Mod(num-1,3)), 1080 + 250*((num-1)/3))
 		
 		CreateTweenSprite(i, .7)
-		SetTweenSpriteY(i, h + 20, 1080 + 250*((num-1)/3), TweenBounce())
+		//SetTweenSpriteY(i, h + 20, 1080 + 250*((num-1)/3), TweenBounce())
+		SetTweenSpriteY(i, h + 20,  250*((num-1)/3), TweenBounce())
 		AddButton(i)
 	next i
 	
@@ -169,7 +199,7 @@ function InitStart()
 	next i
 	
 	//This is the 'single player results screen' setup
-	if spActive = 1  and (crab1Deaths <> 0 or crab2Deaths <> 0)
+	if spType = MIRRORMODE or spType = CLASSIC and (crab1Deaths <> 0 or crab2Deaths <> 0)
 	//Coming from the lose screen	
 		if spType = MIRRORMODE then ToggleStartScreen(MIRRORMODE_LOSE, 0)
 		if spType = CLASSIC then ToggleStartScreen(CLASSICMODE_LOSE, 0)		
@@ -198,7 +228,7 @@ function InitStart()
 		SetTextSpacing(SPR_SP_C1, -25)
 		startTimer# = -440
 		
-	elseif spActive = 1 and crab1Deaths = 0 and crab2Deaths = 0
+	elseif spType = MIRRORMODE or spType = CLASSIC and crab1Deaths = 0 and crab2Deaths = 0
 	//Returning from the pause menu
 		if spType = MIRRORMODE then ToggleStartScreen(MIRRORMODE_START, 0)
 		if spType = CLASSIC then ToggleStartScreen(CLASSICMODE_START, 0)		
@@ -210,24 +240,6 @@ function InitStart()
 		next i
 		
 	endif
-	
-	spScore = 0
-				
-	if dispH then HorizontalStart()
-		
-	if spActive = 0 then PlayMusicOGGSP(titleMusic, 1)
-				
-	startStateInitialized = 1
-	
-	if spType = CHALLENGEMODE
-		for i = 17 to 1 step -1
-			if GetSpriteExists(coverS) then SetSpriteColorAlpha(coverS, 15*i)
-			UpdateStartElements()
-			SyncG()
-		next i
-	endif
-	
-	
 	
 endfunction
 
@@ -253,15 +265,15 @@ function HorizontalStart()
 	//CreateTextExpress(TXT_WAIT2, "Waiting for your opponent...", 90, fontDescItalI, 1, w/2, GetSpriteY(SPR_START2)-48+GetSpriteHeight(SPR_START2), 3)
 	SetTextAngle(TXT_WAIT2, 0)
 	
-	//LoadAnimatedSpriteReversible(SPR_START1P, "mirror", 8)
-	SetSpriteExpress(SPR_START1P, 250, 138, 520, 1030, 10)
+	//LoadAnimatedSpriteReversible(SPR_STARTMIRROR, "mirror", 8)
+	SetSpriteExpress(SPR_STARTMIRROR, 250, 138, 520, 630, 10)
 	
 	//LoadSpriteExpress(SPR_CLASSIC, "classic1.png", 250, 138, 520, 1180, 10)
 	
 	//The demo adjustments
-	//SetSpritePosition(SPR_START1P, 490, GetSpriteY(SPR_START1) + GetSpriteHeight(SPR_START1) + 35)
-	//SetSpritePosition(SPR_CLASSIC, 490, GetSpriteY(SPR_START1P) + GetSpriteHeight(SPR_START1P) + 10)
-	//IncSpriteY(SPR_START1, -200)
+	SetSpritePosition(SPR_STARTMIRROR, 490, GetSpriteY(SPR_START1) + GetSpriteHeight(SPR_START1) + 35)
+	//SetSpritePosition(SPR_CLASSIC, 490, GetSpriteY(SPR_STARTMIRROR) + GetSpriteHeight(SPR_STARTMIRROR) + 10)
+	IncSpriteY(SPR_START1, -200)
 	
 	//CreateTextExpress(TXT_ALONE, "Playing alone?" + chr(10) + "Try these!", 80, fontCrabI, 1, 250, GetSpriteY(SPR_START1)+ GetSpriteHeight(SPR_START1)+100, 4)
 		
@@ -269,7 +281,7 @@ function HorizontalStart()
 	
 	SetSpriteMiddleScreenX(SPR_LEADERBOARD)
 	
-	SetSpriteExpress(SPR_STARTAI, 250, 150, w*3/5, h*3/5 + 100, 5)
+	SetSpriteExpress(SPR_STARTAI, 250, 150, w*4/5, h*3/5 + 100, 5)
 	SetSpriteExpress(SPR_STORY_START, 250, 150, w*3/5 + 40, h*3/5 - 100 - 120, 5)
 	SetSpriteExpress(SPR_CHALLENGE, 250, 150, w*3/5 + 40, h*3/5 + 70 - 120, 5)
 	
@@ -309,7 +321,6 @@ function HorizontalStart()
 	IncSpriteX(SPR_CHALLENGE, 9999)
 	IncSpriteX(SPR_VOLUME, 9999)
 	IncSpriteX(SPR_VOLUME_SLIDER, 9999)
-	IncSpriteX(SPR_START1, 9999)
 	IncSpriteX(SPR_START2, 9999)
 	
 	SetSpriteY(SPR_STORY_START, 530)
@@ -326,6 +337,12 @@ function HorizontalStart()
 	SetSpriteY(SPR_CHALLENGE, 530)
 	SetSpriteMiddleScreenX(SPR_CHALLENGE)
 	IncSpriteY(SPR_CHALLENGE, 20)
+	
+	SetMirrorClassicHorz()
+	
+endfunction
+
+function SetMirrorClassicHorz()
 	
 endfunction
 
@@ -344,7 +361,7 @@ function DoStart()
 	UpdateStartElements()
 	
 	//Multiplayer section
-	if GetPointerPressed() and not Button(SPR_TITLE) and not Button(SPR_VOLUME) and not Button(SPR_CLASSIC) and not Button(SPR_STORY_START) and not Button(SPR_CHALLENGE) and not Button(SPR_START1) and not Button(SPR_LEADERBOARD) and not Button(SPR_MENU_BACK) and not Button(SPR_START2) and not Button(SPR_START1P) and not Button(SPR_SP_C1) and not Button(SPR_SP_C2) and not Button(SPR_SP_C3) and not Button(SPR_SP_C4) and not Button(SPR_SP_C5) and not Button(SPR_SP_C6)
+	if GetPointerPressed() and not Button(SPR_TITLE) and not Button(SPR_VOLUME) and not Button(SPR_CLASSIC) and not Button(SPR_STORY_START) and not Button(SPR_CHALLENGE) and not Button(SPR_START1) and not Button(SPR_LEADERBOARD) and not Button(SPR_MENU_BACK) and not Button(SPR_START2) and not Button(SPR_STARTMIRROR) and not Button(SPR_SP_C1) and not Button(SPR_SP_C2) and not Button(SPR_SP_C3) and not Button(SPR_SP_C4) and not Button(SPR_SP_C5) and not Button(SPR_SP_C6)
 		PingCrab(GetPointerX(), GetPointerY(), Random (100, 180))
 	endif
 	
@@ -384,7 +401,7 @@ function DoStart()
 	endif
 	
 	//if ButtonMultitouchEnabled(SPR_START1) and spActive = 0 and dispH = 0
-	if ButtonMultitouchEnabled(SPR_CLASSIC) and spActive = 0 and dispH = 0
+	if ButtonMultitouchEnabled(SPR_CLASSIC) and dispH = 0
 		if GetSpriteColorAlpha(SPR_START1) = 255
 			//Pressing player one
 			PlayTweenSprite(tweenSprFadeOut, SPR_START1, 0)
@@ -404,7 +421,7 @@ function DoStart()
 		endif
 	endif
 	
-	if ButtonMultitouchEnabled(SPR_START2) and spActive = 0
+	if ButtonMultitouchEnabled(SPR_START2)
 		if GetSpriteColorAlpha(SPR_START2) = 255
 			//Pressing player two
 			PlayTweenSprite(tweenSprFadeOut, SPR_START2, 0)
@@ -425,10 +442,10 @@ function DoStart()
 	endif
 	
 	//if ButtonMultitouchEnabled(SPR_START1) and spActive = 0 and dispH = 1
-	if ButtonMultitouchEnabled(SPR_CLASSIC) and spActive = 0 //and dispH = 1
-		spActive = 0
+	if ButtonMultitouchEnabled(SPR_START1) //and dispH = 1
+		spType = 0
 		aiActive = 0
-		storyActive = 0
+		//storyActive = 0
 		spType = 0
 		state = CHARACTER_SELECT
 	endif
@@ -436,28 +453,26 @@ function DoStart()
 	if p1Ready and p2Ready
 		p1Ready = 0
 		p2Ready = 0
-		spActive = 0
+		spType = 0
 		aiActive = 0
 		state = CHARACTER_SELECT
 	endif
 	
 	//Transition into mirror mode
-	if ButtonMultitouchEnabled(SPR_START1P) and GetSpriteVisible(SPR_START1P)
-		spActive = 1
+	if ButtonMultitouchEnabled(SPR_STARTMIRROR) and GetSpriteVisible(SPR_STARTMIRROR)
 		spType = MIRRORMODE
 		ToggleStartScreen(MIRRORMODE_START, 1)
 	endif
 	
 	//Transition into classic
-	/*if Button(SPR_CLASSIC) and GetSpriteVisible(SPR_CLASSIC)
+	if Button(SPR_CLASSIC) and GetSpriteVisible(SPR_CLASSIC)
 		spActive = 1
 		spType = CLASSIC
 		ToggleStartScreen(CLASSICMODE_START, 1)
-	endif*/
+	endif
 	
 	//Transition to main screen
 	if ButtonMultitouchEnabled(SPR_MENU_BACK) and GetSpriteVisible(SPR_MENU_BACK)
-		spActive = 0
 		spType = 0
 		ToggleStartScreen(MAINSCREEN, 1)
 	endif
@@ -465,7 +480,6 @@ function DoStart()
 	//Starting a single player game
 	for i = 1 to 6
 		if Button(SPR_SP_C1 + i - 1)
-			spActive = 1
 			crab1Type = i
 			crab2Type = crab1Type
 			state = GAME
@@ -490,10 +504,9 @@ function DoStart()
 	
 	//Going to story mode, will eventually bring you to character select
 	if (Button(SPR_STORY_START) and GetSpriteVisible(SPR_STORY_START)) or ((inputSelect and selectTarget = 0))
-		spActive = 1
 		spType = STORYMODE
 		state = CHARACTER_SELECT
-		TransitionStart(Random(1,lastTranType))
+		//TransitionStart(Random(1,lastTranType))
 	endif
 	
 	//Temporary functionality for the steam demo, will be changed
@@ -510,7 +523,7 @@ function DoStart()
 	// If we are leaving the state, exit appropriately
 	// Don't write anything after this!
 	if state <> START
-		if spActive = 0 then TransitionStart(Random(1,lastTranType))
+		if spType = 0 or spType = STORYMODE then TransitionStart(Random(1,lastTranType))
 		ExitStart()
 	endif
 	
@@ -522,8 +535,8 @@ function UpdateStartElements()
 	if startTimer# > 360 then startTimer# = 0
 	
 	if mod(round(startTimer#)+1080, 150) = 0
-		if GetSpriteCurrentFrame(SPR_START1P) = 15 or GetSpriteCurrentFrame(SPR_START1P) = 1 then PlaySprite(SPR_START1P, 30, 0, 1, 8)
-		if GetSpriteCurrentFrame(SPR_START1P) = 8 then PlaySprite(SPR_START1P, 30, 0, 8, 15)
+		if GetSpriteCurrentFrame(SPR_STARTMIRROR) = 15 or GetSpriteCurrentFrame(SPR_STARTMIRROR) = 1 then PlaySprite(SPR_STARTMIRROR, 30, 0, 1, 8)
+		if GetSpriteCurrentFrame(SPR_STARTMIRROR) = 8 then PlaySprite(SPR_STARTMIRROR, 30, 0, 8, 15)
 	endif
 	if mod(round(startTimer#)+1080, 90) = 0 then PlaySprite(SPR_MENU_BACK, 10, 0, 1, 8)
 	
@@ -557,7 +570,7 @@ function UpdateStartElements()
 		endif
 	endif
 	
-	if spActive = 0
+	if spType = 0
 		for i = 0 to GetTextLength(TXT_WAIT1)
 			SetTextCharAngle(TXT_WAIT1, GetTextLength(TXT_WAIT1)-i, -7+14*sin(9*startTimer# + i*6))	//Code from SnowTunes
 		next i		
@@ -675,8 +688,8 @@ function ToggleStartScreen(screen, swipe)
 	SetTextVisible(TXT_WAIT2, 0)
 	SetTextVisible(SPR_LOGO_HORIZ, 0)
 	SetSpriteVisible(SPR_MENU_BACK, 0)
-	SetSpriteVisible(SPR_START1P, 0)
-	SetTextVisible(SPR_START1P, 0)
+	SetSpriteVisible(SPR_STARTMIRROR, 0)
+	SetTextVisible(SPR_STARTMIRROR, 0)
 	SetTextVisible(SPR_SP_C1, 0) 
 	SetTextVisible(TXT_ALONE, 0) 
 	SetSpriteVisible(SPR_STORY_START, 0) 
@@ -716,7 +729,7 @@ function ToggleStartScreen(screen, swipe)
 		next i
 		
 		
-		SetSpriteVisible(SPR_START1P, 1)
+		SetSpriteVisible(SPR_STARTMIRROR, 1)
 		SetSpriteVisible(SPR_CLASSIC, 1)
 		SetTextVisible(TXT_ALONE, 1) 
 		if demo = 0 then SetSpriteVisible(SPR_STARTAI, 1)
@@ -748,7 +761,7 @@ function ToggleStartScreen(screen, swipe)
 		SetTextVisible(TXT_SP_DESC, 1)
 		SetTextVisible(SPR_SP_C1, 1) 
 		SetTextX(SPR_SP_C1, w + 20)
-		SetTextVisible(SPR_START1P, 1)
+		SetTextVisible(SPR_STARTMIRROR, 1)
 		
 		for i = SPR_SP_C1 to SPR_SP_C6			
 			PlayTweenSprite(i,  i, (i-SPR_SP_C1)*.06)
@@ -821,7 +834,7 @@ function ToggleStartScreen(screen, swipe)
 		SetTextX(SPR_SP_C1, w + 20)
 		IncSpriteY(SPR_MENU_BACK, -40)
 		
-		SetTextVisible(SPR_START1P, 1)
+		SetTextVisible(SPR_STARTMIRROR, 1)
 		for i = SPR_SP_C1 to SPR_SP_C6			
 			PlayTweenSprite(i,  i, (i-SPR_SP_C1)*.06)
 		next i
@@ -943,8 +956,13 @@ function PlayMirrorModeScene()
 					CreateTweenSprite(j, .8)
 					SetTweenSpriteAlpha(j, 0, 255, TweenEaseOut1())
 				next j
-				SetTweenSpriteY(spr, GetSpriteY(spr), h/2 - GetSpriteHeight(spr)/2 + 400, TweenOvershoot())
-				SetTweenSpriteY(spr2, GetSpriteY(spr), h/2 - GetSpriteHeight(spr)/2 - 400, TweenOvershoot())
+				if dispH
+					SetTweenSpriteX(spr, GetSpriteX(spr), w/4 - GetSpriteWidth(spr)/2 + 50, TweenOvershoot())
+					SetTweenSpriteX(spr2, GetSpriteX(spr), w*3/4 - GetSpriteWidth(spr)/2 - 50, TweenOvershoot())
+				else
+					SetTweenSpriteY(spr, GetSpriteY(spr), h/2 - GetSpriteHeight(spr)/2 + 400, TweenOvershoot())
+					SetTweenSpriteY(spr2, GetSpriteY(spr), h/2 - GetSpriteHeight(spr)/2 - 400, TweenOvershoot())
+				endif
 				
 				PlayTweenSprite(spr, spr, 0)
 				PlayTweenSprite(spr2, spr2, 0)
@@ -978,7 +996,7 @@ function ExitStart()
 	DeleteSprite(SPR_LOGO_HORIZ)
 	DeleteSprite(SPR_START2)
 	DeleteAnimatedSprite(SPR_START1)
-	DeleteAnimatedSprite(SPR_START1P)
+	DeleteAnimatedSprite(SPR_STARTMIRROR)
 	DeleteSprite(SPR_STARTAI)
 	DeleteSprite(SPR_BG_START)
 	DeleteSprite(SPR_MENU_BACK)
@@ -1023,8 +1041,7 @@ endfunction
 function SetupChallenge()
 	aiActive = 1
 		firstFight = 0
-		spActive = 0
-		storyActive = 1
+		//storyActive = 1
 		spType = CHALLENGEMODE
 		//To do: take this to the character selection screen, figure out if first fight should play
 		crab1Type = 3

@@ -13,7 +13,7 @@ function DrawPolar1(spr, rNum, theta#)
 			if spType = CLASSIC then cenX = w/2
 			//Placeholder line for extra theta offset
 		endif
-		/*
+		/* //The special camera won't work because of the exp particles. Oh well, maybe for SC3...
 		avgS# = 0
 		avgC# = 0
 		num = 0
@@ -143,7 +143,7 @@ function CreateGame1()
 	crab1Deaths = 0
 	special1Used = 0
 		
-	if spActive
+	if spType = MIRRORMODE or spType = CLASSIC
 		for i = 1 to 3
 			SetSpriteVisible(crab1PlanetS[i], 0)
 		next i
@@ -172,7 +172,7 @@ function CreateGame1()
 		
 	endif
 		
-	if dispH
+	if dispH and spType = 0 or spType = STORYMODE or spType = AIBATTLE
 		CreateTextExpress(meteorButton1, "Z", 40, fontScoreI, 1, GetSpriteMiddleX(meteorButton1) - 2, GetSpriteY(meteorButton1) - 40, 10)
 		CreateTextExpress(specialButton1, "X", 40, fontScoreI, 1, GetSpriteMiddleX(specialButton1) - 2, GetSpriteY(specialButton1) - 40, 10)
 		SetTextColor(meteorButton1, 100, 100, 100, 255)
@@ -309,7 +309,7 @@ function DoGame1()
 	if (GetMulitouchPressedButton(split) = 0 and GetMulitouchPressedButton(meteorButton1) = 0 and GetMulitouchPressedButton(specialButton1) = 0 and GetMultitouchPressedBottom()) then true2 = 1
 	//if (GetMulitouchPressedButton(split) = 0 and GetMulitouchPressedButton(meteorButton1) = 0 and GetMulitouchPressedButton(specialButton1) = 0 and GetMultitouchPressedBottom() and deviceType = MOBILE) then true2 = 1
 	true3 = 0
-	if spActive = 1 and (GetMultitouchPressedTop() or GetMultitouchPressedBottom()) and deviceType = MOBILE and not ButtonMultitouchEnabled(pauseButton) and not ButtonMultitouchEnabled(phantomPauseButton) then true3 = 1
+	if spActive = 1 and (((GetMultitouchPressedTop() or GetMultitouchPressedBottom()) and deviceType = MOBILE) or (inputTurn1 and deviceType = DESKTOP)) and not ButtonMultitouchEnabled(pauseButton) and not ButtonMultitouchEnabled(phantomPauseButton) then true3 = 1
 	//Activating the crab turn at an input
 	
 	//Space left for the AI stuff in game 2
@@ -402,7 +402,7 @@ function DoGame1()
 		DrawPolar1(crab1, GetCrabDefaultR(crab1) + crab1JumpHMax# * (crab1JumpD# - (crab1JumpD#^2)/crab1JumpDMax), crab1Theta#)
 	endif
 	//Adjusting the crab angle for the dive, cosmetic
-	if crab1JumpD# > 0
+	if crab1JumpD# > 0 and (crab1Type <> 3 or crab1Alt <> 1)
 		SetSpriteAngle(crab1, GetSpriteAngle(crab1) + crab1JumpD#/crab1JumpDMax*360 * -1 * crab1Dir#)
 	endif
 	
@@ -491,11 +491,7 @@ function DoGame1()
 	hitSpr = CheckDeath1()
 	if GetRawKeyPressed(75) and debug then crab1Deaths = 2
 	if hitSpr <> 0 or (GetRawKeyPressed(75) and debug)
-		hitSpr1 = hitSpr
-		SetSpriteVisible(hitSpr1, 0) //This is here because leaving the sprite in looks bad
-		SetSpriteDepth(hitSpr1, 1)
-		StopSprite(hitSpr1)
-		//DeleteSprite(hitSpr)
+		if GetSpriteExists(hitSpr) then DeleteSprite(hitSpr)
 		if getSpriteExists(hitSpr+glowS) then DeleteSprite(hitSpr + glowS)
 		//Kill crab
 		inc crab1Deaths, 1
@@ -575,7 +571,8 @@ function UpdateMeteor1()
 			else
 				//Slowing the meteors at certain angles
 				if (Abs(Mod(meteorActive1[i].theta+slowMetWidth, 90)-slowMetWidth) < slowMetWidth) then meteorActive1[i].r = meteorActive1[i].r + 1.0*met1speed/slowMetSpeedDen
-				if spType = CLASSIC and (Abs(Mod(meteorActive1[i].theta+slowMetWidth + 90, 180)-slowMetWidth) < slowMetWidth) then meteorActive1[i].r = meteorActive1[i].r - 1.8*met1speed/slowMetSpeedDen	//Extra classic mode trickery
+				if spType = CLASSIC and dispH = 0 and (Abs(Mod(meteorActive1[i].theta+slowMetWidth + 90, 180)-slowMetWidth) < slowMetWidth) then meteorActive1[i].r = meteorActive1[i].r - 1.8*met1speed/slowMetSpeedDen	//Extra classic mode trickery (mobile)
+				if spType = CLASSIC and dispH and (Abs(Mod(meteorActive1[i].theta+slowMetWidth + 180, 180)-slowMetWidth) < slowMetWidth) then meteorActive1[i].r = meteorActive1[i].r - 1.8*met1speed/slowMetSpeedDen	//Extra classic mode trickery (desktop)
 			endif
 		
 		elseif cat = 2	//Rotating meteor
@@ -654,14 +651,14 @@ function UpdateMeteor1()
 			SetSpriteVisible(spr+glowS, 0)
 		endif
 		
-	`
+
 		if (GetSpriteCollision(spr, planet1) or meteorActive1[i].r < 0) and deleted = 0	
 			if hit1Timer# <= 0
 				//Only doing the special extras when the crab isn't dead
 				if GetSpriteColorAlpha(spr) = 255
 					minusOne = 0
 					if specialTimerAgainst1# > 0 and crab2Type = 5 then minusOne = 1
-					if spActive = 0 then CreateExp(spr, cat, crab1Deaths+1 - minusOne)		//Only non-special meteors give EXP
+					if spType = 0 or spType = STORYMODE then CreateExp(spr, cat, crab1Deaths+1 - minusOne)		//Only non-special meteors give EXP
 					nonSpecMet = 1
 				endif
 				ActivateMeteorParticles(cat, spr, 1)
@@ -671,7 +668,7 @@ function UpdateMeteor1()
 				nudge1Theta# = meteorActive1[i].theta
 			endif
 			
-			if spActive
+			if spType = MIRRORMODE or spType = CLASSIC
 				inc spScore, 1
 				UpdateSPScore(1)
 			endif
@@ -1042,7 +1039,7 @@ function HitScene1()
 				UpdateMeteor1()
 				
 				//Flying off the planet
-				DeleteSprite(hitSpr1)
+				//DeleteSprite(hitSpr1)
 				crab1JumpD# = 0
 				inc crab1R#, 25*fpsr#
 				SetSpriteDepth(crab1, 11)
