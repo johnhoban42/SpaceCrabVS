@@ -774,6 +774,33 @@ function GetColorByCycle(numOf360, rgb$)
 	DeleteSprite(tmpSpr)
 endfunction result
 
+function SetSpriteColorByCycleC(spr, numOf360)
+	//Make sure the cycleLength is divisible by 6!
+	cycleLength = 360
+	colorTime = Mod(numOf360*3, 360)
+	phaseLen = cycleLength/2
+	
+	tmpSpr = CreateSprite(0)
+	
+	//Each colorphase will last for one phaseLen
+	if colorTime <= phaseLen	//White -> Yelow
+		t = colorTime
+		SetSpriteColor(tmpSpr, 255, 255, (t*255.0)/phaseLen, 255)
+		
+	else //Yellow -> White
+		t = colorTime-phaseLen
+		SetSpriteColor(tmpSpr, 255, 255, 255-(t*255.0)/phaseLen, 255)
+	endif
+	
+	r = GetSpriteColorRed(tmpSpr)
+	g = GetSpriteColorGreen(tmpSpr)
+	b = GetSpriteColorBlue(tmpSpr)
+	SetSpriteColor(spr, r, g, b, GetSpriteColorAlpha(spr))
+	
+	DeleteSprite(tmpSpr)
+endfunction
+
+
 global pingList as Integer[0]
 global pingNum = 701
 #constant pingStart 701

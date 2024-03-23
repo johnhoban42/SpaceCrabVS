@@ -86,13 +86,13 @@ global metSizeY = 80
 
 //										D		D		D		D		D		D																																
 //									Nul	Space	Wizard	Top		Rave	Chrono	Ninja	Mad		King	Taxi	Fan		Jeff	Team P	Al		Cbcus	Barc	Hwaii	Rock	Crnme	Future	Knight	Sk8r	Holy	Cake	Kyle
-global crabVel as float [24] = 		[0,	 1.28,	1.08,	2.48,	1.59,	1.38,	1.5,	1.3,	1.06,	2.78,	1,		1,		1,		1.30,	1.12,	1,		1,		1,		1,		1,		1,		1,		1,		1,		1]
-global crabAccel as float [24] = 	[0,	 0.1,	0.13,	0.03,	0.08,	0.1,	0.1,	0.09,	0.13,	0.024,	1,		1,		1,		0.1,	0.12,	1,		1,		1,		1,		1,		1,		1,		1,		1,		1]	
-global crabJumpHMax as float [24] = 	[0,	 5,		10.5,	8.0,	10.0,	5.0,	6.0,	4,		11.5,	7.0,	1,		1,		1,		6,		10.5,		1,		1,		1,		1,		1,		1,		1,		1,		1,		1]
-global crabJumpSpeed as float [24] =	[0,	 1.216,	1.516,	-3,		-1.28,	-3.216,	.816,	1.2,	1.516,	-2,		1,		1,		1,		1.116,	1.516,		1,		1,		1,		1,		1,		1,		1,		1,		1,		1]
-global crabJumpDMax as float [24] =	[0,	 28,	40,		32,		43,		28,		26,		29,		38,		32,		1,		1,		1,		28,		40,		1,		1,		1,		1,		1,		1,		1,		1,		1,		1]
-global crabFramerate as integer[24]=	[0,  10,	13,		10,		18,		10,		15,		14,		12,		15,		1,		1,		1,		12,		12,		1,		1,		1,		1,		1,		1,		1,		1,		1,		1]
-global crabSPAtck as integer[24] = 	[0,	 20,	20,		25,		23,		30,		18,		20,		16,		25,		1,		1,		1,		20,		20,		1,		1,		1,		1,		1,		1,		1,		1,		1,		1]
+global crabVel as float [24] = 		[0,	 1.28,	1.08,	2.48,	1.59,	1.38,	1.5,	1.3,	1.06,	2.78,	1,		1.33,	1.6,	1.30,	1.12,	1,		1,		1,		1,		1,		1,		1,		1.45,	1,		1]
+global crabAccel as float [24] = 	[0,	 0.1,	0.13,	0.03,	0.08,	0.1,	0.1,	0.09,	0.13,	0.024,	1,		0.115,	0.1,	0.1,	0.12,	1,		1,		1,		1,		1,		1,		1,		0.08,	1,		1]	
+global crabJumpHMax as float [24] = 	[0,	 5,		10.5,	8.0,	10.0,	5.0,	6.0,	4,		11.5,	7.0,	1,		5.0,	2,		6,		10.5,	1,		1,		1,		1,		1,		1,		1,		15,		1,		1]
+global crabJumpSpeed as float [24] =	[0,	 1.216,	1.516,	-3,		-1.28,	-3.216,	.816,	1.2,	1.516,	-2,		1,		-3.22,	.8,		1.116,	1.516,	1,		1,		1,		1,		1,		1,		1,		-1.28,	1,		1]
+global crabJumpDMax as float [24] =	[0,	 28,	40,		32,		43,		28,		26,		29,		38,		32,		1,		28,		27,		28,		40,		1,		1,		1,		1,		1,		1,		1,		55,		1,		1]
+global crabFramerate as integer[24]=	[0,  10,	13,		10,		18,		10,		15,		14,		12,		15,		1,		10,		15,		12,		12,		1,		1,		1,		1,		1,		1,		1,		10,		1,		1]
+global crabSPAtck as integer[24] = 	[0,	 20,	20,		25,		23,		30,		18,		20,		16,		25,		1,		29,		20,		20,		20,		1,		1,		1,		1,		1,		1,		1,		26,		1,		1]
 
 
 #constant lastTranType 2
@@ -203,10 +203,6 @@ global spHighCrabClassic$ = ""
 
 global p1Ready = 0
 global p2Ready = 0
-
-//Input buffers
-global buffer1 = 0
-global buffer2 = 0
 
 global meteorSprNum = 1001
 global expSprNum = 2001
@@ -406,7 +402,6 @@ global met3CD2# = 0 //400
 #constant clockI 74
 #constant clockMinI 75
 #constant clockHourI 76
-#constant ninjaStarI 77
 
 #constant bg1I 81
 #constant bg2I 82
@@ -975,8 +970,8 @@ function PlayMusicOGGSP(songID, loopYN)
 		if songID = dangerCMusic then LoadMusicOGG(dangerCMusic, "dangerC.ogg")
 		if songID = dangerTMusic then LoadMusicOGG(dangerTMusic, "dangerT.ogg")
 		
-		if songID = raveBass1 then LoadMusicOGG(raveBass1, "raveBass.ogg")
-		if songID = raveBass2 then LoadMusicOGG(raveBass2, "raveBass2.ogg")
+		if songID = raveBass1 then LoadMusicOGG(raveBass1, "special4"+AltStr(crab1Alt)+".ogg")
+		if songID = raveBass2 then LoadMusicOGG(raveBass2, "special4"+AltStr(crab1Alt)+".ogg")
 		if songID = fireMusic then LoadMusicOGG(fireMusic, "fire.ogg")
 		
 		if songID = retro1M then LoadMusicOGG(retro1M, "retro1.ogg")
@@ -1174,7 +1169,6 @@ function LoadBaseImages()
 	LoadImage(expBarI6, "expBar6.png")
 	
 	LoadImage(boarderI, "boader.png")
-	LoadImage(ninjaStarI, "ninjaStar.png")
 	
 endfunction
 
@@ -1793,5 +1787,35 @@ if crab1Type = 1		//Space
 		if crabType = 5 and crabAlt = 1 then SetTextString(i, "HOURGLASS CURSE")
 		if crabType = 6 and crabAlt = 0 then SetTextString(i, "SHURI-KRUSTACEAN")
 		if crabType = 6 and crabAlt = 1 then SetTextString(i, "CLAW-BALL TOSS")
+
+The old turn code:
+
+P1:
+true1 = 0
+//if (deviceType = DESKTOP and ((GetPointerPressed() and (GetPointerY() > GetSpriteY(split) + GetSpriteHeight(split))) or (GetRawKeyPressed(32) or GetRawKeyPressed(49))) and Hover(meteorButton1) = 0 and Hover(specialButton1) = 0) then true1 = 1
+if dispH and (inputTurn1 or (GetPointerPressed() and (GetPointerX() < w/2) and Hover(meteorButton1) = 0 and Hover(specialButton1) = 0 and Hover(pauseButton) = 0)) then true1 = 1
+true2 = 0
+if (GetMulitouchPressedButton(split) = 0 and GetMulitouchPressedButton(meteorButton1) = 0 and GetMulitouchPressedButton(specialButton1) = 0 and GetMultitouchPressedBottom()) then true2 = 1
+//if (GetMulitouchPressedButton(split) = 0 and GetMulitouchPressedButton(meteorButton1) = 0 and GetMulitouchPressedButton(specialButton1) = 0 and GetMultitouchPressedBottom() and deviceType = MOBILE) then true2 = 1
+true3 = 0
+if spActive = 1 and (((GetMultitouchPressedTop() or GetMultitouchPressedBottom()) and deviceType = MOBILE) or (inputTurn1 and deviceType = DESKTOP)) and not ButtonMultitouchEnabled(pauseButton) and not ButtonMultitouchEnabled(phantomPauseButton) then true3 = 1
+//Activating the crab turn at an input
+
+P2:
+true1 = 0
+//if (deviceType = DESKTOP and ((GetPointerPressed() and (GetPointerY() < GetSpriteY(split))) or (GetRawKeyPressed(32) or GetRawKeyPressed(50))) and Hover(meteorButton2) = 0 and Hover(specialButton2) = 0) then true1 = 1
+if dispH and (inputTurn2 or (GetPointerPressed() and (GetPointerX() > w/2) and Hover(meteorButton2) = 0 and Hover(specialButton2) = 0 and Hover(pauseButton) = 0)) then true1 = 1
+true2 = 0
+if (GetMulitouchPressedButton(split) = 0 and GetMulitouchPressedButton(meteorButton2) = 0 and GetMulitouchPressedButton(specialButton2) = 0 and GetMultitouchPressedTop()) then true2 = 1
+//if (GetMulitouchPressedButton(split) = 0 and GetMulitouchPressedButton(meteorButton2) = 0 and GetMulitouchPressedButton(specialButton2) = 0 and GetMultitouchPressedTop() and deviceType = MOBILE) then true2 = 1
+true3 = 0
+if spType = MIRRORMODE and (((GetMultitouchPressedTop() or GetMultitouchPressedBottom()) and deviceType = MOBILE) or (inputTurn1 and deviceType = DESKTOP)) and not ButtonMultitouchEnabled(pauseButton) then true3 = 1
+//Activating the crab turn at an input
+
+//Process AI turning
+	aiTurn = 0
+	if aiActive = 1 then aiTurn = AITurn()
+	
+	if ((trueTurn and aiActive = 0) or aiTurn = 1) and crab2JumpD# = 0
 
 */

@@ -171,7 +171,7 @@ if debug
 	curScene = 4
 	highestScene = 101
 	appState = START
-	altUnlocked[1] = 3
+	altUnlocked[1] = 2
 	altUnlocked[2] = 2
 	altUnlocked[3] = 1
 	altUnlocked[4] = 0
@@ -239,8 +239,8 @@ do
 		
 		Print(GetImageMemoryUsage())
 		
-		Print(GetPointerX())
-		Print(GetPointerY())
+		//Print(GetPointerX())
+		//Print(GetPointerY())
 		
 		//Print(highestScene)
 	endif
@@ -274,10 +274,10 @@ function DoInputs()
 	if GetRawKeyPressed(13) then inputTurn2 = 1
 	
 	if GetRawJoystickConnected(1)
-		//for i = 1 to 64
+		for i = 1 to 64
 			//For testing controller inputs
-		//	if GetRawJoystickButtonState(1, i) then Print(i)
-		//next i
+			if GetRawJoystickButtonState(1, i) then Print(i)
+		next i
 		if GetRawJoystickButtonPressed(1, 1) or GetRawJoystickButtonPressed(1, 4) then inputSelect = 1
 		if GetRawJoystickButtonPressed(1, 7) or GetRawJoystickButtonPressed(1, 8) then inputExit = 1
 		if GetRawJoystickButtonPressed(1, 3) or GetRawJoystickButtonPressed(1, 5) then inputAttack1 = 1
@@ -287,6 +287,7 @@ function DoInputs()
 		if GetRawJoystickButtonPressed(1, 15) then inputRight = 1
 		if GetRawJoystickButtonPressed(1, 14) then inputUp = 1
 		if GetRawJoystickButtonPressed(1, 16) then inputDown = 1
+		if GetRawJoystickButtonState(1, 5) or GetRawJoystickButtonState(1, 6) then inputSkip = 1
 	endif
 	
 	

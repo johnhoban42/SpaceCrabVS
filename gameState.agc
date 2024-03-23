@@ -25,6 +25,8 @@ function InitGame()
 	meteorTotal1 = 0
 	meteorTotal2 = 0
 	
+	spScore = 0
+	
 	metSizeX = 58*gameScale#
 	metSizeY = 80*gameScale#
 	
@@ -257,7 +259,7 @@ function DoGame()
 			TransitionStart(Random(1,lastTranType))
 			SetViewZoom(1)
 			state = CHARACTER_SELECT
-			if spType <> 0 then state = START
+			if (spType = CLASSIC or spType = MIRRORMODE) and storyActive = 0 then state = START
 			UnpauseGame()
 		endif
 		
@@ -788,7 +790,6 @@ function ExitGame()
 	expTotal1 = 0
 	meteorCost1 = 8
 	specialCost1 = 20
-	buffer1 = 0
 	hit1Timer# = 0
 	
 	//Game 2 (Top)
@@ -820,7 +821,6 @@ function ExitGame()
 	expTotal2 = 0
 	meteorCost2 = 8
 	specialCost2 = 20
-	buffer2 = 0
 	hit2Timer# = 0
 	
 	//Extra (both)
@@ -979,6 +979,9 @@ function PauseGame()
 				//SetTextSpacing(i, GetTextSpacing(i) + 2)
 			endif
 		next i
+		
+		SetTextSize(pauseTitle1, GetTextSize(pauseTitle1) - 5)
+		SetTextSize(pauseTitle2, GetTextSize(pauseTitle2) - 5)
 		
 		SetTextY(pauseTitle1, h/5+20)
 		SetTextY(pauseTitle2, h/5+20)
@@ -1360,7 +1363,7 @@ function ShowSpecialAnimation(crabType, crabAlt, playerNum, fast)
 		SetSpriteSizeSquare(specialSprBacker2, specSize)
 		animType = 1
 	endif
-	if (crabType = 4 and crabAlt = 0) then animType = 2
+	if (crabType = 4 and crabAlt = 0) or (crabType = 4 and crabAlt = 3) then animType = 2
 	
 	//Offsetting the clock hands so that they rotate properly
 	if crabType = 5
@@ -1384,7 +1387,7 @@ function ShowSpecialAnimation(crabType, crabAlt, playerNum, fast)
 	SetSpritePosition(specialSprBack2, -100 - specSize, 100 + offsetY)
 	//SetSpritePosition(specialSprBack2, -100 - specSize, 250 + offsetY)
 	
-	if crabType = 4
+	if (crabType = 4 and crabAlt = 0) or (crabType = 4 and crabAlt = 3)
 		SetSpritePosition(specialSprBack2, -100 - specSize, 100 + offsetY - specSize*0.4)
 		SetSpritePosition(specialSprFront2, w + 100, 30 + offsetY)
 	SetSpritePosition(specialSprFront1, -100 - specSize, h - 700 - offsetY + 70)
@@ -1502,6 +1505,9 @@ function ShowSpecialAnimation(crabType, crabAlt, playerNum, fast)
 				SetSpriteColorAlpha(specialSprBack1, 255)
 				SetSpriteColorAlpha(specialSprBack2, 255)
 			endif
+			
+			IncSpriteXFloat(specialSprFront1, 1.3*speed)
+			IncSpriteXFloat(specialSprFront2, -1.3*speed)
 			
 		endif
 		
@@ -1975,8 +1981,17 @@ function UpdateSPScore(added)
 		if spScore > spHighScore
 			
 		endif
+		
+		
+		if spScore = storyMinScore and storyActive then PlaySoundR(rainbowSweepS, volumeSE)
+		
 	endif
 	
+	if spScore >= storyMinScore and storyActive
+		for i = 7 to Len(GetTextString(TXT_SP_SCORE))
+			SetTextCharColor(TXT_SP_SCORE, i, 50, 255, 50, 255)
+		next i
+	endif
 	
 	//The flashing warning text
 	SetTextColor(TXT_SP_DANGER, 255, 160 - 10*(gameDifficulty1) + (0.0+10*gameDifficulty1)*sin(gameTimer#*(5+gameDifficulty1)), 160 - 10*(gameDifficulty1) + (0.0+10*gameDifficulty1)*sin(gameTimer#*(5+gameDifficulty1)), 255)
@@ -2022,6 +2037,15 @@ function InitJumpParticles()
 			SetParticlesFrequency(i, 200)
 			SetParticlesMax (i, 50)
 			SetParticlesAngle(i, 40)
+		elseif cType = 11	//Mad Crab
+			AddParticlesColorKeyFrame (i, 0.0, 255, 155, 0, 255 )
+			AddParticlesColorKeyFrame (i, lifeEnd#*2/3, 255, 40, 0, 255)
+			AddParticlesColorKeyFrame (i, lifeEnd#, 255, 40, 0, 0 )
+			SetParticlesRotationRange(i, 1710, 1890)
+			SetParticlesSize(i, 7)
+			SetParticlesFrequency(i, 260)
+			SetParticlesMax (i, 70)
+			SetParticlesAngle(i, 30)
 		elseif cType = 21	//Al Legal
 			AddParticlesColorKeyFrame (i, 0.0, 255, 255, 255, 255 )
 			AddParticlesColorKeyFrame (i, lifeEnd#*2/3, 0, 0, 255, 255)
@@ -2086,12 +2110,28 @@ function InitJumpParticles()
 			AddParticlesColorKeyFrame (i, lifeEnd#*2/3, 255, 255, 0, 0 )
 			SetParticlesRotationRange(i, 470, 870)
 			SetParticlesAngle(i, 20)
+		elseif cType = 34	//Holy Crab
+			AddParticlesColorKeyFrame (i, 0.0, 255, 255, 0, 255 )
+			AddParticlesColorKeyFrame (i, lifeEnd#/3, 255, 255, 255, 255 )
+			AddParticlesColorKeyFrame (i, lifeEnd#, 255, 255, 0, 0 )
+			SetParticlesRotationRange(i, 470, 870)
+			SetParticlesAngle(i, 30)
 		elseif cType = 5
 			AddParticlesColorKeyFrame (i, 0.0, 80, 80, 80, 255 )
 			AddParticlesColorKeyFrame (i, lifeEnd#/2, 200, 255, 60, 255 )
 			AddParticlesColorKeyFrame (i, lifeEnd#, 255, 255, 255, 0 )
 			SetParticlesRotationRange(i, 470, 870)
 			SetParticlesSize(i, 30)
+			SetParticlesAngle(i, 360)
+			SetParticlesFrequency(i, 1000)
+			SetParticlesMax (i, 12)
+			SetParticlesVelocityRange (i, 2, 2)
+		elseif cType = 15	//Jeff
+			AddParticlesColorKeyFrame (i, 0.0, 80, 0, 0, 255 )
+			AddParticlesColorKeyFrame (i, lifeEnd#/2, 150, 80, 60, 255 )
+			AddParticlesColorKeyFrame (i, lifeEnd#, 150, 80, 60, 0)
+			SetParticlesRotationRange(i, 470, 870)
+			SetParticlesSize(i, 20)
 			SetParticlesAngle(i, 360)
 			SetParticlesFrequency(i, 1000)
 			SetParticlesMax (i, 12)
@@ -2107,6 +2147,18 @@ function InitJumpParticles()
 			SetParticlesMax (i, 40)
 			SetParticlesAngle(i, 360)
 			SetParticlesDepth(i, 2)
+		elseif cType = 16 	//Team Player
+			AddParticlesColorKeyFrame (i, 0.0, 150, 150, 150, 255 )
+			AddParticlesColorKeyFrame (i, lifeEnd#*2/3, 50, 155, 50, 120 )
+			AddParticlesColorKeyFrame (i, lifeEnd#, 50, 155, 50, 0 )
+			SetParticlesLife(i, lifeEnd#)
+			SetParticlesRotationRange(i, 10, 90)
+			SetParticlesSize(i, 12)
+			SetParticlesFrequency(i, 1000)
+			SetParticlesMax (i, 40)
+			SetParticlesAngle(i, 40)
+			SetParticlesDepth(i, 2)
+			
 		endif
 		
 	next i

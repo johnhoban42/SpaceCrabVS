@@ -86,7 +86,7 @@ function InitStart()
 	AddButton(SPR_STARTAI)
 	
 	//Enter Story Mode Button
-	LoadSpriteExpress(SPR_STORY_START, "story.png", 250, 150, 250, 1130, 5)
+	LoadSpriteExpress(SPR_STORY_START, "story.png", 250, 150, 250, 1330, 5)
 	AddButton(SPR_STORY_START)
 	
 	//The demo adjustments
@@ -105,7 +105,7 @@ function InitStart()
 		LoadSpriteExpress(SPR_CHALLENGE, "ultimatechallenge.png", 250, 150, 250, 1130, 5)
 	endif
 	AddButton(SPR_CHALLENGE)
-	
+	SetSpriteVisible(SPR_CHALLENGE, 0)
 	
 	//Might get moved to the settings menu
 	LoadSpriteExpress(SPR_VOLUME, "volume.png", 300, 87, 1000, 1000, 5)
@@ -445,7 +445,7 @@ function DoStart()
 	if ButtonMultitouchEnabled(SPR_START1) //and dispH = 1
 		spType = 0
 		aiActive = 0
-		//storyActive = 0
+		storyActive = 0
 		spType = 0
 		state = CHARACTER_SELECT
 	endif
@@ -466,7 +466,6 @@ function DoStart()
 	
 	//Transition into classic
 	if Button(SPR_CLASSIC) and GetSpriteVisible(SPR_CLASSIC)
-		spActive = 1
 		spType = CLASSIC
 		ToggleStartScreen(CLASSICMODE_START, 1)
 	endif
@@ -482,6 +481,8 @@ function DoStart()
 		if Button(SPR_SP_C1 + i - 1)
 			crab1Type = i
 			crab2Type = crab1Type
+			crab1Alt = 0
+			crab2Alt = crab1Alt
 			state = GAME
 			if spType = MIRRORMODE then 	PlayMirrorModeScene()
 			if spType = CLASSIC
@@ -899,33 +900,72 @@ function PlayMirrorModeScene()
 	
 	if GetMusicPlayingOGGSP(loserMusic) then StopMusicOGGSP(loserMusic)
 	if GetMusicPlayingOGGSP(spMusic) = 0 then StartGameMusic()
-	SetMusicLoopTimesOGG(spMusic, 6.932, -1)
+	if storyActive = 0 then SetMusicLoopTimesOGG(spMusic, 6.932, -1)
 	
 	CreateSpriteExpress(coverS, w, h, 0, 0, 4)
 	SetSpriteColor(coverS, 255, 255, 255, 100)
 	
 	SetFolder("/media/art")
 	
-	spr = SPR_SP_C1 - 1 + crab1Type
-	spr2 = spr + 1000
-	LoadSprite(spr2, "chibicrab" + str(crab1Type) + ".png")
-	MatchSpritePosition(spr2, spr)
-	MatchSpriteSize(spr2, spr)
+	
+	if storyActive = 0
+		spr = SPR_SP_C1 - 1 + crab1Type
+		spr2 = spr + 1000
+		LoadSprite(spr2, "chibicrab" + str(crab1Type) + ".png")
+		MatchSpritePosition(spr2, spr)
+		MatchSpriteSize(spr2, spr)
+	else		
+		spr = SPR_CRAB1_BODY
+		spr2 = spr + 1000
+		CreateSprite(spr2, GetSpriteImageID(spr))
+		MatchSpritePosition(spr2, spr)
+		MatchSpriteSize(spr2, spr)
+		
+		spr3 = SPR_CRAB1_FACE
+		spr4 = spr3 + 1000
+		CreateSprite(spr4, GetSpriteImageID(spr3))
+		MatchSpritePosition(spr4, spr3)
+		MatchSpriteSize(spr4, spr3)
+		SetSpriteVisible(spr3, 0)
+		SetSpriteVisible(spr4, 0)
+		//The face is invisible, otherwise it looks creepy
+		//I just left the sprite for it in because it makes the for loops easier
+		
+		spr5 = SPR_CRAB1_COSTUME
+		spr6 = spr5 + 1000
+		CreateSprite(spr6, GetSpriteImageID(spr5))
+		MatchSpritePosition(spr6, spr5)
+		MatchSpriteSize(spr6, spr5)
+		
+		DeleteTween(spr3)
+		DeleteTween(spr5)
+		
+		for i = spr to spr5 step 2
+			SetSpriteFlip(i, 1, 0)
+		next i
+		for i = spr2 to spr6 step 2
+			SetSpriteFlip(i, 1, 0)
+		next i
+	endif
 	
 	
 	DeleteTween(spr)
 	
-	for i = spr to spr2 step 1000
-		
-		SetSpriteDepth(i, 3)
-
-		CreateTweenSprite(i, .3)
-		SetTweenSpriteX(i, GetSpriteX(i), w/2 - GetSpriteWidth(i)*3/4, TweenEaseIn1())
-		SetTweenSpriteY(i, GetSpriteY(i), h/2 - GetSpriteHeight(i)*3/4, TweenEaseIn1())
-		SetTweenSpriteSizeX(i, GetSpriteWidth(i), GetSpriteWidth(i)*1.5, TweenEaseIn1())
-		SetTweenSpriteSizeY(i, GetSpriteHeight(i), GetSpriteHeight(i)*1.5, TweenEaseIn1())
-		
-	next i
+	kEnd = 0
+	if storyActive then kEnd = 2
+	for k = 0 to kEnd
+		for i = spr to spr2 step 1000
+			
+			SetSpriteDepth(i+k, 3)
+	
+			CreateTweenSprite(i+k, .3)
+			SetTweenSpriteX(i+k, GetSpriteX(i+k), w/2 - GetSpriteWidth(i+k)*3/4, TweenEaseIn1())
+			SetTweenSpriteY(i+k, GetSpriteY(i+k), h/2 - GetSpriteHeight(i+k)*3/4, TweenEaseIn1())
+			SetTweenSpriteSizeX(i+k, GetSpriteWidth(i+k), GetSpriteWidth(i+k)*1.5, TweenEaseIn1())
+			SetTweenSpriteSizeY(i+k, GetSpriteHeight(i+k), GetSpriteHeight(i+k)*1.5, TweenEaseIn1())
+			
+		next i
+	next k
 	
 	stage = 0
 	iEnd = 70/fpsr#
@@ -935,6 +975,12 @@ function PlayMirrorModeScene()
 			if stage = 0
 				PlayTweenSprite(spr, spr, 0)
 				PlayTweenSprite(spr2, spr2, 0)
+				if storyActive
+					PlayTweenSprite(spr3, spr3, 0)
+					PlayTweenSprite(spr4, spr4, 0)
+					PlayTweenSprite(spr5, spr5, 0)
+					PlayTweenSprite(spr6, spr6, 0)
+				endif
 				PlaySoundR(arrowS, 100)
 				PlaySoundR(specialExitS, 100)
 				stage = 1
@@ -943,6 +989,12 @@ function PlayMirrorModeScene()
 			SetSpriteColorAlpha(coverS, 255*(i/(iEnd/3.0)))
 			SetSpriteColor(spr, 255 - 255*(i/(iEnd/3.0)), 255 - 255*(i/(iEnd/3.0)), 255 - 255*(i/(iEnd/3.0)), 255)
 			SetSpriteColor(spr2, 255 - 255*(i/(iEnd/3.0)), 255 - 255*(i/(iEnd/3.0)), 255 - 255*(i/(iEnd/3.0)), 255)
+			if storyActive
+				SetSpriteColor(spr3, 255 - 255*(i/(iEnd/3.0)), 255 - 255*(i/(iEnd/3.0)), 255 - 255*(i/(iEnd/3.0)), 255)
+				SetSpriteColor(spr4, 255 - 255*(i/(iEnd/3.0)), 255 - 255*(i/(iEnd/3.0)), 255 - 255*(i/(iEnd/3.0)), 255)
+				SetSpriteColor(spr5, 255 - 255*(i/(iEnd/3.0)), 255 - 255*(i/(iEnd/3.0)), 255 - 255*(i/(iEnd/3.0)), 255)
+				SetSpriteColor(spr6, 255 - 255*(i/(iEnd/3.0)), 255 - 255*(i/(iEnd/3.0)), 255 - 255*(i/(iEnd/3.0)), 255)
+			endif
 		
 		else//if //i <= iEnd*2/3
 			
@@ -950,22 +1002,45 @@ function PlayMirrorModeScene()
 				SetSpriteColorAlpha(coverS, 255)
 				PlaySoundR(mirrorBreakS, 100)
 				
-				for j = spr to spr2 step 1000
-					SetSpriteMiddleScreen(j)
-					DeleteTween(j)
-					CreateTweenSprite(j, .8)
-					SetTweenSpriteAlpha(j, 0, 255, TweenEaseOut1())
-				next j
+				for k = 0 to kEnd
+					for j = spr to spr2 step 1000
+						SetSpriteMiddleScreen(j+k)
+						DeleteTween(j+k)
+						CreateTweenSprite(j+k, .8)
+						SetTweenSpriteAlpha(j+k, 0, 255, TweenEaseOut1())
+					next j
+				next k
+				
 				if dispH
-					SetTweenSpriteX(spr, GetSpriteX(spr), w/4 - GetSpriteWidth(spr)/2 + 50, TweenOvershoot())
-					SetTweenSpriteX(spr2, GetSpriteX(spr), w*3/4 - GetSpriteWidth(spr)/2 - 50, TweenOvershoot())
+					offset = 50
+					SetTweenSpriteX(spr, GetSpriteX(spr), w/4 - GetSpriteWidth(spr)/2 + offset, TweenOvershoot())
+					SetTweenSpriteX(spr2, GetSpriteX(spr), w*3/4 - GetSpriteWidth(spr)/2 - offset, TweenOvershoot())
+					if storyActive
+						SetTweenSpriteX(spr3, GetSpriteX(spr3), w/4 - GetSpriteWidth(spr3)/2 + offset, TweenOvershoot())
+						SetTweenSpriteX(spr4, GetSpriteX(spr3), w*3/4 - GetSpriteWidth(spr3)/2 - offset, TweenOvershoot())
+						SetTweenSpriteX(spr5, GetSpriteX(spr5), w/4 - GetSpriteWidth(spr5)/2 + offset, TweenOvershoot())
+						SetTweenSpriteX(spr6, GetSpriteX(spr5), w*3/4 - GetSpriteWidth(spr5)/2 - offset, TweenOvershoot())
+					endif
 				else
-					SetTweenSpriteY(spr, GetSpriteY(spr), h/2 - GetSpriteHeight(spr)/2 + 400, TweenOvershoot())
-					SetTweenSpriteY(spr2, GetSpriteY(spr), h/2 - GetSpriteHeight(spr)/2 - 400, TweenOvershoot())
+					offset = 400
+					SetTweenSpriteY(spr, GetSpriteY(spr), h/2 - GetSpriteHeight(spr)/2 + offset, TweenOvershoot())
+					SetTweenSpriteY(spr2, GetSpriteY(spr), h/2 - GetSpriteHeight(spr)/2 - offset, TweenOvershoot())
+					if storyActive
+						SetTweenSpriteY(spr3, GetSpriteY(spr3), h/2 - GetSpriteHeight(spr3)/2 + offset, TweenOvershoot())
+						SetTweenSpriteY(spr4, GetSpriteY(spr3), h/2 - GetSpriteHeight(spr3)/2 - offset, TweenOvershoot())
+						SetTweenSpriteY(spr5, GetSpriteY(spr5), h/2 - GetSpriteHeight(spr5)/2 + offset, TweenOvershoot())
+						SetTweenSpriteY(spr6, GetSpriteY(spr5), h/2 - GetSpriteHeight(spr5)/2 - offset, TweenOvershoot())
+					endif
 				endif
 				
 				PlayTweenSprite(spr, spr, 0)
 				PlayTweenSprite(spr2, spr2, 0)
+				if storyActive
+					PlayTweenSprite(spr3, spr3, 0)
+					PlayTweenSprite(spr4, spr4, 0)
+					PlayTweenSprite(spr5, spr5, 0)
+					PlayTweenSprite(spr6, spr6, 0)
+				endif
 				
 				stage = 2
 			endif
@@ -986,6 +1061,12 @@ function PlayMirrorModeScene()
 	DeleteSprite(spr2)
 	DeleteTween(spr2)
 	DeleteSprite(coverS)
+	if storyActive
+		DeleteSprite(spr4)
+		DeleteTween(spr4)
+		DeleteSprite(spr6)
+		DeleteTween(spr6)
+	endif
 	
 endfunction
 

@@ -227,7 +227,8 @@ function DoGame2()
 	//The Rave Crab special
 	if specialTimerAgainst2# > 0 and crab1Type = 4
 		for i = special1Ex1 to special1Ex5
-			SetSpriteColorByCycle(i, specialTimerAgainst2#)
+			if crab1Alt = 0 then SetSpriteColorByCycle(i, specialTimerAgainst2#)
+			if crab1Alt = 3 then SetSpriteColorByCycleC(i, specialTimerAgainst2#)
 		next i
 		SetSpriteColor(special1Ex5, (GetSpriteColorRed(special1Ex5)+510)/3, (GetSpriteColorGreen(special1Ex5)+510)/3, (GetSpriteColorBlue(special1Ex5)+510)/3, 255)
 		if specialTimerAgainst2# < raveCrabTimeMax/8
@@ -302,23 +303,28 @@ function DoGame2()
 	//The movement code
 	inc crab2Theta#, crab2Vel# * crab2Dir# * fpsr#
 	
-	true1 = 0
-	//if (deviceType = DESKTOP and ((GetPointerPressed() and (GetPointerY() < GetSpriteY(split))) or (GetRawKeyPressed(32) or GetRawKeyPressed(50))) and Hover(meteorButton2) = 0 and Hover(specialButton2) = 0) then true1 = 1
-	if dispH and (inputTurn2 or (GetPointerPressed() and (GetPointerX() > w/2) and Hover(meteorButton2) = 0 and Hover(specialButton2) = 0 and Hover(pauseButton) = 0)) then true1 = 1
-	true2 = 0
-	if (GetMulitouchPressedButton(split) = 0 and GetMulitouchPressedButton(meteorButton2) = 0 and GetMulitouchPressedButton(specialButton2) = 0 and GetMultitouchPressedTop()) then true2 = 1
-	//if (GetMulitouchPressedButton(split) = 0 and GetMulitouchPressedButton(meteorButton2) = 0 and GetMulitouchPressedButton(specialButton2) = 0 and GetMultitouchPressedTop() and deviceType = MOBILE) then true2 = 1
-	true3 = 0
-	if spType = MIRRORMODE and (((GetMultitouchPressedTop() or GetMultitouchPressedBottom()) and deviceType = MOBILE) or (inputTurn1 and deviceType = DESKTOP)) and not ButtonMultitouchEnabled(pauseButton) then true3 = 1
-	//Activating the crab turn at an input
-	
+	trueTurn = 0
+
+	//Mobile touch
+	if GetMultitouchPressedTop() and deviceType = MOBILE then trueTurn = 1
+	if GetPointerPressed() and GetPointerY() < h/2 and deviceType = DESKTOP and dispH = 0 then trueTurn = 1
+	//Desktop touch
+	if GetPointerPressed() and GetPointerX() > w/2 and deviceType = DESKTOP and dispH then trueTurn = 1
+	//Mirror touch
+	if spType = MIRRORMODE
+		if GetPointerPressed() and deviceType = DESKTOP then trueTurn = 1
+		if GetMultitouchPressedTop() or GetMultitouchPressedBottom() and deviceType = MOBILE then trueTurn = 1
+	endif
+	//Cancelling turn if a button is pressed
+	if ButtonMultitouchEnabled(split) or ButtonMultitouchEnabled(pauseButton) or ButtonMultitouchEnabled(meteorButton2) or ButtonMultitouchEnabled(specialButton2) then trueTurn = 0
+	//Controller input overrides things
+	if inputTurn2 then trueTurn = 1
+	if inputTurn1 and spType = MIRRORMODE then trueTurn = 1
 	//Process AI turning
-	aiTurn = 0
-	if aiActive = 1 then aiTurn = AITurn()
+	if aiActive = 1 then trueTurn = AITurn()
 	
-	if (((true2 or buffer2 or true1 or true3) and aiActive = 0) or aiTurn = 1) and crab2JumpD# = 0
+	if (trueTurn) and crab2JumpD# = 0
 		
-		buffer2 = 0
 		if crab2Turning = 0 and crab2Type <> 6
 			if spType = 0 or spType = STORYMODE then PlaySoundR(turnS, 40)
 			if crab2Dir# > 0
@@ -862,7 +868,8 @@ function SendSpecial2()
 		for i = special2Ex1 to special2Ex4
 			SetSpriteDepth(i, 19)
 			FixSpriteToScreen(i, 1)
-			SetSpriteColorByCycle(i, specialTimerAgainst1#)
+			if crab2Alt = 0 then SetSpriteColorByCycle(i, specialTimerAgainst1#)
+			if crab2Alt = 3 then SetSpriteColorByCycleC(i, specialTimerAgainst1#)
 		next i
 		SetSpriteDepth(special2Ex5, 7)
 		
@@ -904,6 +911,8 @@ function SendSpecial2()
 			AddSpriteAnimationFrame(special2Ex5, i)
 		next i
 		PlaySprite(special2Ex5, 20, 1, 1, 8)
+		
+		if crab2Alt <> 0 then SetSpriteVisible(special2Ex5, 0)
 	
 	elseif crab2Type = 5
 		//Chrono Crab
@@ -936,8 +945,7 @@ function SendSpecial2()
 		
 		//The 3 throwing stars
 		for i = special2Ex1 to special2Ex3
-			if GetSpriteExists(i) = 0 then CreateSpriteExpress(i, ninjaStarSize, ninjaStarSize, -200, -200, 4)
-			SetSpriteImage(i, ninjaStarI)
+			if GetSpriteExists(i) = 0 then LoadSpriteExpress(i, "envi/ninjaStar" + AltStr(crab2Alt) + ".png", ninjaStarSize, ninjaStarSize, -200, -200, 4)
 			SetSpriteColorAlpha(i, 0)
 			//SetSpriteShapeCircle(i, 0, 0, ninjaStarSize*2.2/7, 0)
 		next i

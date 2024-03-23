@@ -164,6 +164,8 @@ function InitResultsRetry()
 		SetTextY(storyText, 20)
 		
 	endif
+	
+	spScore = 0
 
 	if GetSpriteExists(coverS) = 0 then CreateSpriteExpress(coverS, w, h, 0, 0, 15)
 
@@ -252,7 +254,7 @@ function DoStory()
 		
 		if ButtonMultitouchEnabled(playButton) or (inputSelect and selectTarget = 0)
 			inc lineSkipTo, -2
-			if spType = STORYMODE
+			if spType <> CHALLENGEMODE
 				state = ShowScene(curChapter, curScene)
 			else
 				SetupChallenge()
@@ -429,7 +431,13 @@ function ShowScene(chap, scene)
 			spType = MIRRORMODE
 			storyMinScore = Val(GetStringToken(wholeRow$, " ", 2))
 			lineSkipTo = lineOverall+1
-			TransitionStart(Random(1,lastTranType))
+			if GetSpriteExists(SPR_CRAB1_BODY)
+				PlayMirrorModeScene()
+			else
+				TransitionStart(Random(1,lastTranType))
+			endif
+			crab2Type = crab1Type
+			crab2Alt = crab1Alt
 			exit
 		endif
 		
@@ -473,6 +481,7 @@ function ShowScene(chap, scene)
 			newCrabTalk = 1
 			if GetStringToken(wholeRow$, ":", 1) <> "??"
 				SetCrabFromStringChap(GetStringToken(wholeRow$, ":", 1), 0, 3)
+				dCol = 180
 				if crabRefType <> crab1Type or crabRefAlt <> crab1Alt
 					//Crab 2 is changing
 					if crabRType = 0
@@ -499,6 +508,15 @@ function ShowScene(chap, scene)
 					crab2Type = crabRefType
 					crab2Alt = crabRefAlt
 					targetCrab = 2
+					
+					//Making crab 2 brighter
+					SetSpriteColor(SPR_CRAB2_FACE, 255, 255, 255, 255)
+					SetSpriteColor(SPR_CRAB2_BODY, 255, 255, 255, 255)
+					SetSpriteColor(SPR_CRAB2_COSTUME, 255, 255, 255, 255)
+					SetSpriteColor(SPR_CRAB1_FACE, dCol, dCol, dCol, 255)
+					SetSpriteColor(SPR_CRAB1_BODY, dCol, dCol, dCol, 255)
+					SetSpriteColor(SPR_CRAB1_COSTUME, dCol, dCol, dCol, 255)
+					
 				else
 					//Crab 1 is changing 
 					if crabLType = 0
@@ -513,6 +531,15 @@ function ShowScene(chap, scene)
 					crabLType = crabRefType
 					crabLAlt = crabRefAlt
 					targetCrab = 1
+					
+					//Making crab 1 brighter
+					SetSpriteColor(SPR_CRAB1_FACE, 255, 255, 255, 255)
+					SetSpriteColor(SPR_CRAB1_BODY, 255, 255, 255, 255)
+					SetSpriteColor(SPR_CRAB1_COSTUME, 255, 255, 255, 255)
+					SetSpriteColor(SPR_CRAB2_FACE, dCol, dCol, dCol, 255)
+					SetSpriteColor(SPR_CRAB2_BODY, dCol, dCol, dCol, 255)
+					SetSpriteColor(SPR_CRAB2_COSTUME, dCol, dCol, dCol, 255)
+					
 				endif
 				wholeRow$ = GetStringToken(wholeRow$, ":", 2)
 			else
@@ -961,7 +988,7 @@ function DoStoryEndScreen()
 				state = CHARACTER_SELECT
 			endif
 			
-			curChapter = Min(curChapter + 1, finalChapter)
+			if curScene = 5 then curChapter = Min(curChapter + 1, finalChapter)
 			endDone = 1
 		endif
 		
