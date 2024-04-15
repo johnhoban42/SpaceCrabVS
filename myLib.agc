@@ -179,6 +179,12 @@ endfunction returnValue
 function Button(sprite) 
 	returnValue = GetPointerPressed() and Hover(sprite)
 	if selectTarget = sprite and inputSelect then returnValue = 1
+	if selectTarget2 = sprite and inputSelect2 then returnValue = 1
+endfunction returnValue
+
+function GetSpriteVisibleR(sprite)
+	returnValue = 0
+	if GetSpriteExists(sprite) then returnValue = GetSpriteVisible(sprite)
 endfunction returnValue
 
 function CreateSpriteExpress(spr, wid, hei, x, y, depth)
@@ -456,6 +462,8 @@ function GetMultitouchPressedTop()
 		if y < h/2 then result = 1
 	next i
 	
+	if deviceType = DESKTOP and GetPointerPressed() and GetPointerY() < h/2 then result = 1
+	
 endfunction result
 
 function GetMultitouchPressedBottom()
@@ -465,6 +473,9 @@ function GetMultitouchPressedBottom()
 		y = GetRawTouchCurrentY(currentTouch[i])		
 		if y > h/2 then result = 1
 	next i
+	
+	if deviceType = DESKTOP and GetPointerPressed() and GetPointerY() > h/2 then result = 1
+	
 	
 endfunction result
 
@@ -518,7 +529,7 @@ endfunction result
 
 function ButtonMultitouchEnabled(spr)
 	if GetSpriteExists(spr)
-	    if (Button(spr) and (GetPointerPressed() or inputSelect) and deviceType = DESKTOP) or (GetMulitouchPressedButton(spr) and deviceType = MOBILE)
+	    if (Button(spr) and (GetPointerPressed() or inputSelect or inputSelect2) and deviceType = DESKTOP) or (GetMulitouchPressedButton(spr) and deviceType = MOBILE)
 	        returnValue = 1
 	    else
 	        returnValue = 0
@@ -545,10 +556,11 @@ function PlaySoundR(sound, vol)
 	if GetSoundExists(sound) or GetMusicExistsOGG(sound)
 		if GetDeviceBaseName() <> "android"
 			//The normal case, for normal devices
-			PlaySound(sound, vol)
+			PlaySound(sound, vol*volumeSE/100.0)
 		else
 			//The strange case for WEIRD and PSYCHO android devices
 			PlayMusicOGG(sound, 0)
+			SetMusicVolumeOGG(sound, volumeSE)
 		endif
 	endif
 	
@@ -596,6 +608,11 @@ endfunction index
 function LoadImageR(txt$)
 	img = 0
 	if GetFileExists(txt$) then img = LoadImage(txt$)
+endfunction img
+
+function LoadImageResizedR(txt$, scale#)
+	img = 0
+	if GetFileExists(txt$) then img = LoadImageResized(txt$, scale#, scale#, 0)
 endfunction img
 
 function LoadImageR2(index, txt$)
@@ -757,6 +774,33 @@ function GetColorByCycle(numOf360, rgb$)
 	DeleteSprite(tmpSpr)
 endfunction result
 
+function SetSpriteColorByCycleC(spr, numOf360)
+	//Make sure the cycleLength is divisible by 6!
+	cycleLength = 360
+	colorTime = Mod(numOf360*3, 360)
+	phaseLen = cycleLength/2
+	
+	tmpSpr = CreateSprite(0)
+	
+	//Each colorphase will last for one phaseLen
+	if colorTime <= phaseLen	//White -> Yelow
+		t = colorTime
+		SetSpriteColor(tmpSpr, 255, 255, (t*255.0)/phaseLen, 255)
+		
+	else //Yellow -> White
+		t = colorTime-phaseLen
+		SetSpriteColor(tmpSpr, 255, 255, 255-(t*255.0)/phaseLen, 255)
+	endif
+	
+	r = GetSpriteColorRed(tmpSpr)
+	g = GetSpriteColorGreen(tmpSpr)
+	b = GetSpriteColorBlue(tmpSpr)
+	SetSpriteColor(spr, r, g, b, GetSpriteColorAlpha(spr))
+	
+	DeleteSprite(tmpSpr)
+endfunction
+
+
 global pingList as Integer[0]
 global pingNum = 701
 #constant pingStart 701
@@ -818,7 +862,7 @@ function PingCrab(x, y, size)
 	endif
 	
 	rnd = Random(0, 4)
-	PlaySoundR(exp1S + rnd, volumeSE/10)
+	PlaySoundR(exp1S + rnd, 40/10)
 
 endfunction
 
@@ -839,31 +883,34 @@ function PingFF()
 		SetSpriteSizeSquare(spr, 150)
 		SetSpriteMiddleScreenX(spr)
 		SetSpriteY(spr, h*3/4 - GetSpriteHeight(spr)/2)
+		if dispH then SetSpriteMiddleScreenY(spr)
 		SetSpriteDepth(spr, 1)
 		SetSpriteColorAlpha(spr, 180)
 	endif
 	
 	//For the top screen
-	spr = 0
-	for i = pingStart to pingEnd
-		if GetSpriteExists(i) = 0
-			spr = i
-			i = pingEnd + 1
+	if dispH = 0
+		spr = 0
+		for i = pingStart to pingEnd
+			if GetSpriteExists(i) = 0
+				spr = i
+				i = pingEnd + 1
+			endif
+		next i
+	
+		if spr <> 0
+			LoadSprite(spr, "ff.png")
+			SetSpriteSizeSquare(spr, 150)
+			SetSpriteMiddleScreenX(spr)
+			SetSpriteY(spr, h/4 - GetSpriteHeight(spr)/2)
+			SetSpriteAngle(spr, 180)
+			SetSpriteDepth(spr, 1)
+			SetSpriteColorAlpha(spr, 180)
 		endif
-	next i
-
-	if spr <> 0
-		LoadSprite(spr, "ff.png")
-		SetSpriteSizeSquare(spr, 150)
-		SetSpriteMiddleScreenX(spr)
-		SetSpriteY(spr, h/4 - GetSpriteHeight(spr)/2)
-		SetSpriteAngle(spr, 180)
-		SetSpriteDepth(spr, 1)
-		SetSpriteColorAlpha(spr, 180)
 	endif
 	
 	rnd = Random(0, 4)
-	PlaySoundR(exp1S + rnd, volumeSE/10)
+	PlaySoundR(exp1S + rnd, 40/10)
 
 endfunction
 
@@ -886,12 +933,13 @@ function ButtonsUpdate()
 	for i = 0 to buttons.length
 		if GetSpriteExists(buttons[i])
 			spr = buttons[i]
-			if (GetMulitouchPressedButton(spr) or Button(spr)) and GetSpriteVisible(spr)
+			if (GetMulitouchPressedButton(spr) or Button(spr)) and GetSpriteVisible(spr) and spr < SPR_CS_CRABS_1
 				
 				//Skips the current tween on an existing sprite, if still playing
 				skip = 0
 				for i = 15 to 35
 					if GetTweenSpritePlaying(i, spr) then skip = 1
+					if spr >= SPR_CS_CRABS_1 then skip = 1
 				next i
 				
 				//The case for playing the tween
@@ -910,8 +958,10 @@ function ButtonsUpdate()
 					inc tweenButton, 1
 					if tweenButton > 35 then tweenButton = 15
 					
+					//if appState <> CHARACTER_SELECT then PlaySoundR(buttonSound, 100)
 					PlaySoundR(buttonSound, 100)
 				else
+					//if GetSoundPlayingR(buttonSound) = 0 and appState <> CHARACTER_SELECT then PlaySoundR(buttonSound, 100)
 					if GetSoundPlayingR(buttonSound) = 0 then PlaySoundR(buttonSound, 100)
 				endif
 				

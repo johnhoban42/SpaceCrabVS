@@ -1,0 +1,38 @@
+bg 4
+music fightB
+NC: Space Crab. I have questions to resolve with you.
+SC: Oh, you're the one who works under King Crab, right?
+NC: My details are to be spared for the moment.
+This concerns you.
+Why did you create the Star Seekers?
+SC: Philisophical, aren't you?
+Hmm... well, I don't have much of a reason.
+The Star Seekers do what I normally do, just with some more crabs.
+I guess, I was a bit lonely, exporing out on my own.
+music
+Admittedly, your answer is frank.
+I too, understand the lonelyness that space can bring.
+But-
+music tomato
+Words are cheap! Show your intentions through your actions!
+music tomato
+fight 66447
+music
+NC: Your intentions have been proven.
+Your Star Seekers have no relation to past efforts.
+Moreover, your intentions certainly not are coming from a place of malice.
+My own mission has proven to be fruitless, ending in wasted time and my own embarresment.
+exit 1
+SC: Wait!
+NC: ...
+SC: Why not... join... the Star Seekers?
+music retro8
+NC: Hmm?
+SC: We've both felt lonliness out in space, right?
+The Star Seekers have helped me feel connected, in a way I couldn't imagine.
+If I can offer you a way to feel that way too, then I need to do it.
+NC: Very well. I accept.
+SC: Aw yeah!
+Doesn't this feel great? We have so many members now!
+I'm getting addicted to this feeling! We NEED more crabs!!
+NC: If this will ease the lonliness of other crabs, then I am on board with this mission.

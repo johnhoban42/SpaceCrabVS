@@ -1,0 +1,41 @@
+bg 2
+RL: It's just all a bit strange.
+TC: Hmm? What's that, sir?
+RL: First, nobody shows up. Then, Maddy came by, saying that I shouldn't be playing.
+And then, you claim to be EARLY, even though the concert's been going on for hours!
+TC: Hours? HOURS? That can't be!
+I triple checked my clock, watch, AND sundial before coming!
+RC: Well, let me see your wrist, I'll check it a fourth time.
+Oh.
+Odd, you're three hours behind me!
+TC: Hmmm... I might have a hunch why...
+Have you heard of a guy named Chrono Crab?
+RC: Chrono Crab? You mean my roommate?
+TC: ...That explains it.
+??: YO, Rock Lobster, are you gonna play or what?
+RL: !
+Is that...?
+RC: We all came out to hear a rockin' show, time for you to deliver!
+TP: Show 'em how it's done, Rock Lobster!
+HC: You're my favorite part of any vacation!
+LW: Rock-Lob-ster! Rock-Lob-star!
+RC: Give the crabs what they want!
+RL: Aww... you all...
+OK!
+I'll give you a show you won't forget!
+My newest single, straight from the cosmic stardust...
+Startlight Rivals!
+ONE, TWO, THREE, FOUR!
+music fightB
+fight 55955
+music ssidREM
+RC: That was incredible playing, Rock Lobster!
+Best party I've been to all year!!
+RL: Oh, you know it. Would you expect anything less from THE Rock Lobster?
+RC: OH! I've got a radical idea!
+Ever heard of the Star Seekers?
+RL: Y'know, yeah, I have. I heard a groupie mention it earlier.
+RC: Why not join? You can make it so the party never stops, wherever we go!
+Constantly surrounded by your adoring fans- what do you say?
+RL: For the fans? How can I say no!?
+Count me in, party-man.

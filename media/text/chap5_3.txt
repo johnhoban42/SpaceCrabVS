@@ -1,0 +1,25 @@
+bg 3
+music fightJ
+KC: Everyone sure is hung up on those Star Seekers.
+They should be hung up on ME!
+Ninjy, who did you say was their leader?
+NC: Space Crab, sir.
+exit 2
+KC: Well! 
+I summon you. INIANDA JEFF!
+IJ: That's me! The intrepid explorer.
+Ready for a mission!
+KC: Find Space Crab, and bring him to me. I'll take the rest from there.
+IJ: Got it, sir! You have my explorer's promise.
+exit 2
+KC: Actually... halt your departure.
+IJ: Yes, sir!
+KC: Let me demonstrate something for you.
+music retro3
+fight 37653
+music retro2
+KC: You see...
+I feel particularly angry at this 'Space Crab'.
+When you see him, I want you to beat him to a pulp, like I just did to you.
+Understood?
+IJ: Yeahth, shthir. (Knocked out, on the ground)

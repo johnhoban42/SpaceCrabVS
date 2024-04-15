@@ -42,23 +42,30 @@ function InitResultsController(rc ref as ResultsController)
 	p as integer, f as integer
 	if rc.player = 1 then p = 1 else p = -1 // makes the position calculations easier
 	if rc.player = 1 then f = 0 else f = 1 // makes the flip calculations easier
-	
+	if dispH
+		p = 1
+		f = 0
+	endif
 	// Determine which crab type won and lost
 	if resultsWinner = 1
 		winnerCrab = crab1Type
+		winnerAlt = crab1Alt
 		loserCrab = crab2Type
+		loserAlt = crab2Alt
 	else
 		winnerCrab = crab2Type
+		winnerAlt = crab2Alt
 		loserCrab = crab1Type
+		loserAlt = crab1Alt
 	endif
 	
 	rc.frame = 0
 	
 	// The offset mumbo-jumbo with f-coefficients is because AGK's text rendering is awful
 	if rc.isWinner
-		CreateText(rc.txtCrabMsg, winText[winnerCrab - 1])
+		CreateText(rc.txtCrabMsg, winText[winnerCrab+winnerAlt*6 - 1])
 	else
-		CreateText(rc.txtCrabMsg, loseText[loserCrab - 1])
+		CreateText(rc.txtCrabMsg, loseText[loserCrab+loserAlt*6 - 1])
 	endif
 	SetTextSize(rc.txtCrabMsg, 48)
 	SetTextAngle(rc.txtCrabMsg, f*180)
@@ -70,7 +77,7 @@ function InitResultsController(rc ref as ResultsController)
 	
 	winMsg as string
 	if rc.isWinner
-		winMsg = "Winning boy!"
+		winMsg = "Crampion!"
 	else
 		winMsg = "Loser XD"
 	endif
@@ -88,15 +95,23 @@ function InitResultsController(rc ref as ResultsController)
 	SetTweenTextSpacing(rc.twnWinMsg, -28, -22, TweenSmooth2())
 	SetTweenTextY(rc.twnWinMsg, GetTextY(rc.txtWinMsg), GetTextY(rc.txtWinMsg) + p*325, TweenSmooth2())
 	
-	sprCrabLose$ = "/media/art/crab" + Str(loserCrab) + "rLose.png"
-	LoadSprite(rc.sprCrabLose, sprCrabLose$)
+	sprCrabLose$ = "/media/art/crab" + Str(loserCrab) + AltStr(loserAlt) + "rLose.png"
+	if GetFileExists(sprCrabLose$)
+		LoadSprite(rc.sprCrabLose, sprCrabLose$)
+	else
+		CreateSprite(rc.sprCrabLose, 0)
+	endif
 	SetSpriteSize(rc.sprCrabLose, 195, 195)
 	SetSpriteMiddleScreenOffset(rc.sprCrabLose, p*-1*w/4, p*375)
 	SetSpriteFlip(rc.sprCrabLose, f, f)
 	SetSpriteVisible(rc.sprCrabLose, 0)
 	
-	sprCrabWin$ = "/media/art/crab" + Str(winnerCrab) + "rWin.png"
-	LoadSprite(rc.sprCrabWin, sprCrabWin$)
+	sprCrabWin$ = "/media/art/crab" + Str(winnerCrab) + AltStr(winnerAlt) + "rWin.png"
+	if GetFileExists(sprCrabWin$)
+		LoadSprite(rc.sprCrabWin, sprCrabWin$)
+	else
+		CreateSprite(rc.sprCrabWin, 0)
+	endif
 	SetSpriteSize(rc.sprCrabWin, 425, 425)
 	SetSpriteMiddleScreenOffset(rc.sprCrabWin, p*w/8, p*450)
 	SetSpriteFlip(rc.sprCrabWin, f, f)
@@ -120,6 +135,76 @@ function InitResultsController(rc ref as ResultsController)
 	// Kick off the controller's tweens
 	PlayTweenText(rc.twnWinMsg, rc.txtWinMsg, .8)
 	
+	cenOff = 30
+	if dispH 
+		
+		SetTextY(rc.txtWinMsg, h/2-60)
+		
+		SetTweenTextSize(rc.twnWinMsg, 120, 96, TweenSmooth2())
+		SetTweenTextSpacing(rc.twnWinMsg, -28, -22, TweenSmooth2())
+		SetTweenTextY(rc.twnWinMsg, GetTextY(rc.txtWinMsg), GetTextY(rc.txtWinMsg) + 160, TweenSmooth2())
+		
+		SetTextY(rc.txtCrabMsg, 40)
+		SetTextSize(rc.txtCrabMsg, 40)
+		SetTextSpacing(rc.txtCrabMsg, -12)
+			
+		SetSpriteColor(rc.sprCrabLose, 230, 230, 230, 255)
+		SetSpriteColor(rc.sprCrabWin, 255, 255, 255, 255)
+		
+		if rc.player = 1
+			SetTextMiddleScreenXDispH1(rc.txtWinMsg)
+			IncTextX(rc.txtWinMsg, cenOff)
+			SetTextMiddleScreenXDispH1(rc.txtCrabMsg)
+			IncTextX(rc.txtCrabMsg, cenOff)
+			
+			SetSpriteSizeSquare(rc.sprCrabWin, 325)
+			SetSpriteSizeSquare(rc.sprCrabLose, 325)
+			
+			SetSpriteY(rc.sprCrabWin, h/2-210)
+			SetSpriteY(rc.sprCrabLose, h/2-210)
+			if resultsWinner = 1
+				SetSpriteMiddleScreenXDispH1(rc.sprCrabWin)
+				IncSpriteX(rc.sprCrabWin, cenOff)
+				
+				SetSpriteMiddleScreenXDispH2(rc.sprCrabLose)
+				IncSpriteX(rc.sprCrabLose, -cenOff)
+			else
+				SetSpriteMiddleScreenXDispH2(rc.sprCrabWin)
+				IncSpriteX(rc.sprCrabWin, -cenOff)
+				
+				SetSpriteMiddleScreenXDispH1(rc.sprCrabLose)
+				IncSpriteX(rc.sprCrabLose, cenOff)
+			endif
+			
+			//SetSpriteMiddleScreenOffset(rc.sprCrabWin, 50, 40)
+			//SetSpriteMiddleScreenOffset(rc.sprCrabLose, -60, -100)
+		else
+			SetTextMiddleScreenXDispH2(rc.txtWinMsg)
+			IncTextX(rc.txtWinMsg, -cenOff)
+			SetTextMiddleScreenXDispH2(rc.txtCrabMsg)
+			IncTextX(rc.txtCrabMsg, -cenOff)
+			
+			//Dumping all of the P2 stuff out
+			IncSpriteX(rc.sprCrabWin, 9999)
+			IncSpriteX(rc.sprCrabLose, 9999)
+		endif
+		
+		DeleteTween(rc.twnMyCrab)
+		CreateTweenSprite(rc.sprCrabWin, 1)
+		SetTweenSpriteSizeX(rc.sprCrabWin, GetSpriteWidth(rc.sprCrabWin)/1.4, GetSpriteWidth(rc.sprCrabWin), TweenOvershoot())
+		SetTweenSpriteSizeY(rc.sprCrabWin, GetSpriteHeight(rc.sprCrabWin)/1.4, GetSpriteHeight(rc.sprCrabWin), TweenOvershoot())
+		SetTweenSpriteX(rc.sprCrabWin, GetSpriteMiddleX(rc.sprCrabWin)-(GetSpriteWidth(rc.sprCrabWin)/1.4)/2, GetSpriteX(rc.sprCrabWin), TweenOvershoot())
+		SetTweenSpriteY(rc.sprCrabWin, GetSpriteMiddleY(rc.sprCrabWin)-(GetSpriteHeight(rc.sprCrabWin)/1.4)/2, GetSpriteY(rc.sprCrabWin), TweenOvershoot())
+		
+		CreateTweenSprite(rc.sprCrabLose, 1)
+		SetTweenSpriteSizeX(rc.sprCrabLose, GetSpriteWidth(rc.sprCrabLose)/1.4, GetSpriteWidth(rc.sprCrabLose), TweenOvershoot())
+		SetTweenSpriteSizeY(rc.sprCrabLose, GetSpriteHeight(rc.sprCrabLose)/1.4, GetSpriteHeight(rc.sprCrabLose), TweenOvershoot())
+		SetTweenSpriteX(rc.sprCrabLose, GetSpriteMiddleX(rc.sprCrabLose)-(GetSpriteWidth(rc.sprCrabLose)/1.4)/2, GetSpriteX(rc.sprCrabLose), TweenOvershoot())
+		SetTweenSpriteY(rc.sprCrabLose, GetSpriteMiddleY(rc.sprCrabLose)-(GetSpriteHeight(rc.sprCrabLose)/1.4)/2, GetSpriteY(rc.sprCrabLose), TweenOvershoot())
+		
+	endif
+	
+	
 endfunction
 
 // Initialize the results screen
@@ -135,6 +220,14 @@ function InitResults()
 	winText[3] = "Rave Crab moshed and never let up," + chr(10) + "and barely noticed that he won!"
 	winText[4] = "Chrono Crab bent time and the results" + chr(10) + "of the battle to his favor!"
 	winText[5] = "As swift as a nighttime breeze, Ninja" + chr(10) + "Crab has downed his worthless foe."
+	winText[6] = "Mad Crab is angry about this" + chr(10) + "win, as he should be."
+	winText[7] = "Truly, was there ever any doubt?" + chr(10) + "Of COURSE King Crab is the winner!"
+	winText[8] = "Taxi Crab collects his cab fare," + chr(10) + "as well as his win!"
+	winText[10] = "Inianda Jeff has secured the" + chr(10) + "treasure, and a win, too!"
+	winText[11] = "Team Player has secured" + chr(10) + "his solo victory!"
+	winText[12] = "The gavel of justice declares" + chr(10) + "Al Legal the winner!"
+	winText[13] = "Crabacus' win was calculated" + chr(10) + "from the very start!"
+	winText[21] = "Holy Crab ascends to the winner's" + chr(10) + "circle, purifing all who witness it!"
 	
 	loseText[0] = "Space Crab's orbital ordnance was" + chr(10) + "overpowered by a mightier opponent..."
 	loseText[1] = "Ladder Wizard was vexed, hexed," + chr(10) + "and wrecked in this battle..."
@@ -142,6 +235,14 @@ function InitResults()
 	loseText[3] = "Rave Crab partied too hard" + chr(10) + "and paid the price..."
 	loseText[4] = "Chrono Crab must accept that" + chr(10) + "time has passed him by..."
 	loseText[5] = "Ninja Crab has been sent back" + chr(10) + "to the shadows in shame..."
+	loseText[6] = "Mad Crab won't let his anger" + chr(10) + "show for such an embarrasing event..."
+	loseText[7] = "Greed has overtaken King Crab," + chr(10) + "stuck in the grasp of Midas' touch..."
+	loseText[8] = "A broken down car is nothing" + chr(10) + "compared to his broken down spirit..."
+	loseText[10] = "In the search for treasure and" + chr(10) + "victory, Inianda Jeff is empty handed..."
+	loseText[11] = "Team Player needed team" + chr(10) + "support after all..."
+	loseText[12] = "Al Legal should have spent" + chr(10) + "more time building a case..."
+	loseText[13] = "Crabacus couldn't calculate" + chr(10) + "a win this time..."
+	loseText[21] = "Holy Crab subcummed to the" + chr(10) + "devil on their sholder..."
 	
 	// Determine the winner
 	if crab1Deaths = 3
@@ -189,6 +290,21 @@ function InitResults()
 	SetSpriteMiddleScreenOffset(SPR_R_MAIN_MENU, w/3, 0)
 	SetSpriteVisible(SPR_R_MAIN_MENU, 0)
 	
+	if dispH
+		SetSpriteVisible(split, 0)
+		SetSpriteScale(SPR_R_REMATCH, .7, .7)
+		SetSpriteScale(SPR_R_CRAB_SELECT, .7, .7)
+		SetSpriteScale(SPR_R_MAIN_MENU, .7, .7)
+		
+		SetSpriteMiddleScreen(SPR_R_REMATCH)
+		SetSpriteMiddleScreenOffset(SPR_R_CRAB_SELECT, -1*w/7, 0)
+		SetSpriteMiddleScreenOffset(SPR_R_MAIN_MENU, w/7, 0)
+		
+		IncSpriteY(SPR_R_REMATCH, 250)
+		IncSpriteY(SPR_R_CRAB_SELECT, 250)
+		IncSpriteY(SPR_R_MAIN_MENU, 250)
+	endif
+	
 	AddButton(SPR_R_REMATCH)
 	AddButton(SPR_R_CRAB_SELECT)
 	AddButton(SPR_R_MAIN_MENU)
@@ -196,8 +312,10 @@ function InitResults()
 	// Background
 	SetFolder("/media/envi")
 	LoadSprite(SPR_R_BACKGROUND, "bg3.png")
-	SetSpriteSize(SPR_R_BACKGROUND, w, h)
+	SetSpriteSize(SPR_R_BACKGROUND, h, h)
+	if dispH then SetSpriteSize(SPR_R_BACKGROUND, w, w)
 	SetSpriteDepth(SPR_R_BACKGROUND, 1000)
+	SetSpriteMiddleScreen(SPR_R_BACKGROUND)
 	SetFolder("/media/art")
 	
 	if GetMusicPlayingOGGSP(resultsMusic) = 0 then PlayMusicOGGSP(resultsMusic, 1)
@@ -226,8 +344,13 @@ function DoResultsController(rc ref as ResultsController)
 		SetSpriteVisible(rc.sprCrabWin, 1)
 		SetSpriteVisible(rc.sprCrabLose, 1)
 		SetTextVisible(rc.txtCrabMsg, 1)
-		PlayTweenSprite(rc.twnMyCrab, rc.twnMyCrab, 0)
-		PlaySoundR(chooseS, volumeSE)
+		if dispH = 0
+			PlayTweenSprite(rc.twnMyCrab, rc.twnMyCrab, 0)
+		elseif rc.player = 1
+			PlayTweenSprite(rc.sprCrabWin, rc.sprCrabWin, 0)
+			PlayTweenSprite(rc.sprCrabLose, rc.sprCrabLose, 0)
+		endif
+		PlaySoundR(chooseS, 40)
 		if GetSpriteExists(coverS) then DeleteSprite(coverS)
 	endif
 		
@@ -264,13 +387,13 @@ function DoResults()
 	endif
 	
 	// Check mid-screen buttons for activity
-	if Button(SPR_R_REMATCH)
+	if ButtonMultitouchEnabled(SPR_R_REMATCH)
 		state = GAME
 		TransitionStart(Random(1,lastTranType))
-	elseif Button(SPR_R_CRAB_SELECT)
+	elseif ButtonMultitouchEnabled(SPR_R_CRAB_SELECT)
 		state = CHARACTER_SELECT
 		TransitionStart(Random(1,lastTranType))
-	elseif Button(SPR_R_MAIN_MENU)
+	elseif ButtonMultitouchEnabled(SPR_R_MAIN_MENU)
 		state = START
 		TransitionStart(Random(1,lastTranType))
 	endif
@@ -292,6 +415,13 @@ function CleanupResultsController(rc ref as ResultsController)
 	DeleteSprite(rc.sprCrabLose)
 	DeleteTween(rc.twnWinMsg)
 	DeleteTween(rc.twnMyCrab)
+	
+	if dispH
+		DeleteTween(rc.sprCrabWin)
+		DeleteTween(rc.sprCrabLose)
+	else
+		DeleteTween(rc.twnMyCrab)
+	endif
 	
 endfunction
 

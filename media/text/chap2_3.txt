@@ -11,12 +11,13 @@ BEFMa; And you didn't think to STOP HIM?!
 LW: BCFS1; Wow, this is a neato setup you've got here!
 BAFS1a; Your crown really is as shiny as they say.
 se phone
-KC: BAFDa; Ahem.
+KC: BAFD; Ahem.
 BAFDd; You should know, I don't take kindly to unplanned visitors.
 LW: BAFA1; Ah, well good thing I only need to do this once.
 BKFA1d; Space Crab is putting together a group called the Star Seekers!
 BIFA1d; We're going to explore space and solve it's many mysteries!
 BOFA1g; Do you want to join and help us on our awesome quest?
+music
 KC: BBFD; ...
 music retro5 1
 BIFL; BWAHAHAHA!!
@@ -27,9 +28,10 @@ LW: BDFJ1a; (Oh. This is a lot more serious than I thought.)
 BAFH1a; (Not everyone will be an easy sell, it seems.)
 BDFIa; (Or a safe sell, for that matter.)
 exit 1
-KC: BOFBd; HEY! My new property is getting away! GUARDS! Help me take him down!
+KC: BOFBd; HEY! My new property is getting away!
+GUARDS! Help me take him down!
 music retro5 1
-fight 68252
+fight 58252
 music retro1 1
 LW: BGFIa; So, funny story, it looks like King Crab won't be joining the Star Seekers. Oh well.
 SC: BEFPa; WHAT?!? You asked KING Crab?
@@ -41,5 +43,6 @@ LW: BEFQ1b; Space Crab, don't worry! I won't disappoint you!
 se phone
 exit 2
 BIFJ1b; I'll help put together the best Star Seekers you could only dream of!
+music
 ??: You would be well advised to listen to your friend.
 LW: BHFPa; Whuh? Who said that?

@@ -1,0 +1,22 @@
+bg 3
+music fightJ
+TC: All right, I'm ready! What's the next step?
+TP: Knock me down.
+TC: Wait, huh? I can't do that!
+I can barely stay upright myself, much less knock someone else over!
+TP: Relax, big wood!
+Strength isn't JUST about raw power. It's about how you use it, too!
+You've been spinning all your life, so put that to use!
+Play to your strengths, and see if you can knock me down 3 times.
+Alright, I'll give it a shot...
+music retro3
+fight 3
+music retro2
+TC: Wow, that was great! And a lot of fun, too!
+Right, Team Player?
+Team Player?
+...
+HEY, TEAM PLAYER, WHERE DID YOU-
+music
+??: WHAT'S ALL THIS RUCKUS?!
+TC: Uh oh.

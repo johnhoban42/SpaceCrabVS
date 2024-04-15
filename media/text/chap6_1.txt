@@ -1,0 +1,33 @@
+bg 2
+music retro2
+IJ: I, Inianda Jeff, have been assigned an important mission!
+...But who has time to remember trivialities like that?
+I'm in this game for the adventure! The path to riches awaits!
+But where to start? Where to start?
+It may do me well to remember my previous engagement...
+Perhaps I'll be able to find a new trail by asking the crab coming my direction!
+AL: Sir, you can't be shouting like this in the middle of my office.
+IJ: This IS a rather formal looking area, isn't it?
+My keen sense of exploration knew it to be true!
+AL: Then your keen sense should also tell you that I'm very busy.
+IJ: I've got it! You'll give me some of that work if I beat you in battle!
+Your work will then guide me to a fruitful lead in my adventure.
+AL: Huh? Wait, you can just ask-
+music fightA
+fight 32587
+music retro2
+AL: You could have just asked for work, if you wanted it.
+No need to bring fists into an office space.
+IJ: Nonsense, fighting gets the blood flowing! Not just in the body, but the brain, too.
+Now I'll have no trouble convincing you to give me a lead!
+AL: ... (glare)
+Well, most of my work is administrative. You're not touching that stuff.
+I recently recieved a call from Hawaiian Crab, though.
+A bit of a meteor emergency in the Rotation Station outskirds.
+Can you check it out?
+IJ: Meteor emergency? A perfect target for this wandering adventurer's journey!
+IJ: Adios!
+exit 1
+AL: Perfect. That gives me more time to read my legal documents.
+...
+A wonderful afternoon awaits me!

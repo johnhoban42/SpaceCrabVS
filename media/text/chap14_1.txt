@@ -1,0 +1,35 @@
+bg 4
+music fightJ
+SC: Welcome, one and all...
+To the opening ceremony of the Star Seekers!
+Seeing so many of you...
+So, SO many of you...
+Ahh... it's almost too much for me to handle!
+KC: Then allow me to take charge!
+Welcome, loyal subjects! As your king, I am happy to rule over each one of you.
+RL: Whuh? I thought Space Crab was the leader.
+KC: Who cares about a leader when you have a king?! I'll have you know-
+CB: (This opening ceremony might be a little long...)
+exit 2
+But today's finally the day! No more math for me. A brand new Crabacus!
+TX: Hey, bud. You're ditching that opening stuff too?
+CB: D-ditching? No way! I'm no slacker. I'm just...
+exit 1
+exit 2
+KC: -that doesn't mean a king SHOULDN'T have more rights than-
+exit 2
+CB: ...waiting for the logistics to be sorted out.
+TX: Well, unlike your lousy excuse, I've got a reason to skip opening.
+CB: Skipping? H-hahaha, nope, not me.
+TX: I must have given a dozen crabs a ride here today.
+But I left the meter running, so now I'm trying to divide the total among everyone.
+CB: Oh, let me give you a hand!
+Stand back, we might get our claws dirty.
+music retro8
+fight 63356
+music retro2
+TX: Say, you're pretty good at this math stuff!
+I'll go let everyone know to ask you for smarts-type help!
+CB: ACK! No! Wait!
+exit 2
+I'm not going to be the math guy anymore. Just because I can, doesn't mean I want to!

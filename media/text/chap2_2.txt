@@ -1,7 +1,7 @@
 bg 2
 music retro4
 LW: BAFAd; ...And that's why I came to you! You're the most magical guy I can think of!
-BOFA1d; As the famous 'Number Wizard', we need you on the team, Crabicus!
+BOFA1d; As the famous 'Number Wizard', we need you on the team, Crabacus!
 CB: BAFDd; I keep telling you, math isn't magic!
 BCFEe; It's JUST math! You can do it too, if you really wanted.
 LW: BAFJ1b; You keep telling me that, but I know magic when I see it!

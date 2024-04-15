@@ -1,0 +1,26 @@
+bg 3
+music retro7
+IJ: Fear not, bystander! I'm hear to clean this mess on the path towards treasure.
+HC: Oh good, you must be the new temp worker.
+The meteors here are picking up at crazy rates!
+Help me with these. Please, now! We'll talk about your pay later.
+IJ: A short exposition, I like it! Takes us into the action quicker.
+music retro7
+fight 34574
+music retro6
+HC: Thank goodness we made it through that!
+Though you didn't have to make it harder for me...
+IJ: Nonsense, difficulty enriches the soul!
+Speaking of difficult things, we need to find the source of all these meteors.
+HC: Well, I have a hunch.
+If you look between those two planets, theres a... rip, of some kind.
+It keeps opening and closing, and when it opens, meteors start pouring out.
+IJ: Just like the jaws of a treasure chest, revealing it's contents.
+HC: Ehhh... not really.
+IJ: Hawaiian Crab, I must be off! The jowls of this tresaure are too alluring!
+exit 1
+HC: Wait, you forgot your pay!
+IJ: I have no need for pay, when treasure awaits!
+exit 1
+HC: Geez... These temp workers keep getting weirder.
+I need a vacation.

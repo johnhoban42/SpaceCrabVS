@@ -1,0 +1,25 @@
+bg 5
+music fightJ
+??: Taxi, hey! Can you give me a lift?
+TX: That's what I'm here to do. Where are you going?
+TP: Take me to the more intense, dangerous place you can think of.
+TX: ...Really?
+TP: I've got to train to be the best. That starts with toughing out the worst conditions!
+TX: Hmm... I might have a place in mind.
+(He's not going to like how far away it is, though...)
+(Let's break out the new strategy.)
+If you're trying to train, why not use me as your punching bag?
+TP: That's a, uh, weird suggestion.
+I mean, I JUST met you.
+But sure!
+music fightA
+fight 49327
+music fightJ
+TP: Whoah, my head's still spinning...
+Is this... a concussion..?
+TX: No, it's your destination! A meteor storm is happening right here, in a few minutes.
+Have fun, sir!
+TP: Uhhuhh... yeah, sure...!
+exit 2
+TX: Yeah, this is a winning strategy.
+Don't say I'm not an innovator!

@@ -1,0 +1,34 @@
+bg 1
+music retro1
+1F: The life of a fan isn't easy.
+But man, it sure is fun!
+Staying up to date with the latest Space Crab news...
+Buying all of the merch, downloading the newest soundtracks...
+I can't imagine doing anything else!
+Though, I haven't seen any Space Crab updates in the last few days.
+Did his ship explode again? That would be so typical.
+Maybe this will be a #SpaceCrab3 situation!
+music
+??: You know... Fan of Crabs...
+I do have news on the Crab of Space.
+1F: No way! Please, do tell! Do tell!
+CC: You do want that, don't you?
+You must first prove your ability in battle!
+music retro5
+fight 17731 (really easy fight)
+music retro6
+CC: Oh my, how strong you are!
+You really are worthy of knowing the happenstance!
+1F: Really? That battle didn't SEEM that tough.
+CC: You think I have a REASON to let another crab beat me? Nay-say.
+Just like the Crab of Space had no reason to let me win.
+So he didn't.
+His pathetic "Star Seekers" don't have the compassion to let a poor, defenseless-
+1F: WAIT.
+Space Crab's been involved with the STAR SEEKERS??
+They're the hottest group in the rumor mill!
+I haven't heard of any confirmed members - but if one of them is SPACE CRAB...
+I NEED to find out more!
+exit 1
+CC: Not the outcome that time predicted...
+...but the seeds have been planted. (evil smile)

@@ -1,0 +1,32 @@
+bg 1
+music love
+CN: Hey hey! Crabby Cakes!
+CA: Ahh, welcome, Cranime, welcome!
+What can I get for my favorite customer?
+CN: The usual! A box of tasty donuts and sweets!
+Oh! And a parfait, too!
+CA: Well, if you want all that, you'll have to wait a bit.
+I got ANOTHER rush order for ANOTHER 200 cakes!
+CN: EEEHHHH?! Really?!
+CA: I'm working double overtime as it is!
+At least I have help from my plucky assisstant.
+CC: ... (laying on the floor, conked out)
+CN: Wow, this must be a SUPER huge event!
+What's it all for? Tell me! TELL ME!
+CA: Ohhh no. The last time I spilled the beans, I had to get my hands dirty.
+And with dirty hands, one cannot bake a cake!
+CN: :(
+CA: B-but for my favorite customer, maybe we can battle for the info?
+CN: YAY! ^w^
+music mcb
+fight 35467
+music love
+CA: So. The Star Seekers are having their opening ceremony, and-
+CN: A ceremony? You mean, like, a PROM?!
+CA: No. So, I'm making these cakes for-
+CN: A PROM? But I don't even have a date! >_<
+I can't show up with nobody! The other crabs will laugh at me!
+CA: It's really not that kind of event...
+CN: Crabby Cakes, I have to go!
+exit 2
+My sparkle-love journey starts NOW!

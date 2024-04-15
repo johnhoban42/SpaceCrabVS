@@ -1,0 +1,35 @@
+bg 1
+music retro6
+HC: This has been a wonderful time, visiting paradise.
+Even though things haven't gone as... expected.
+Luckily, tonight is going to be calm and relaxing- the sunset luau.
+For once on this vacation, things will finally go as planned.
+There it is!
+I finally made it, to my final item on my itinerary-
+music rave1
+RC: THE SUNSET RAVE!
+HC: The WHAT??
+This was NOT on the schedule!
+RC: Those things change all of the time, man!
+You ready to have some fun?
+music
+HC: ...
+music rave1
+Haahaha! Sure, why not?
+I've been too worried about how things are supposed to go.
+Time to let loose and have some fun!
+RC: Attaboy! Loosen up, party hard, live free!
+Just for fun, a dance battle, you and me!
+music tomato
+fight 64637
+music retro2
+HC: Dancing the night away really was a great time.
+I can't believe I was so worried about the small things.
+And that's how I ended the best vacation of my life!
+TX: ...That's great, sir.
+HC: How much farther is the trip home?
+TX: Another two lightyears, sir.
+HC: Not bad at all! Only one short nap away.
+exit 1
+TX: (...Makes me wish I could sleep on the job.)
+(Maybe I should book a vacation.)

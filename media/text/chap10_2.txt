@@ -1,0 +1,29 @@
+bg 2
+RL: Moving on to our next song-
+MC: Hey. Hey! HEY!
+What's the big idea? Why so LOUD?!
+RL: Oh, Mad Crab! Finally come around to my music, eh?
+Ready to admit your LOVE for my sweet melodies~?
+MC: Ready? I'm READY to RIP that guitar out of your claws and SMASH it on the ground!
+Who gave YOU permission to ruin the peace and quiet?
+RL: Wait. Did you not know about the concert?
+MC: Of COURSE I know about the concert, you dolt. That's why-
+RL: A madly in love fan, too ashamed to admit their feelings. How cliche~
+MC: Quit it with the fantasies. You. Me. Fight.
+When I win, you go.
+RL: Hey, all good with me. I won't be losing with my next song.
+Sunset Siesta, here we go!
+I think you'll like this one, Maddy~
+music retro5
+fight 78382
+music results
+RL: Hey, a little lover's quarrel never hurt anyone, right?
+MC: Ugh.
+I specifically planned my trip so that I WOULDN'T be here for your nonsense.
+You rockstars think you can make a ruckus wherever and whenever...
+It makes me hopping MAD!
+Just... let me go in peace.
+...
+And send me an MP3 of that song you just played.
+leave MC
+RC: Heh... I can read you like a book, Mad Crab.

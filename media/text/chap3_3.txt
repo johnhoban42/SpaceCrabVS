@@ -1,0 +1,29 @@
+bg 1
+music retro4
+1F: Taxi Crab! Taxi Crab! I need you to take me to Space Crab, STAT!
+TX: Hold your horses. We've talked about this before, right?
+I can take you to places, but not crabs.
+Remember your King Crab phase?
+He said he'd lock you up if he ever saw you creeping on him again.
+1F: This is different! Apparently, Space Crab WANTS crabs to come to him.
+He's making a Star Seekers group!
+And I'm not giving up my chance for joining!
+TX: Tell ya what... my drives have been long and dull for a while, yeah?
+Could use some exitement.
+Let's have a quick tussle, get some blood pumping, and I'll give you a lift.
+1F: Oh yeah!
+music retro4
+fight 46485
+music retro6
+Joints are loose, adrenaline is pumping, and the gas peddle is raring to be pushed.
+Hop in, kid.
+1F: OMIGOSH! Thank you!
+I also printed out flyers for the Star Seekers!
+Can I hang them all over the backseat?
+music
+TX: Don't push your luck, kid.
+1F: ...
+TX: ...
+music retro6
+One. You can put one up.
+1F: (Yes!)

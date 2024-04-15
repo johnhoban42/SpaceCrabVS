@@ -1,0 +1,53 @@
+bg 3
+music fightJ
+KC: I'm already tired of waiting.
+Let me just skip to the exciting part!
+CC: No worries, Crabbed King. Your wish has been advanced in time.
+exit 2
+KC: Hmm?
+music fightB
+SC: Chrono Crab! Show yourself!
+KC: Well well, the crab of the hour.
+Did that laut, Inianda Jeff, drag you in?
+SC: What? No!
+I got a call that Chrono Crab is waiting here to challenge me!
+Where is he?! Was it a prank call, or what?
+KC: Frankly, I have negative cares about your little prattle.
+What I do care about, though...
+Is the permanent disbanding of the Star Seekers!
+music tomato
+SC: No. You have no power to do that!
+KC: What you are missing, is my powerful shrimp army, and my spacious dungeon.
+So yes, I do have power to do that.
+SC: (Uh oh.)
+(C'mon, think, think...)
+(I just need to buy some time to... think of SOMETHING!)
+Battle me! If you win, then you can do whatever you want to me!
+Lock me up, take all my stuff, disband the Star Seekers, anything!
+KC: Those are some great ideas! I appreciate your cooperation.
+music tomato
+fight 64638
+music retro5
+KC: Any last words before you're thrown behind metal bars?
+SC: (This is my one shot!)
+Well, if you must...
+But it's a shame that the Star Seekers will never have a KING of their own!
+KC: Hmm?
+SC: They have a leader, sure, but no figurehead! No head honcho!
+And if I go to jail, I'm sure they'll never be able to find a king by themselves.
+KC: You think you can sway me? I've already decided.
+KC: ...
+KC: I will JOIN the Star Seekers.
+CC: What.
+NC: ...
+KC: They need a King, no? And not just a wimpy leader like this here, Space Crab.
+Why have a just a leader when you can also have a KING?
+KING of the Star Seekers... a title befitting of me, yes?
+Ohhohoho!
+NC: I... did not anticipate this. I step down.
+exit 2
+CC: Hmph.
+exit 2
+SC: Excited to have you on board, King Crab!
+KC: On board? I am the board! The figurehead!
+Yes, I could get used to this.

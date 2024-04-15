@@ -1,0 +1,41 @@
+bg 2
+music
+NC: As I have no leader, I must fall back on the support of my family.
+NC: It has been quite a while...
+I can only hope they still accept me.
+music love
+CA: OMG! Ninjy, you're really here!
+This is the best best BEST day ever!!
+NC: Hello, cousin...
+Cranime.
+CA: You're so silly, with that getup you always wear.
+It covers up your beautiful smile!
+You could look as pretty as me, you know.
+NC: I'll... pass.
+It is quite refreshing to have such levity in a conversation, though.
+CA: Don't get too comfortable!
+I heard some gossip at school. It's going to KNOCK YOUR SOCKS OFF!!
+NC: Well, then. Out with it.
+Let's bemuse and discuss the happenings of teenage crabs.
+CA: I can't just TELL you, SILLY!
+You'll have to BEAT IT out of me!
+NC: ...Is that what high schoolers do now?
+music mcd
+fight
+music date
+CA: You big meanie! You always take things so seriously...
+NC: I fail to see an alternative to what I've done.
+CA: Hmph! Now I don't WANT to tell you the gossip.
+...
+But I will anyways!
+Some of the crabs at school have been getting offers to join a super exclusive group!
+NC: No.
+CA: Something about, stars?
+NC: NO.
+CA: Oh yeah, they were Star Seekers! Pretty nerdy, but the dreamy hunks are all joining it.
+Maybe they'll invite me too!
+NC: ...I took a break from this accursed group.
+But now it's seeping into my most sacred of spaces... my family.
+No longer a silent force, it's time to take matters to the source.
+exit 1
+CA: Bye, Ninjy! I hope the rest of your day is totally SUGOI!

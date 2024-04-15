@@ -13,6 +13,22 @@ function DrawPolar1(spr, rNum, theta#)
 			if spType = CLASSIC then cenX = w/2
 			//Placeholder line for extra theta offset
 		endif
+		/* //The special camera won't work because of the exp particles. Oh well, maybe for SC3...
+		avgS# = 0
+		avgC# = 0
+		num = 0
+		camX# = 0
+		camY# = 0
+		for i = 1 to meteorActive1.length
+			inc avgS#, sin(meteorActive1[i].theta)
+			inc avgC#, cos(meteorActive1[i].theta)
+			inc num, 1
+		next i
+		avg# = Mod(atan2(avgS#, avgC#)+360, 360)
+		if avg# <> 0
+			camX# = 0
+			camY# = 0
+		endif	*/
 		SetSpritePosition(spr, rNum*cos(theta#) + cenX - GetSpriteWidth(spr)/2, rNum*sin(theta#) + cenY - GetSpriteHeight(spr)/2)
 		SetSpriteAngle(spr, theta#+90)
 	endif
@@ -43,83 +59,16 @@ function CreateGame1()
 	for i = crab1start1I to crab1skid3I
 		AddSpriteAnimationFrame(crab1, i)
 	next i
-	if crab1Type = 1		//Space
-		//for i = crab1start1I to crab1skid3I
-			//AddSpriteAnimationFrame(crab1, i)
-		//next i
-		crab1framerate = frameratecrab1
-		specialCost1 = specialPrice1
-		crab1Vel# = 1.28
-		crab1Accel# = .1
-		crab1JumpHMax# = 5
-		crab1JumpSpeed# = 1.216
-		crab1JumpDMax = 28
+	
+	crabFNum = crab1Type + crab1Alt*6
+	crab1framerate = 	crabFramerate[crabFNum]
+	specialCost1 = 		crabSPAtck[crabFNum]
+	crab1Vel# = 		crabVel[crabFNum]
+	crab1Accel# = 		crabAccel[crabFNum]
+	crab1JumpHMax# = 	crabJumpHMax[crabFNum]
+	crab1JumpSpeed# = 	crabJumpSpeed[crabFNum]
+	crab1JumpDMax = 		crabJumpDMax[crabFNum]
 		
-	elseif crab1Type = 2	//Wizard
-		
-		crab1framerate = frameratecrab2
-		specialCost1 = specialPrice2
-		crab1Vel# = 1.08
-		crab1Accel# = .13
-		crab1JumpHMax# = 10.5
-		crab1JumpSpeed# = 1.516
-		crab1JumpDMax = 40
-		
-	elseif crab1Type = 3	//Top
-		//for i = crab3start1I to crab3skid3I
-			//AddSpriteAnimationFrame(crab1, i)
-		//next i
-		crab1framerate = frameratecrab3
-		specialCost1 = specialPrice3
-		crab1Vel# = 2.48
-		crab1Accel# = .03
-		crab1JumpHMax# = 8
-		crab1JumpSpeed# = -3 //-2 //-3.4 //-2
-		crab1JumpDMax = 32
-		
-	elseif crab1Type = 4	//Rave
-		//for i = crab4start1I to crab4skid3I
-			//AddSpriteAnimationFrame(crab1, i)
-		//next i
-		crab1framerate = frameratecrab4
-		specialCost1 = specialPrice4
-		crab1Vel# = 1.59
-		crab1Accel# = .08
-		crab1JumpHMax# = 10
-		crab1JumpSpeed# = -1.28
-		crab1JumpDMax = 43
-		
-	elseif crab1Type = 5	//Chrono
-		//for i = crab5start1I to crab5skid3I
-			//AddSpriteAnimationFrame(crab1, i)
-		//next i
-		crab1framerate = frameratecrab5
-		specialCost1 = specialPrice5
-		crab1Vel# = 1.38
-		crab1Accel# = .1
-		crab1JumpHMax# = 5
-		crab1JumpSpeed# = -3.216
-		crab1JumpDMax = 28
-		
-	elseif crab1Type = 6	//Ninja
-		//for i = crab6start1I to crab6skid3I
-			//AddSpriteAnimationFrame(crab1, i)
-		//next i
-		crab1framerate = frameratecrab6
-		specialCost1 = specialPrice6
-		crab1Vel# = 1.5
-		crab1Accel# = .1
-		crab1JumpHMax# = 6
-		crab1JumpSpeed# = .816
-		crab1JumpDMax = 26
-		
-	else
-		//The debug option, no crab selected
-		for i = crab1start1I to crab1death2I
-			//AddSpriteAnimationFrame(crab1, i)
-		next i
-		specialCost1 = 1
-	endif
 	crab1JumpHMax# = crab1JumpHMax#*gameScale#
 
 	PlaySprite(crab1, crab1framerate, 1, 3, 10)
@@ -160,8 +109,12 @@ function CreateGame1()
 	//Placeholder for game 2 X
 	SetSpriteColor(meteorMarker1, 30, 100, 255, 255)
 	//Placeholder for game 2 angle
-	
-	LoadAnimatedSprite(specialButton1, "crab" + str(crab1Type)+ "special", 5)
+		
+	if GetFileExists("crab" + str(crab1Type) + AltStr(crab1Alt) + "special1.png")
+		LoadAnimatedSprite(specialButton1, "crab" + str(crab1Type) + AltStr(crab1Alt) + "special", 5)
+	else
+		LoadAnimatedSprite(specialButton1, "crab" + str(crab1Type) + "special", 5)
+	endif
 	SetSpriteFrame(specialButton1, 5)
 	SetSpriteSize(specialButton1, 100-25*dispH, 100-25*dispH)
 	SetSpritePosition(specialButton1, GetSpriteX(expHolder1) + GetSpriteWidth(expHolder1) + 7 - 50, h-20-GetSpriteHeight(meteorButton1))
@@ -190,7 +143,7 @@ function CreateGame1()
 	crab1Deaths = 0
 	special1Used = 0
 		
-	if spActive
+	if spType = MIRRORMODE or spType = CLASSIC
 		for i = 1 to 3
 			SetSpriteVisible(crab1PlanetS[i], 0)
 		next i
@@ -219,11 +172,16 @@ function CreateGame1()
 		
 	endif
 		
-	if dispH
+	if dispH and spType = 0 or spType = STORYMODE or spType = AIBATTLE
 		CreateTextExpress(meteorButton1, "Z", 40, fontScoreI, 1, GetSpriteMiddleX(meteorButton1) - 2, GetSpriteY(meteorButton1) - 40, 10)
 		CreateTextExpress(specialButton1, "X", 40, fontScoreI, 1, GetSpriteMiddleX(specialButton1) - 2, GetSpriteY(specialButton1) - 40, 10)
 		SetTextColor(meteorButton1, 100, 100, 100, 255)
 		SetTextColor(specialButton1, 100, 100, 100, 255)
+		
+		if GetRawJoystickConnected(1)
+			SetTextString(meteorButton1, "X")
+			SetTextString(specialButton1, "B")
+		endif
 	endif
 		
 endfunction
@@ -234,6 +192,13 @@ function DoGame1()
 	if specialTimerAgainst1# > 0 and crab2Type = 1
 		DrawPolar1(special2Ex1, 180 + ((specialTimerAgainst1# - 100)^2)/11, 180 + specialTimerAgainst1#)
 		SetSpriteAngle(special2Ex1, sin(specialTimerAgainst1#*8)*10)
+		if dispH
+			if GetSpriteX(special2Ex1) > w/2
+				SetSpriteVisible(special2Ex1, 0)
+			else
+				SetSpriteVisible(special2Ex1, 1)
+			endif
+		endif
 	endif
 	
 	//The Top Crab special
@@ -254,6 +219,7 @@ function DoGame1()
 			//Phase 5 (end)
 			inc planet1RotSpeed#, 2*planetSpeedUpRate#*fpsr#
 		endif
+		nudge1R# = 0
 		IncSpriteAngle(planet1, planet1RotSpeed#)
 		inc crab1Theta#, planet1RotSpeed#
 	endif
@@ -261,7 +227,8 @@ function DoGame1()
 	//The Rave Crab special
 	if specialTimerAgainst1# > 0 and crab2Type = 4
 		for i = special2Ex1 to special2Ex5
-			SetSpriteColorByCycle(i, specialTimerAgainst1#)
+			if crab2Alt = 0 then SetSpriteColorByCycle(i, specialTimerAgainst1#)
+			if crab2Alt = 3 then SetSpriteColorByCycleC(i, specialTimerAgainst1#)
 		next i
 		SetSpriteColor(special2Ex5, (GetSpriteColorRed(special2Ex5)+510)/3, (GetSpriteColorGreen(special2Ex5)+510)/3, (GetSpriteColorBlue(special2Ex5)+510)/3, 255)
 		if specialTimerAgainst1# < raveCrabTimeMax/8
@@ -306,19 +273,19 @@ function DoGame1()
 			spr = special2Ex1
 			SetSpriteColorAlpha(spr, 255)
 			SetSpritePosition(spr, GetSpriteMiddleX(crab2)-GetSpriteWidth(spr)/2, GetSpriteMiddleY(crab2)-GetSpriteHeight(spr)/2)
-			PlaySoundR(ninjaStarS, volumeSE)
+			PlaySoundR(ninjaStarS, 40)
 		endif
 		if specialTimerAgainst1# < ninjaCrabTimeMax*4/5 and GetSpriteColorAlpha(special2Ex2) = 0
 			spr = special2Ex2
 			SetSpriteColorAlpha(spr, 255)
 			SetSpritePosition(spr, GetSpriteMiddleX(crab2)-GetSpriteWidth(spr)/2, GetSpriteMiddleY(crab2)-GetSpriteHeight(spr)/2)
-			PlaySoundR(ninjaStarS, volumeSE)
+			PlaySoundR(ninjaStarS, 40)
 		endif
 		if specialTimerAgainst1# < ninjaCrabTimeMax*3/5 and GetSpriteColorAlpha(special2Ex3) = 0
 			spr = special2Ex3
 			SetSpriteColorAlpha(spr, 255)
 			SetSpritePosition(spr, GetSpriteMiddleX(crab2)-GetSpriteWidth(spr)/2, GetSpriteMiddleY(crab2)-GetSpriteHeight(spr)/2)
-			PlaySoundR(ninjaStarS, volumeSE)
+			PlaySoundR(ninjaStarS, 40)
 		endif
 		
 		for i = special2Ex1 to special2Ex3
@@ -336,24 +303,30 @@ function DoGame1()
 	//The movement code
 	inc crab1Theta#, crab1Vel# * crab1Dir# * fpsr# //Need to figure out why FPSR modifier isn't working
 	
-	true1 = 0
-	//if (deviceType = DESKTOP and ((GetPointerPressed() and (GetPointerY() > GetSpriteY(split) + GetSpriteHeight(split))) or (GetRawKeyPressed(32) or GetRawKeyPressed(49))) and Hover(meteorButton1) = 0 and Hover(specialButton1) = 0) then true1 = 1
-	if dispH and (inputTurn1 or (GetPointerPressed() and (GetPointerX() < w/2) and Hover(meteorButton1) = 0 and Hover(specialButton1) = 0 and Hover(pauseButton) = 0)) then true1 = 1
-	true2 = 0
-	if (GetMulitouchPressedButton(split) = 0 and GetMulitouchPressedButton(meteorButton1) = 0 and GetMulitouchPressedButton(specialButton1) = 0 and GetMultitouchPressedBottom() and deviceType = MOBILE) then true2 = 1
-	true3 = 0
-	if spActive = 1 and (GetMultitouchPressedTop() or GetMultitouchPressedBottom()) and deviceType = MOBILE and not ButtonMultitouchEnabled(pauseButton) and not ButtonMultitouchEnabled(phantomPauseButton) then true3 = 1
-	//Activating the crab turn at an input
-	
-	//Space left for the AI stuff in game 2
+	trueTurn = 0
+
+	//Mobile touch
+	if GetMultitouchPressedBottom() and deviceType = MOBILE then trueTurn = 1
+	if GetPointerPressed() and GetPointerY() > h/2 and deviceType = DESKTOP and dispH = 0 then trueTurn = 1
+	//Desktop touch
+	if GetPointerPressed() and GetPointerX() < w/2 and deviceType = DESKTOP and dispH then trueTurn = 1
+	//Classic and mirror touch
+	if spType = CLASSIC or spType = MIRRORMODE
+		if GetPointerPressed() and deviceType = DESKTOP then trueTurn = 1
+		if GetMultitouchPressedTop() or GetMultitouchPressedBottom() and deviceType = MOBILE then trueTurn = 1
+	endif
+	//Cancelling turn if a button is pressed
+	if ButtonMultitouchEnabled(split) or ButtonMultitouchEnabled(pauseButton) or ButtonMultitouchEnabled(meteorButton1) or ButtonMultitouchEnabled(specialButton1) then trueTurn = 0
+	if spType = CLASSIC
+		if ButtonMultitouchEnabled(phantomPauseButton) then trueTurn = 0
+	endif
+	//Controller input overrides things
+	if inputTurn1 then trueTurn = 1
 		
-	//More space
-	
-	if (true2 or buffer1 or true1 or true3) and crab1JumpD# = 0
+	if (trueTurn) and crab1JumpD# = 0
 		
-		buffer1 = 0
 		if crab1Turning = 0 and crab1Type <> 6
-			PlaySoundR(turnS, volumeSE)
+			PlaySoundR(turnS, 40)
 			if crab1Dir# > 0
 				crab1Turning = -1
 			else
@@ -367,7 +340,10 @@ function DoGame1()
 			if Abs(crab1Dir#) < .7 or (crab1Turning * crab1Dir# > 0) or (Abs(crab1Dir#) < 1 and specialTimerAgainst1# > 0 and crab2Type = 5) or crab1Type = 6
 				//The crab leap code
 				//crab1Turning = -1*crab1Turning	//Still not sure if you should leap forwards or backwards
+				
 				PlayMusicOGG(jump1S, 0)
+				SetMusicVolumeOGG(jump1S, 100*volumeSE/100)
+				
 				crab1JumpD# = crab1JumpDMax
 				if crab1Type <> 6
 					crab1Dir# = crab1Vel#*crab1Turning
@@ -379,7 +355,7 @@ function DoGame1()
 				ActivateJumpParticles(1)
 			else
 				//Crab has turned
-				PlaySoundR(turnS, volumeSE)
+				PlaySoundR(turnS, 40)
 			endif
 		endif
 		
@@ -432,7 +408,7 @@ function DoGame1()
 		DrawPolar1(crab1, GetCrabDefaultR(crab1) + crab1JumpHMax# * (crab1JumpD# - (crab1JumpD#^2)/crab1JumpDMax), crab1Theta#)
 	endif
 	//Adjusting the crab angle for the dive, cosmetic
-	if crab1JumpD# > 0
+	if crab1JumpD# > 0 and (crab1Type <> 3 or crab1Alt <> 1)
 		SetSpriteAngle(crab1, GetSpriteAngle(crab1) + crab1JumpD#/crab1JumpDMax*360 * -1 * crab1Dir#)
 	endif
 	
@@ -498,10 +474,6 @@ function DoGame1()
 		CreateMeteor(1, 3, 0)
 	endif
 		
-	UpdateMeteor1()
-	
-	//DrawPolar1(planet1, 0, 270)
-	
 	if expTotal1 >= meteorCost1 and (ButtonMultitouchEnabled(meteorButton1) or inputAttack1) and hit2Timer# <= 0
 		SendMeteorFrom1()
 	endif
@@ -510,11 +482,22 @@ function DoGame1()
 		SendSpecial1()
 	endif
 	
+	
+	//Extra space for AI sendind meteors/special logic
+	
+	
+	
+	
+		
+	UpdateMeteor1()
+	
+	//DrawPolar1(planet1, 0, 270)
+	
 	//Death is above so that the screen nudging code activates
 	hitSpr = CheckDeath1()
 	if GetRawKeyPressed(75) and debug then crab1Deaths = 2
 	if hitSpr <> 0 or (GetRawKeyPressed(75) and debug)
-		DeleteSprite(hitSpr)
+		if GetSpriteExists(hitSpr) then DeleteSprite(hitSpr)
 		if getSpriteExists(hitSpr+glowS) then DeleteSprite(hitSpr + glowS)
 		//Kill crab
 		inc crab1Deaths, 1
@@ -594,7 +577,8 @@ function UpdateMeteor1()
 			else
 				//Slowing the meteors at certain angles
 				if (Abs(Mod(meteorActive1[i].theta+slowMetWidth, 90)-slowMetWidth) < slowMetWidth) then meteorActive1[i].r = meteorActive1[i].r + 1.0*met1speed/slowMetSpeedDen
-				if spType = CLASSIC and (Abs(Mod(meteorActive1[i].theta+slowMetWidth + 90, 180)-slowMetWidth) < slowMetWidth) then meteorActive1[i].r = meteorActive1[i].r - 1.8*met1speed/slowMetSpeedDen	//Extra classic mode trickery
+				if spType = CLASSIC and dispH = 0 and (Abs(Mod(meteorActive1[i].theta+slowMetWidth + 90, 180)-slowMetWidth) < slowMetWidth) then meteorActive1[i].r = meteorActive1[i].r - 1.8*met1speed/slowMetSpeedDen	//Extra classic mode trickery (mobile)
+				if spType = CLASSIC and dispH and (Abs(Mod(meteorActive1[i].theta+slowMetWidth + 180, 180)-slowMetWidth) < slowMetWidth) then meteorActive1[i].r = meteorActive1[i].r - 1.8*met1speed/slowMetSpeedDen	//Extra classic mode trickery (desktop)
 			endif
 		
 		elseif cat = 2	//Rotating meteor
@@ -673,14 +657,14 @@ function UpdateMeteor1()
 			SetSpriteVisible(spr+glowS, 0)
 		endif
 		
-	`
+
 		if (GetSpriteCollision(spr, planet1) or meteorActive1[i].r < 0) and deleted = 0	
 			if hit1Timer# <= 0
 				//Only doing the special extras when the crab isn't dead
 				if GetSpriteColorAlpha(spr) = 255
 					minusOne = 0
 					if specialTimerAgainst1# > 0 and crab2Type = 5 then minusOne = 1
-					if spActive = 0 then CreateExp(spr, cat, crab1Deaths+1 - minusOne)		//Only non-special meteors give EXP
+					if spType = 0 or spType = STORYMODE then CreateExp(spr, cat, crab1Deaths+1 - minusOne)		//Only non-special meteors give EXP
 					nonSpecMet = 1
 				endif
 				ActivateMeteorParticles(cat, spr, 1)
@@ -690,15 +674,15 @@ function UpdateMeteor1()
 				nudge1Theta# = meteorActive1[i].theta
 			endif
 			
-			if spActive
+			if spType = MIRRORMODE or spType = CLASSIC
 				inc spScore, 1
 				UpdateSPScore(1)
 			endif
 			
 			DeleteSprite(spr)
 			if getSpriteExists(spr+glowS) then DeleteSprite(spr + glowS)
-			if fruitMode = 0 then PlaySoundR(explodeS, volumeSE)
-			if fruitMode = 1 then PlaySoundR(fruitS, volumeSE)
+			if fruitMode = 0 then PlaySoundR(explodeS, 40)
+			if fruitMode = 1 then PlaySoundR(fruitS, 40)
 			
 			if meteorActive1[i].cat = 3 then DeleteSprite(spr + 10000)
 			//Meteor explosion goes here
@@ -793,11 +777,11 @@ function SendSpecial1()
 		specialTimerAgainst2# = spaceCrabTimeMax
 		
 		if GetSpriteExists(special1Ex1) = 0
-			CreateSpriteExpress(special1Ex1, 70, 70, -100, -100, 19)
-			SetSpriteImage(special1Ex1, ufoI)
+			SetFolder("/media/envi")
+			LoadSpriteExpress(special1Ex1, "spaceNed" + AltStr(crab1Alt) + ".png", 70, 70, -100, -100, 19)
 		endif
 		
-		PlaySoundR(ufoS, volumeSE)
+		PlaySoundR(ufoS, 40)
 		
 		angles as float[7] = [0, 51.43, 102.86, 154.29, 205.72, 257.15, 308.58]
 		angleOff = Random(1, 51)
@@ -813,15 +797,13 @@ function SendSpecial1()
 			SetSpriteSize(meteorSprNum, metSizeX, metSizeY)
 			SetSpriteColor(meteorSprNum, 235, 20, 20, 254)
 			SetSpriteDepth(meteorSprNum, 20)
-			AddMeteorAnimation(meteorSprNum)
+			AddMeteorAnimation(meteorSprNum, 0)
 			
 			CreateSprite(meteorSprNum + 10000, meteorTractorI)
 			SetSpriteSize(meteorSprNum + 10000, 1, 1000)
 			SetSpriteColor(meteorSprNum + 10000, 255, 20, 20, 30)
 			SetSpriteDepth(meteorSprNum + 10000, 30)
-			
-			CreateMeteorGlow(meteorSprNum)
-			
+						
 			inc meteorSprNum, 1
 			
 			//Reproducable bug by spamming this attack, was in the spr references in ospr in the meteor 3 update
@@ -831,12 +813,15 @@ function SendSpecial1()
 		
 	elseif crab1Type = 2
 		//Ladder Wizard
-		
-		rnd = Random(1, 2)
-		if rnd = 1
-			PlaySoundR(wizardSpell1S, volumeSE)
+		if crab1Alt <> 1
+			rnd = Random(1, 2)
+			if rnd = 1
+				PlaySoundR(wizardSpell1S, 40)
+			else
+				PlaySoundR(wizardSpell2S, 40)
+			endif
 		else
-			PlaySoundR(wizardSpell2S, volumeSE)
+			PlaySoundR(kingSpellS, 100)
 		endif
 		
 		for j = 1 to 3
@@ -854,8 +839,7 @@ function SendSpecial1()
 				SetSpriteColor(meteorSprNum, 255, 120, 40, 254)
 				SetSpriteDepth(meteorSprNum, 20)
 				SetSpriteColorRandomBright(meteorSprNum)
-				AddMeteorAnimation(meteorSprNum)
-				CreateMeteorGlow(meteorSprNum)
+				AddMeteorAnimation(meteorSprNum, crab1Alt)
 				inc meteorSprNum, 1
 				meteorActive2.insert(newMetS)
 			next i
@@ -871,7 +855,6 @@ function SendSpecial1()
 	elseif crab1Type = 4
 		//Rave Crab
 		PlayMusicOGGSP(raveBass1, 1)
-		SetMusicVolumeOGG(raveBass1, 100)
 		
 		specialTimerAgainst2# = raveCrabTimeMax
 		if GetSpriteExists(special1Ex1) = 0
@@ -885,7 +868,8 @@ function SendSpecial1()
 		for i = special1Ex1 to special1Ex4
 			SetSpriteDepth(i, 19)
 			FixSpriteToScreen(i, 1)
-			SetSpriteColorByCycle(i, specialTimerAgainst2#)
+			if crab1Alt = 0 then SetSpriteColorByCycle(i, specialTimerAgainst2#)
+			if crab1Alt = 3 then SetSpriteColorByCycleC(i, specialTimerAgainst2#)
 		next i
 		SetSpriteDepth(special1Ex5, 7)
 		
@@ -928,6 +912,8 @@ function SendSpecial1()
 		next i
 		PlaySprite(special1Ex5, 20, 1, 1, 8)
 	
+		if crab1Alt <> 0 then SetSpriteVisible(special1Ex5, 0)
+	
 	elseif crab1Type = 5
 		//Chrono Crab
 		specialTimerAgainst2# = chronoCrabTimeMax
@@ -958,9 +944,9 @@ function SendSpecial1()
 		ninjaStarSize = 80*gameScale#
 		
 		//The 3 throwing stars
+		SetFolder("/media")
 		for i = special1Ex1 to special1Ex3
-			if GetSpriteExists(i) = 0 then CreateSpriteExpress(i, ninjaStarSize, ninjaStarSize, -200, -200, 4)
-			SetSpriteImage(i, ninjaStarI)
+			if GetSpriteExists(i) = 0 then LoadSpriteExpress(i, "envi/ninjaStar" + AltStr(crab1Alt) + ".png", ninjaStarSize, ninjaStarSize, -200, -200, 4)
 			SetSpriteColorAlpha(i, 0)
 			//SetSpriteShapeCircle(i, 0, 0, ninjaStarSize*2.2/7, 0)
 		next i
@@ -1062,6 +1048,8 @@ function HitScene1()
 				UpdateMeteor1()
 				
 				//Flying off the planet
+				//DeleteSprite(hitSpr1)
+				crab1JumpD# = 0
 				inc crab1R#, 25*fpsr#
 				SetSpriteDepth(crab1, 11)
 				
@@ -1170,6 +1158,9 @@ function HitScene1()
 	
 	//The visual update code, based on what is happening above
 	DrawPolar1(crab1, crab1R#, crab1Theta#)
+	if crab1JumpD# > 0
+		//DrawPolar1(crab1, GetCrabDefaultR(crab1) + crab1JumpHMax# * (crab1JumpD# - (crab1JumpD#^2)/crab1JumpDMax), crab1Theta#)
+	endif
 
 	if hit1Timer# > hitSceneMax*11/12
 		//The Smash Bros Freeze

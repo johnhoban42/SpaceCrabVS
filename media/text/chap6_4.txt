@@ -1,0 +1,32 @@
+bg 4
+music retro3
+IJ: So, this so called... Mirror Dimension.
+There is treasure there, yes?
+CC: That depends. Is your life a treasure?
+You won't be keeping it if you go in there.
+My involement has been limited to making sure no crab finds it.
+Harnessing this awesome weapon, all to yourself, doesn't it feel... powerful?
+IJ: Hmmm... I can't say I feel the same way.
+What point is there to an expedition if the your stories can't be shared?
+The glory of adventuring comes from spreading your exploits.
+I won't live in a world without the story of Inianda Jeff bravely exploring the Mirror Dimension!
+exit 1
+CC: Well, your ethics certainly cause me to ponder-
+music
+Wait, you're going IN?
+//I should port over the SP transition for mirror mode into here
+music chromecoast
+mirror 40
+music chromecoast
+IJ: The discovery of the century! Unbelievable!
+CC: Moron! Daredevilish fool!
+...
+Now tell me the story of what you saw in there, you braggart!
+IJ: It looks like this once selfish crab has taked a turn towards sharing.
+Inside, it was truly stunning. There were two of me!
+I don't know where the other me went-
+Actually, which one WAS me?
+CC: So the duplication effect isn't just for meteors, but living beings too?
+Jeffery, you are a deviant and discoverer!
+You'll make a great teammate.
+IJ: I'm eager to join, Time Guy - there are more stories to be written.

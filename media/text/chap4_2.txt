@@ -1,0 +1,29 @@
+bg 2
+music retro1
+TC: Team Player would be the best crab to ask for help...
+But he's so popular, he's so busy... I don't want to bother him.
+I shouldn't have even come to visit him- I'll just sneak away...
+TP: Look here, it's Top Crab! How are you, my wooden guy?
+TC: Augh!
+Sorry, you startled me. I actually wanted to ask something, if you have the time...
+TP: Of course, I'll always make time for a friend!
+TC: Well... do you know how to get stronger?
+I was invited into a group of elite crabs, but I shouldn't be there with my current skills!
+TP: I'm glad you came my way!
+Starting is the first step to a better self.
+Plus, training is my specialty.
+We'll work out a routine plan which you can start after a rest day.
+Then, check back in with me after a 2 weeks to see how you're feeling.
+TC: B-but I want to start now!
+TP: Oh, eager, are you?
+Then lets start with the warm up - get out there and dodge at least 20 meteors!
+TC: Yes! Will do!
+music fightJ
+classic 20
+music retro2
+TC: Whew, that was tough! I might need to warm up to that in the future.
+TP: Silly guy, that WAS the warmup!
+Now, follow me, so we can start you routine for the day.
+exit 2
+TC: Oh geez...
+Well, if this is what it takes to get stronger, then I'll do it.
