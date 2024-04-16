@@ -339,6 +339,8 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 	
 	next i
 	
+	
+	
 	//Descriptions were moved down here to include newline characters
 	crabDescs[0] = crabDescs[0] + 	"Known far and wide, he's ready to claim his fame!" + chr(10) +	"Double-tap for his galaxy famous quick-dodge!"
 	crabDescs[1] = crabDescs[1] + 	"The most magical being this side of the nebula." + chr(10) + 	"Launch into the skies with a double-tap spell!"
@@ -396,7 +398,45 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 	SetTextMiddleScreenOffset(csc.txtReady, f, 0, p*7*h/16)
 	SetTextColorAlpha(csc.txtReady, 0)
 	
-	
+	if csc.player = 2 and spType = AIBATTLE
+		
+		for i = 0 to NUM_CRABS-1
+			spr = csc.sprCrabs + i
+			
+			//Changing the positions/orientation for mobile
+			if dispH = 0
+				MatchSpritePosition(spr, csc1.sprCrabs + i)
+				IncSpriteY(spr, -h/2-50)
+				SetSpriteAngle(spr, 0)
+				SetSpriteFlip(spr, 0, 0)
+				SetTextY(csc.txtCrabName, 40)
+				SetTextAngle(csc.txtCrabName, 0)
+			endif
+			
+			//Altering the tweens for AI Battling
+			DeleteTween(spr)
+			CreateTweenSprite(spr, .3)
+			if dispH then SetTweenSpriteY(spr, GetSpriteY(spr), GetSpriteY(spr) - 160, TweenSmooth2())
+			if dispH = 0 then SetTweenSpriteY(spr, GetSpriteY(spr), GetSpriteY(spr) - 170, TweenSmooth2())
+		next i
+		
+		if dispH = 0
+			SetSpriteFlip(csc.sprRightArrow, 0, 0)
+			SetSpriteFlip(csc.sprLeftArrow, 0, 0)
+		endif
+		
+		csc.crabSelected = 0
+		IncSpriteY(csc1.sprReady, 900)
+		
+		//This sprite is being transformed into the difficulty number
+		for i = 1 to 10
+			SetFolder("/media/envi")
+			img = LoadImage("mAlt" + str(i) + ".png")
+			AddSpriteAnimationFrame(csc.sprTxtBack, img)
+			trashBag.insert(img)
+		next i
+		SetSpriteFrame(csc.sprTxtBack, spAIDiff)
+	endif
 	
 	if dispH
 		//Most of these elements are resized in similar ways; just the x's are different
@@ -556,6 +596,7 @@ function InitCharacterSelect()
 	if spActive = 1 then spType = STORYMODE
 	if spType = STORYMODE then spActive = 1
 	storyActive = 0
+	spAIDiff = 3
 	
 	crab1Alt = 0
 	crab2Alt = 0
@@ -974,6 +1015,115 @@ function DoCharacterSelectController(csc ref as CharacterSelectController)
 	
 endfunction
 
+// Game loop for the AI screen
+function DoAISelectController(csc ref as CharacterSelectController)
+	
+	//The 6-crab view
+	for i = 0 to NUM_CRABS-1
+		spr = csc.sprCrabs + i
+		if ButtonMultitouchEnabled(spr) and GetSpriteVisible(spr) and GetSpriteGroup(spr) = 0
+			
+			//The one time, first selection stuff
+			if GetTextString(csc.txtCrabName) <> "Set Difficulty:"
+				for j = 0 to NUM_CRABS-1
+					PlayTweenSprite(csc.sprCrabs + j, csc.sprCrabs + j, 0)
+				next j
+				SetTextColorAlpha(csc.txtCrabName, 0)
+				
+				if dispH
+					//Desktop
+					SetTextExpress(csc.txtCrabName, "Set Difficulty:", 60, fontDescI, 0, 0, 0, 5, -17)
+					SetTextPosition(csc.txtCrabName, w/2 + 65, h - 100)
+				else
+					//Mobile
+					SetTextExpress(csc.txtCrabName, "Set Difficulty:", 80, fontDescI, 0, 0, 0, 5, -21)
+					SetTextPosition(csc.txtCrabName, 35, h/2 - 175)
+				
+				endif
+				PlayTweenText(tweenTxtFadeIn, csc.txtCrabName, .2)
+				
+				IncSpriteY(csc1.sprReady, -900)
+				TurnOffSelect()
+				
+				sSq = 50
+				if dispH = 0 then sSq = 60
+				SetSpriteExpress(csc.sprLeftArrow, sSq, sSq, GetTextX(csc.txtCrabName)+330, GetTextY(csc.txtCrabName)+10, 5)
+				if dispH = 0 then IncSpriteX(csc.sprLeftArrow, 130)
+				SetSpriteExpress(csc.sprRightArrow, sSq, sSq, GetSpriteX(csc.sprLeftArrow)+180, GetSpriteY(csc.sprLeftArrow), 5)
+				SetSpriteVisible(csc.sprLeftArrow, 1)
+				SetSpriteVisible(csc.sprRightArrow, 1)
+				
+				
+				SetSpriteExpress(csc.sprTxtBack, 540/5, 742/5, GetSpriteX(csc.sprLeftArrow)+15+sSq, GetSpriteY(csc.sprLeftArrow)-70, 5)
+				SetSpriteVisible(csc.sprTxtBack, 1)
+				SetSpriteColorByCycle(csc.sprTxtBack, 260-spAIDiff*10)
+				if dispH = 0 then IncSpriteX(csc.sprTxtBack, -10)
+				
+				SetSpriteColorAlpha(csc.sprLeftArrow, 0)
+				SetSpriteColorAlpha(csc.sprRightArrow, 0)
+				SetSpriteColorAlpha(csc.sprTxtBack, 0)
+				PlayTweenSprite(tweenSprFadeIn, csc.sprLeftArrow, .2)
+				PlayTweenSprite(tweenSprFadeIn, csc.sprRightArrow, .2)
+				PlayTweenSprite(tweenSprFadeIn, csc.sprTxtBack, .2)
+				
+				
+				
+			endif
+			
+			PlaySoundR(arrowS, 40)
+			PlaySoundR(buttonSound, 40)
+			
+			csc.crabSelected = i+1
+			crab2Type = Mod(csc.crabSelected-1, 6) + 1
+			crab2Alt = (csc.crabSelected-1)/6
+			
+			//Making all other crabs darker
+			for k = 0 to NUM_CRABS-1
+				if k <> i
+					SetSpriteColor(csc.sprCrabs + k, 140, 140, 140, 255)
+					SetSpriteDepth(csc.sprCrabs + k, 4)
+				endif
+				if k = i
+					SetSpriteColor(csc.sprCrabs + k, 255, 255, 255, 255)
+					SetSpriteDepth(csc.sprCrabs + k, 3)
+				endif
+			next k
+			
+			
+			i = NUM_CRABS
+			ClearMultiTouch()
+		endif
+	next i
+	
+	//Fun recoloring of the difficulty number, only animating
+	if spAIDiff >= 9 then SetSpriteColorByCycleC(csc.sprTxtBack, 720.0*GetMusicPositionOGG(characterMusic)/(11-spAIDiff))
+	//SetTextColor(TXT_SP_DANGER, 255, 160 - 10*(gameDifficulty1) + (0.0+10*gameDifficulty1)*sin(gameTimer#*(5+gameDifficulty1)), 160 - 10*(gameDifficulty1) + (0.0+10*gameDifficulty1)*sin(gameTimer#*(5+gameDifficulty1)), 255)
+	//Like above line: let's make this RED at higher difficulties
+	
+	
+	//Repurpose the select buttons, and make 
+	if ButtonMultitouchEnabled(csc.sprLeftArrow)
+		PlaySoundR(arrowS, 100)
+		spAIDiff = Max(1, spAIDiff-1)
+		SetSpriteFrame(csc.sprTxtBack, spAIDiff)
+		SetSpriteColorByCycle(csc.sprTxtBack, 260-spAIDiff*10)	//Offsetting based on the total
+	elseif ButtonMultitouchEnabled(csc.sprRightArrow)
+		PlaySoundR(arrowS, 100)
+		spAIDiff = Min(9+unlockAIHard, spAIDiff+1)
+		SetSpriteFrame(csc.sprTxtBack, spAIDiff)
+		SetSpriteColorByCycle(csc.sprTxtBack, 260-spAIDiff*10)
+	endif
+		
+	//Slowly lighting the backgrounds
+	SetSpriteColorAlpha(csc.sprBG, 205+abs(50*cos(90*csc.player + 80*GetMusicPositionOGG(characterMusic))))
+	IncSpriteAngle(csc.sprBGB, 1.8*fpsr#)
+	if spActive then IncSpriteAngle(SPR_CS_BG_2, -0.8*fpsr#)
+	//IncSpriteAngle(csc.sprBGB, 6*fpsr#)
+	
+
+	
+endfunction
+
 #constant jitterNum 5
 #constant TextJitterFPS 40
 global TextJitterTimer# = 0
@@ -1011,7 +1161,8 @@ function DoCharacterSelect()
 	endif
 	
 	DoCharacterSelectController(csc1)
-	if spActive = 0 then DoCharacterSelectController(csc2)
+	if spActive = 0 and spType <> AIBATTLE then DoCharacterSelectController(csc2)
+	if spType = AIBATTLE then DoAISelectController(csc2)
 	
 	doJit = 0
 	inc TextJitterTimer#, GetFrameTime()
@@ -1042,11 +1193,15 @@ function DoCharacterSelect()
 	if spActive = 0
 		if csc2.ready = 0 and doJit
 			txt = csc2.txtCrabName
-			for i = 0 to GetTextLength(txt)
-				SetTextCharY(txt, i, -102 + 102*dispH -1 * (jitterNum + csc2.glideFrame) + Random(0, (jitterNum + csc2.glideFrame)*2))
-				if csc2.stage = 1 and i > 12 then SetTextCharY(csc2.txtCrabName, i, -102 + 102*dispH -1 * (jitterNum + csc2.glideFrame) + Random(0, (jitterNum + csc2.glideFrame)*2) - (1-dispH*2)*GetTextSize(txt))
-				SetTextCharAngle(txt, i, 180*(1-dispH) - 1*(jitterNum + csc2.glideFrame) + Random(0, jitterNum + csc2.glideFrame)*2)
-			next i
+			aiB = 0
+			if dispH = 0 and spType = AIBATTLE then aiB = 1
+			if ((aiB or dispH) and GetTextString(csc2.txtCrabName) <> "Set Difficulty:")
+				for i = 0 to GetTextLength(txt)
+					SetTextCharY(txt, i, -102 + 102*dispH + 102*aiB -1 * (jitterNum + csc2.glideFrame) + Random(0, (jitterNum + csc2.glideFrame)*2))
+					if csc2.stage = 1 and i > 12 then SetTextCharY(csc2.txtCrabName, i, -102 + 102*dispH + 102*aiB -1 * (jitterNum + csc2.glideFrame) + Random(0, (jitterNum + csc2.glideFrame)*2) - (1-dispH*2-aiB*2)*GetTextSize(txt))
+					SetTextCharAngle(txt, i, 180*(1-dispH-aiB) - 1*(jitterNum + csc2.glideFrame) + Random(0, jitterNum + csc2.glideFrame)*2)
+				next i
+			endif
 		else
 			txt = csc2.txtReady
 			for i = 0 to GetTextLength(txt)
@@ -1084,6 +1239,14 @@ function DoCharacterSelect()
 		TransitionStart(Random(1,lastTranType))
 	endif
 	
+	//Going to the AI Battle
+	if csc1.ready and spType = AIBATTLE
+		spType = AIBATTLE
+		SetAIDifficulty(spAIDiff, 11 - spAIDiff, 4-(spAIDiff/3), 11- spAIDiff, spAIDiff)
+		state = GAME
+		TransitionStart(Random(1,lastTranType))
+	endif
+	
 	// If we are leaving the state, exit appropriately
 	// Don't write anything after this!
 	if state <> CHARACTER_SELECT
@@ -1096,6 +1259,7 @@ endfunction state
 function SetVisibleCharacterUI(stage, csc ref as CharacterSelectController)
 	
 	if stage = 1 then SetTextString(csc.txtCrabName, "CHOOSE YOUR" + chr(13)+chr(10) + "CRUSTACEAN!")
+	if csc.player = 2 and spType = AIBATTLE then SetTextString(csc.txtCrabName, "CHOOSE YOUR" + chr(13)+chr(10) + "OPPONENT:")
 	
 	SetSpriteVisible(csc.sprReady, stage-1)
 	SetSpriteVisible(csc.sprLeftArrow, stage-1)

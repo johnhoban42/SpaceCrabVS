@@ -172,7 +172,7 @@ function CreateGame1()
 		
 	endif
 		
-	if dispH and spType = 0 or spType = STORYMODE or spType = AIBATTLE
+	if dispH and (spType = 0 or spType = STORYMODE or spType = AIBATTLE)
 		CreateTextExpress(meteorButton1, "Z", 40, fontScoreI, 1, GetSpriteMiddleX(meteorButton1) - 2, GetSpriteY(meteorButton1) - 40, 10)
 		CreateTextExpress(specialButton1, "X", 40, fontScoreI, 1, GetSpriteMiddleX(specialButton1) - 2, GetSpriteY(specialButton1) - 40, 10)
 		SetTextColor(meteorButton1, 100, 100, 100, 255)
@@ -664,7 +664,7 @@ function UpdateMeteor1()
 				if GetSpriteColorAlpha(spr) = 255
 					minusOne = 0
 					if specialTimerAgainst1# > 0 and crab2Type = 5 then minusOne = 1
-					if spType = 0 or spType = STORYMODE then CreateExp(spr, cat, crab1Deaths+1 - minusOne)		//Only non-special meteors give EXP
+					if spType = 0 or spType = STORYMODE or spType = AIBATTLE then CreateExp(spr, cat, crab1Deaths+1 - minusOne)		//Only non-special meteors give EXP
 					nonSpecMet = 1
 				endif
 				ActivateMeteorParticles(cat, spr, 1)

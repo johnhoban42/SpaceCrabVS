@@ -42,6 +42,7 @@ function InitResultsController(rc ref as ResultsController)
 	p as integer, f as integer
 	if rc.player = 1 then p = 1 else p = -1 // makes the position calculations easier
 	if rc.player = 1 then f = 0 else f = 1 // makes the flip calculations easier
+	if spType = AIBATTLE then f = 0
 	if dispH
 		p = 1
 		f = 0

@@ -403,7 +403,6 @@ function ShowScene(chap, scene)
 			state = GAME
 			spActive = 0
 			spType = STORYMODE
-			aiActive = 1
 			ai$ = GetStringToken(wholeRow$, " ", 2)
 			if Len(ai$) = 5 then SetAIDifficulty(Val(Mid(ai$, 1, 1)), Val(Mid(ai$, 2, 1)), Val(Mid(ai$, 3, 1)), Val(Mid(ai$, 4, 1)), Val(Mid(ai$, 5, 1)))
 			knowingAI = Val(Mid(ai$, 5, 1))

@@ -660,7 +660,7 @@ global volumeSE = 100
 #constant SPR_CS_BG_1 306
 #constant SPR_CS_BG_1B 307
 #constant TXT_CS_CRAB_NAME_1 303
-#constant TXT_CS_CRAB_DESC_1 304 
+#constant TXT_CS_CRAB_DESC_1 304
 #constant TXT_CS_CRAB_STATS_1 306
 #constant TXT_CS_READY_1 305 
 #constant SPR_CS_CRABS_1 4390
@@ -791,10 +791,10 @@ global altUnlocked as integer[6]
 #constant SOUNDTEST 6
 #constant STATISTICS 7
 global spActive = 0 //Single Player active
-global aiActive = 0 //VS AI active
 global paused = 0	//Game is currently paused
 global pauseTimer# = 0
 global spType = 0
+global spAIDiff = 3
 global fruitMode = 0
 #constant MIRRORMODE 1
 #constant CLASSIC 2
@@ -803,6 +803,10 @@ global fruitMode = 0
 #constant AIBATTLE 5
 
 global fruitUnlock# = -300
+
+global unlockFF = 0
+global unlockHB = 0
+global unlockAIHard = 0
 
 #constant glowS 20000
 type meteor

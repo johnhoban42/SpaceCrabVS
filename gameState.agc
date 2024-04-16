@@ -62,7 +62,9 @@ function InitGame()
 	AddButton(mainmenuButton)
 	
 	difficultyMax = 7
-	difficultyBar = 9 - aiActive*(knowingAI/3)
+	diffMod = 0
+	if spType = STORYMODE or spType = AIBATTLE then diffMod = 1
+	difficultyBar = 9 - diffMod*(knowingAI/3)
 	
 	if spType = MIRRORMODE and dispH
 		SetTextPosition(TXT_SP_SCORE, w/2 - 120, 40)
@@ -908,7 +910,7 @@ function PauseGame()
 	SetTextString(pauseDesc1, crabPause1[crab1Type])
 	if spType = 0 or spType = STORY or spType = AIBATTLE then SetTextString(pauseDesc1, GetTextString(pauseDesc1) + chr(10) + chr(10) + crabPause2[crab1Type+crab1Alt*6])
 	
-	if (spType = 0 and aiActive = 0)
+	if (spType = 0)
 		//For a multiplayer game
 		SetTextY(pauseTitle2, h/2 - (GetTextY(pauseTitle1)-h/2))
 		SetTextY(pauseDesc2, h/2 - (GetTextY(pauseDesc1)-h/2))

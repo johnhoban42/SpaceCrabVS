@@ -49,7 +49,7 @@ global h = 1600
 SetVirtualResolution(w, h) // doesn't have to match the window
 
 global dispH = 0		//Variable for horizontal display
-if deviceType = DESKTOP
+if deviceType = 9//DESKTOP
 	dispH = 1
 	w = 1280
 	h = 720
@@ -58,8 +58,6 @@ if deviceType = DESKTOP
 	SetWindowSize(w, h, 0)
 endif
 CreateSelectButtons()
-
-
 
 
 SetAntialiasMode( 1 )
@@ -140,6 +138,9 @@ function SaveGame()
 	for i = 1 to 6
 		WriteInteger(3, altUnlocked[i])
 	next i
+	WriteInteger(3, unlockFF)
+	WriteInteger(3, unlockHB)
+	WriteInteger(3, unlockAIHard)
 	
 	CloseFile(3)
 endfunction
@@ -159,6 +160,9 @@ function LoadGame()
 	for i = 1 to 6
 		altUnlocked[i] = ReadInteger(3)
 	next i
+	unlockFF = ReadInteger(3)
+	unlockHB = ReadInteger(3)
+	unlockAIHard = ReadInteger(3)
 	
 	CloseFile(3)
 endfunction
@@ -170,7 +174,8 @@ if debug
 	curChapter = 2
 	curScene = 4
 	highestScene = 101
-	appState = START
+	appState = CHARACTER_SELECT
+	spType = AIBATTLE
 	altUnlocked[1] = 2
 	altUnlocked[2] = 2
 	altUnlocked[3] = 1

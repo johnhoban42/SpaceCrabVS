@@ -14,7 +14,6 @@ function InitStart()
 	SetStoryShortStrings()
 	
 	//spActive = 0
-	aiActive = 0
 	//spType = 0
 	storyActive = 0
 	
@@ -82,7 +81,7 @@ function InitStart()
 	SetTextSpacing(TXT_ALONE, -23)
 	
 	//Enter VS AI Button
-	LoadSpriteExpress(SPR_STARTAI, "vsAI.png", 250, 150, 50, 1130, 5)
+	LoadSpriteExpress(SPR_STARTAI, "vsAI.png", 250, 150, 50, 1430, 5)
 	AddButton(SPR_STARTAI)
 	
 	//Enter Story Mode Button
@@ -119,7 +118,7 @@ function InitStart()
 	
 	if dispH then HorizontalStart()
 		
-	if spType = 0 or spType = STORYMODE then PlayMusicOGGSP(titleMusic, 1)
+	if spType = 0 or spType = STORYMODE or spType = AIBATTLE then PlayMusicOGGSP(titleMusic, 1)
 			
 				
 	//Probably to be removed with challenge mode
@@ -444,7 +443,6 @@ function DoStart()
 	//if ButtonMultitouchEnabled(SPR_START1) and spActive = 0 and dispH = 1
 	if ButtonMultitouchEnabled(SPR_START1) //and dispH = 1
 		spType = 0
-		aiActive = 0
 		storyActive = 0
 		spType = 0
 		state = CHARACTER_SELECT
@@ -454,7 +452,6 @@ function DoStart()
 		p1Ready = 0
 		p2Ready = 0
 		spType = 0
-		aiActive = 0
 		state = CHARACTER_SELECT
 	endif
 	
@@ -494,13 +491,8 @@ function DoStart()
 	
 	//Starting an AI game
 	if Button(SPR_STARTAI) and GetSpriteVisible(SPR_STARTAI)
-		aiActive = 1
-		firstFight = 0
-		//To do: take this to the character selection screen, figure out if first fight should play
-		crab1Type = 4
-		crab2Type = 2
-		crab2Alt = 2
-		state = GAME
+		spType = AIBATTLE
+		state = CHARACTER_SELECT
 	endif
 	
 	//Going to story mode, will eventually bring you to character select
@@ -524,7 +516,7 @@ function DoStart()
 	// If we are leaving the state, exit appropriately
 	// Don't write anything after this!
 	if state <> START
-		if spType = 0 or spType = STORYMODE then TransitionStart(Random(1,lastTranType))
+		if spType = 0 or spType = STORYMODE or spType = AIBATTLE then TransitionStart(Random(1,lastTranType))
 		ExitStart()
 	endif
 	
@@ -1120,7 +1112,6 @@ function ExitStart()
 endfunction
 
 function SetupChallenge()
-	aiActive = 1
 		firstFight = 0
 		//storyActive = 1
 		spType = CHALLENGEMODE

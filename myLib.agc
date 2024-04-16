@@ -3,11 +3,6 @@ function SyncG()
 	PingUpdate()
 	ButtonsUpdate()
 	UpdateAllTweens(GetFrameTime())
-	//if GetSpriteColorAlpha(SPR_SELECT1) > 0
-		//for i = SPR_SELECT1 to SPR_SELECT4
-			//SetSpriteColorByCycle(i, gameTime#*2)
-		//next i
-	//endif
     Sync()
 endfunction
 
@@ -221,6 +216,16 @@ function CreateTextExpress(txt, content$, size, fontI, alignment, x, y, depth)
 	SetTextAlignment(txt, alignment)
 	SetTextPosition(txt, x, y)
 	SetTextDepth(txt, depth)
+endfunction
+
+function SetTextExpress(txt, content$, size, fontI, alignment, x, y, depth, spacing)
+	SetTextString(txt, content$)
+	SetTextSize(txt, size)
+	SetTextFontImage(txt, fontI)
+	SetTextAlignment(txt, alignment)
+	SetTextPosition(txt, x, y)
+	SetTextDepth(txt, depth)
+	SetTextSpacing(txt, spacing)
 endfunction
 
 function IncSpriteX(spr, amt)
