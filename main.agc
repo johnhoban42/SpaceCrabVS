@@ -170,7 +170,7 @@ if debug
 	curChapter = 2
 	curScene = 4
 	highestScene = 101
-	appState = START
+	appState = SOUNDTEST
 	altUnlocked[1] = 2
 	altUnlocked[2] = 2
 	altUnlocked[3] = 1

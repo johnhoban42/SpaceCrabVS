@@ -518,6 +518,9 @@ global jumpPartI as Integer[6, 4]
 
 #constant mAlt2aI 490
 
+#constant playI 501
+#constant pauseI 502
+
 //#constant planetVar1I 51
 //#constant planetVar2I 52
 //#constant planetVar3I 53
@@ -1155,6 +1158,8 @@ function LoadBaseImages()
 	LoadImage(logoI, "title.png")
 	LoadImage(logoDemoI, "titleDemo.png")
 	LoadImage(logoFruitI, "titleFruit.png")
+	LoadImage(playI, "play.png")
+	LoadImage(pauseI, "pause.png")
 	
 	SetFolder("/media")
 	
