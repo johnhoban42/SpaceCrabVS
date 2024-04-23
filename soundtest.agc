@@ -10,48 +10,40 @@ global soundPlaying = 0
 #constant sprSoundControl = 6901
 #constant sprSoundSelectLeft = 6902
 #constant sprSoundSelectRight = 6903
+#constant sprSoundTitle = 6904
+#constant sprSoundCharacter = 6905
+
+// list of sound IDs to play
+global soundList as integer [4] = [ titleMusic, characterMusic, resultsMusic, loserMusic ]
+
+// current index of the sound player, modified by pressing the left or right buttons
+global soundIndex = 0
 
 // Initialize the sound test screen
 function InitSoundTest()
 	
 	//Creation of the sprites/anything else needed goes here
 	
-	// load images
-	LoadSpriteExpress(sprSoundBack, "ui/back8.png", 100, 100, 50, 50, 69)
+	LoadSpriteExpress(sprSoundBack, "ui/back8.png", 100, 100, w / 2 - 50, h * 4 / 5 - 50, 69)
 	AddButton(sprSoundBack)
 	
+	LoadSpriteExpress(sprSoundSelectLeft, "ui/leftArrow.png", 100, 100, w / 4 - 50, h / 5 - 50, 69)
+	AddButton(sprSoundSelectLeft)
+	
+	LoadSpriteExpress(sprSoundSelectRight, "ui/rightArrow.png", 100, 100, w * 3 / 4 - 50, h / 5 - 50, 69)
+	AddButton(sprSoundSelectRight)
+	
+	LoadSpriteExpress(sprSoundTitle, "ui/mainmenu.png", 100, 100, w / 3 - 50, h * 3 / 5 - 50, 69)
+	AddButton(sprSoundTitle)
+	
+	LoadSpriteExpress(sprSoundCharacter, "ui/crabselect.png", 100, 100, w * 2 / 3 - 50, h * 3 / 5 - 50, 69)
+	AddButton(sprSoundCharacter)
+																															
 	CreateSprite(sprSoundControl, 0)
 	AddSpriteAnimationFrame(sprSoundControl, playI)
 	AddSpriteAnimationFrame(sprSoundControl, pauseI)
-	SetSpriteExpress(sprSoundControl, 100, 100, w / 2, h / 2, 69)
+	SetSpriteExpress(sprSoundControl, 100, 100, w / 2 - 50, h * 2 / 5 - 50, 69)
 	AddButton(sprSoundControl)
-	
-	//SetFolder("ui/pause.png")
-	//imgBackBtn = LoadImage("back8")
-	//sprBackBtn = CreateSprite(imgBackBtn)
-	//imgPlayBtn = LoadImage("play.png")
-	//sprPlayBtn = CreateSprite(imgPlayBtn)
-	//imgPauseBtn = LoadImage("pause.png")
-	//sprPauseBtn = CreateSprite(imgPauseBtn)
-	
-	// position images
-	//SetSpritePosition(sprBackBtn, 10, 10)
-	//SetSpriteMiddleScreenX(sprPlayBtn)
-	//SetSpriteMiddleScreenY(sprPlayBtn)
-	//SetSpriteMiddleScreenX(sprPauseBtn)
-	//SetSpriteMiddleScreenY(sprPauseBtn)
-	// deactivate the pause button initially
-	//SetSpriteActive(sprPauseBtn, 0)
-	//SetSpriteVisible(sprPauseBtn, 0)
-	
-	// set the sprites as buttons
-	//AddButton(sprBackBtn)
-	//AddButton(sprPlayBtn)
-	//AddButton(sprPauseBtn)
-	
-	// load music
-	//SetFolder("media/music")
-	//sfxLoserSong = LoadMusicOGG("loser.ogg")
 	
 	soundtestStateInitialized = 1
 endfunction
@@ -74,7 +66,7 @@ function DoSoundTest()
 		state = START
 		if soundPlaying = 1
 			soundPlaying = 0
-			StopMusicOGGSP(loserMusic)			
+			StopMusicOGGSP(soundList[soundIndex])			
 			SetSpriteFrame(sprSoundControl, 1)
 		endif
 	// play/pause button
@@ -82,16 +74,42 @@ function DoSoundTest()
 		// start playing song
 		if soundPlaying = 0
 			soundPlaying = 1
-			PlayMusicOGGSP(loserMusic, 1)
+			PlayMusicOGGSP(soundList[soundIndex], 1)
 			SetSpriteFrame(sprSoundControl, 2)
 		// stop playing song
 		else
 			soundPlaying = 0
-			StopMusicOGGSP(loserMusic)
+			StopMusicOGGSP(soundList[soundIndex])
 			SetSpriteFrame(sprSoundControl, 1)
+		endif
+	// song scroll left or right
+	elseif ButtonMultitouchEnabled(sprSoundSelectLeft) or ButtonMultitouchEnabled(sprSoundSelectRight)
+		// stop current music
+		if soundPlaying = 1
+			soundPlaying = 0
+			StopMusicOGG(soundList[soundIndex])
+			SetSpriteFrame(sprSoundControl, 1)
+		endif
+		// scroll left
+		if ButtonMultitouchEnabled(sprSoundSelectLeft)
+			soundIndex = soundIndex - 1
+			if soundIndex = -1
+				soundIndex = soundList.length - 1
+			endif
+		// scroll right
+		elseif ButtonMultitouchEnabled(sprSoundSelectRight)
+			soundIndex = soundIndex + 1
+			if soundIndex = soundList.length
+				soundIndex = 0
+			endif
 		endif
 	endif
 		
+//~	print(soundList.length)	
+//~	print(soundIndex)
+//~	print(soundList[soundIndex])
+			
+	
 	// If we are leaving the state, exit appropriately
 	// Don't write anything after this!
 	if state <> SOUNDTEST
@@ -107,6 +125,10 @@ function ExitSoundTest()
 	//Deletion of the assets/setting variables correctly to leave is here
 	DeleteSprite(sprSoundBack)
 	DeleteSprite(sprSoundControl)
+	DeleteSprite(sprSoundSelectLeft)
+	DeleteSprite(sprSoundSelectRight)
+	DeleteSprite(sprSoundTitle)
+	DeleteSprite(sprSoundCharacter)
 
 	soundtestStateInitialized = 0
 endfunction
