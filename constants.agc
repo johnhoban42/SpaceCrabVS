@@ -618,6 +618,8 @@ global jumpPartI as Integer[6, 4]
 #constant retro8M 138
 
 global oldSong = 0
+global currentTitleMusic = titleMusic
+global currentCharacterMusic = characterMusic
 
 //Volume for music and sound effects
 global volumeM = 100

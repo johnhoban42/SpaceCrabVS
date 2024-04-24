@@ -103,6 +103,15 @@ function DoSoundTest()
 				soundIndex = 0
 			endif
 		endif
+	// set title music
+	elseif ButtonMultiTouchEnabled(sprSoundTitle)
+		currentTitleMusic = soundList[soundIndex]
+		// TODO: maybe gray out this when current song is already set for this menu?
+		// add some kind of feedback so the user knows this action was successful before they leave
+	elseif ButtonMultiTouchEnabled(sprSoundCharacter)
+		currentCharacterMusic = soundList[soundIndex]
+		// TODO: maybe gray out this when current song is already set for this menu?
+		// add some kind of feedback so the user knows this action was successful before they leave
 	endif
 		
 //~	print(soundList.length)	

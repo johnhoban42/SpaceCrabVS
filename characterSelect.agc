@@ -609,7 +609,7 @@ function InitCharacterSelect()
 	AddButton(SPR_MENU_BACK)
 	if dispH then IncSpriteY(SPR_MENU_BACK, -200)
 	
-	PlayMusicOGGSP(characterMusic, 1)
+	PlayMusicOGGSP(currentCharacterMusic, 1)
 	PlayMusicOGGSP(fireMusic, 1)
 	SetMusicVolumeOGG(fireMusic, 20*volumeM/100)
 	
@@ -958,7 +958,7 @@ function DoCharacterSelectController(csc ref as CharacterSelectController)
 	endif
 		
 	//Slowly lighting the backgrounds
-	SetSpriteColorAlpha(csc.sprBG, 205+abs(50*cos(90*csc.player + 80*GetMusicPositionOGG(characterMusic))))
+	SetSpriteColorAlpha(csc.sprBG, 205+abs(50*cos(90*csc.player + 80*GetMusicPositionOGG(currentCharacterMusic))))
 	IncSpriteAngle(csc.sprBGB, 1.8*fpsr#)
 	if spActive then IncSpriteAngle(SPR_CS_BG_2, -0.8*fpsr#)
 	//IncSpriteAngle(csc.sprBGB, 6*fpsr#)
@@ -1034,8 +1034,8 @@ function DoCharacterSelect()
 	else
 		txt = csc1.txtReady
 		for i = 0 to GetTextLength(txt)
-			SetTextCharY(txt, GetTextLength(txt)-i, 58.0 - 8.0*abs(8*cos(GetMusicPositionOGG(characterMusic)*200+i*10 )))	//Code from SnowTunes
-			if dispH then SetTextCharY(txt, GetTextLength(txt)-i, 28.0 - 5.0*abs(8*cos(GetMusicPositionOGG(characterMusic)*200+i*10 )))	//Code from SnowTunes
+			SetTextCharY(txt, GetTextLength(txt)-i, 58.0 - 8.0*abs(8*cos(GetMusicPositionOGG(currentCharacterMusic)*200+i*10 )))	//Code from SnowTunes
+			if dispH then SetTextCharY(txt, GetTextLength(txt)-i, 28.0 - 5.0*abs(8*cos(GetMusicPositionOGG(currentCharacterMusic)*200+i*10 )))	//Code from SnowTunes
 		next i		
 	endif
 	
@@ -1050,8 +1050,8 @@ function DoCharacterSelect()
 		else
 			txt = csc2.txtReady
 			for i = 0 to GetTextLength(txt)
-				SetTextCharY(txt, GetTextLength(txt)-i, -140.0 + 8.0*abs(8*cos(GetMusicPositionOGG(characterMusic)*200+i*10 )))	//Code from SnowTunes
-				if dispH then SetTextCharY(txt, GetTextLength(txt)-i, 28.0 - 5.0*abs(8*cos(GetMusicPositionOGG(characterMusic)*200+i*10 )))	//Code from SnowTunes
+				SetTextCharY(txt, GetTextLength(txt)-i, -140.0 + 8.0*abs(8*cos(GetMusicPositionOGG(currentCharacterMusic)*200+i*10 )))	//Code from SnowTunes
+				if dispH then SetTextCharY(txt, GetTextLength(txt)-i, 28.0 - 5.0*abs(8*cos(GetMusicPositionOGG(currentCharacterMusic)*200+i*10 )))	//Code from SnowTunes
 			next i
 		endif
 	endif
@@ -1148,7 +1148,7 @@ function ExitCharacterSelect()
 	
 	DeleteSprite(SPR_MENU_BACK)
 	
-	if GetMusicPlayingOGGSP(characterMusic) then StopMusicOGGSP(characterMusic)
+	if GetMusicPlayingOGGSP(currentCharacterMusic) then StopMusicOGGSP(currentCharacterMusic)
 	if GetMusicPlayingOGGSP(fireMusic) then StopMusicOGGSP(fireMusic)
 	
 	characterSelectStateInitialized = 0

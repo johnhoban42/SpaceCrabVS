@@ -119,7 +119,7 @@ function InitStart()
 	
 	if dispH then HorizontalStart()
 		
-	if spType = 0 or spType = STORYMODE then PlayMusicOGGSP(titleMusic, 1)
+	if spType = 0 or spType = STORYMODE then PlayMusicOGGSP(currentTitleMusic, 1)
 			
 				
 	//Probably to be removed with challenge mode
@@ -371,7 +371,7 @@ function DoStart()
 		SetSpriteX(SPR_VOLUME_SLIDER, myX-87*3)
 		
 		volumeM = (myX-875)*100/(1045-875)
-		SetMusicVolumeOGG(titleMusic, volumeM)
+		SetMusicVolumeOGG(currentTitleMusic, volumeM)
 		volumeSE = (myX-875)*100.0/(1045-875)
 	endif
 	
@@ -397,7 +397,7 @@ function DoStart()
 			volumeSE = 75
 			SetSpriteX(SPR_VOLUME_SLIDER, 875 + (1045-875)*.75 -87*3)
 		endif
-		SetMusicVolumeOGG(titleMusic, volumeM)
+		SetMusicVolumeOGG(currentTitleMusic, volumeM)
 	endif
 	
 	//if ButtonMultitouchEnabled(SPR_START1) and spActive = 0 and dispH = 0
@@ -718,7 +718,7 @@ function ToggleStartScreen(screen, swipe)
 		StopMusicOGGSP(spMusic)
 		StopMusicOGGSP(retro1M)
 		StopMusicOGGSP(loserMusic)
-		PlayMusicOGGSP(titleMusic, 1)
+		PlayMusicOGGSP(currentTitleMusic, 1)
 		
 		SetSpriteVisible(SPR_START1, 1)
 		SetSpriteVisible(SPR_START2, 1)
@@ -745,7 +745,7 @@ function ToggleStartScreen(screen, swipe)
 	elseif screen = MIRRORMODE_START
 		//Showing the start of the mirror mode screen
 				
-		StopMusicOGGSP(titleMusic)
+		StopMusicOGGSP(currentTitleMusic)
 		PlayMusicOGGSP(spMusic, 1)
 		
 		SetSpriteColor(SPR_BG_START, 255, 150, 190, 255)
@@ -814,7 +814,7 @@ function ToggleStartScreen(screen, swipe)
 				
 		SetSpriteColor(SPR_BG_START, 150, 255, 190, 255)
 		
-		StopMusicOGGSP(titleMusic)
+		StopMusicOGGSP(currentTitleMusic)
 		PlayMusicOGGSP(retro1M, 1)
 		SetMusicLoopTimesOGG(retro1M, -1, 6.316)
 		
@@ -1104,7 +1104,7 @@ function ExitStart()
 		next i
 	endif
 	
-	StopMusicOGGSP(titleMusic)
+	StopMusicOGGSP(currentTitleMusic)
 	
 	for i = SPR_SP_C1 to SPR_SP_C6
 		DeleteSprite(i)
