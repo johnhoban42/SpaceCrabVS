@@ -1,6 +1,7 @@
 bg 4
 music retro8
 SC: Oh! I haven't told Space Ned any of the news since my ship crashed.
+
 se phone
 Hey, Ned. You heard the news, right? (on the phone, for the rest of the scene)
 That's right, forget my ship- lets put all of our energy into...

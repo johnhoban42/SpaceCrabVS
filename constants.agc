@@ -594,6 +594,8 @@ global jumpPartI as Integer[6, 4]
 #constant tutorialMusic 107	//The tutorial song
 #constant spMusic 108		//Mirror Music (Chrome Coast)
 #constant tomatoMusic 110 	//End of Chapter song (Marigold Tomato)
+#constant loveMusic 111		//Love Me Space Crab!!
+#constant unlockMusic 112	//Unlocking Jingle
 
 #constant dangerAMusic 211
 #constant dangerBMusic 212
@@ -665,6 +667,9 @@ global volumeSE = 100
 #constant TXT_CS_READY_1 305 
 #constant SPR_CS_CRABS_1 4390
 #constant SPR_CS_TXT_BACK_1 389
+#constant SPR_CS_FASTGAME 308
+#constant SPR_CS_HARDGAME 309
+#constant SPR_CS_MUSICPICK 310
 
 #constant SPR_SCENE1 321 
 #constant SPR_SCENE2 322 
@@ -733,7 +738,28 @@ global storyTimer# = 0
 
 //Overall game unlocks
 global altUnlocked as integer[6]
+global firstStartup = 0
+global speedUnlock = 0
+global hardBattleUnlock
+global musicBattleUnlock = 0
+global unlockAIHard = 0
+global musicUnlocked = 0 	//Not finalized yet, but this will increment for every song unlockes
+
+global gameIsFast = 0
+global gameIsHard = 0
+global gameSongSet = 1
+#constant gameFastSpeed 1.4
+
 //Ping sprites - 701 through 750
+
+//Popup Sprite
+#constant SPR_POPUP_BG 761
+#constant SPR_POPUP_C 762
+#constant TXT_POPUP 763
+
+#constant SPR_POPUP_BG_2 766
+#constant SPR_POPUP_C_2 767
+#constant TXT_POPUP_2 768
 
 //Tweens
 #constant selectTweenTime# .4 //In seconds
@@ -744,21 +770,6 @@ global altUnlocked as integer[6]
 
 //global tweenButton = 5
 //tweenButton lasts until 25
-
-#constant tweenFadeLen# .2
-#constant tweenSprFadeIn 101
-//CreateTweenSprite(tweenSprFadeIn, tweenFadeLen#)
-//SetTweenSpriteAlpha(tweenSprFadeIn, 140, 255, TweenSmooth2())
-#constant tweenSprFadeOut 102
-#constant tweenSprFadeOutFull 105
-//CreateTweenSprite(tweenSprFadeOut, tweenFadeLen#)
-//SetTweenSpriteAlpha(tweenSprFadeOut, 255, 140, TweenSmooth2())
-#constant tweenTxtFadeIn 103
-//CreateTweenText(tweenTxtFadeIn, tweenFadeLen#)
-//SetTweenTextAlpha(tweenTxtFadeIn, 0, 255, TweenSmooth2())
-//#constant tweenTxtFadeOut 104
-//CreateTweenText(tweenTxtFadeOut, tweenFadeLen#)
-//SetTweenTextAlpha(tweenTxtFadeOut, 255, 0, TweenSmooth2())
 
 // Results screen sprites - player 1
 #constant TXT_R_CRAB_MSG_1 = 500
@@ -804,9 +815,7 @@ global fruitMode = 0
 
 global fruitUnlock# = -300
 
-global unlockFF = 0
-global unlockHB = 0
-global unlockAIHard = 0
+
 
 #constant glowS 20000
 type meteor
@@ -966,8 +975,13 @@ function PlayMusicOGGSP(songID, loopYN)
 			
 			SetMusicLoopTimesOGG(spMusic, 6.932, -1)
 			if appState = START then SetMusicLoopTimesOGG(spMusic, .769, 25.384)
-			
 		endif
+		if songID = loveMusic
+			LoadMusicOGG(loveMusic, "love.ogg")
+			SetMusicLoopTimesOGG(loveMusic, 3.077, -1)
+		endif
+		if songID = unlockMusic then LoadMusicOGG(unlockMusic, "unlock.ogg")
+		
 		if songID = dangerAMusic then LoadMusicOGG(dangerAMusic, "dangerA.ogg")
 		if songID = dangerBMusic then LoadMusicOGG(dangerBMusic, "dangerB.ogg")
 		if songID = dangerJMusic then LoadMusicOGG(dangerJMusic, "dangerJ.ogg")
@@ -1003,6 +1017,7 @@ function PlayMusicOGGSPStr(str$, loopYN)
 	if str$ = "fightJ" then id = fightJMusic
 	if str$ = "fightD" then id = tutorialMusic
 	if str$ = "tomato" then id = tomatoMusic
+	if str$ = "love" then id = loveMusic
 	if str$ = "characterSelect" then id = characterMusic
 	if str$ = "results" then id = resultsMusic
 	if str$ = "loserXD" then id = loserMusic
@@ -1418,7 +1433,7 @@ function SetCrabPauseStrings()
 	crabPause2[12] = "Special: Claw-Ball Toss" + chr(10) + "Fling flaming projecticles" + chr(10) + "directly through the screen."
 	crabPause2[13] = "Special: Termination Claws" + chr(10) + "Incite The Law to catch" + chr(10) + "your opponent off gaurd."
 	crabPause2[14] = "Special: Meteor Math" + chr(10) + "Send dangerous numbers to" + chr(10) + "the opposite screen."
-	crabPause2[22] = "Special: Heavenly Light" + chr(10) + "Blind your adversary with" + chr(10) + "the power of the holy glow."
+	crabPause2[22] = "Special: Heavenly Light" + chr(10) + "Blind your adversary with" + chr(10) + "the power of holy glow."
 	//crabPause2[] = "Special: " + chr(10) + "" + chr(10) + ""
 endfunction
 
@@ -1451,7 +1466,7 @@ function SetStoryShortStrings()
 	chapterTitle[6] = "The Adventurer"
 	chapterDesc[6] = "Daring escapes!" + chr(10) + "Multiplying meteors!" + chr(10) + "It's all here, and more!" + chr(10) + ""
 	
-	chapterTitle[7] = "The Transport Guy"
+	chapterTitle[7] = "The Transport"
 	chapterDesc[7] = "Does Taxi Crab have" + chr(10) + "what it takes to" + chr(10) + "'roll' with the youth" + chr(10) + "of today?"
 	
 	chapterTitle[8] = "The Vacation"
@@ -1479,15 +1494,15 @@ function SetStoryShortStrings()
 	chapterDesc[15] = "Rave Crab's eternal party" + chr(10) + "may end sooner than" + chr(10) + "he anticipated." + chr(10) + ""
 	
 	chapterTitle[16] = "Voice of Reason"
-	chapterDesc[16] = "'SOMEONE'S GOTTA PUT" + chr(10) + "SPACE CRAB IN " + chr(10) + "HIS PLACE, AND I DON'T" + chr(10) + "SEE THEM STEPPING UP!!'"
+	chapterDesc[16] = "'SOMEONE'S GOTTA PUT" + chr(10) + "SPACE CRAB IN HIS" + chr(10) + "PLACE, AND I DON'T" + chr(10) + "SEE THEM STEPPING UP!!'"
 	
-	chapterTitle[17] = "The Divine Eye-in-the-Sky"
+	chapterTitle[17] = "Divine Eye-in-the-Sky"
 	chapterDesc[17] = "" + chr(10) + "" + chr(10) + "" + chr(10) + ""
 	
-	chapterTitle[18] = "The Crab Resources Department"
+	chapterTitle[18] = "Crab Resources Department"
 	chapterDesc[18] = "" + chr(10) + "" + chr(10) + "" + chr(10) + ""
 	
-	chapterTitle[19] = "The Other Side of the Paw"
+	chapterTitle[19] = "Other Side of the Paw"
 	chapterDesc[19] = "" + chr(10) + "" + chr(10) + "" + chr(10) + ""
 	
 	chapterTitle[20] = "The Valiant Defender"
@@ -1505,7 +1520,7 @@ function SetStoryShortStrings()
 	chapterTitle[24] = "Bonus 2: "
 	chapterDesc[24] = "" + chr(10) + "" + chr(10) + "" + chr(10) + ""
 	
-	chapterTitle[25] = "Bonus 3: The Future"
+	chapterTitle[25] = "The Future"
 	chapterDesc[25] = "" + chr(10) + "" + chr(10) + "" + chr(10) + ""
 	
 endfunction

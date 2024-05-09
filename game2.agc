@@ -62,6 +62,7 @@ function CreateGame2()
 	
 	crabFNum = crab2Type + crab2Alt*6
 	crab2framerate = 	crabFramerate[crabFNum]
+	if gameIsFast and spType <> STORYMODE then crab2framerate = 	crabFramerate[crabFNum]*gameFastSpeed
 	specialCost2 = 		crabSPAtck[crabFNum]
 	crab2Vel# = 		crabVel[crabFNum]
 	crab2Accel# = 		crabAccel[crabFNum]
@@ -297,6 +298,8 @@ function DoGame2()
 		next i
 	endif
 		
+	if spType <> STORYMODE and gameIsFast then fpsr# = fpsr#*gameFastSpeed
+		
 	// Start the game loop in the GAME state
 	state = GAME
 	
@@ -337,7 +340,8 @@ function DoGame2()
 			crab2Turning = -1*crab2Turning
 			
 			//This checks that either the crab1Dir is small enough, or that it is right at the start of the process
-			if  Abs(crab2Dir#) < .7 or (crab2Turning * crab2Dir# > 0) or (Abs(crab2Dir#) < 1 and specialTimerAgainst2# > 0 and crab1Type = 5) or crab2Type = 6
+			//if  Abs(crab2Dir#) < .7 or (crab2Turning * crab2Dir# > 0) or (Abs(crab2Dir#) < 1 and specialTimerAgainst2# > 0 and crab1Type = 5) or crab2Type = 6
+			if  Abs(crab2Dir#) < .7 or (crab2Turning * crab2Dir# > 0) or (Abs(crab2Dir#) < 1 and fpsr# > 1.2*60.0/ScreenFPS()) or crab2Type = 6
 				//The crab leap code
 				//crab1Turning = -1*crab1Turning	//Still not sure if you should leap forwards or backwards
 				if spType = 0 or spType = STORYMODE or spType = AIBATTLE
@@ -453,6 +457,11 @@ function DoGame2()
 	inc met2CD2#, -1 * fpsr#
 	inc met3CD2#, -1 * fpsr#
 	
+	if gameIsHard and spType <> STORYMODE
+		tmpTime# = gameTimer#
+		gameTimer# = gameTimeGate2*2
+	endif
+	
 	if met1CD2# < 0
 		met1CD2# = Random(met1RNDLow - 5*gameDifficulty2, met1RNDHigh) - 20*gameDifficulty2
 		if gameTimer# < gameTimeGate1 then dec met1CD2#, 40
@@ -473,6 +482,8 @@ function DoGame2()
 		
 		CreateMeteor(2, 3, 0)
 	endif
+	
+	if gameIsHard and spType <> STORYMODE then gameTimer# = tmpTime#
 	
 	//Process AI meteor and special actions
 	aiSpecial = 0

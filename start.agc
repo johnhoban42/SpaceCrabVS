@@ -354,6 +354,12 @@ function DoStart()
 	if startStateInitialized = 0
 		InitStart()
 		TransitionEnd()
+		
+		if firstStartup = 0
+			Popup(MIDDLE, -2)
+			firstStartup = 1
+		endif
+		
 	endif
 	state = START
 	
@@ -491,6 +497,7 @@ function DoStart()
 	
 	//Starting an AI game
 	if Button(SPR_STARTAI) and GetSpriteVisible(SPR_STARTAI)
+		//UnlockCrab(1, 1, 1)
 		spType = AIBATTLE
 		state = CHARACTER_SELECT
 	endif

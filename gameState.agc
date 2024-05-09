@@ -16,6 +16,10 @@ function InitGame()
 		
 	gameDifficulty1 = 1
 	gameDifficulty2 = 1
+	if gameIsHard and spType <> STORYMODE
+		gameDifficulty1 = 4
+		gameDifficulty2 = 4
+	endif
 	CreateGame1()
 	CreateGame2()
 	LoadJumpSounds()
@@ -278,6 +282,7 @@ function DoGame()
 	
 	if state = RESULTS
 		EndGameScene()
+		
 		if storyActive
 			//This is the case of ending story mode in a VS battle
 			state = STORY
@@ -831,6 +836,7 @@ function ExitGame()
 	
 	// Whatever we do for something like ExitGame1() and ExitGame2() will go here
 	gameStateInitialized = 0
+	
 	
 	ClearMultiTouch()
 	
@@ -2229,8 +2235,15 @@ endfunction
 
 function StartGameMusic()
 	
+	if gameSongSet <> 0 and spType <> STORYMODE
+		//This is where the song IDs would play, based on which one was picked
+		//The ID-ing is not fully set yet, though - so this will be nothing much, for now
+		PlayMusicOGGSP(retro1M + gameSongSet, 1)
+		exitFunction
+	endif
+	
 	if storyActive = 0 and spType <> CHALLENGEMODE
-		if spType = 0
+		if spType = 0 or spType = AIBATTLE
 			pass = 0
 			while pass = 0
 				rnd = Random(1, 5)
@@ -2592,7 +2605,6 @@ function PlayOpeningScene()
 			SetTextY(TXT_INTRO2, 9999)
 		endif
 	next i	
-		
 	
 endfunction
 

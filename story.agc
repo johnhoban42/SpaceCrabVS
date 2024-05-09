@@ -840,7 +840,16 @@ function StartEndScreen()
 			if GetTweenExists(i) then DeleteTween(i)
 			CreateTweenText(i, .8)
 			SetTweenTextSize(i, 10, 110, TweenOvershoot())
-		next i		
+		next i
+		
+		//The unlocking stuff
+		SetCrabFromChapter(curChapter)
+		if crab1Alt <> 0
+			if altUnlocked[crab1Type] < crab1Alt then UnlockCrab(crab1Type, crab1Alt, 1)
+		else
+			
+		endif
+		
 	else
 		SetTextString(TXT_RESULT1, "-SCENE-")
 		SetTextString(TXT_RESULT2, "-CLEAR-")
@@ -1158,7 +1167,7 @@ function SetCrabString(crabNum)
 		if myAlt = 0 then newStr$ = "Ninja Crab"
 		if myAlt = 1 then newStr$ = "Team Player"
 		if myAlt = 2 then newStr$ = "Cranime"
-		if myAlt = 2 then newStr$ = "Kyle Crab"
+		if myAlt = 2 then newStr$ = "Chimera Crab"
 	endif
 	
 	if crabNum = 1 then crab1Str$ = newStr$

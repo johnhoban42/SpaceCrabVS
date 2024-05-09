@@ -32,7 +32,7 @@ global crabNames as string[NUM_CRABS] = [
 	"SK8R CRAB",
 	"HOLY CRAB",
 	"CRAB CAKE",
-	"KYLE CRAB"]
+	"CHIMERA CRAB"]
 
 global crabDescs as string[NUM_CRABS]
 
@@ -59,9 +59,9 @@ global chapNames as string[NUM_CHAPTERS] = [
 	"SPACE BARC",
 	"CRABYSS KNIGHT",
 	"CHRONO CRAB",
-	"SPACE CRAB 2",
+	"SPACE CRAB VS",
 	"SK8R CRAB",
-	"KYLE CRAB",
+	"CHIMERA CRAB",
 	"FUTURE CRAB"]
 
 // Controller that holds state data for each screen
@@ -191,6 +191,10 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 	if highAlt = 1 then scale# = .8
 	if highAlt = 2 then scale# = .5
 	if highAlt = 3 then scale# = .4
+	
+	firstTimeLoad = 1
+	if IMG_CS_CRAB[1] <> 0 then firstTimeLoad = 0
+	
 	for i = 0 to NUM_CRABS-1 + spActive*STORY_CS_BONUS 
 		SyncG()
 		locked = 0
@@ -199,7 +203,7 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 		//if i = 0 or i = 1 or i = 3 or i = 5
 			CreateSprite(csc.sprCrabs + i, 0)
 			if spActive = 0
-				
+
 				//Loading images for the crabs in, the first time; however, they will be SMALLER!
 				SetFolder("/media/art")
 				crabRefType = Mod(i, 6)+1
@@ -208,8 +212,12 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 				if locked = 0
 					for j = 1 to 6
 						if csc.player = 1
-							img = LoadImageResizedR("crab" + str(crabRefType) + AltStr(crabRefAlt) + "select" + Str(j) + ".png", .4*scale#)
-							if j = 1 then IMG_CS_CRAB[i] = img
+							if firstTimeLoad
+								img = LoadImageResizedR("crab" + str(crabRefType) + AltStr(crabRefAlt) + "select" + Str(j) + ".png", .4*scale#)
+							else
+								img = IMG_CS_CRAB[i]+j-1
+							endif
+							if j = 1 and firstTimeLoad then IMG_CS_CRAB[i] = img
 						else
 							if IMG_CS_CRAB[i] <> 0
 								img = IMG_CS_CRAB[i]+j-1		//Re-using the images from player one
@@ -219,7 +227,7 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 						endif
 						if img <> 0
 							AddSpriteAnimationFrame(csc.sprCrabs + i, img)
-							trashBag.insert(img)
+							//trashBag.insert(img)
 						endif
 					next j
 					PlaySprite(csc.sprCrabs + i, 18, 1, 1, 6)
@@ -351,12 +359,21 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 	crabDescs[6] = crabDescs[6] + 	"It's true that anger can be weaponized-" + chr(10) + 			"just ask this guy! He has no need for meditation."
 	crabDescs[7] = crabDescs[7] + 	"'Opulence is dish best served cold.'" + chr(10) + 				"'What do you mean that doesn't make sense??'"
 	crabDescs[8] = crabDescs[8] + 	"Having chauffeured half the galaxy," + chr(10) + 				"this crab has learned many attacks & counters."
+	crabDescs[9] = crabDescs[9] + 	"Don't doubt the power of a fan. Years" + chr(10) + 				"of studying the best has lead to this moment!"
 	crabDescs[10] = crabDescs[10] + 	"(Mis)hearing whisperings of an otherworldy" + chr(10) +			"movie, this young adventurer took the mantle!"
 	crabDescs[11] = crabDescs[11] + 	"A quarterback at heart, this Team Player" + chr(10) + 			"has no trouble going solo to beat his opponent."
 	crabDescs[12] = crabDescs[12] + 	"The pen is mightier than the sword, yes - but" + chr(10) + 		"will it stand up to a swarm of incoming meteors?"
 	crabDescs[13] = crabDescs[13] + 	"It's always been numbers. The angles, velocities," + chr(10) + 	"polar coordinates. This crab figured it all out!"
+	crabDescs[14] = crabDescs[14] + 	"Barc" + chr(10) + 	""
+	crabDescs[15] = crabDescs[15] + 	"Hawaiian" + chr(10) + 	""
+	crabDescs[16] = crabDescs[16] + 	"Rock Lobster" + chr(10) + 	""
+	crabDescs[17] = crabDescs[17] + 	"Cranime" + chr(10) + 	""
+	crabDescs[18] = crabDescs[18] + 	"Future" + chr(10) + 	""
+	crabDescs[19] = crabDescs[19] + 	"Crabyss" + chr(10) + 	""
+	crabDescs[20] = crabDescs[20] + 	"Sk8r" + chr(10) + 	""
 	crabDescs[21] = crabDescs[21] + 	"An angelic presence, from on high. Will they" + chr(10) + 		"show mercy, or smite us for our wrongdoings?"
-	//crabDescs[] = crabDescs[] + "" + chr(10) + 													""
+	crabDescs[22] = crabDescs[22] + "Cake" + chr(10) + 													""
+	crabDescs[23] = crabDescs[23] + "Chimera" + chr(10) + 													""
 	for i = 0 to NUM_CRABS-1
 		crabDescs[i] = crabDescs[i] + chr(10) + "Special Attack: " + GetSpecialName(i+1)
 	next i
@@ -596,7 +613,12 @@ function InitCharacterSelect()
 	if spActive = 1 then spType = STORYMODE
 	if spType = STORYMODE then spActive = 1
 	storyActive = 0
-	spAIDiff = 3
+	//spAIDiff = 3
+	
+	if spType = 0 and debug = 0
+		Popup(1, -1)
+		Popup(2, -1)
+	endif
 	
 	crab1Alt = 0
 	crab2Alt = 0
@@ -648,8 +670,58 @@ function InitCharacterSelect()
 	LoadSpriteExpress(SPR_MENU_BACK, "ui/mainmenu.png", 140, 140, 0, 0, 3)
 	SetSpriteMiddleScreen(SPR_MENU_BACK)
 	AddButton(SPR_MENU_BACK)
-	if dispH then IncSpriteY(SPR_MENU_BACK, -200)
+	if dispH then IncSpriteY(SPR_MENU_BACK, -150)
 	
+	//Making the game-altering buttons
+	opSize = 110
+	
+	//The button that will speed the game up, when active
+	CreateSpriteExpress(SPR_CS_FASTGAME, opSize, opSize, 50, h/2-opSize/2, 5)
+	for i = 1 to 2
+		img = LoadImage("ui/speedButton" + Str(i) + ".png")
+		AddSpriteAnimationFrame(SPR_CS_FASTGAME, img)
+		trashBag.insert(img)
+	next i
+	SetSpriteFrame(SPR_CS_FASTGAME, 1+gameIsFast)
+	AddButton(SPR_CS_FASTGAME)
+	
+	//The button that will make the game harder, when active
+	CreateSpriteExpress(SPR_CS_HARDGAME, opSize, opSize, 50 + opSize*1.2, h/2-opSize/2, 5)
+	for i = 1 to 2
+		img = LoadImage("ui/hardButton" + Str(i) + ".png")
+		AddSpriteAnimationFrame(SPR_CS_HARDGAME, img)
+		trashBag.insert(img)
+	next i
+	SetSpriteFrame(SPR_CS_HARDGAME, 1+gameIsHard)
+	AddButton(SPR_CS_HARDGAME)
+	
+	//The button that will change the song for the next round
+	CreateSpriteExpress(SPR_CS_MUSICPICK, 300, 90, w/2+85, h/2-45, 5)
+	for i = 0 to 50
+			if GetFileExists("musicBanners/testBanner" + Str(i) + ".png")
+			img = LoadImage("musicBanners/testBanner" + Str(i) + ".png")
+			AddSpriteAnimationFrame(SPR_CS_MUSICPICK, img)
+			trashBag.insert(img)
+		endif
+	next i
+	SetSpriteFrame(SPR_CS_MUSICPICK, 1)
+	AddButton(SPR_CS_MUSICPICK)
+	
+	if dispH
+		//Adjusting the unlockable buttons for the horizontal desktop
+		for i = SPR_CS_FASTGAME to SPR_CS_MUSICPICK
+			SetSpriteMiddleScreenX(i)
+		next i
+		SetSpriteY(SPR_CS_MUSICPICK, 10)
+		SetSpriteY(SPR_CS_FASTGAME, h/2)
+		SetSpriteY(SPR_CS_HARDGAME, h/2+opSize*1.2)
+		
+	endif
+	
+	if spType = STORYMODE or speedUnlock = 0 then IncSpriteY(SPR_CS_FASTGAME, 9999)
+	if spType = STORYMODE or hardBattleUnlock = 0 then IncSpriteY(SPR_CS_HARDGAME, 9999)
+	if spType = STORYMODE or musicBattleUnlock = 0 then IncSpriteY(SPR_CS_MUSICPICK, 9999)
+		
 	PlayMusicOGGSP(characterMusic, 1)
 	PlayMusicOGGSP(fireMusic, 1)
 	SetMusicVolumeOGG(fireMusic, 20*volumeM/100)
@@ -932,6 +1004,9 @@ function DoCharacterSelectController(csc ref as CharacterSelectController)
 					ClearMultiTouch()
 					i = NUM_CRABS + spActive*STORY_CS_BONUS
 				endif
+				if ButtonMultitouchEnabled(spr) and GetSpriteVisible(spr) and GetSpriteGroup(spr) <> 0
+					Popup(csc.player, 0)
+				endif
 			next i
 		
 		//The 1-crab view
@@ -1195,7 +1270,7 @@ function DoCharacterSelect()
 			txt = csc2.txtCrabName
 			aiB = 0
 			if dispH = 0 and spType = AIBATTLE then aiB = 1
-			if ((aiB or dispH) and GetTextString(csc2.txtCrabName) <> "Set Difficulty:")
+			if ((aiB = 0 or aiB = 1 or dispH) and GetTextString(csc2.txtCrabName) <> "Set Difficulty:")
 				for i = 0 to GetTextLength(txt)
 					SetTextCharY(txt, i, -102 + 102*dispH + 102*aiB -1 * (jitterNum + csc2.glideFrame) + Random(0, (jitterNum + csc2.glideFrame)*2))
 					if csc2.stage = 1 and i > 12 then SetTextCharY(csc2.txtCrabName, i, -102 + 102*dispH + 102*aiB -1 * (jitterNum + csc2.glideFrame) + Random(0, (jitterNum + csc2.glideFrame)*2) - (1-dispH*2-aiB*2)*GetTextSize(txt))
@@ -1211,8 +1286,33 @@ function DoCharacterSelect()
 		endif
 	endif
 	
-	//Spinning the main menu button
+	//Spinning the circular buttons
 	IncSpriteAngle(SPR_MENU_BACK, 1*fpsr#)
+	IncSpriteAngle(SPR_CS_FASTGAME, 1.2*fpsr#)
+	IncSpriteAngle(SPR_CS_HARDGAME, -1.2*fpsr#)
+	
+	if ButtonMultitouchEnabled(SPR_CS_FASTGAME)
+		gameIsFast = Mod(gameIsFast+1, 2)
+		SetSpriteFrame(SPR_CS_FASTGAME, 1+gameIsFast)
+	endif
+	
+	if ButtonMultitouchEnabled(SPR_CS_HARDGAME)
+		gameIsHard = Mod(gameIsHard+1, 2)
+		SetSpriteFrame(SPR_CS_HARDGAME, 1+gameIsHard)
+	endif
+	
+	if ButtonMultitouchEnabled(SPR_CS_MUSICPICK)
+		if GetSpriteCurrentFrame(SPR_CS_MUSICPICK) = 1 and gameSongSet <> 0
+			//This is the first frame selected
+		else
+			inc gameSongSet, 1
+		endif
+		if gameSongSet+1 > GetSpriteFrameCount(SPR_CS_MUSICPICK) then gameSongSet = 0
+		SetSpriteFrame(SPR_CS_MUSICPICK, 1+gameSongSet)
+	endif
+	
+	Print(gameSongSet)
+	Print(GetSpriteCurrentFrame(SPR_CS_MUSICPICK))
 	
 	if ButtonMultitouchEnabled(SPR_MENU_BACK) or inputExit
 		state = START
@@ -1222,6 +1322,7 @@ function DoCharacterSelect()
 	endif
 	
 	if csc1.ready and csc2.ready
+		gameSongSet = GetSpriteCurrentFrame(SPR_CS_MUSICPICK)-1
 		spActive = 0
 		spType = 0
 		state = GAME
@@ -1241,6 +1342,7 @@ function DoCharacterSelect()
 	
 	//Going to the AI Battle
 	if csc1.ready and spType = AIBATTLE
+		gameSongSet = GetSpriteCurrentFrame(SPR_CS_MUSICPICK)-1
 		spType = AIBATTLE
 		SetAIDifficulty(spAIDiff, 11 - spAIDiff, 4-(spAIDiff/3), 11- spAIDiff, spAIDiff)
 		state = GAME
@@ -1311,6 +1413,10 @@ function ExitCharacterSelect()
 	endif
 	
 	DeleteSprite(SPR_MENU_BACK)
+	
+	DeleteSprite(SPR_CS_FASTGAME)
+	DeleteSprite(SPR_CS_HARDGAME)
+	DeleteSprite(SPR_CS_MUSICPICK)
 	
 	if GetMusicPlayingOGGSP(characterMusic) then StopMusicOGGSP(characterMusic)
 	if GetMusicPlayingOGGSP(fireMusic) then StopMusicOGGSP(fireMusic)

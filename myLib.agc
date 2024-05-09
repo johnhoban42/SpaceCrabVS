@@ -536,6 +536,12 @@ function ButtonMultitouchEnabled(spr)
 	if GetSpriteExists(spr)
 	    if (Button(spr) and (GetPointerPressed() or inputSelect or inputSelect2) and deviceType = DESKTOP) or (GetMulitouchPressedButton(spr) and deviceType = MOBILE)
 	        returnValue = 1
+	        if GetTextExists(TXT_POPUP)
+	        	if GetTextString(TXT_POPUP) <> "" then ClearPopup1()
+	        endif
+	        if GetTextExists(TXT_POPUP_2)
+	        	if GetTextString(TXT_POPUP_2) <> "" then ClearPopup2()
+	        endif
 	    else
 	        returnValue = 0
 	    endif

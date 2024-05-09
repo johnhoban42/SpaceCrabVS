@@ -62,6 +62,7 @@ function CreateGame1()
 	
 	crabFNum = crab1Type + crab1Alt*6
 	crab1framerate = 	crabFramerate[crabFNum]
+	if gameIsFast and spType <> STORYMODE then crab1framerate = 	crabFramerate[crabFNum]*gameFastSpeed
 	specialCost1 = 		crabSPAtck[crabFNum]
 	crab1Vel# = 		crabVel[crabFNum]
 	crab1Accel# = 		crabAccel[crabFNum]
@@ -297,6 +298,8 @@ function DoGame1()
 		next i
 	endif
 	
+	if spType <> STORYMODE and gameIsFast then fpsr# = fpsr#*gameFastSpeed
+	
 	// Start the game loop in the GAME state
 	state = GAME
 	
@@ -337,7 +340,8 @@ function DoGame1()
 			crab1Turning = -1*crab1Turning
 			
 			//This checks that either the crab1Dir is small enough, or that it is right at the start of the process
-			if Abs(crab1Dir#) < .7 or (crab1Turning * crab1Dir# > 0) or (Abs(crab1Dir#) < 1 and specialTimerAgainst1# > 0 and crab2Type = 5) or crab1Type = 6
+			//if Abs(crab1Dir#) < .7 or (crab1Turning * crab1Dir# > 0) or (Abs(crab1Dir#) < 1 and specialTimerAgainst1# > 0 and crab2Type = 5) or crab1Type = 6
+			if Abs(crab1Dir#) < .7 or (crab1Turning * crab1Dir# > 0) or (Abs(crab1Dir#) < 1 and fpsr# > 1.2*60.0/ScreenFPS()) or crab1Type = 6
 				//The crab leap code
 				//crab1Turning = -1*crab1Turning	//Still not sure if you should leap forwards or backwards
 				
@@ -453,6 +457,11 @@ function DoGame1()
 	inc met2CD1#, -1 * fpsr#
 	inc met3CD1#, -1 * fpsr#
 	
+	if gameIsHard and spType <> STORYMODE
+		tmpTime# = gameTimer#
+		gameTimer# = gameTimeGate2*2
+	endif
+	
 	if met1CD1# < 0
 		met1CD1# = Random(met1RNDLow - 5*gameDifficulty1, met1RNDHigh) - 20*gameDifficulty1
 		if gameTimer# < gameTimeGate1 then dec met1CD1#, 40
@@ -473,6 +482,8 @@ function DoGame1()
 		
 		CreateMeteor(1, 3, 0)
 	endif
+		
+	if gameIsHard and spType <> STORYMODE then gameTimer# = tmpTime#
 		
 	if expTotal1 >= meteorCost1 and (ButtonMultitouchEnabled(meteorButton1) or inputAttack1) and hit2Timer# <= 0
 		SendMeteorFrom1()
