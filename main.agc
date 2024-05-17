@@ -8,6 +8,7 @@
 #include "story.agc"
 #include "soundtest.agc"
 #include "statistics.agc"
+#include "settings.agc"
 #company_name "rondovo"
 
 // Project: SpaceCrabVS 
@@ -24,10 +25,15 @@ SetWindowTitle( "Space Crab VS" )
 SetWindowSize( 700, 1400, 0 )
 SetWindowAllowResize( 1 ) // allow the user to resize the window
 
-if GetGameCenterExists() = 1 // This checks to see if Game Center/Game Services exist on the device
-	GameCenterSetup()
+global demo = 1
+global debug = 1
+
+if debug = 0
+	if GetGameCenterExists() = 1 // This checks to see if Game Center/Game Services exist on the device
+		GameCenterSetup()
+	endif
+	GameCenterLogin()
 endif
-GameCenterLogin()
 
 //The resolution/device setup
 #constant MOBILE 1
@@ -71,8 +77,7 @@ UseNewDefaultFonts( 1 )
 
 SetVSync(1)
 
-global demo = 1
-global debug = 1
+
 
 if demo then SetWindowTitle("Space Crab VS Demo")
 
@@ -185,15 +190,15 @@ endfunction
 if debug
 	curChapter = 2
 	curScene = 4
-	highestScene = 12
+	highestScene = 101
 	appState = START
 	//spType = AIBATTLE
-	altUnlocked[1] = 2
+	altUnlocked[1] = 3
 	altUnlocked[2] = 3
 	altUnlocked[3] = 3
 	altUnlocked[4] = 3
 	altUnlocked[5] = 3
-	altUnlocked[6] = 2
+	altUnlocked[6] = 3
 	firstStartup = 1
 	speedUnlock = 1
 	hardBattleUnlock = 1
@@ -225,19 +230,8 @@ do
 	
 	ProcessMultitouch()
 	DoInputs()
+	ProcessPopup()
 	
-	if GetSpriteExists(SPR_POPUP_BG)
-		if (ButtonMultitouchEnabled(SPR_POPUP_BG) or inputSelect) and GetSpriteColorAlpha(SPR_POPUP_BG) > 10
-			ClearPopup1()
-			ClearMultiTouch()
-		endif
-	endif
-	if GetSpriteExists(SPR_POPUP_BG_2)
-		if (ButtonMultitouchEnabled(SPR_POPUP_BG_2) or inputSelect2) and GetSpriteColorAlpha(SPR_POPUP_BG_2) > 10
-			ClearPopup2()
-			ClearMultiTouch()
-		endif
-	endif
 	
 	if inputLeft or inputRight or inputUp or inputDown then MoveSelect()
 	if (inputLeft2 or inputRight2 or inputUp2 or inputDown2) and appState = CHARACTER_SELECT
@@ -597,6 +591,7 @@ function MoveSelect()
 	
 	for i = SPR_SELECT1 to SPR_SELECT4
 		SetSpriteSize(i, 40, 40)
+		SetSpriteDepth(i, 1)
 		ClearTweenSprite(i)
 	next i
 	
@@ -1047,6 +1042,21 @@ function DeletePopup2()
 		if GetTextExists(i) then DeleteText(i)
 		if GetTweenExists(i) then DeleteTween(i)
 	next i
+endfunction
+
+function ProcessPopup()
+	if GetSpriteExists(SPR_POPUP_BG)
+		if (ButtonMultitouchEnabled(SPR_POPUP_BG) or inputSelect) and GetSpriteColorAlpha(SPR_POPUP_BG) > 10
+			ClearPopup1()
+			ClearMultiTouch()
+		endif
+	endif
+	if GetSpriteExists(SPR_POPUP_BG_2)
+		if (ButtonMultitouchEnabled(SPR_POPUP_BG_2) or inputSelect2) and GetSpriteColorAlpha(SPR_POPUP_BG_2) > 10
+			ClearPopup2()
+			ClearMultiTouch()
+		endif
+	endif
 endfunction
 
 /*

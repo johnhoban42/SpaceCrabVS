@@ -1116,7 +1116,15 @@ function SetCrabFromChapter(chap)
 		crab1Type = 1
 		crab1Alt = 0
 		
-	elseif chap = 23	//Future Crab
+	elseif chap = 23	//Sk8r Crab
+		crab1Type = 3
+		crab1Alt = 3
+		
+	elseif chap = 24	//Chimera Crab
+		crab1Type = 6
+		crab1Alt = 3
+		
+	elseif chap = 25	//Future Crab
 		crab1Type = 1
 		crab1Alt = 3
 		
@@ -1152,7 +1160,7 @@ function SetCrabString(crabNum)
 		if myAlt = 0 then newStr$ = "Top Crab"
 		if myAlt = 1 then newStr$ = "Taxi Crab"
 		if myAlt = 2 then newStr$ = "Space Barc"
-		if myAlt = 2 then newStr$ = "Sk8r Crab"
+		if myAlt = 3 then newStr$ = "Sk8r Crab"
 	elseif myType = 4
 		if myAlt = 0 then newStr$ = "Rave Crab"
 		if myAlt = 1 then newStr$ = "#1 Fan Crab"
@@ -1167,7 +1175,7 @@ function SetCrabString(crabNum)
 		if myAlt = 0 then newStr$ = "Ninja Crab"
 		if myAlt = 1 then newStr$ = "Team Player"
 		if myAlt = 2 then newStr$ = "Cranime"
-		if myAlt = 2 then newStr$ = "Chimera Crab"
+		if myAlt = 3 then newStr$ = "Chimera Crab"
 	endif
 	
 	if crabNum = 1 then crab1Str$ = newStr$
@@ -1281,6 +1289,14 @@ function SetCrabFromStringChap(str$, chapNum, crabNum)
 	elseif str$ = "CC" or chapNum = 21	//Chrono Crab
 		mType = 5
 		mAlt = 0
+		
+	elseif str$ = "S8" or chapNum = 23	//Sk8r Crab
+		mType = 3
+		mAlt = 3
+		
+	elseif str$ = "CM" or chapNum = 24	//Chimera Crab
+		mType = 6
+		mAlt = 3
 		
 	elseif str$ = "FC" or chapNum = 25	//Future Crab
 		mType = 1

@@ -88,6 +88,9 @@ function InitStart()
 	LoadSpriteExpress(SPR_STORY_START, "story.png", 250, 150, 250, 1330, 5)
 	AddButton(SPR_STORY_START)
 	
+	LoadSpriteExpress(SPR_SETTINGS, "settingsButton.png", 140, 140, 200, 200, 5)
+	AddButton(SPR_SETTINGS)
+	
 	//The demo adjustments
 	if demo
 		IncSpriteY(SPR_START2, -50)
@@ -105,14 +108,7 @@ function InitStart()
 	endif
 	AddButton(SPR_CHALLENGE)
 	SetSpriteVisible(SPR_CHALLENGE, 0)
-	
-	//Might get moved to the settings menu
-	LoadSpriteExpress(SPR_VOLUME, "volume.png", 300, 87, 1000, 1000, 5)
-	LoadSpriteExpress(SPR_VOLUME_SLIDER, "volumeslider.png", 300, 87, 1000, 1000, 4)
-	AddButton(SPR_VOLUME)
-	
-	
-	
+		
 	
 	CreateMirrorClassic()
 	
@@ -283,13 +279,7 @@ function HorizontalStart()
 	SetSpriteExpress(SPR_STARTAI, 250, 150, w*4/5, h*3/5 + 100, 5)
 	SetSpriteExpress(SPR_STORY_START, 250, 150, w*3/5 + 40, h*3/5 - 100 - 120, 5)
 	SetSpriteExpress(SPR_CHALLENGE, 250, 150, w*3/5 + 40, h*3/5 + 70 - 120, 5)
-	
-	SetSpriteExpress(SPR_VOLUME, 300, 87, 780, 580, 5)
-	SetSpriteExpress(SPR_VOLUME_SLIDER, 300, 87, 780, 580, 5)
-	
-	myX = Min(Max(GetPointerX(), 875), 1045)
-	SetSpriteX(SPR_VOLUME_SLIDER, (875 + volumeM*(1045.0-875)/100) -87*3)
-	
+
 	//Print(myX)
 	//volumeM = (myX-875)*100/(1045-875)
 	//SetMusicSystemVolumeOGG(volumeM)
@@ -318,8 +308,8 @@ function HorizontalStart()
 	//Temporary, for Playcrafting NYC 2024
 	IncSpriteX(SPR_STORY_START, 9999)
 	IncSpriteX(SPR_CHALLENGE, 9999)
-	IncSpriteX(SPR_VOLUME, 9999)
-	IncSpriteX(SPR_VOLUME_SLIDER, 9999)
+	//IncSpriteX(SPR_VOLUME, 9999)
+	//IncSpriteX(SPR_VOLUME_SLIDER, 9999)
 	IncSpriteX(SPR_START2, 9999)
 	
 	SetSpriteY(SPR_STORY_START, 530)
@@ -366,44 +356,11 @@ function DoStart()
 	UpdateStartElements()
 	
 	//Multiplayer section
-	if GetPointerPressed() and not Button(SPR_TITLE) and not Button(SPR_VOLUME) and not Button(SPR_CLASSIC) and not Button(SPR_STORY_START) and not Button(SPR_CHALLENGE) and not Button(SPR_START1) and not Button(SPR_LEADERBOARD) and not Button(SPR_MENU_BACK) and not Button(SPR_START2) and not Button(SPR_STARTMIRROR) and not Button(SPR_SP_C1) and not Button(SPR_SP_C2) and not Button(SPR_SP_C3) and not Button(SPR_SP_C4) and not Button(SPR_SP_C5) and not Button(SPR_SP_C6)
+	if GetPointerPressed() and not Button(SPR_TITLE) and not Button(SPR_SETTINGS) and not Button(SPR_CLASSIC) and not Button(SPR_STORY_START) and not Button(SPR_CHALLENGE) and not Button(SPR_START1) and not Button(SPR_LEADERBOARD) and not Button(SPR_MENU_BACK) and not Button(SPR_START2) and not Button(SPR_STARTMIRROR) and not Button(SPR_SP_C1) and not Button(SPR_SP_C2) and not Button(SPR_SP_C3) and not Button(SPR_SP_C4) and not Button(SPR_SP_C5) and not Button(SPR_SP_C6)
 		PingCrab(GetPointerX(), GetPointerY(), Random (100, 180))
 	endif
 	
-	//875 to 1045
-	if Hover(SPR_VOLUME) and GetPointerState()
-		myX = Min(Max(GetPointerX(), 875), 1045)
-		SetSpriteX(SPR_VOLUME_SLIDER, myX-87*3)
-		
-		volumeM = (myX-875)*100/(1045-875)
-		SetMusicVolumeOGG(titleMusic, volumeM)
-		volumeSE = (myX-875)*100.0/(1045-875)
-	endif
 	
-	if ButtonMultitouchEnabled(SPR_VOLUME) and GetPointerState() = 0
-		if volumeM = 0
-			volumeM = 100
-			volumeSE = 100
-			SetSpriteX(SPR_VOLUME_SLIDER, 1045-87*3)
-		elseif volumeM < 26
-			volumeM = 0
-			volumeSE = 0
-			SetSpriteX(SPR_VOLUME_SLIDER, 875-87*3)
-		elseif volumeM < 51
-			volumeM = 25
-			volumeSE = 25
-			SetSpriteX(SPR_VOLUME_SLIDER, 875 + (1045-875)*.25 -87*3)
-		elseif volumeM < 76
-			volumeM = 50
-			volumeSE = 50
-			SetSpriteX(SPR_VOLUME_SLIDER, 875 + (1045-875)*.5 -87*3)
-		else
-			volumeM = 75
-			volumeSE = 75
-			SetSpriteX(SPR_VOLUME_SLIDER, 875 + (1045-875)*.75 -87*3)
-		endif
-		SetMusicVolumeOGG(titleMusic, volumeM)
-	endif
 	
 	//if ButtonMultitouchEnabled(SPR_START1) and spActive = 0 and dispH = 0
 	if ButtonMultitouchEnabled(SPR_CLASSIC) and dispH = 0
@@ -502,6 +459,11 @@ function DoStart()
 		state = CHARACTER_SELECT
 	endif
 	
+	//Going to the settings screen
+	if ButtonMultitouchEnabled(SPR_SETTINGS)
+		StartSettings()
+	endif
+	
 	//Going to story mode, will eventually bring you to character select
 	if (Button(SPR_STORY_START) and GetSpriteVisible(SPR_STORY_START)) or ((inputSelect and selectTarget = 0))
 		spType = STORYMODE
@@ -543,8 +505,19 @@ function UpdateStartElements()
 	SetSpriteAngle(SPR_TITLE, 90 + 320*sin(startTimer#) + 50*sin(startTimer#*3))
 	if dispH then SetSpriteAngle(SPR_TITLE, 4*sin(startTimer#*3))
 	if GetSpriteVisible(SPR_TITLE)
+		contFruit = 0
+		switchFruit = 0
+		if GetRawJoystickConnected(1)
+			if GetRawJoystickButtonPressed(1, 9) and GetRawJoystickButtonPressed(1, 10)
+				switchFruit = 1
+				if fruitUnlock# >= 0 then PlaySound(buttonSound)
+			endif
+			if GetRawJoystickButtonState(1, 9) and GetRawJoystickButtonState(1, 10)
+				contFruit = 1
+			endif
+		endif
 		if fruitUnlock# < 0
-			if GetPointerState() and GetSpriteHitTest(SPR_TITLE, GetPointerX(), GetPointerY())
+			if (GetPointerState() and GetSpriteHitTest(SPR_TITLE, GetPointerX(), GetPointerY())) or contFruit
 				IncSpriteAngle(SPR_TITLE, 15*(300 + fruitUnlock#) + .02*fruitUnlock#*fruitUnlock#)
 				inc fruitUnlock#, fpsr#
 			else
@@ -558,7 +531,7 @@ function UpdateStartElements()
 				startTimer# = 0
 			endif
 		else
-			if ButtonMultitouchEnabled(SPR_TITLE)
+			if ButtonMultitouchEnabled(SPR_TITLE) or switchFruit
 				if fruitMode = 1
 					fruitMode = 0
 					SetSpriteFrame(SPR_TITLE, 1)
@@ -1084,6 +1057,7 @@ function ExitStart()
 	DeleteSprite(SPR_CLASSIC)
 	DeleteSprite(SPR_STORY_START)
 	DeleteSprite(SPR_CHALLENGE)
+	DeleteSprite(SPR_SETTINGS)
 	DeleteText(SPR_LOGO_HORIZ)
 	DeleteText(TXT_WAIT1)
 	DeleteText(TXT_WAIT2)
@@ -1093,9 +1067,6 @@ function ExitStart()
 	DeleteText(TXT_ALONE)
 	if GetSpriteExists(coverS) then DeleteSprite(coverS)
 	if GetTweenExists(SPR_LOGO_HORIZ) then DeleteTween(SPR_LOGO_HORIZ)
-	
-	DeleteSprite(SPR_VOLUME)
-	DeleteSprite(SPR_VOLUME_SLIDER)
 	
 	if debug
 		for i = SPR_CRAB1_BODY to SPR_CRAB1_COSTUME

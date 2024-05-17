@@ -44,17 +44,17 @@ function InitGame()
 	LoadSpriteExpress(pauseButton, "pause.png", 100, 100, 0, 0, 9)
 	SetSpriteMiddleScreen(pauseButton)
 	
-	LoadSpriteExpress(playButton, "resume.png", 185, 185, 0, 0, 1)
+	LoadSpriteExpress(playButton, "resume.png", 185, 185, 0, 0, 2)
 	SetSpriteMiddleScreen(playButton)
 	SetSpriteVisible(playButton, 0)
 	
-	LoadSpriteExpress(exitButton, "crabselect.png", 140, 140, 0, 0, 1)
+	LoadSpriteExpress(exitButton, "crabselect.png", 140, 140, 0, 0, 2)
 	SetSpriteMiddleScreen(exitButton)
 	if dispH = 0 then IncSpriteX(exitButton, 270)
 	if dispH then IncSpriteY(exitButton, 220)
 	SetSpriteVisible(exitButton, 0)
 	
-	LoadSpriteExpress(mainmenuButton, "mainmenu.png", 140, 140, 0, 0, 1)
+	LoadSpriteExpress(mainmenuButton, "mainmenu.png", 140, 140, 0, 0, 2)
 	SetSpriteMiddleScreen(mainmenuButton)
 	if dispH = 0 then IncSpriteX(mainmenuButton, -270)
 	if dispH then IncSpriteY(mainmenuButton, -220)
@@ -250,6 +250,9 @@ function DoGame()
 		IncSpriteAngle(exitButton, -fpsr#)
 		IncSpriteAngle(mainmenuButton, -fpsr#)
 		IncSpriteAngle(playButton, fpsr#)
+		IncSpriteAngle(SPR_SETTINGS, fpsr#)
+		
+		if ButtonMultitouchEnabled(SPR_SETTINGS) then StartSettings()
 		
 		if ButtonMultitouchEnabled(playButton) or inputExit
 			paused = 0
@@ -846,12 +849,12 @@ function PauseGame()
 	
 	PlaySoundR(buttonSound, 100)
 	zoom# = GetViewZoom()
-	CreateSpriteExpress(curtainB, h/zoom#, h/zoom#, 0, 0, 2)
+	CreateSpriteExpress(curtainB, h/zoom#, h/zoom#, 0, 0, 3)
 	SetSpriteImage(curtainB, bg3I)
 	if dispH then SetSpriteSize(curtainB, w/zoom#, w/zoom#)
 	SetSpriteMiddleScreen(curtainB)
 	
-	CreateSpriteExpress(curtain, w/zoom#*1.3, h/zoom#*1.3, 0, 0, 2)
+	CreateSpriteExpress(curtain, w/zoom#*1.3, h/zoom#*1.3, 0, 0, 3)
 	SetSpriteImage(curtain, bgPI)
 	if dispH
 		SetSpriteSize(curtain, 800, 1600)
@@ -859,6 +862,9 @@ function PauseGame()
 		
 	endif
 	SetSpriteMiddleScreen(curtain)
+	
+	SetFolder("/media/ui")
+	LoadSpriteExpress(SPR_SETTINGS, "settingsButton.png", 120, 120, w-135, 15, 3)
 	
 	if spType = CLASSIC
 		IncSpriteSizeCenteredMult(curtain, GetViewZoom())
@@ -907,7 +913,6 @@ function PauseGame()
 		else //The top (game 2)
 			SetTextAngle(i, 180)
 		endif
-		
 		
 	next i
 	
@@ -1053,6 +1058,8 @@ function UnpauseGame()
 	
 	TurnOffSelect()
 	TurnOffSelect2()
+	
+	DeleteSprite(SPR_SETTINGS)
 	
 	//Only playing the button sound if the game wasn't exited
 	if GetParticlesExists(11) = 0 then PlaySoundR(buttonSound, 100)
@@ -2598,7 +2605,7 @@ function PlayOpeningScene()
 		SetTextAngle(i, (i-TXT_INTRO1)*180)
 		SetTextSpacing(i, -30)
 		SetTextY(i, h*3/4  - h/2*(i-TXT_INTRO1))
-		SetTextDepth(i, 3)
+		SetTextDepth(i, 4)
 		
 		if dispH
 			SetTextMiddleScreen(TXT_INTRO1, 0)

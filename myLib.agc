@@ -953,27 +953,29 @@ function ButtonsUpdate()
 					if spr >= SPR_CS_CRABS_1 then skip = 1
 				next i
 				
-				//The case for playing the tween
-				//The sound logic makes sure that
-				if skip = 0
-					if GetTweenExists(tweenButton) = 0 then CreateTweenSprite(tweenButton, .3)
-					//GetTween
-					impact# = 1.2
-					SetTweenSpriteSizeX(tweenButton, GetSpriteWidth(spr)*impact#, GetSpriteWidth(spr), TweenOvershoot())
-					SetTweenSpriteSizeY(tweenButton, GetSpriteHeight(spr)*impact#, GetSpriteHeight(spr), TweenOvershoot())
-					SetTweenSpriteX(tweenButton, GetSpriteMiddleX(spr)-(GetSpriteWidth(spr)*impact#)/2, GetSpriteX(spr), TweenOvershoot())
-					SetTweenSpriteY(tweenButton, GetSpriteMiddleY(spr)-(GetSpriteHeight(spr)*impact#)/2, GetSpriteY(spr), TweenOvershoot())
-					PlayTweenSprite(tweenButton, spr, 0)
-					
-					tweenButtonOld = tweenButton
-					inc tweenButton, 1
-					if tweenButton > 35 then tweenButton = 15
-					
-					//if appState <> CHARACTER_SELECT then PlaySoundR(buttonSound, 100)
-					PlaySoundR(buttonSound, 100)
-				else
-					//if GetSoundPlayingR(buttonSound) = 0 and appState <> CHARACTER_SELECT then PlaySoundR(buttonSound, 100)
-					if GetSoundPlayingR(buttonSound) = 0 then PlaySoundR(buttonSound, 100)
+				if settingsActive = 0 or (spr >= 802 and spr <= 900)
+					//The case for playing the tween
+					//The sound logic makes sure that
+					if skip = 0
+						if GetTweenExists(tweenButton) = 0 then CreateTweenSprite(tweenButton, .3)
+						//GetTween
+						impact# = 1.2
+						SetTweenSpriteSizeX(tweenButton, GetSpriteWidth(spr)*impact#, GetSpriteWidth(spr), TweenOvershoot())
+						SetTweenSpriteSizeY(tweenButton, GetSpriteHeight(spr)*impact#, GetSpriteHeight(spr), TweenOvershoot())
+						SetTweenSpriteX(tweenButton, GetSpriteMiddleX(spr)-(GetSpriteWidth(spr)*impact#)/2, GetSpriteX(spr), TweenOvershoot())
+						SetTweenSpriteY(tweenButton, GetSpriteMiddleY(spr)-(GetSpriteHeight(spr)*impact#)/2, GetSpriteY(spr), TweenOvershoot())
+						PlayTweenSprite(tweenButton, spr, 0)
+						
+						tweenButtonOld = tweenButton
+						inc tweenButton, 1
+						if tweenButton > 35 then tweenButton = 15
+						
+						//if appState <> CHARACTER_SELECT then PlaySoundR(buttonSound, 100)
+						PlaySoundR(buttonSound, 100)
+					else
+						//if GetSoundPlayingR(buttonSound) = 0 and appState <> CHARACTER_SELECT then PlaySoundR(buttonSound, 100)
+						if GetSoundPlayingR(buttonSound) = 0 then PlaySoundR(buttonSound, 100)
+					endif
 				endif
 				
 			endif

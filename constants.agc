@@ -413,6 +413,10 @@ global met3CD2# = 0 //400
 
 #constant meteorGlowI 86
 
+#constant bg6I 89
+#constant bg7I 90
+#constant bg8I 91
+
 global loadedCrabSprites as Integer[0]
 
 #constant crab1start1I 101
@@ -721,9 +725,7 @@ global IMG_CS_CRAB as Integer[NUM_CRABS]
 #constant SPR_STORY_EXIT 621
 #constant SPR_STORY_SKIP 622
 
-//Settings Sprites
-#constant SPR_VOLUME 801
-#constant SPR_VOLUME_SLIDER 802
+//Settings Sprites: 801-900
 
 global curChapter = 3
 global curScene = 0
@@ -1103,6 +1105,9 @@ function LoadBaseImages()
 	LoadImage(bg3I, "bg3.png")
 	LoadImage(bg4I, "bg4.png")
 	LoadImage(bg5I, "bg5.png")
+	LoadImage(bg6I, "bg6.png")
+	LoadImage(bg7I, "bg7.png")
+	LoadImage(bg8I, "bg8.png")
 	LoadImage(bgPI, "pauseForeground.png")
 	LoadImage(bgRainSwipeI, "rainbowSwipe.png")
 	
@@ -1429,11 +1434,21 @@ function SetCrabPauseStrings()
 	crabPause2[7] = "Special: Mad-eor Shower" + chr(10) + "Call Angry Ned to rain down" + chr(10) + "fast meteors on your opponent."
 	crabPause2[8] = "Special: Royal Order" + chr(10) + "Order shrimp to fire three" + chr(10) + "rounds of canons on your enemy."
 	crabPause2[9] = "Special: Stardust Spinout" + chr(10) + "Twists the opponent to make" + chr(10) + "all of their stuff spinout."
+	crabPause2[10] = "Special: Crab-stalgia" + chr(10) + "Obscure your opponent's vision" + chr(10) + "with memories of the past."
 	crabPause2[11] = "Special: Hourglass Curse" + chr(10) + "Speed up your enemy's" + chr(10) + "game with a cursed artifact."
 	crabPause2[12] = "Special: Claw-Ball Toss" + chr(10) + "Fling flaming projecticles" + chr(10) + "directly through the screen."
 	crabPause2[13] = "Special: Termination Claws" + chr(10) + "Incite The Law to catch" + chr(10) + "your opponent off gaurd."
 	crabPause2[14] = "Special: Meteor Math" + chr(10) + "Send dangerous numbers to" + chr(10) + "the opposite screen."
+	crabPause2[15] = "Special: Tail Chase" + chr(10) + "Makes the oppenent dizzy," + chr(10) + "spinning all of their stuff."
+	crabPause2[16] = "Special: Ride the Wave" + chr(10) + "Obscure your opponent's vision" + chr(10) + "with gnarly beach waves."
+	crabPause2[17] = "Special: Double Time" + chr(10) + "Speed up your opponent's" + chr(10) + "tempo, doubling their speed."
+	crabPause2[18] = "Special: Heart Blast!!" + chr(10) + "Send deadly love bombs" + chr(10) + "directly through the screen."
+	crabPause2[19] = "Special: Blackest Hole" + chr(10) + "Rip meteors from a black" + chr(10) + "hole, and onto your opponent."
+	crabPause2[20] = "Special: Summon the Storm" + chr(10) + "Send meteors raining down" + chr(10) + "to your opponent's planet."
+	crabPause2[21] = "Special: See You Later" + chr(10) + "He was a punk, she did ballet," + chr(10) + "this spins your opponent away."
 	crabPause2[22] = "Special: Heavenly Light" + chr(10) + "Blind your adversary with" + chr(10) + "the power of holy glow."
+	crabPause2[23] = "Special: Birthday Blast" + chr(10) + "Make your opponent age quicker," + chr(10) + "doubling their speed."
+	crabPause2[24] = "Special: Shrimp Sorcery" + chr(10) + "Blast mythical shrimp" + chr(10) + "directly through the screen."
 	//crabPause2[] = "Special: " + chr(10) + "" + chr(10) + ""
 endfunction
 
@@ -1458,7 +1473,7 @@ function SetStoryShortStrings()
 	chapterDesc[3] = "Something big has happened" + chr(10) + "in the galaxy, and the" + chr(10) + "#1 Fan Crab is sure it's" + chr(10) + "because of Space Crab!"
 	
 	chapterTitle[4] = "The Trainee"
-	chapterDesc[4] = "Top Crab is eager to" + chr(10) + "prove his worth, but does" + chr(10) + "he even HAVE worth?" + chr(10) + "Let's find out!"
+	chapterDesc[4] = "Top Crab is eager to prove" + chr(10) + "his worth, but does he" + chr(10) + "even HAVE worth?" + chr(10) + "Let's find out!"
 	
 	chapterTitle[5] = "Political Influence"
 	chapterDesc[5] = "Royalty, meddling in the" + chr(10) + "affairs of commoners?" + chr(10) + "It's a thankless job, and" + chr(10) + "he won't let you forget it."
@@ -1479,10 +1494,10 @@ function SetStoryShortStrings()
 	chapterDesc[10] = "Sound check, one, two." + chr(10) + "Rock Lobster's got a new" + chr(10) + "set, and you've got" + chr(10) + "front row seats."
 	
 	chapterTitle[11] = "The History"
-	chapterDesc[11] = "A generational legacy comes" + chr(10) + "to a head after" + chr(10) + "family gets involved." + chr(10) + ""
+	chapterDesc[11] = "A generational legacy" + chr(10) + "comes to a head after" + chr(10) + "family gets involved." + chr(10) + ""
 	
 	chapterTitle[12] = "The Cosmic Cook"
-	chapterDesc[12] = "'Space Crab placed an" + chr(10) + "order? With ME? That must" + chr(10) + "be a prank. Throw that" + chr(10) + "one in the trash.'"
+	chapterDesc[12] = "'Space Crab placed an order?" + chr(10) + "With ME? That must" + chr(10) + "be a prank. Throw that" + chr(10) + "one in the trash.'"
 	
 	chapterTitle[13] = "Single & Mingling"
 	chapterDesc[13] = "Cranime Wants to Indulge /" + chr(10) + "Crabacus Makes a Choice / " + chr(10) + "Cranime Finds Love Pt. 1 /" + chr(10) + "Cranime Finds Love Pt. 2"
@@ -1491,37 +1506,37 @@ function SetStoryShortStrings()
 	chapterDesc[14] = "It's the opening day" + chr(10) + "of the Star Seekers!" + chr(10) + "But is it everything" + chr(10) + "that was promised...?"
 	
 	chapterTitle[15] = "The Party...?"
-	chapterDesc[15] = "Rave Crab's eternal party" + chr(10) + "may end sooner than" + chr(10) + "he anticipated." + chr(10) + ""
+	chapterDesc[15] = "Rave Crab's eternal" + chr(10) + "party may end sooner" + chr(10) + "than anticipated." + chr(10) + ""
 	
 	chapterTitle[16] = "Voice of Reason"
 	chapterDesc[16] = "'SOMEONE'S GOTTA PUT" + chr(10) + "SPACE CRAB IN HIS" + chr(10) + "PLACE, AND I DON'T" + chr(10) + "SEE THEM STEPPING UP!!'"
 	
-	chapterTitle[17] = "Divine Eye-in-the-Sky"
-	chapterDesc[17] = "" + chr(10) + "" + chr(10) + "" + chr(10) + ""
+	chapterTitle[17] = "The Eye-in-the-Sky"
+	chapterDesc[17] = "Answering a prayer from" + chr(10) + "below, Holy Crab descends" + chr(10) + "to help the lost crabs" + chr(10) + "find their way."
 	
-	chapterTitle[18] = "Crab Resources Department"
-	chapterDesc[18] = "" + chr(10) + "" + chr(10) + "" + chr(10) + ""
+	chapterTitle[18] = "Crab Resources Dept."
+	chapterDesc[18] = "'Dealing with the consequences" + chr(10) + "of your actions? Al Legal is" + chr(10) + "here to get it all in writing." + chr(10) + "Just need you to sign here.'"
 	
 	chapterTitle[19] = "Other Side of the Paw"
-	chapterDesc[19] = "" + chr(10) + "" + chr(10) + "" + chr(10) + ""
+	chapterDesc[19] = "Let's hear what Space Barc" + chr(10) + "has to say about all this!" + chr(10) + "There's gotta be something" + chr(10) + "in that little dog brain."
 	
 	chapterTitle[20] = "The Valiant Defender"
-	chapterDesc[20] = "" + chr(10) + "" + chr(10) + "" + chr(10) + ""
+	chapterDesc[20] = "An evil force is rising." + chr(10) + "Will Crabyss Knight be" + chr(10) + "able to locate and stop" + chr(10) + "it in time?"
 	
 	chapterTitle[21] = "The Starlight Rival"
-	chapterDesc[21] = "" + chr(10) + "" + chr(10) + "" + chr(10) + ""
+	chapterDesc[21] = "The sceme has been revealed!" + chr(10) + "Will Chrono Crab pull off" + chr(10) + "his master plot, and best" + chr(10) + "his Starlight Rival?"
 	
 	chapterTitle[22] = "Fight for the Future!"
-	chapterDesc[22] = "" + chr(10) + "" + chr(10) + "" + chr(10) + ""
+	chapterDesc[22] = "With the Star Seekers united," + chr(10) + "Space Crab is left to deal" + chr(10) + "with one final question:" + chr(10) + "What happens next?"
 	
-	chapterTitle[23] = "Bonus 1: "
-	chapterDesc[23] = "" + chr(10) + "" + chr(10) + "" + chr(10) + ""
+	chapterTitle[23] = "Bonus 1: The Punk"
+	chapterDesc[23] = "Many find Sk8r Crab to be" + chr(10) + "obnoxious. But will they say" + chr(10) + "the same about his song?" + chr(10) + ""
 	
-	chapterTitle[24] = "Bonus 2: "
-	chapterDesc[24] = "" + chr(10) + "" + chr(10) + "" + chr(10) + ""
+	chapterTitle[24] = "Bonus 2: The Jester"
+	chapterDesc[24] = "This humble crab gets" + chr(10) + "more than he bargined for" + chr(10) + "when making a deal with" + chr(10) + "the devil."
 	
 	chapterTitle[25] = "The Future"
-	chapterDesc[25] = "" + chr(10) + "" + chr(10) + "" + chr(10) + ""
+	chapterDesc[25] = "" + chr(10) + "The end." + chr(10) + "" + chr(10) + ""
 	
 endfunction
 

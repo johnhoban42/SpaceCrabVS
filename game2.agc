@@ -53,6 +53,7 @@ function CreateGame2()
 	SetSpriteImage(bgGame2, bg1I)
 	SetBGRandomPosition(bgGame2)
 	SetSpriteDepth(bgGame2, 101)
+	if spType = MIRRORMODE then SetSpriteImage(bgGame2, bg7I)
 	
 	crab2Theta# = 90
 	DrawPolar2(crab2, crab2R#, crab2Theta#)
