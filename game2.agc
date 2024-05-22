@@ -36,7 +36,10 @@ endfunction
 
 function CreateGame2()
 	crab2Deaths = 0
-	CreateSprite(planet2, planetVarI[Random(1, 23)])
+	SetFolder("/media")
+	img = LoadImage("envi/p" + str(Random(1, planetIMax)) + ".png")
+	CreateSprite(planet2, img)
+	trashBag.insert(img)
 	SetSpriteSizeSquare(planet2, planetSize*gameScale#)
 	SetSpriteShape(planet2, 1)
 	DrawPolar2(planet2, 0, 90)
@@ -956,6 +959,7 @@ function SendSpecial2()
 		ninjaStarSize = 80*gameScale#
 		
 		//The 3 throwing stars
+		SetFolder("/media")
 		for i = special2Ex1 to special2Ex3
 			if GetSpriteExists(i) = 0 then LoadSpriteExpress(i, "envi/ninjaStar" + AltStr(crab2Alt) + ".png", ninjaStarSize, ninjaStarSize, -200, -200, 4)
 			SetSpriteColorAlpha(i, 0)
@@ -1090,14 +1094,19 @@ function HitScene2()
 					meteorActive2.remove()
 				next
 				meteorActive2.length = 0
-			endif
-			
-			SetSpriteColorAlpha(planet2, 0)
-			if random(1, 500) <> 280
-				SetSpriteImage(planet2, planetVarI[Random(1, planetIMax)])
-			else
-				//LEGENDARY PLANET
-				SetSpriteImage(planet2, planetVarI[Random(planetIMax+1, planetITotalMax)])
+				
+				SetFolder("/media/envi")
+				SetSpriteColorAlpha(planet2, 0)
+				if random(1, 500) <> 280
+					img = LoadImage("p" + str(Random(1, planetIMax)) + ".png")
+					SetSpriteImage(planet2, img)	
+				else
+					//LEGENDARY PLANET
+					img = LoadImage("legendp" + str(Random(1, planetILegMax)) + ".png")
+					SetSpriteImage(planet2, img)
+				endif
+				trashBag.insert(img)
+				
 			endif
 			
 			crab2R# = -10*(hit2Timer#-hitSceneMax/2)

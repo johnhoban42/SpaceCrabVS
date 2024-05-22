@@ -252,10 +252,24 @@ function DoGame()
 		IncSpriteAngle(playButton, fpsr#)
 		IncSpriteAngle(SPR_SETTINGS, fpsr#)
 		
+		ProcessPopup()
+		
 		if ButtonMultitouchEnabled(SPR_SETTINGS) then StartSettings()
+		if dispH
+			if ButtonMultitouchEnabled(SPR_CONTROLS)
+				if spType = 0
+					Popup(1, -1)
+					Popup(2, -1)
+				else
+					Popup(MIDDLE, -1)
+				endif
+			endif
+		endif
 		
 		if ButtonMultitouchEnabled(playButton) or inputExit
 			paused = 0
+			DeletePopup1()
+			DeletePopup2()
 			UnpauseGame()
 		endif
 		
@@ -864,7 +878,9 @@ function PauseGame()
 	SetSpriteMiddleScreen(curtain)
 	
 	SetFolder("/media/ui")
-	LoadSpriteExpress(SPR_SETTINGS, "settingsButton.png", 120, 120, w-135, 15, 3)
+	LoadSpriteExpress(SPR_SETTINGS, "settingss1.png", 120, 120, w-135, 15, 3)
+	
+	if dispH then LoadSpriteExpress(SPR_CONTROLS, "controls.png", 217, 120, GetSpriteX(SPR_SETTINGS)-240, 15, 3)
 	
 	if spType = CLASSIC
 		IncSpriteSizeCenteredMult(curtain, GetViewZoom())
@@ -1060,6 +1076,7 @@ function UnpauseGame()
 	TurnOffSelect2()
 	
 	DeleteSprite(SPR_SETTINGS)
+	if dispH then DeleteSprite(SPR_CONTROLS)
 	
 	//Only playing the button sound if the game wasn't exited
 	if GetParticlesExists(11) = 0 then PlaySoundR(buttonSound, 100)

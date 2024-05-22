@@ -84,15 +84,15 @@ global metSizeY = 80
 #constant chronoCrabTimeMax 1900	//Is longer because the timer goes down faster
 #constant ninjaCrabTimeMax 500	
 
-//										D		D		D		D		D		D																																
-//									Nul	Space	Wizard	Top		Rave	Chrono	Ninja	Mad		King	Taxi	Fan		Jeff	Team P	Al		Cbcus	Barc	Hwaii	Rock	Crnme	Future	Knight	Sk8r	Holy	Cake	Kyle
-global crabVel as float [24] = 		[0,	 1.28,	1.08,	2.48,	1.59,	1.38,	1.5,	1.3,	1.06,	2.78,	1,		1.33,	1.6,	1.30,	1.12,	1,		1,		1,		1,		1,		1,		1,		1.45,	1,		1]
-global crabAccel as float [24] = 	[0,	 0.1,	0.13,	0.03,	0.08,	0.1,	0.1,	0.09,	0.13,	0.024,	1,		0.115,	0.1,	0.1,	0.12,	1,		1,		1,		1,		1,		1,		1,		0.08,	1,		1]	
-global crabJumpHMax as float [24] = 	[0,	 5,		10.5,	8.0,	10.0,	5.0,	6.0,	4,		11.5,	7.0,	1,		5.0,	2,		6,		10.5,	1,		1,		1,		1,		1,		1,		1,		15,		1,		1]
-global crabJumpSpeed as float [24] =	[0,	 1.216,	1.516,	-3,		-1.28,	-3.216,	.816,	1.2,	1.516,	-2,		1,		-3.22,	.8,		1.116,	1.516,	1,		1,		1,		1,		1,		1,		1,		-1.28,	1,		1]
-global crabJumpDMax as float [24] =	[0,	 28,	40,		32,		43,		28,		26,		29,		38,		32,		1,		28,		27,		28,		40,		1,		1,		1,		1,		1,		1,		1,		55,		1,		1]
-global crabFramerate as integer[24]=	[0,  10,	13,		10,		18,		10,		15,		14,		12,		15,		1,		10,		15,		12,		12,		1,		1,		1,		1,		1,		1,		1,		10,		1,		1]
-global crabSPAtck as integer[24] = 	[0,	 20,	20,		25,		23,		30,		18,		20,		16,		25,		1,		29,		20,		20,		20,		1,		1,		1,		1,		1,		1,		1,		26,		1,		1]
+//										D		D		D		D		D		D		1		2		3		4		5		6		1		2		3		4		5		6		1		2		3		4		5		6
+//									Nul	Space	Wizard	Top		Rave	Chrono	Ninja	Mad		King	Taxi	Fan		Jeff	Team P	Al		Cbcus	Barc	Hwaii	Rock	Crnme	Future	Knight	Sk8r	Holy	Cake	Chimera
+global crabVel as float [24] = 		[0,	 1.28,	1.08,	2.48,	1.59,	1.38,	1.5,	1.3,	1.06,	2.78,	1.47,	1.33,	1.6,	1.30,	1.12,	1,		1,		1,		1,		1,		1,		1,		1.45,	1,		1]
+global crabAccel as float [24] = 	[0,	 0.1,	0.13,	0.03,	0.08,	0.1,	0.1,	0.09,	0.13,	0.024,	0.09,	0.115,	0.1,	0.1,	0.12,	1,		1,		1,		1,		1,		1,		1,		0.08,	1,		1]	
+global crabJumpHMax as float [24] = 	[0,	 5,		10.5,	8.0,	10.0,	5.0,	6.0,	4,		11.5,	7.0,	9.8,	5.0,	2,		6,		10.5,	1,		1,		1,		1,		1,		1,		1,		15,		1,		1]
+global crabJumpSpeed as float [24] =	[0,	 1.216,	1.516,	-3,		-1.28,	-3.216,	.816,	1.2,	1.516,	-2,		-1.0,	-3.22,	.8,		1.116,	1.516,	1,		1,		1,		1,		1,		1,		1,		-1.28,	1,		1]
+global crabJumpDMax as float [24] =	[0,	 28,	40,		32,		43,		28,		26,		29,		38,		32,		37,		28,		27,		28,		40,		1,		1,		1,		1,		1,		1,		1,		55,		1,		1]
+global crabFramerate as integer[24]=	[0,  10,	13,		10,		18,		10,		15,		14,		12,		15,		12,		10,		15,		12,		12,		16,		10,		12,		12,		10,		10,		14,		10,		12,		10]
+global crabSPAtck as integer[24] = 	[0,	 20,	20,		25,		23,		30,		18,		20,		16,		25,		25,		29,		20,		20,		20,		25,		25,		30,		20,		17,		23,		25,		26,		30,		20]
 
 
 #constant lastTranType 2
@@ -467,9 +467,10 @@ global loadedCrabSprites as Integer[0]
 #constant crabpingI 400
 
 //Planets images are 401 to 430
-#constant planetIMax 23
-#constant planetITotalMax 29
-global planetVarI as Integer[planetITotalMax]
+#constant planetIMax 60
+//#constant planetITotalMax 29
+#constant planetILegMax 23
+//global planetVarI as Integer[planetITotalMax]
 
 #constant warpI1 431
 #constant warpI2 432
@@ -622,9 +623,11 @@ global jumpPartI as Integer[6, 4]
 
 global oldSong = 0
 
-//Volume for music and sound effects
+//Volume for music and sound effects & other settings
 global volumeM = 100
 global volumeSE = 100
+global targetFPS = 5
+global windowSize = 1
 
 //SetMusicSystemVolumeOGG(volumeM)
 
@@ -1145,9 +1148,9 @@ function LoadBaseImages()
 	*/
 
 	//Setting up the planet image indexes for later
-	for i = 1 to planetITotalMax
-		planetVarI[i] = 400 + i
-	next i
+	//for i = 1 to planetITotalMax
+	//	planetVarI[i] = 400 + i
+	//next i
 	
 	
 	LoadImage(fruit1I, "fruit1.png")
@@ -1212,12 +1215,12 @@ function LoadGameImages(loading)
 		LoadImage(meteorI4, "meteor4.png")
 		LoadImage(meteorTractorI, "tractor.png")
 		
-		for i = 1 to planetIMax
-			LoadImage(planetVarI[i], "p" + str(i) + ".png")
-		next i
-		for i = 1 to planetITotalMax - planetIMax
-			LoadImage(planetVarI[planetIMax + i], "legendp" + str(i) + ".png")
-		next i
+		//for i = 1 to planetIMax
+			//LoadImage(planetVarI[i], "p" + str(i) + ".png")
+		//next i
+		//for i = 1 to planetITotalMax - planetIMax
+			//LoadImage(planetVarI[planetIMax + i], "legendp" + str(i) + ".png")
+		//next i
 		
 		
 		
@@ -1386,12 +1389,12 @@ function LoadGameImages(loading)
 		DeleteImage(meteorI4)
 		DeleteImage(meteorTractorI)
 		
-		for i = 1 to planetIMax
-			DeleteImage(planetVarI[i])
-		next i
-		for i = 1 to planetITotalMax - planetIMax
-			DeleteImage(planetVarI[planetIMax + i])
-		next i
+		//for i = 1 to planetIMax
+		//	DeleteImage(planetVarI[i])
+		//next i
+		//for i = 1 to planetITotalMax - planetIMax
+		//	DeleteImage(planetVarI[planetIMax + i])
+		//next i
 		
 		//if GetImageExists(crab3attack3I) then DeleteImage(crab3attack3I)
 		//if GetImageExists(crab5attack3I) then DeleteImage(crab5attack3I)

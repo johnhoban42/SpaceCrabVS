@@ -36,7 +36,10 @@ endfunction
 
 function CreateGame1()
 	crab1Deaths = 0
-	CreateSprite(planet1, planetVarI[Random(1, 23)])
+	SetFolder("/media")
+	img = LoadImage("envi/p" + str(Random(1, planetIMax)) + ".png")
+	CreateSprite(planet1, img)
+	trashBag.insert(img)
 	SetSpriteSizeSquare(planet1, planetSize*gameScale#)
 	SetSpriteShape(planet1, 1)
 	DrawPolar1(planet1, 0, 270)
@@ -1091,14 +1094,19 @@ function HitScene1()
 					meteorActive1.remove()
 				next
 				meteorActive1.length = 0
-			endif
-			
-			SetSpriteColorAlpha(planet1, 0)
-			if random(1, 500) <> 280
-				SetSpriteImage(planet1, planetVarI[Random(1, planetIMax)])
-			else
-				//LEGENDARY PLANET
-				SetSpriteImage(planet1, planetVarI[Random(planetIMax+1, planetITotalMax)])
+				
+				SetFolder("/media/envi")
+				SetSpriteColorAlpha(planet1, 0)
+				if random(1, 500) <> 280
+					img = LoadImage("p" + str(Random(1, planetIMax)) + ".png")
+					SetSpriteImage(planet1, img)	
+				else
+					//LEGENDARY PLANET
+					img = LoadImage("legendp" + str(Random(1, planetILegMax)) + ".png")
+					SetSpriteImage(planet1, img)
+				endif
+				trashBag.insert(img)
+				
 			endif
 			
 			crab1R# = -10*(hit1Timer#-hitSceneMax/2)

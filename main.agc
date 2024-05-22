@@ -27,6 +27,7 @@ SetWindowAllowResize( 1 ) // allow the user to resize the window
 
 global demo = 1
 global debug = 1
+global onWeb = 0
 
 if debug = 0
 	if GetGameCenterExists() = 1 // This checks to see if Game Center/Game Services exist on the device
@@ -156,6 +157,10 @@ function SaveGame()
 	WriteInteger(3, musicBattleUnlock)
 	WriteInteger(3, unlockAIHard)
 	WriteInteger(3, musicUnlocked)
+	WriteInteger(3, volumeM)
+	WriteInteger(3, volumeSE)
+	WriteInteger(3, targetFPS)
+	WriteInteger(3, windowSize)
 	
 	CloseFile(3)
 endfunction
@@ -181,6 +186,10 @@ function LoadGame()
 	musicBattleUnlock = ReadInteger(3)
 	unlockAIHard = ReadInteger(3)
 	musicUnlocked = ReadInteger(3)
+	volumeM = ReadInteger(3)
+	volumeSE = ReadInteger(3)
+	targetFPS = ReadInteger(3)
+	windowSize = ReadInteger(3)
 	CloseFile(3)
 endfunction
 
@@ -215,6 +224,18 @@ else
 	altUnlocked[5] = 1
 	altUnlocked[6] = 0
 	if highestScene <= 0 then highestScene = 1
+	if firstStartup = 0
+		//This is initial variable setting
+		volumeM = 100
+		volumeSE = 100
+		targetFPS = 5
+		windowSize = 1
+	endif
+	if targetFPS <> 5
+		SetVSync(0)
+		SetSyncRate(fpsChunk[targetFPS], 0)
+	endif
+	if dispH then SetWindowChunkSize(windowSize)
 endif
 
 curChapter = Max(curChapter, 1)
@@ -591,13 +612,15 @@ function MoveSelect()
 	
 	for i = SPR_SELECT1 to SPR_SELECT4
 		SetSpriteSize(i, 40, 40)
-		SetSpriteDepth(i, 1)
+		//SetSpriteDepth(i, 1)
 		ClearTweenSprite(i)
 	next i
 	
 	if selectTarget = 0
 		//If you're pressing the arrow key for the first time
-		if appState = START
+		if settingsActive
+			selectTarget = SPR_VOLUME
+		elseif appState = START
 			selectTarget = SPR_START1//SPR_STORY_START
 		elseif appState = CHARACTER_SELECT
 			selectTarget = SPR_CS_READY_1
@@ -660,6 +683,13 @@ function MoveSelect()
 						endif
 						
 						if (appState = CHARACTER_SELECT) and GetSpriteMiddleX(spr) > w/2+20 and spType = 0
+							rightT = 0
+							leftT = 0
+							upT = 0
+							downT = 0
+						endif
+						
+						if (settingsActive = 1) and GetSpriteDepth(spr) <> 1
 							rightT = 0
 							leftT = 0
 							upT = 0
@@ -907,7 +937,7 @@ function Popup(area, unlockNum)
 	SetFolder("/media")
 	
 	//Creating the background of the popup
-	CreateSpriteExpress(spr, wid, hei, x-wid/2, y-hei/2, 2)
+	CreateSpriteExpress(spr, wid, hei, x-wid/2, y-hei/2, 1)
 	SetSpriteColor(spr, 100, 100, 100, 255)
 	
 	//Creating the centered sprite of the popup

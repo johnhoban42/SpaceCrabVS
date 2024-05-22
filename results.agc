@@ -356,7 +356,7 @@ function DoResultsController(rc ref as ResultsController)
 	// Max alpha = 255
 	if rc.frame <= FRAMES_WIN_MSG#
 		SetTextColorAlpha(rc.txtWinMsg, rc.frame * (255 / FRAMES_WIN_MSG#)) 
-		SetSpriteColorAlpha(coverS, 255 - rc.frame * (255 / FRAMES_WIN_MSG#))
+		if GetSpriteExists(coverS) then SetSpriteColorAlpha(coverS, 255 - rc.frame * (255 / FRAMES_WIN_MSG#))
 	endif
 	//print(rc.frame)
 	
