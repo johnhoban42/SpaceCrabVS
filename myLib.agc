@@ -785,6 +785,54 @@ function GetColorByCycle(numOf360, rgb$)
 	DeleteSprite(tmpSpr)
 endfunction result
 
+function SetSpriteColorByCycleA(spr, numOf360)
+	//Make sure the cycleLength is divisible by 6!
+	cycleLength = 360
+	colorTime = Mod(numOf360*3, 360)
+	phaseLen = cycleLength/2
+	
+	tmpSpr = CreateSprite(0)
+	
+	//Each colorphase will last for one phaseLen
+	if colorTime <= phaseLen	//Red -> Black
+		t = colorTime
+		SetSpriteColor(tmpSpr, (t*255.0)/phaseLen, 0, 0, 255)
+		
+	else //Black -> Red
+		t = colorTime-phaseLen
+		SetSpriteColor(tmpSpr, 255-(t*255.0)/phaseLen, 0, 0, 255)
+	endif
+	
+	r = GetSpriteColorRed(tmpSpr)
+	SetSpriteColor(spr, r, 0, 0, GetSpriteColorAlpha(spr))
+	
+	DeleteSprite(tmpSpr)
+endfunction
+
+function SetSpriteColorByCycleB(spr, numOf360)
+	//Make sure the cycleLength is divisible by 6!
+	cycleLength = 360
+	colorTime = Mod(numOf360*3, 360)
+	phaseLen = cycleLength/2
+	
+	tmpSpr = CreateSprite(0)
+	
+	//Each colorphase will last for one phaseLen
+	if colorTime <= phaseLen	//Cyan -> Blue
+		t = colorTime
+		SetSpriteColor(tmpSpr, 0, (t*255.0)/phaseLen, 255, 255)
+		
+	else //Blue -> Cyan
+		t = colorTime-phaseLen
+		SetSpriteColor(tmpSpr, 0, 255-(t*255.0)/phaseLen, 255, 255)
+	endif
+	
+	g = GetSpriteColorGreen(tmpSpr)
+	SetSpriteColor(spr, 0, g, 255, GetSpriteColorAlpha(spr))
+	
+	DeleteSprite(tmpSpr)
+endfunction
+
 function SetSpriteColorByCycleC(spr, numOf360)
 	//Make sure the cycleLength is divisible by 6!
 	cycleLength = 360
@@ -803,13 +851,12 @@ function SetSpriteColorByCycleC(spr, numOf360)
 		SetSpriteColor(tmpSpr, 255, 255, 255-(t*255.0)/phaseLen, 255)
 	endif
 	
-	r = GetSpriteColorRed(tmpSpr)
-	g = GetSpriteColorGreen(tmpSpr)
 	b = GetSpriteColorBlue(tmpSpr)
-	SetSpriteColor(spr, r, g, b, GetSpriteColorAlpha(spr))
+	SetSpriteColor(spr, 255, 255, b, GetSpriteColorAlpha(spr))
 	
 	DeleteSprite(tmpSpr)
 endfunction
+
 
 
 global pingList as Integer[0]

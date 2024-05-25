@@ -189,8 +189,8 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 	highAlt = GetHighAlt()
 	scale# = 1
 	if highAlt = 1 then scale# = .8
-	if highAlt = 2 then scale# = .5
-	if highAlt = 3 then scale# = .4
+	if highAlt = 2 or highAlt = 3 then scale# = .5
+	//if highAlt = 3 then scale# = .4
 	
 	firstTimeLoad = 1
 	if IMG_CS_CRAB[1] <> 0 then firstTimeLoad = 0
@@ -948,7 +948,7 @@ function SelectCrab(csc ref as CharacterSelectController)
 	
 	
 	//Text gets bigger to show that a selection has been locked in
-	if csc.crabSelected <> 1 then SetTextSize(csc.txtCrabName, GetTextSize(csc.txtCrabName) + 10)
+	if csc.crabSelected <> 1 and csc.crabSelected <> 15 then SetTextSize(csc.txtCrabName, GetTextSize(csc.txtCrabName) + 10)
 	
 	csc.ready = 1
 	
@@ -966,7 +966,7 @@ function UnselectCrab(csc ref as CharacterSelectController)
 	PlaySprite(csc.sprReady, 9+csc.player, 1, 7+8*(csc.player-1), 14+8*(csc.player-1))
 	
 	//Text gets smaller again
-	if csc.crabSelected <> 1 then SetTextSize(csc.txtCrabName, GetTextSize(csc.txtCrabName) - 10)
+	if csc.crabSelected <> 1 and csc.crabSelected <> 15 then SetTextSize(csc.txtCrabName, GetTextSize(csc.txtCrabName) - 10)
 	
 	csc.ready = 0
 	
@@ -1171,7 +1171,8 @@ function DoAISelectController(csc ref as CharacterSelectController)
 	next i
 	
 	//Fun recoloring of the difficulty number, only animating
-	if spAIDiff >= 9 then SetSpriteColorByCycleC(csc.sprTxtBack, 720.0*GetMusicPositionOGG(characterMusic)/(11-spAIDiff))
+	if spAIDiff = 9 then SetSpriteColorByCycleC(csc.sprTxtBack, 720.0*GetMusicPositionOGG(characterMusic)/(11-spAIDiff))
+	if spAIDiff > 9 then SetSpriteColorByCycleA(csc.sprTxtBack, 720.0*GetMusicPositionOGG(characterMusic)/(11-spAIDiff))
 	//SetTextColor(TXT_SP_DANGER, 255, 160 - 10*(gameDifficulty1) + (0.0+10*gameDifficulty1)*sin(gameTimer#*(5+gameDifficulty1)), 160 - 10*(gameDifficulty1) + (0.0+10*gameDifficulty1)*sin(gameTimer#*(5+gameDifficulty1)), 255)
 	//Like above line: let's make this RED at higher difficulties
 	

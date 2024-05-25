@@ -233,6 +233,8 @@ function DoGame1()
 	if specialTimerAgainst1# > 0 and crab2Type = 4
 		for i = special2Ex1 to special2Ex5
 			if crab2Alt = 0 then SetSpriteColorByCycle(i, specialTimerAgainst1#)
+			if crab2Alt = 1 then SetSpriteColorByCycleA(i, specialTimerAgainst1#)
+			if crab2Alt = 2 then SetSpriteColorByCycleB(i, specialTimerAgainst1#)
 			if crab2Alt = 3 then SetSpriteColorByCycleC(i, specialTimerAgainst1#)
 		next i
 		SetSpriteColor(special2Ex5, (GetSpriteColorRed(special2Ex5)+510)/3, (GetSpriteColorGreen(special2Ex5)+510)/3, (GetSpriteColorBlue(special2Ex5)+510)/3, 255)
@@ -811,12 +813,14 @@ function SendSpecial1()
 			CreateSprite(meteorSprNum, 0)
 			SetSpriteSize(meteorSprNum, metSizeX, metSizeY)
 			SetSpriteColor(meteorSprNum, 235, 20, 20, 254)
+			if crab1Alt = 3 then SetSpriteColor(meteorSprNum, 0, 0, 0, 254)
 			SetSpriteDepth(meteorSprNum, 20)
 			AddMeteorAnimation(meteorSprNum, 0)
 			
 			CreateSprite(meteorSprNum + 10000, meteorTractorI)
 			SetSpriteSize(meteorSprNum + 10000, 1, 1000)
 			SetSpriteColor(meteorSprNum + 10000, 255, 20, 20, 30)
+			SetSpriteColor(meteorSprNum + 10000, 0, 150, 0, 30)
 			SetSpriteDepth(meteorSprNum + 10000, 30)
 						
 			inc meteorSprNum, 1
@@ -828,15 +832,17 @@ function SendSpecial1()
 		
 	elseif crab1Type = 2
 		//Ladder Wizard
-		if crab1Alt <> 1
+		if crab1Alt = 0 or crab1Alt = 2
 			rnd = Random(1, 2)
 			if rnd = 1
-				PlaySoundR(wizardSpell1S, 40)
+				PlaySoundR(wizardSpell1S, volumeSE)
 			else
-				PlaySoundR(wizardSpell2S, 40)
+				PlaySoundR(wizardSpell2S, volumeSE)
 			endif
+		elseif crab1Alt = 1
+			PlaySoundR(kingSpellS, volumeSE)
 		else
-			PlaySoundR(kingSpellS, 100)
+			PlaySoundR(knightSpellS, volumeSE)
 		endif
 		
 		for j = 1 to 3
@@ -855,6 +861,7 @@ function SendSpecial1()
 				SetSpriteDepth(meteorSprNum, 20)
 				SetSpriteColorRandomBright(meteorSprNum)
 				AddMeteorAnimation(meteorSprNum, crab1Alt)
+				if crab1Alt = 3 then SetSpriteColor(meteorSprNum, 255, 20, 20, 255)
 				inc meteorSprNum, 1
 				meteorActive2.insert(newMetS)
 			next i
@@ -884,6 +891,8 @@ function SendSpecial1()
 			SetSpriteDepth(i, 19)
 			FixSpriteToScreen(i, 1)
 			if crab1Alt = 0 then SetSpriteColorByCycle(i, specialTimerAgainst2#)
+			if crab1Alt = 1 then SetSpriteColorByCycleA(i, specialTimerAgainst2#)
+			if crab1Alt = 2 then SetSpriteColorByCycleB(i, specialTimerAgainst2#)
 			if crab1Alt = 3 then SetSpriteColorByCycleC(i, specialTimerAgainst2#)
 		next i
 		SetSpriteDepth(special1Ex5, 7)
@@ -920,14 +929,14 @@ function SendSpecial1()
 		endif
 		
 		SetSpriteSizeSquare(special1Ex5, 220*gameScale#)
-		DrawPolar2(special1Ex5, 0, 90)
-		//SetSpriteColorByCycle(special1Ex5, specialTimerAgainst2#)
-		for i = special4s1 to special4s8
-			AddSpriteAnimationFrame(special1Ex5, i)
+		DrawPolar2(special1Ex5, 0, 90+dispH*180)
+		SetFolder("/media/envi")
+		for i = 1 to 8
+			img = LoadImage("ravespprop" + AltStr(crab1Alt) + str(i) + ".png")
+			AddSpriteAnimationFrame(special1Ex5, img)
+			trashBag.insert(img)
 		next i
 		PlaySprite(special1Ex5, 20, 1, 1, 8)
-	
-		if crab1Alt <> 0 then SetSpriteVisible(special1Ex5, 0)
 	
 	elseif crab1Type = 5
 		//Chrono Crab

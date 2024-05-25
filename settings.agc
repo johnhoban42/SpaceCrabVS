@@ -125,7 +125,7 @@ function StartSettings()
 	SetTextColor(TXTS_WINDOW, 0, 0, 0, 255)
 	SetTextSpacing(TXTS_WINDOW, -19)
 
-	CreateTextExpress(TXTS_WINCUR, str(fpsChunk[targetFPS]), 45, fontDescI, 1, (GetSpriteMiddleX(SPRS_WINDOWN)+GetSpriteMiddleX(SPRS_WINUP))/2, GetTextY(SPRS_WINDOWN)+10, settingDepth)
+	CreateTextExpress(TXTS_WINCUR, str(fpsChunk[targetFPS]), 45, fontDescI, 1, (GetSpriteMiddleX(SPRS_WINDOWN)+GetSpriteMiddleX(SPRS_WINUP))/2, GetTextY(SPRS_WINDOWN)+12, settingDepth)
 	SetTextColor(TXTS_WINCUR, 0, 0, 0, 255)
 	SetTextSpacing(TXTS_WINCUR, -14)
 	if windowSize = 1 then SetTextString(TXTS_WINCUR, "720x1280")

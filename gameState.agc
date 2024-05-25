@@ -1383,7 +1383,7 @@ function ShowSpecialAnimation(crabType, crabAlt, playerNum, fast)
 		
 	next i
 	animType = 0
-	if (crabType = 3 and crabAlt = 0) or (crabType = 5 and crabAlt = 0) or (crabType = 2 and crabAlt = 2)
+	if (crabType = 5 and crabAlt = 3) or (crabType = 3 and crabAlt = 0) or (crabType = 5 and crabAlt = 0) or (crabType = 2 and crabAlt = 2) or (crabType = 6 and crabAlt = 2) or (crabType = 5 and crabAlt = 2) or (crabType = 3 and crabAlt = 2)
 		SetFolder("/media/art")
 		LoadSprite(specialSprBacker1, "crab" + str(crabType) + AltStr(crabAlt) + "attack3.png")
 		LoadSprite(specialSprBacker2, "crab" + str(crabType) + AltStr(crabAlt) + "attack3.png")
@@ -1395,7 +1395,7 @@ function ShowSpecialAnimation(crabType, crabAlt, playerNum, fast)
 		SetSpriteSizeSquare(specialSprBacker2, specSize)
 		animType = 1
 	endif
-	if (crabType = 4 and crabAlt = 0) or (crabType = 4 and crabAlt = 3) then animType = 2
+	if (crabType = 4) or (crabType = 3 and crabAlt = 3) then animType = 2
 	
 	//Offsetting the clock hands so that they rotate properly
 	if crabType = 5
@@ -1419,10 +1419,10 @@ function ShowSpecialAnimation(crabType, crabAlt, playerNum, fast)
 	SetSpritePosition(specialSprBack2, -100 - specSize, 100 + offsetY)
 	//SetSpritePosition(specialSprBack2, -100 - specSize, 250 + offsetY)
 	
-	if (crabType = 4 and crabAlt = 0) or (crabType = 4 and crabAlt = 3)
+	if (crabType = 4) or (crabType = 3 and crabAlt = 3)
 		SetSpritePosition(specialSprBack2, -100 - specSize, 100 + offsetY - specSize*0.4)
 		SetSpritePosition(specialSprFront2, w + 100, 30 + offsetY)
-	SetSpritePosition(specialSprFront1, -100 - specSize, h - 700 - offsetY + 70)
+		SetSpritePosition(specialSprFront1, -100 - specSize, h - 700 - offsetY + 70)
 	endif
 	
 	//The text for the special
@@ -1470,7 +1470,7 @@ function ShowSpecialAnimation(crabType, crabAlt, playerNum, fast)
 			SetTextY(specialSprFront1, h/2 + GetSpriteHeight(specialSprFront1)/2)
 			SetTextSize(specialSprFront1, GetTextSize(specialSprFront2))
 		endif
-		if (crabType = 3 and crabAlt = 0) or (crabType = 5 and crabAlt = 0) or (crabType = 2 and crabAlt = 2)
+		if animType = 1
 			SetSpriteFlip(specialSprBacker1, 0, 1)
 			SetSpriteMiddleScreen(specialSprFront1)
 			SetSpriteMiddleScreen(specialSprBack1)
@@ -1545,6 +1545,9 @@ function ShowSpecialAnimation(crabType, crabAlt, playerNum, fast)
 		
 		//Top crab & Chrono crab
 		if animType = 1
+			cake = 0
+			if crabType = 5 and crabAlt = 3 then cake = 1
+			
 			if i = 1
 				if dispH = 0 and spType <> STORYMODE
 					DrawPolar1(specialSprFront1, 0, 270)
@@ -1566,6 +1569,7 @@ function ShowSpecialAnimation(crabType, crabAlt, playerNum, fast)
 			endif
 				
 			for j = specialSprFront1 to specialSprBacker2
+				if cake and i < iEnd*1/9 and (j <> specialSprBacker1 and j <> specialSprBacker2) then continue
 				if i < iEnd*1/9
 					FadeSpriteOut(j, i, 0, iEnd*1/9)
 					FadeSpriteOut(j, i, 0, iEnd*1/9)
@@ -1583,33 +1587,48 @@ function ShowSpecialAnimation(crabType, crabAlt, playerNum, fast)
 				endif	
 			next j
 			
-			//Making the components bigger, and also repositioning the top
-			IncSpriteSizeCentered(specialSprBacker1, 1*fpsr#)
-			IncSpriteSizeCentered(specialSprBacker2, 1*fpsr#)
-			IncSpriteSizeCentered(specialSprBack1, 1*fpsr#)
-			IncSpriteSizeCentered(specialSprBack2, 1*fpsr#)
-			IncSpriteSizeCentered(specialSprFront1, 1*fpsr#)
-			IncSpriteSizeCentered(specialSprFront2, 1*fpsr#)
-			if crabType = 5
-				IncSpritePosition(specialSprFront2, -.125*fpsr#, -.25*fpsr#)
-				IncSpritePosition(specialSprBack2, -.125*fpsr#, -.25*fpsr#)
-				if dispH or spType = STORYMODE
-					IncSpritePosition(specialSprFront1, -.125*fpsr#, .25*fpsr#*0)
-					IncSpritePosition(specialSprBack1, -.125*fpsr#, .25*fpsr#*0)
+			if cake and i < iEnd*8/9
+				for j = specialSprFront1 to specialSprBacker2
+					if (j = specialSprBacker1 or j = specialSprBacker2) then continue
+					SetSpriteColorAlpha(j, 255-255.0*i/(iEnd*8/9))
+				next j
+				
+				if i <= iEnd/29
+					for j = specialSprFront1 to specialSprBacker2
+						SetSpriteColorAlpha(j, 0)
+					next j
 				endif
+				
 			endif
 			
-			//Goes around once for top, 3 times for chrono
-			for j = 2 to crabType
-				//TODO: Make this display right
-				IncSpriteAngle(specialSprFront1, -1*fpsr# - i/(25.0)*fpsr#)
-				IncSpriteAngle(specialSprFront2, -1*fpsr# - i/(25.0)*fpsr#)
-				IncSpriteAngle(specialSprBack1, 1.5*fpsr# + i/(25.0)*fpsr#)
-				IncSpriteAngle(specialSprBack2, 1.5*fpsr# + i/(25.0)*fpsr#)
-			next j
+			if cake = 0
+				//Making the components bigger, and also repositioning the top
+				IncSpriteSizeCentered(specialSprBacker1, 1*fpsr#)
+				IncSpriteSizeCentered(specialSprBacker2, 1*fpsr#)
+				IncSpriteSizeCentered(specialSprBack1, 1*fpsr#)
+				IncSpriteSizeCentered(specialSprBack2, 1*fpsr#)
+				IncSpriteSizeCentered(specialSprFront1, 1*fpsr#)
+				IncSpriteSizeCentered(specialSprFront2, 1*fpsr#)
+				if crabType = 5
+					IncSpritePosition(specialSprFront2, -.125*fpsr#, -.25*fpsr#)
+					IncSpritePosition(specialSprBack2, -.125*fpsr#, -.25*fpsr#)
+					if dispH or spType = STORYMODE
+						IncSpritePosition(specialSprFront1, -.125*fpsr#, .25*fpsr#*0)
+						IncSpritePosition(specialSprBack1, -.125*fpsr#, .25*fpsr#*0)
+					endif
+				endif
+				
+				//Goes around once for top, 3 times for chrono
+				for j = 2 to 4
+					//TODO: Make this display right
+					IncSpriteAngle(specialSprFront1, -1*fpsr# - i/(25.0)*fpsr#)
+					IncSpriteAngle(specialSprFront2, -1*fpsr# - i/(25.0)*fpsr#)
+					IncSpriteAngle(specialSprBack1, 1.5*fpsr# + i/(25.0)*fpsr#)
+					IncSpriteAngle(specialSprBack2, 1.5*fpsr# + i/(25.0)*fpsr#)
+				next j 
+			endif
 			
 		endif
-		
 		
 		if i < iEnd*5/7
 			GlideTextToX(specialSprFront1, w/2, 6)
@@ -1885,7 +1904,7 @@ function CreateMeteor(gameNum, category, special)
 endfunction
 
 function AddMeteorAnimation(spr, animType)
-	if fruitMode = 0 and animType = 0
+	if fruitMode = 0 and (animType = 0 or animType = 3)
 		AddSpriteAnimationFrame(spr, meteorI1)
 		AddSpriteAnimationFrame(spr, meteorI2)
 		AddSpriteAnimationFrame(spr, meteorI3)

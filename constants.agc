@@ -86,13 +86,14 @@ global metSizeY = 80
 
 //										D		D		D		D		D		D		1		2		3		4		5		6		1		2		3		4		5		6		1		2		3		4		5		6
 //									Nul	Space	Wizard	Top		Rave	Chrono	Ninja	Mad		King	Taxi	Fan		Jeff	Team P	Al		Cbcus	Barc	Hwaii	Rock	Crnme	Future	Knight	Sk8r	Holy	Cake	Chimera
-global crabVel as float [24] = 		[0,	 1.28,	1.08,	2.48,	1.59,	1.38,	1.5,	1.3,	1.06,	2.78,	1.47,	1.33,	1.6,	1.30,	1.12,	1,		1,		1,		1,		1,		1,		1,		1.45,	1,		1]
-global crabAccel as float [24] = 	[0,	 0.1,	0.13,	0.03,	0.08,	0.1,	0.1,	0.09,	0.13,	0.024,	0.09,	0.115,	0.1,	0.1,	0.12,	1,		1,		1,		1,		1,		1,		1,		0.08,	1,		1]	
-global crabJumpHMax as float [24] = 	[0,	 5,		10.5,	8.0,	10.0,	5.0,	6.0,	4,		11.5,	7.0,	9.8,	5.0,	2,		6,		10.5,	1,		1,		1,		1,		1,		1,		1,		15,		1,		1]
-global crabJumpSpeed as float [24] =	[0,	 1.216,	1.516,	-3,		-1.28,	-3.216,	.816,	1.2,	1.516,	-2,		-1.0,	-3.22,	.8,		1.116,	1.516,	1,		1,		1,		1,		1,		1,		1,		-1.28,	1,		1]
-global crabJumpDMax as float [24] =	[0,	 28,	40,		32,		43,		28,		26,		29,		38,		32,		37,		28,		27,		28,		40,		1,		1,		1,		1,		1,		1,		1,		55,		1,		1]
+global crabVel as float [24] = 		[0,	 1.28,	1.08,	2.48,	1.59,	1.38,	1.5,	1.3,	1.06,	2.78,	1.52,	1.33,	1.6,	1.30,	1.12,	2.2,	1.46,	1.4,	1.4,	1.39,	1.18,	2.3,	1.45,	1.36,	1.4]
+global crabAccel as float [24] = 	[0,	 0.1,	0.13,	0.03,	0.08,	0.1,	0.1,	0.09,	0.13,	0.024,	0.09,	0.115,	0.1,	0.1,	0.12,	0.06,	0.09,	0.1,	0.1,	0.11,	0.14,	0.052,	0.08,	0.12,	0.1]	
+global crabJumpHMax as float [24] = 	[0,	 5,		10.5,	8.0,	10.0,	5.0,	6.0,	4,		11.5,	7.0,	9.8,	5.0,	2,		6,		10.5,	3.0,	11.0,	6.0,	2.0,	-4,		9.0,	8.2,	15,		4.5,	7.0]
+global crabJumpSpeed as float [24] =	[0,	 1.216,	1.516,	-3,		-1.28,	-3.216,	.816,	1.2,	1.516,	-2,		-1.0,	-3.22,	.8,		1.116,	1.516,	-3,		-2,		-4.0,	0.5,	1.3,	1.416,	-2.6,	-1.28,	-2.9,	.9]
+global crabJumpDMax as float [24] =	[0,	 28,	40,		32,		43,		28,		26,		29,		38,		32,		37,		28,		27,		28,		40,		32,		45,		22,		27,		28,		35,		30,		55,		25,		25]
 global crabFramerate as integer[24]=	[0,  10,	13,		10,		18,		10,		15,		14,		12,		15,		12,		10,		15,		12,		12,		16,		10,		12,		12,		10,		10,		14,		10,		12,		10]
-global crabSPAtck as integer[24] = 	[0,	 20,	20,		25,		23,		30,		18,		20,		16,		25,		25,		29,		20,		20,		20,		25,		25,		30,		20,		17,		23,		25,		26,		30,		20]
+///global crabSPAtck as integer[24] = 	[0,	 20,	20,		25,		23,		30,		18,		20,		16,		21,		25,		29,		20,		20,		20,		25,		23,		30,		20,		17,		23,		25,		26,		30,		20]
+global crabSPAtck as integer[24] = 	[0,	 20,	20,		25,		23,		30,		18,		20,		16,		21,		1,		29,		20,		20,		20,		1,		1,		1,		1,		1,		1,		1,		1,		1,		1]
 
 
 #constant lastTranType 2
@@ -585,6 +586,7 @@ global jumpPartI as Integer[6, 4]
 #constant fwipS 28
 
 #constant kingSpellS 29
+#constant knightSpellS 30
 
 
 //Music Indexes
@@ -873,6 +875,7 @@ function LoadBaseSounds()
 		LoadSoundOGG(wizardSpell1S, "wizardSpell1.ogg")
 		LoadSoundOGG(wizardSpell2S, "wizardSpell2.ogg")
 		LoadSoundOGG(kingSpellS, "kingSpell.ogg")
+		LoadSoundOGG(knightSpellS, "knightSpell.ogg")
 		LoadSoundOGG(ninjaStarS, "ninjaStar.ogg")
 	endif
 	
@@ -906,6 +909,7 @@ function LoadBaseSounds()
 		LoadMusicOGG(wizardSpell1S, "wizardSpell1.ogg")
 		LoadMusicOGG(wizardSpell2S, "wizardSpell2.ogg")
 		LoadMusicOGG(kingSpellS, "kingSpell.ogg")
+		LoadMusicOGG(knightSpellS, "knightSpell.ogg")
 		LoadMusicOGG(ninjaStarS, "ninjaStar.ogg")
 	endif
 			
@@ -994,10 +998,10 @@ function PlayMusicOGGSP(songID, loopYN)
 		if songID = dangerTMusic then LoadMusicOGG(dangerTMusic, "dangerT.ogg")
 		
 		if songID = raveBass1 then LoadMusicOGG(raveBass1, "special4"+AltStr(crab1Alt)+".ogg")
-		if songID = raveBass2 then LoadMusicOGG(raveBass2, "special4"+AltStr(crab1Alt)+".ogg")
+		if songID = raveBass2 then LoadMusicOGG(raveBass2, "special4"+AltStr(crab2Alt)+".ogg")
 		if songID = fireMusic then LoadMusicOGG(fireMusic, "fire.ogg")
 		
-		if songID = retro1M then LoadMusicOGG(retro1M, "retro1.ogg")
+		if songID = retro1M then LoadMusicOGG(retro1M, "special4a.ogg")
 		if songID = retro2M then LoadMusicOGG(retro2M, "retro2.ogg")
 		if songID = retro3M then LoadMusicOGG(retro3M, "retro3.ogg")
 		if songID = retro4M then LoadMusicOGG(retro4M, "retro4.ogg")

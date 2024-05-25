@@ -56,7 +56,7 @@ global h = 1600
 SetVirtualResolution(w, h) // doesn't have to match the window
 
 global dispH = 0		//Variable for horizontal display
-if deviceType = DESKTOP
+if deviceType = 9//DESKTOP
 	dispH = 1
 	w = 1280
 	h = 720
