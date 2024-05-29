@@ -197,7 +197,7 @@ endfunction
 //clearedChapter = 0
 
 if debug
-	curChapter = 2
+	curChapter = 5
 	curScene = 4
 	highestScene = 101
 	appState = START

@@ -25,7 +25,7 @@ fight 26963
 music retro8 1
 LW: BAFAd; Wow, you've become quite powerful since I last saw you!
 BAFD1c; I'll need to continue my wizardry studies to keep up.
-BAFT; What was it you wanted to bring up, earlier?
+BAFJb; What was it you wanted to bring up, earlier?
 SC: BAFAe; I'm glad you asked! I'm putting together a group- to explore the cosmos, to solve it's mysteries-
 BKFAh; The Star Seekers!
 BAFB; Can I count you in?

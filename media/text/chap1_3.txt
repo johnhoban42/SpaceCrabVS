@@ -29,6 +29,6 @@ BEFEc; Well, maybe he's not my 'friend'...
 I do owe him a favor though. Can you consider it?
 SC: BLFO; Consider it done!
 BAFQb; (Boy, things have gone great for the Star Seekers so far!)
-BAFOi; (What could possibly mess it up now?)
+BAFOc; (What could possibly mess it up now?)
 
 

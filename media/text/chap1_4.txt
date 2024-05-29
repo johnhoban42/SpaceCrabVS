@@ -2,7 +2,7 @@ bg 3
 music retro5 1
 SC: BAFU; Well, this is the place. Top Crab said I would his friend here.
 BAFW; Is that him? He's the only crab around, so, probably.
-CC: BAFMa; Oh? Who is this small, pathetic crab I see, minutely walking my way?
+CC: BAFM; Oh? Who is this small, pathetic crab I see, minutely walking my way?
 SC: BAFCd; Minutely? Huh?
 CC: BOFDd; Go on, speak what you came here to speak.
 BIFBe; My time is minutely precious to me, in a way that YOU wouldn't understand.

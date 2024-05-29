@@ -1,47 +1,47 @@
-bg 4
+bg 1
 music retro8
-SC: Oh! I haven't told Space Ned any of the news since my ship crashed.
-
+SC: BAFA; Oh! I haven't told Space Ned any of the news since my ship crashed.
 se phone
-Hey, Ned. You heard the news, right? (on the phone, for the rest of the scene)
-That's right, forget my ship- lets put all of our energy into...
-1F: Space Crab! Wow, it's really you!!
-Oh, wow, I'm feeling a little starstruck.
-I almost forget what I came here to talk about...
-SC: The Star Seekers!
-1F: Yes! That's exactly it!!
-SC: Recruitment is the first step.
-So, I've been trying to scout potential members...
-1F: (No. Way. Is he about to scout ME?!)
-(This is, like, my top fantasy.)
+BEFGa; Hey, Ned. You heard the news, right?
+BGFAc; That's right, forget my ship- let's put all of our energy into...
+1F: BAFSb; Space Crab! Wow, it's really you!!
+BTFSa; Oh, wow, I'm feeling a little starstruck.
+BTFW; I almost forgot what I came here to talk about...
+SC: BEFQ; The Star Seekers!
+1F: BVFSa; Yes! That's exactly it!!
+SC: BEFJe; Recruitment is the first step.
+BEFJd; So far, I've been trying to scout potential members...
+1F: BHFPa; (No. Way. Is he about to scout ME?!)
+BTFSd; (This is, like, my top fantasy.)
 music
-SC: ...and I can't think of ANYONE else!
-1F: ...huh?
-SC: There are no other crabs I can think of who would be a good fit.
-1F: But Space Crab... I'm right here! I'm ready. I'm willing!
-SC: In fact, I would ask ANY crab I saw to join. 
-1F: Am I invisible to you??
-SC: Maybe we'll just have to shut the whole thing down.
+SC: BGFAi; ...and I can't think of ANYONE else who I want to join!
+1F: BBFJ; ...huh?
+SC: BGFAg; There are no other crabs I can think of who would be a good fit.
+1F: BMFJe; But Space Crab... I'm right here! I'm ready. I'm willing!
+SC: BEFAf; In fact, I would probably ask ANY crab I saw to join. 
+1F: BBFEe; Am I invisible to you??
+SC: BGFE; Maybe we'll just have to shut the whole thing down...
 music tomato
-1F: NO! What about the #SpaceCrab3 dream?!
-I don't know what game you're playing, Space Crab, but I'll make you notice me NO MATTER WHAT!!
+1F: BSFMd; NO! What about the #SpaceCrab3 dream?!
+BPFDe; I don't know what game you're playing, Space Crab, but I'll make you notice me...
+BPFDe; NO MATTER WHAT!!
 music tomato
 fight 56247
 music
-SC: What's that, Ned? Sorry, I'm getting some call interference.
-SC: I'll head to an area with less, uh, meteors.
+SC: BEFHa; What's that, Ned? Sorry, I'm getting some call interference.
+SC: BGFHa; I'll head to an area with less, uh, meteors.
+music emotion
 exit 2
-music sadsong (don't have a fitting song for this yet)
-1F: Wait... you were on the phone this WHOLE TIME?
-Am I so insignificant, that a PHONE is more important than me?
-Even after all that effort, I couldn't get him to notice me.
-He was my only focus for so much of my life... what else do I have?
+1F: BBFEe; Wait... you were on the phone this WHOLE TIME?
+BBFE; Am I so insignificant, that a PHONE CALL is more important than me?
+BQFYe; Even after all that effort, I couldn't get him to notice me.
+BQFYh; He was my only focus for so much of my life... what else do I have?
 ...
 ??: Well, child, they do say to never meet your heroes.
-1F: I can't believe it's actually true.
-CC: Well, if it's any consolation...
-I'd love to have you on board with my group.
-No seeking of stars is in the agenda...
-But I'll make sure no crab in the galaxy could ever ignore you again.
-1F: That would be nice.
-CC: No more fretting, Fan of Crabs! Let's make the galaxy a Fan of You!
+1F: BQFYg; I can't believe it's actually true.
+CC: BBFH; Well, if it's any consolation...
+BLFJc; I'd love to have you on board with my group.
+BAFHa; No seeking of stars is in the agenda...
+BMFDc; But I'll make sure no crab in the galaxy could ever ignore you again.
+1F: BBFEb; That would be nice.
+CC: BOFKd; No more fretting, Fan of Crabs! Let's make the galaxy a Fan of You!

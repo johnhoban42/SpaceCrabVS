@@ -50,7 +50,7 @@ function InitStory()
 	for i = storyText to storyFitter
 		CreateTextExpress(i, "", 56, fontDescI, 0, GetSpriteX(SPR_TEXT_BOX)+textSideSpacingX, GetSpriteY(SPR_TEXT_BOX)+textSideSpacingY, 15-(i-storyText))
 		if i < storyFitter then SetTextY(i, GetSpriteY(i - storyText + SPR_TEXT_BOX)+textSideSpacingY)
-		SetTextSpacing(i, -13)
+		SetTextSpacing(i, -14)
 		SetTextLineSpacing(i, textLineSpacing)
 		SetTextColor(i, 0, 0, 0, 255)
 		CreateTweenText(i, .3)
@@ -364,6 +364,7 @@ function ShowScene(chap, scene)
 		fightDone = 1
 		wholeRow$ = ReadLine(1)
 		inc lineOverall, 1
+		SetSpriteVisible(SPR_STORY_EXIT, 0)
 	next i
 	
 	crabLType = 0
@@ -558,7 +559,7 @@ function ShowScene(chap, scene)
 			//Make an "if face contains 1, get from other folder" statement (organizing)
 			costume$ = body$
 			closedEye = 0
-			if Mid(face$, 1, 1) = "I" or Mid(face$, 1, 1) = "L" or Mid(face$, 1, 1) = "O"
+			if Mid(face$, 1, 1) = "I" or Mid(face$, 1, 1) = "L" or Mid(face$, 1, 1) = "O" or Mid(face$, 1, 2) = "Af" or Mid(face$, 1, 2) = "Ai" or Mid(face$, 1, 2) = "Md" or Mid(face$, 1, 2) = "Xa" or Mid(face$, 1, 2) = "Xb" or Mid(face$, 1, 2) = "Yg" or Mid(face$, 1, 2) = "Yh"
 				body$ = body$ + "r"
 				closedEye = 1
 			endif
@@ -611,6 +612,16 @@ function ShowScene(chap, scene)
 				next i
 					
 			else
+				
+				//Finishing the crab transition before loading new images
+				//SPR_CRAB2_COSTUME is the tween
+				while GetTweenSpritePlaying(SPR_CRAB2_COSTUME, SPR_CRAB2_BODY)
+					UpdateAllTweens(GetFrameTime())
+					DoInputs()
+					if inputSkip or inputSelect or GetPointerPressed() or (dispH = 0 and GetSpriteHitTest(SPR_STORY_SKIP, GetPointerX(), GetPointerY()) and GetPointerState()) then UpdateAllTweens(.3)
+					Sync()
+				endwhile
+				
 				//2nd Crab Target
 				cosType = GetCrabCostumeType(crab2Type, crab2Alt)
 				
@@ -1184,7 +1195,7 @@ endfunction
 
 function GetCrabCostumeType(cT, cA)
 	cosType = 0
-	if (cT = 2 and cA = 0) or (cT = 4 and cA = 2) or (cT = 4 and cA = 3) or (cT = 5 and cA = 1) or (cT = 6 and cA = 1)
+	if (cT = 2 and cA = 0) or (cT = 4 and cA = 2) or (cT = 4 and cA = 3) or (cT = 6 and cA = 1)
 		//Hat type
 		cosType = 1
 	elseif (cT = 2 and cA = 2) or (cT = 3 and cA = 0) or (cT = 3 and cA = 1) or (cT = 3 and cA = 2) or (cT = 5 and cA = 3)

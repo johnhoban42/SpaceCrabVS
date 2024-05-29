@@ -1,31 +1,31 @@
 bg 3
 music fightJ
-KC: Hear ye, hear ye!
-There's a ruckus afoot.
-Rumblings in the kingdom of a new hierarchy.
-And I DON'T tolerate any rumblings.
-NC: Of course, my liege. What is your plan of action?
-KC: Ahaha! Ninja Crab, my loyal servant...
-You should know that plans have no place in my mind.
-That's what I have you for.
-NC: ...Of course.
-My current intel states that a Crab of the prefix 'Space' is forming this group.
-These Star Seekers, if formed again, will no doubt repeat the mistakes of the past.
-The tales have spread far and wide of the Ladder Wizard who- 
-KC: Yawn... I get it. It's bad, or something.
-Your history lesson really made me tired.
-Be a darling and help wake me up, Ninjy?
-NC: ...yes, sir.
+KC: BMaFOc; Hear ye, hear ye!
+BMFD; There's a ruckus afoot.
+BAFDd; Rumblings in the kingdom of a new hierarchy.
+BMbFDe; And I DON'T tolerate any rumblings.
+NC: BTFN; Of course, my liege. What is your plan of action?
+KC: BAFOb; Ahaha! Ninja Crab, my loyal servant...
+BMFAd; You should know that plans have no place in my mind.
+BCFJb; That's what I have you for.
+NC: BBFAa; ...Of course.
+BAFA; My current intel states that a Crab of the prefix 'Space' is forming this group.
+BSFD; These Star Seekers, if formed again, will no doubt repeat the mistakes of the past.
+BVFD; The tales have spread far and wide of the Ladder Wizard who- 
+KC: BJFXb; Yawn... I get it. It's bad. Or something.
+BJFXa; Your history lesson really made me tired...
+BJFXe; Be a darling and help wake me up, Ninjy?
+NC: BBFRa; ...Yes, sir.
 music fightJ
 fight 23539
-music retro3
-NC: A more brief version of the report, then-
-Don't let the Star Seekers form.
-KC: THAT'S what you put me to sleep over? Ahaaha!
-I was already planning to shut them down.
-Some simpleton came in here the other day to annoy me about it.
-The next simpleton who bothers me about the Star Seekers will meet an even worse fate.
-exit 2
+music chill
+NC: BIFA; A more brief version of the report, then-
+BAFRa; Don't let the Star Seekers form.
+KC: BMFOa; THAT'S what you put me to sleep over? Ohoho!
+BMFAa; I was already planning to shut them down.
+BBFAc; Some simpleton came in here the other day to annoy me about it.
+BBFD; The next simpleton who bothers me about the Star Seekers will meet an even worse fate.
 music
+exit 2
 ??: Oh? You've a bone to pick with the Star Seekers?
-KC: Looks like we have our winner.
+KC: BAFBa; Looks like we have our winner.

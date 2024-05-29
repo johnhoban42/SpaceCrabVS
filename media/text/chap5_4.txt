@@ -1,53 +1,56 @@
 bg 3
 music fightJ
-KC: I'm already tired of waiting.
-Let me just skip to the exciting part!
-CC: No worries, Crabbed King. Your wish has been advanced in time.
+KC: BAFD; I'm already tired of waiting.
+BIFBa; Let me just skip to the exciting part!
+se phone
+CC: BVFKd; No worries, Crabbed King. Your wish has been advanced in time.
 exit 2
-KC: Hmm?
+KC: BMFF; Hmm?
 music fightB
-SC: Chrono Crab! Show yourself!
-KC: Well well, the crab of the hour.
-Did that laut, Inianda Jeff, drag you in?
-SC: What? No!
-I got a call that Chrono Crab is waiting here to challenge me!
-Where is he?! Was it a prank call, or what?
-KC: Frankly, I have negative cares about your little prattle.
-What I do care about, though...
-Is the permanent disbanding of the Star Seekers!
+SC: BOFDe; Chrono Crab! Show yourself!
+KC: BBFDb; Well, well, it's the crab of the hour.
+BIFDc; Did that laut, Inianda Jeff, drag you in?
+SC: BSFJd; What? No!
+BPFDa; I got a call that Chrono Crab is waiting here to challenge me!
+BPFHa; Where is he?! Was it a prank call, or what?
+KC: BMFD; Frankly, I have negative cares about your little prattle.
+BWFDa; What I do care about, though...
+BPFB; Is the permanent disbanding of the Star Seekers!
+SC: BSFDe; No. You have no power to do that!
+music
+KC: BMFDb; What you are not understanding, is my powerful shrimp army, and my spacious dungeon.
+BUaFAe; So yes, I do have power to do that. That, and much, much worse.
 music tomato
-SC: No. You have no power to do that!
-KC: What you are missing, is my powerful shrimp army, and my spacious dungeon.
-So yes, I do have power to do that.
-SC: (Uh oh.)
-(C'mon, think, think...)
-(I just need to buy some time to... think of SOMETHING!)
-Battle me! If you win, then you can do whatever you want to me!
-Lock me up, take all my stuff, disband the Star Seekers, anything!
-KC: Those are some great ideas! I appreciate your cooperation.
+SC: BTFNf; (Uh oh.)
+BTFNd; (C'mon, think, think...)
+BWFMd; (I just need to buy some time to... think of SOMETHING!)
+BPFDe; Battle me! If you win, then you can do whatever you want to me!
+BVFBd; Lock me up, take all my stuff, disband the Star Seekers, anything you want!
+KC: BAFOb; Those are some great ideas! I appreciate your cooperation.
 music tomato
 fight 64638
 music retro5
-KC: Any last words before you're thrown behind metal bars?
-SC: (This is my one shot!)
-Well, if you must...
-But it's a shame that the Star Seekers will never have a KING of their own!
-KC: Hmm?
-SC: They have a leader, sure, but no figurehead! No head honcho!
-And if I go to jail, I'm sure they'll never be able to find a king by themselves.
-KC: You think you can sway me? I've already decided.
-KC: ...
-KC: I will JOIN the Star Seekers.
-CC: What.
-NC: ...
-KC: They need a King, no? And not just a wimpy leader like this here, Space Crab.
-Why have a just a leader when you can also have a KING?
-KING of the Star Seekers... a title befitting of me, yes?
-Ohhohoho!
-NC: I... did not anticipate this. I step down.
-exit 2
-CC: Hmph.
-exit 2
-SC: Excited to have you on board, King Crab!
-KC: On board? I am the board! The figurehead!
-Yes, I could get used to this.
+KC: BAFAf; Any last words before you're thrown behind metal bars?
+SC: BQFYc; (This is my one shot!)
+BBFD; Well, if you must...
+BCFJa; It's just a shame that the Star Seekers will never have a KING of their own.
+music
+KC: BAFC; Hmm?
+SC: BUaFJe; They have a leader, sure, but no figurehead! No head honcho!
+CC: BIFKc; (This trick offers no substance! His bait, too obvious!)
+SC: BMFH; And if I go to jail, I'm sure they'll never be able to find a king by themselves.
+KC: BOFBe; You think you can sway me? I've already decided.
+KC: BMFD; ...
+KC: BOFKg; I will JOIN the Star Seekers.
+music retro2
+CC: BBFJ; What.
+NC: BBFMd; ...
+KC: BNFDb; They need a King, no? And not just a wimpy leader like that there, Space Crab.
+BAFO; Why have only a leader, when you can also have a KING?
+BMFAa; KING of the Star Seekers... a title befitting of me, yes?
+BKFOa; Oohohoho!
+NC: BBFEd; I... did not anticipate this. I stand down.
+CC: BBFD; Hmph.
+SC: BLFQ; Excited to have you on board, King Crab!
+KC: BMFB; On board? I am the board! The figurehead!
+BUFOb; Yes, I could get used to this.
