@@ -1,4 +1,4 @@
-bg 6
+bg 9
 music retro6
 HC: Now that I'm checked in, I can really, TRULY, start my vacation.
 The beach seems like a good first stop. It's close, too!
@@ -16,7 +16,7 @@ Here, we are simply both vacationers.
 HC: Oh. Alright then.
 KC: Here, why not play some quaint beach funtime games with me?
 My 'fellow vacation partner'?
-HC: Ah! Uh, yes sir! I mean, Your Magestey!
+HC: Ah! Uh, yes sir! I mean, Your Majesty!
 music retro6
 fight 58484
 music retro5
@@ -32,3 +32,4 @@ I would have them locked away forever.
 But you make it all, so delightful! Ahhahaha!
 HC: ... (shocked)
 ...Glad to hear it. (Smiling, eyes closed, blushing expression)
+

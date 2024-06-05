@@ -512,6 +512,7 @@ function EndMirrorScene()
 	endStage = 0
 	
 	//Setup for the scene
+	SetFolder("/media")
 	LoadSprite(bgHit1, "envi/bg0.png")
 	SetSpriteSizeSquare(bgHit1, w)
 	if crab1Deaths = 1
@@ -1398,7 +1399,7 @@ function ShowSpecialAnimation(crabType, crabAlt, playerNum, fast)
 	if (crabType = 4) or (crabType = 3 and crabAlt = 3) then animType = 2
 	
 	//Offsetting the clock hands so that they rotate properly
-	if crabType = 5
+	if crabType = 5 and crabAlt = 0
 		SetSpriteOffset(specialSprFront1, specSize*700/1356.0, specSize*932/1356.0)
 		SetSpriteOffset(specialSprBack1, specSize*700/1356.0, specSize*932/1356.0)
 		SetSpriteOffset(specialSprFront2, specSize*700/1356.0, specSize*932/1356.0)
@@ -1547,6 +1548,13 @@ function ShowSpecialAnimation(crabType, crabAlt, playerNum, fast)
 		if animType = 1
 			cake = 0
 			if crabType = 5 and crabAlt = 3 then cake = 1
+			if cake
+				if dispH then SetSpriteFlip(specialSprBacker1, 1, 1)
+				MatchSpritePosition(specialSprBack1, specialSprBacker1)
+				MatchSpritePosition(specialSprFront1, specialSprBacker1)
+				MatchSpritePosition(specialSprBack2, specialSprBacker2)
+				MatchSpritePosition(specialSprFront2, specialSprBacker2)
+			endif
 			
 			if i = 1
 				if dispH = 0 and spType <> STORYMODE
@@ -1598,8 +1606,15 @@ function ShowSpecialAnimation(crabType, crabAlt, playerNum, fast)
 						SetSpriteColorAlpha(j, 0)
 					next j
 				endif
-				
+					
 			endif
+			if cake and i > iEnd*8/9-1
+				SetSpriteVisible(specialSprFront1, 0)
+				SetSpriteVisible(specialSprBack1, 0)
+				SetSpriteVisible(specialSprFront2, 0)
+				SetSpriteVisible(specialSprBack2, 0)
+			endif
+			
 			
 			if cake = 0
 				//Making the components bigger, and also repositioning the top
@@ -1644,7 +1659,7 @@ function ShowSpecialAnimation(crabType, crabAlt, playerNum, fast)
 				SetTextCharColor(j, k, GetColorByCycle(i*1.1 + k*10, "r"), GetColorByCycle(i*1.1 + k*10, "g"), GetColorByCycle(i*1.1 + k*10, "b"), 255)
 			next k
 		next j
-		
+	
 		SyncG()
 	next i
 	
@@ -2034,7 +2049,7 @@ function UpdateSPScore(added)
 		endif
 		
 		
-		if spScore = storyMinScore and storyActive then PlaySoundR(rainbowSweepS, volumeSE)
+		if spScore = storyMinScore and storyActive then PlaySoundR(rainbowSweepS, 100)
 		
 	endif
 	
@@ -2107,6 +2122,17 @@ function InitJumpParticles()
 			SetParticlesFrequency(i, 200)
 			SetParticlesMax (i, 50)
 			SetParticlesAngle(i, 30)
+		elseif cType = 31	//Future Crab
+			SetParticlesLife(i, lifeEnd#/2)
+			AddParticlesColorKeyFrame (i, 0.0, 0, 0, 0, 255 )
+			AddParticlesColorKeyFrame (i, lifeEnd#/3, 255, 255, 255, 255)
+			AddParticlesColorKeyFrame (i, lifeEnd#/2, 0, 0, 0, 0 )
+			SetParticlesDirection(i, 5*gameScale#, 5*gameScale#)
+			SetParticlesRotationRange(i, 1410, 1590)
+			SetParticlesSize(i, 7)
+			SetParticlesFrequency(i, 200)
+			SetParticlesMax (i, 60)
+			SetParticlesAngle(i, 360)
 		elseif cType = 2
 			AddParticlesColorKeyFrame (i, 0.0, 255, 0, 0, 255 )
 			AddParticlesColorKeyFrame (i, lifeEnd#/3, 0, 0, 255, 255 )
@@ -2135,6 +2161,15 @@ function InitJumpParticles()
 			SetParticlesFrequency(i, 70)
 			SetParticlesMax (i, 20)
 			SetParticlesAngle(i, 0)
+		elseif cType = 32	//Crabyss Knight
+			AddParticlesColorKeyFrame (i, 0.0, 132, 0, 255, 255)
+			AddParticlesColorKeyFrame (i, lifeEnd#*4/5, 255, 0, 0, 255)
+			AddParticlesColorKeyFrame (i, lifeEnd#, 255, 0, 0, 0)
+			SetParticlesRotationRange(i, -50, 50)
+			SetParticlesSize(i, 22)
+			SetParticlesFrequency(i, 70)
+			SetParticlesMax (i, 20)
+			SetParticlesAngle(i, 30)
 		elseif cType = 3
 			AddParticlesColorKeyFrame (i, 0.0, 255, 0, 0, 255 )
 			AddParticlesColorKeyFrame (i, lifeEnd#/3, 100, 100, 100, 255 )
@@ -2155,11 +2190,50 @@ function InitJumpParticles()
 			SetParticlesDirection(i, 100*gameScale#, 100*gameScale#)
 			SetParticlesAngle(i, 10)
 			SetParticlesMax (i, 80)
+		elseif cType = 23	//Space Bark
+			AddParticlesColorKeyFrame (i, 0.0, 255, 255, 255, 255 )
+			AddParticlesColorKeyFrame (i, lifeEnd#/3, 255, 255, 255, 255 )
+			AddParticlesColorKeyFrame (i, lifeEnd#/2, 40, 40, 40, 0 )
+			SetParticlesRotationRange(i, 10, 90)
+			SetParticlesDirection(i, 20*gameScale#, 20*gameScale#)
+			SetParticlesSize(i, 7)
+			SetParticlesFrequency(i, 300)
+			SetParticlesMax (i, 10)
+			SetParticlesAngle(i, 360)
+		elseif cType = 33	//Sk8r Crab
+			AddParticlesColorKeyFrame (i, 0.0, 200, 140, 0, 255 )
+			AddParticlesColorKeyFrame (i, lifeEnd#/3, 100, 100, 100, 255 )
+			AddParticlesColorKeyFrame (i, lifeEnd#/2, 40, 40, 40, 0 )
+			SetParticlesRotationRange(i, 10, 90)
+			SetParticlesSize(i, 20)
+			SetParticlesFrequency(i, 300)
+			SetParticlesMax (i, 20)
+			SetParticlesAngle(i, 40)
 		elseif cType = 4
 			AddParticlesColorKeyFrame (i, 0.0, 0, 255, 0, 255 )
 			AddParticlesColorKeyFrame (i, lifeEnd#/3, 0, 255, 255, 255 )
 			AddParticlesColorKeyFrame (i, lifeEnd#*2/3, 255, 255, 0, 0 )
 			SetParticlesRotationRange(i, 470, 870)
+			SetParticlesAngle(i, 20)
+		elseif cType = 14	//#1 Fan Crab
+			AddParticlesColorKeyFrame (i, 0.0, 255, 0, 0, 255 )
+			AddParticlesColorKeyFrame (i, lifeEnd#/3, 255, 100, 100, 255 )
+			AddParticlesColorKeyFrame (i, lifeEnd#*2/3, 255, 200, 200, 0 )
+			SetParticlesRotationRange(i, 470, 870)
+			SetParticlesDirection(i, 80*gameScale#, 80*gameScale#)
+			SetParticlesSize(i, 25)
+			SetParticlesFrequency(i, 80)
+			SetParticlesMax (i, 5)
+			SetParticlesAngle(i, 40)
+		elseif cType = 24	//Hawaiian
+			AddParticlesColorKeyFrame (i, 0.0, 0, 100, 255, 255 )
+			AddParticlesColorKeyFrame (i, lifeEnd#/3, 0, 200, 255, 255 )
+			AddParticlesColorKeyFrame (i, lifeEnd#*2/3, 0, 50, 255, 0 )
+			SetParticlesRotationRange(i, 470, 870)
+			SetParticlesDirection(i, 80*gameScale#, 80*gameScale#)
+			SetParticlesSize(i, 14)
+			SetParticlesFrequency(i, 150)
+			SetParticlesMax (i, 100)
 			SetParticlesAngle(i, 20)
 		elseif cType = 34	//Holy Crab
 			AddParticlesColorKeyFrame (i, 0.0, 255, 255, 0, 255 )
@@ -2172,21 +2246,41 @@ function InitJumpParticles()
 			AddParticlesColorKeyFrame (i, lifeEnd#/2, 200, 255, 60, 255 )
 			AddParticlesColorKeyFrame (i, lifeEnd#, 255, 255, 255, 0 )
 			SetParticlesRotationRange(i, 470, 870)
-			SetParticlesSize(i, 30)
+			SetParticlesSize(i, 22)
 			SetParticlesAngle(i, 360)
 			SetParticlesFrequency(i, 1000)
 			SetParticlesMax (i, 12)
 			SetParticlesVelocityRange (i, 2, 2)
 		elseif cType = 15	//Jeff
-			AddParticlesColorKeyFrame (i, 0.0, 80, 0, 0, 255 )
-			AddParticlesColorKeyFrame (i, lifeEnd#/2, 150, 80, 60, 255 )
-			AddParticlesColorKeyFrame (i, lifeEnd#, 150, 80, 60, 0)
+			AddParticlesColorKeyFrame (i, 0.0, 150, 160, 60, 255 )
+			AddParticlesColorKeyFrame (i, lifeEnd#/4, 150, 80, 60, 255 )
+			AddParticlesColorKeyFrame (i, lifeEnd#/2, 150, 80, 60, 0)
 			SetParticlesRotationRange(i, 470, 870)
 			SetParticlesSize(i, 20)
 			SetParticlesAngle(i, 360)
 			SetParticlesFrequency(i, 1000)
 			SetParticlesMax (i, 12)
 			SetParticlesVelocityRange (i, 2, 2)
+		elseif cType = 25	//Rock Lobster
+			AddParticlesColorKeyFrame (i, 0.0, 50, 160, 250, 255 )
+			AddParticlesColorKeyFrame (i, lifeEnd#/2, 150, 80, 250, 255 )
+			AddParticlesColorKeyFrame (i, lifeEnd#*2/3, 150, 80, 60, 0)
+			SetParticlesRotationRange(i, 470, 870)
+			SetParticlesSize(i, 14)
+			SetParticlesAngle(i, 360)
+			SetParticlesFrequency(i, 1000)
+			SetParticlesMax (i, 12)
+			SetParticlesRotationRange(i, 100, 300)
+			SetParticlesVelocityRange (i, 2, 2)
+		elseif cType = 35	//Crab Cake
+			AddParticlesColorKeyFrame (i, 0.0, 255, 150, 0, 255 )
+			AddParticlesColorKeyFrame (i, lifeEnd#/3, 255, 200, 0, 255 )
+			AddParticlesColorKeyFrame (i, lifeEnd#, 255, 0, 0, 0 )
+			SetParticlesRotationRange(i, 52, 400)
+			SetParticlesSize(i, 15)
+			SetParticlesFrequency(i, 70)
+			SetParticlesMax (i, 10)
+			SetParticlesAngle(i, 40)
 		elseif cType = 6
 			AddParticlesColorKeyFrame (i, 0.0, 150, 150, 150, 255 )
 			AddParticlesColorKeyFrame (i, lifeEnd#/3, 255, 255, 255, 120 )
@@ -2209,7 +2303,27 @@ function InitJumpParticles()
 			SetParticlesMax (i, 40)
 			SetParticlesAngle(i, 40)
 			SetParticlesDepth(i, 2)
-			
+		elseif cType = 26	//Cranime
+			AddParticlesColorKeyFrame (i, 0.0, 255, 50, 255, 255 )
+			AddParticlesColorKeyFrame (i, lifeEnd#*2/3, 255, 180, 255, 255 )
+			AddParticlesColorKeyFrame (i, lifeEnd#, 255, 60, 255, 0 )
+			SetParticlesRotationRange(i, 10, 360)
+			SetParticlesSize(i, 16)
+			SetParticlesFrequency(i, 1000)
+			SetParticlesMax (i, 15)
+			SetParticlesAngle(i, 360)
+			SetParticlesDepth(i, 2)
+		elseif cType = 36	//Chimera Crab
+			AddParticlesColorKeyFrame (i, 0.0, 30, 155, 30, 255 )
+			AddParticlesColorKeyFrame (i, lifeEnd#/3, 180, 255, 180, 120 )
+			AddParticlesColorKeyFrame (i, lifeEnd#/2, 180, 255, 180, 0 )
+			SetParticlesLife(i, lifeEnd#/2)
+			SetParticlesRotationRange(i, 10, 90)
+			SetParticlesSize(i, 30)
+			SetParticlesFrequency(i, 1000)
+			SetParticlesMax (i, 40)
+			SetParticlesAngle(i, 360)
+			SetParticlesDepth(i, 2)
 		endif
 		
 	next i
@@ -2347,6 +2461,7 @@ function PlayDangerMusic(startNew)
 			if GetMusicPlayingOGGSP(fightJMusic) then oldSong = fightJMusic
 			if GetMusicPlayingOGGSP(spMusic) then oldSong = spMusic
 			if GetMusicPlayingOGGSP(tomatoMusic) then oldSong = tomatoMusic
+			if GetMusicPlayingOGGSP(fightFMusic) then oldSong = fightFMusic
 			
 			if oldSong <> 0 then StopGamePlayMusic()
 			
@@ -2357,6 +2472,7 @@ function PlayDangerMusic(startNew)
 			if oldSong = fightJMusic then PlayMusicOGGSP(dangerJMusic, 1)
 			if oldSong = spMusic then PlayMusicOGGSP(dangerCMusic, 1)
 			if oldSong = tomatoMusic then PlayMusicOGGSP(dangerTMusic, 1)
+			if oldSong = fightFMusic then PlayMusicOGGSP(dangerFMusic, 1)
 			
 		endif
 		
@@ -2372,8 +2488,10 @@ function StopGamePlayMusic()
 	
 	if GetMusicPlayingOGGSP(spMusic) then StopMusicOGGSP(spMusic)
 	if GetMusicPlayingOGGSP(tomatoMusic) then StopMusicOGGSP(tomatoMusic)
+	if GetMusicPlayingOGGSP(emotionMusic) then StopMusicOGGSP(emotionMusic)
+	if GetMusicPlayingOGGSP(fightFMusic) then StopMusicOGGSP(fightFMusic)
 	
-	for i = dangerAMusic to dangerTMusic
+	for i = dangerAMusic to dangerFMusic
 		if GetMusicPlayingOGGSP(i) then StopMusicOGGSP(i)
 	next i
 	

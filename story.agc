@@ -110,7 +110,7 @@ function InitStory()
 	SetTweenSpriteY(spr, GetSpriteMiddleY(spr)-(GetSpriteHeight(spr)*impact#)/2, GetSpriteY(spr), TweenOvershoot())
 	MatchSpritePosition(spr, SPR_CRAB2_BODY)
 	
-	CreateTweenSprite(SPR_CRAB2_COSTUME, .3)
+	CreateTweenSprite(SPR_CRAB2_COSTUME, .1)
 	SetTweenSpriteX(SPR_CRAB2_COSTUME, w-cSize-20, w+200, TweenSmooth2())
 	
 	CreateTweenSprite(SPR_CRAB1_COSTUME, .3)
@@ -364,7 +364,7 @@ function ShowScene(chap, scene)
 		fightDone = 1
 		wholeRow$ = ReadLine(1)
 		inc lineOverall, 1
-		SetSpriteVisible(SPR_STORY_EXIT, 0)
+		if GetSpriteExists(SPR_STORY_EXIT) then SetSpriteVisible(SPR_STORY_EXIT, 0)
 	next i
 	
 	crabLType = 0
@@ -391,10 +391,11 @@ function ShowScene(chap, scene)
 		
 		//Playing a sound effect
 		if GetStringToken(wholeRow$, " ", 1) = "se"
-			if GetSoundExists(soundeffect) then DeleteSound(soundeffect)
+			if GetMusicExistsOgg(soundeffect) then DeleteMusicOgg(soundeffect)
 			SetFolder("/media/sounds")
-			soundeffect = LoadSoundOGG(GetStringToken(wholeRow$, " ", 2) + ".ogg")
-			PlaySound(soundeffect, volumeSE, 0)
+			soundeffect = LoadMusicOGG(GetStringToken(wholeRow$, " ", 2) + ".ogg")
+			PlayMusicOGG(soundeffect, 0)
+			SetMusicVolumeOGG(soundeffect, volumeSE)
 			wholeRow$ = ReadLine(1)
 			inc lineOverall, 1
 		endif
@@ -499,9 +500,9 @@ function ShowScene(chap, scene)
 						PlayTweenSprite(SPR_CRAB2_COSTUME, SPR_CRAB2_BODY, 0)
 						PlayTweenSprite(SPR_CRAB2_COSTUME, SPR_CRAB2_FACE, 0)
 						PlayTweenSprite(SPR_CRAB2_COSTUME, SPR_CRAB2_COSTUME, 0)
-						PlayTweenSprite(SPR_CRAB2_BODY, SPR_CRAB2_BODY, .3)
-						PlayTweenSprite(SPR_CRAB2_BODY, SPR_CRAB2_FACE, .3)
-						PlayTweenSprite(SPR_CRAB2_BODY, SPR_CRAB2_COSTUME, .3)
+						PlayTweenSprite(SPR_CRAB2_BODY, SPR_CRAB2_BODY, .1)
+						PlayTweenSprite(SPR_CRAB2_BODY, SPR_CRAB2_FACE, .1)
+						PlayTweenSprite(SPR_CRAB2_BODY, SPR_CRAB2_COSTUME, .1)
 					endif
 					crabRType = crabRefType
 					crabRAlt = crabRefAlt
@@ -618,7 +619,7 @@ function ShowScene(chap, scene)
 				while GetTweenSpritePlaying(SPR_CRAB2_COSTUME, SPR_CRAB2_BODY)
 					UpdateAllTweens(GetFrameTime())
 					DoInputs()
-					if inputSkip or inputSelect or GetPointerPressed() or (dispH = 0 and GetSpriteHitTest(SPR_STORY_SKIP, GetPointerX(), GetPointerY()) and GetPointerState()) then UpdateAllTweens(.3)
+					if inputSkip or inputSelect or GetPointerPressed() or (dispH = 0 and GetSpriteHitTest(SPR_STORY_SKIP, GetPointerX(), GetPointerY()) and GetPointerState()) then UpdateAllTweens(.1)
 					Sync()
 				endwhile
 				
@@ -795,6 +796,7 @@ function ShowScene(chap, scene)
 			if hurryUp then UpdateAllTweens(.1)
 			if storyInput and GetTweenCharPlaying(storyFitter, storyText, len(displayString$)) = 0 and GetTweenCharPlaying(storyFitter+1, storyText, len(displayString$)) = 0 and GetTweenCharPlaying(storyFitter+2, storyText, len(displayString$)) = 0 and GetTweenCharPlaying(storyFitter+3, storyText, len(displayString$)) = 0 then nextLine = 1
 			if debug then Print(GetImageMemoryUsage())
+			Print(curScene)
 			SyncG()
 		endwhile
 		
@@ -811,7 +813,7 @@ function ShowScene(chap, scene)
 	SetViewOffset(0, 0)
 	
 	EmptyTrashBag()
-	if GetSoundExists(soundeffect) then DeleteSound(soundeffect)
+	if GetMusicExistsOgg(soundeffect) then DeleteMusicOgg(soundeffect)
 	
 	CloseFile(1)
 		
@@ -1195,7 +1197,7 @@ endfunction
 
 function GetCrabCostumeType(cT, cA)
 	cosType = 0
-	if (cT = 2 and cA = 0) or (cT = 4 and cA = 2) or (cT = 4 and cA = 3) or (cT = 6 and cA = 1)
+	if (cT = 2 and cA = 0) or (cT = 4 and cA = 3) or (cT = 6 and cA = 1)
 		//Hat type
 		cosType = 1
 	elseif (cT = 2 and cA = 2) or (cT = 3 and cA = 0) or (cT = 3 and cA = 1) or (cT = 3 and cA = 2) or (cT = 5 and cA = 3)

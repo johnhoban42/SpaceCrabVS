@@ -1049,6 +1049,17 @@ buttons.sort()
 	
 endfunction
 
+function InvertImage(img)
+	myMem = CreateMemblockFromImage(img)
+	for i = 13 to GetMemblockSize(myMem)-1
+		if Mod(i, 4) <> 3
+			SetMemblockByte(myMem, i, 255 - GetMemblockByte(myMem, i))
+		endif
+	next i
+	CreateImageFromMemblock(img, myMem)
+	DeleteMemblock(myMem)	
+endfunction
+
 function SetTweenPulse(twn, spr, impact#)
 	SetTweenSpriteSizeX(twn, GetSpriteWidth(spr)*impact#, GetSpriteWidth(spr), TweenOvershoot())
 	SetTweenSpriteSizeY(twn, GetSpriteHeight(spr)*impact#, GetSpriteHeight(spr), TweenOvershoot())

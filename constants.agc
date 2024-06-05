@@ -92,8 +92,8 @@ global crabJumpHMax as float [24] = 	[0,	 5,		10.5,	8.0,	10.0,	5.0,	6.0,	4,		11.
 global crabJumpSpeed as float [24] =	[0,	 1.216,	1.516,	-3,		-1.28,	-3.216,	.816,	1.2,	1.516,	-2,		-1.0,	-3.22,	.8,		1.116,	1.516,	-3,		-2,		-4.0,	0.5,	1.3,	1.416,	-2.6,	-1.28,	-2.9,	.9]
 global crabJumpDMax as float [24] =	[0,	 28,	40,		32,		43,		28,		26,		29,		38,		32,		37,		28,		27,		28,		40,		32,		45,		22,		27,		28,		35,		30,		55,		25,		25]
 global crabFramerate as integer[24]=	[0,  10,	13,		10,		18,		10,		15,		14,		12,		15,		12,		10,		15,		12,		12,		16,		10,		12,		12,		10,		10,		14,		10,		12,		10]
-///global crabSPAtck as integer[24] = 	[0,	 20,	20,		25,		23,		30,		18,		20,		16,		21,		25,		29,		20,		20,		20,		25,		23,		30,		20,		17,		23,		25,		26,		30,		20]
-global crabSPAtck as integer[24] = 	[0,	 20,	20,		25,		23,		30,		18,		20,		16,		21,		1,		29,		20,		20,		20,		1,		1,		1,		1,		1,		1,		1,		1,		1,		1]
+global crabSPAtck as integer[24] = 	[0,	 20,	20,		25,		23,		30,		18,		20,		16,		21,		25,		29,		20,		20,		20,		25,		23,		30,		20,		17,		23,		25,		26,		30,		20]
+//global crabSPAtck as integer[24] = 	[0,	 20,	20,		25,		23,		0,		18,		20,		16,		21,		1,		0,		20,		20,		20,		1,		1,		0,		1,		1,		1,		1,		1,		0,		1]
 
 
 #constant lastTranType 2
@@ -125,6 +125,7 @@ global crab1JumpD# = 0
 global crab1JumpHMax# = 5
 global crab1JumpSpeed# = 1.216
 global crab1JumpDMax = 28	//This variable used to be in degrees, now it's in ticks
+global crab1Evil = 0
 //Original jump values: 3.5, 38
 //Original jump values: 3.5, 38
 
@@ -151,6 +152,7 @@ global crab2JumpD# = 0
 global crab2JumpHMax# = 5
 global crab2JumpSpeed# = 1.216
 global crab2JumpDMax = 28	//This variable used to be in degrees, now it's in ticks
+global crab2Evil = 0
 
 global crab2Deaths = 0
 global crab2PlanetS as Integer[3]
@@ -409,14 +411,16 @@ global met3CD2# = 0 //400
 #constant bg3I 83
 #constant bg4I 84
 #constant bg5I 85
-#constant bgPI 87 	//Pause foreground
-#constant bgRainSwipeI 88
+#constant bg6I 86
+#constant bg7I 87
+#constant bg8I 88
+#constant bg9I 89
+#constant bgPI 90 	//Pause foreground
+#constant bgRainSwipeI 92
 
-#constant meteorGlowI 86
+#constant meteorGlowI 91
 
-#constant bg6I 89
-#constant bg7I 90
-#constant bg8I 91
+
 
 global loadedCrabSprites as Integer[0]
 
@@ -568,6 +572,7 @@ global jumpPartI as Integer[6, 4]
 #constant chooseS 12
 #constant gongS 13
 #constant buttonSound 14
+#constant turnSDog 15
 
 #constant exp1S 16
 #constant exp2S 17
@@ -603,12 +608,15 @@ global jumpPartI as Integer[6, 4]
 #constant tomatoMusic 110 	//End of Chapter song (Marigold Tomato)
 #constant loveMusic 111		//Love Me Space Crab!!
 #constant unlockMusic 112	//Unlocking Jingle
+#constant emotionMusic 113	//Emotional Song
+#constant fightFMusic 114	//Fight For the Future!
 
 #constant dangerAMusic 211
 #constant dangerBMusic 212
 #constant dangerJMusic 213
 #constant dangerCMusic 214
 #constant dangerTMusic 215
+#constant dangerFMusic 216
 
 #constant raveBass1 121
 #constant raveBass2 122
@@ -679,6 +687,7 @@ global windowSize = 1
 #constant SPR_CS_FASTGAME 308
 #constant SPR_CS_HARDGAME 309
 #constant SPR_CS_MUSICPICK 310
+#constant SPR_CS_EVILSWITCH_1 311
 
 #constant SPR_SCENE1 321 
 #constant SPR_SCENE2 322 
@@ -700,6 +709,7 @@ global windowSize = 1
 #constant TXT_CS_READY_2 405
 #constant SPR_CS_CRABS_2 4900 
 #constant SPR_CS_TXT_BACK_2 489
+#constant SPR_CS_EVILSWITCH_2 411
 
 //Character select sprite indexes
 global IMG_CS_CRAB as Integer[NUM_CRABS]
@@ -847,6 +857,7 @@ function LoadBaseSounds()
 	
 	if GetDeviceBaseName() <> "android"
 		LoadSoundOGG(turnS, "turn.ogg")
+		LoadSoundOGG(turnSDog, "turnDog.ogg")
 		//LoadSoundOGG(jumpS, "jump.ogg")
 		LoadSoundOGG(specialS, "special.ogg")
 		LoadSoundOGG(specialExitS, "specialExit.ogg")
@@ -989,6 +1000,14 @@ function PlayMusicOGGSP(songID, loopYN)
 			LoadMusicOGG(loveMusic, "love.ogg")
 			SetMusicLoopTimesOGG(loveMusic, 3.077, -1)
 		endif
+		if songID = emotionMusic
+			LoadMusicOGG(emotionMusic, "emotion.ogg")
+			SetMusicLoopTimesOGG(emotionMusic, 7.5, -1)
+		endif
+		if songID = fightFMusic
+			LoadMusicOGG(fightFMusic, "fightF.ogg")
+			SetMusicLoopTimesOGG(fightFMusic, 6.25, -1)
+		endif
 		if songID = unlockMusic then LoadMusicOGG(unlockMusic, "unlock.ogg")
 		
 		if songID = dangerAMusic then LoadMusicOGG(dangerAMusic, "dangerA.ogg")
@@ -996,6 +1015,7 @@ function PlayMusicOGGSP(songID, loopYN)
 		if songID = dangerJMusic then LoadMusicOGG(dangerJMusic, "dangerJ.ogg")
 		if songID = dangerCMusic then LoadMusicOGG(dangerCMusic, "dangerC.ogg")
 		if songID = dangerTMusic then LoadMusicOGG(dangerTMusic, "dangerT.ogg")
+		if songID = dangerFMusic then LoadMusicOGG(dangerFMusic, "dangerF.ogg")
 		
 		if songID = raveBass1 then LoadMusicOGG(raveBass1, "special4"+AltStr(crab1Alt)+".ogg")
 		if songID = raveBass2 then LoadMusicOGG(raveBass2, "special4"+AltStr(crab2Alt)+".ogg")
@@ -1026,6 +1046,7 @@ function PlayMusicOGGSPStr(str$, loopYN)
 	if str$ = "fightJ" then id = fightJMusic
 	if str$ = "fightD" then id = tutorialMusic
 	if str$ = "tomato" then id = tomatoMusic
+	if str$ = "emotion" then id = emotionMusic
 	if str$ = "love" then id = loveMusic
 	if str$ = "characterSelect" then id = characterMusic
 	if str$ = "results" then id = resultsMusic
@@ -1115,6 +1136,7 @@ function LoadBaseImages()
 	LoadImage(bg6I, "bg6.png")
 	LoadImage(bg7I, "bg7.png")
 	LoadImage(bg8I, "bg8.png")
+	LoadImage(bg9I, "bg9.png")
 	LoadImage(bgPI, "pauseForeground.png")
 	LoadImage(bgRainSwipeI, "rainbowSwipe.png")
 	
@@ -1183,7 +1205,7 @@ function LoadBaseImages()
 			
 	SetFolder("/media/ui")
 	
-	LoadImage(logoI, "title.png")
+	LoadImage(logoI, "vslogo.png")
 	LoadImage(logoDemoI, "titleDemo.png")
 	LoadImage(logoFruitI, "titleFruit.png")
 	
