@@ -88,6 +88,8 @@ type CharacterSelectController
 	txtCrabStats as integer
 	txtReady as integer
 	sprTxtBack as integer
+	sprEvil as integer
+	
 	// Sprite index of the first crab shown on the select screen
 	sprCrabs as integer
 	
@@ -414,7 +416,18 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 	SetTextSpacing(csc.txtReady, -30)
 	SetTextMiddleScreenOffset(csc.txtReady, f, 0, p*7*h/16)
 	SetTextColorAlpha(csc.txtReady, 0)
-	
+	/*
+	SetFolder("/media/ui")
+	CreateSpriteExpress(csc.sprEvil, 150, 102, GetSpriteWidth(, 0, 5)
+	SetSpriteMiddleScreenX(csc.sprEvil, 150, 102, 0, 0, 5)
+	img = 
+	AddSpriteAnimationFrame(csc.sprEvil, img)
+	trashBag.insert(img)
+	img = 
+	AddSpriteAnimationFrame(csc.sprEvil, img)
+	trashBag.insert(img)
+	SetSpriteFrame(csc.sprEvil, 1)
+	*/
 	if csc.player = 2 and spType = AIBATTLE
 		
 		for i = 0 to NUM_CRABS-1
@@ -622,6 +635,8 @@ function InitCharacterSelect()
 	
 	crab1Alt = 0
 	crab2Alt = 0
+	crab1Evil = 0
+	crab2Evil = 0
 	
 	lineSkipTo = 0
 	
@@ -642,6 +657,7 @@ function InitCharacterSelect()
 	csc1.txtReady = TXT_CS_READY_1
 	csc1.sprCrabs = SPR_CS_CRABS_1
 	csc1.sprTxtBack = SPR_CS_TXT_BACK_1
+	csc1.sprEvil = SPR_CS_EVILSWITCH_1
 	
 	csc2.player = 2
 	csc2.ready = 0
@@ -657,6 +673,7 @@ function InitCharacterSelect()
 	csc2.txtReady = TXT_CS_READY_2
 	csc2.sprCrabs = SPR_CS_CRABS_2
 	csc2.sprTxtBack = SPR_CS_TXT_BACK_2
+	csc2.sprEvil = SPR_CS_EVILSWITCH_2
 	
 	InitCharacterSelectController(csc1)
 	

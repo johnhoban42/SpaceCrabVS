@@ -25,7 +25,7 @@ SetWindowTitle( "Space Crab VS" )
 SetWindowSize( 700, 1400, 0 )
 SetWindowAllowResize( 1 ) // allow the user to resize the window
 
-global demo = 1
+global demo = 0
 global debug = 1
 global onWeb = 0
 
@@ -56,7 +56,7 @@ global h = 1600
 SetVirtualResolution(w, h) // doesn't have to match the window
 
 global dispH = 0		//Variable for horizontal display
-if deviceType = 9//DESKTOP
+if deviceType = 5//DESKTOP
 	dispH = 1
 	w = 1280
 	h = 720
@@ -197,10 +197,13 @@ endfunction
 //clearedChapter = 0
 
 if debug
-	curChapter = 5
-	curScene = 4
+	curChapter = 8
+	curScene = 1
 	highestScene = 101
 	appState = START
+	crab1Type = 6
+	crab1Alt = 3
+	
 	//spType = AIBATTLE
 	altUnlocked[1] = 3
 	altUnlocked[2] = 3
@@ -951,7 +954,7 @@ function Popup(area, unlockNum)
 		img = LoadImage("art/mystery.png")
 		SetSpriteImage(spr+1, img)
 		trashBag.insert(img)
-		PlaySoundR(fruitS, volumeSE)
+		PlaySoundR(fruitS, 100)
 	elseif unlockNum = -1
 		//Controls
 		//P1: Keyboard, Controller, Touchscreen
@@ -1034,7 +1037,7 @@ function ClearPopup1()
 			PlayTweenSprite(tweenSprFadeOutFull, SPR_POPUP_BG, 0)
 			PlayTweenSprite(tweenSprFadeOutFull, SPR_POPUP_C, 0)
 			PlayTweenText(tweenTxtFadeOut, TXT_POPUP, 0)	
-			PlaySoundR(fwipS, volumeSE)
+			PlaySoundR(fwipS, 100)
 		endif
 		
 	endif
@@ -1052,7 +1055,7 @@ function ClearPopup2()
 			PlayTweenSprite(tweenSprFadeOutFull, SPR_POPUP_BG_2, 0)
 			PlayTweenSprite(tweenSprFadeOutFull, SPR_POPUP_C_2, 0)
 			PlayTweenText(tweenTxtFadeOut, TXT_POPUP_2, 0)
-			PlaySoundR(fwipS, volumeSE)
+			PlaySoundR(fwipS, 100)
 		endif
 		
 	endif

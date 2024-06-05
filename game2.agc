@@ -38,6 +38,7 @@ function CreateGame2()
 	crab2Deaths = 0
 	SetFolder("/media")
 	img = LoadImage("envi/p" + str(Random(1, planetIMax)) + ".png")
+	if spType = MIRRORMODE then InvertImage(img)
 	CreateSprite(planet2, img)
 	trashBag.insert(img)
 	SetSpriteSizeSquare(planet2, planetSize*gameScale#)
@@ -54,6 +55,7 @@ function CreateGame2()
 	
 	if GetSpriteExists(bgGame2) = 0 then CreateSprite(bgGame2, 0)
 	SetSpriteImage(bgGame2, bg1I)
+	if storyActive and curChapter = 8 and curScene < 4 then SetSpriteImage(bgGame2, bg9I)
 	SetBGRandomPosition(bgGame2)
 	SetSpriteDepth(bgGame2, 101)
 	if spType = MIRRORMODE then SetSpriteImage(bgGame2, bg7I)
@@ -335,7 +337,13 @@ function DoGame2()
 	if (trueTurn) and crab2JumpD# = 0
 		
 		if crab2Turning = 0 and crab2Type <> 6
-			if spType = 0 or spType = STORYMODE or spType = AIBATTLE then PlaySoundR(turnS, 40)
+			if spType = 0 or spType = STORYMODE or spType = AIBATTLE
+				if crab2Type = 3 and crab2Alt = 2
+					PlaySoundR(turnSDog, 70)
+				else
+					PlaySoundR(turnS, 40)
+				endif
+			endif
 			if crab2Dir# > 0
 				crab2Turning = -1
 			else
@@ -352,7 +360,7 @@ function DoGame2()
 				//crab1Turning = -1*crab1Turning	//Still not sure if you should leap forwards or backwards
 				if spType = 0 or spType = STORYMODE or spType = AIBATTLE
 					PlayMusicOGG(jump2S, 0)
-					SetMusicVolumeOGG(jump2S, 100*volumeSE/100)
+					SetMusicVolumeOGG(jump2S, volumeSE)
 				endif
 				crab2JumpD# = crab2JumpDMax
 				if crab2Type <> 6
@@ -365,7 +373,13 @@ function DoGame2()
 				ActivateJumpParticles(2)
 			else
 				//Crab has turned
-				if spType = 0 or spType = STORYMODE or spType = AIBATTLE then PlaySoundR(turnS, 40)
+				if spType = 0 or spType = STORYMODE or spType = AIBATTLE
+					if crab2Type = 3 and crab2Alt = 2
+						PlaySoundR(turnSDog, 70)
+					else
+						PlaySoundR(turnS, 40)
+					endif
+				endif
 			endif
 		endif
 		
@@ -820,7 +834,7 @@ function SendSpecial2()
 			CreateSprite(meteorSprNum + 10000, meteorTractorI)
 			SetSpriteSize(meteorSprNum + 10000, 1, 1000)
 			SetSpriteColor(meteorSprNum + 10000, 255, 20, 20, 30)
-			SetSpriteColor(meteorSprNum + 10000, 0, 150, 0, 30)
+			if crab1Alt = 3 then SetSpriteColor(meteorSprNum + 10000, 0, 150, 0, 30)
 			SetSpriteDepth(meteorSprNum + 10000, 30)
 			
 			inc meteorSprNum, 1
@@ -835,14 +849,14 @@ function SendSpecial2()
 		if crab2Alt = 0 or crab2Alt = 2
 			rnd = Random(1, 2)
 			if rnd = 1
-				PlaySoundR(wizardSpell1S, volumeSE)
+				PlaySoundR(wizardSpell1S, 100)
 			else
-				PlaySoundR(wizardSpell2S, volumeSE)
+				PlaySoundR(wizardSpell2S, 100)
 			endif
 		elseif crab2Alt = 1
-			PlaySoundR(kingSpellS, volumeSE)
+			PlaySoundR(kingSpellS, 100)
 		else	
-			PlaySoundR(knightSpellS, volumeSE)
+			PlaySoundR(knightSpellS, 100)
 		endif
 		
 		for j = 1 to 3
@@ -1141,6 +1155,7 @@ function HitScene2()
 			if GetSpriteColorAlpha(crab2) = 254
 				SetSpriteColorAlpha(crab2, 255)
 				SetSpriteImage(bgGame2, bg1I + crab2Deaths)
+				if (storyActive and curChapter = 8 and curScene < 4) or random(1,50) = 25 then SetSpriteImage(bgGame2, bg9I)
 				SetBGRandomPosition(bgGame2)
 			endif
 			

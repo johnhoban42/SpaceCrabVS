@@ -148,12 +148,12 @@ function StartSettings()
 	PlayTweenText(tweenTxtFadeIn, SPR_VOLUME, 0)
 	PlayTweenText(tweenTxtFadeIn, SPR_VOLUMES, 0)
 	
-	if onWeb or deviceType = MOBILE
+	if onWeb or dispH = 0
 		//Increment the size settings by 999
-		IncSpriteY(SPRS_FRAMEUP, 9999)
-		IncSpriteY(SPRS_FRAMEDOWN, 9999)
-		IncTextY(TXTS_FRAME, 9999)
-		IncTextY(TXTS_FRAMECUR, 9999)
+		IncSpriteY(SPRS_WINDOWN, 9999)
+		IncSpriteY(SPRS_WINUP, 9999)
+		IncTextY(TXTS_WINCUR, 9999)
+		IncTextY(TXTS_WINDOW, 9999)
 	endif
 	if dispH
 		IncSpriteY(SPRS_CONTROLS, 9999)
@@ -243,7 +243,7 @@ function LoopSettings()
 		volumeSE = (myX-(GetSpriteX(SPR_VOLUMES)-sliderRange + knobOff))*100/(sliderRange*1.0)
 		
 	endif
-	if GetPointerReleased() and Hover(SPR_VOLUMES) then PlaySoundR(turnS, volumeSE)
+	if GetPointerReleased() and Hover(SPR_VOLUMES) then PlaySoundR(turnS, 100)
 	
 	
 	if ButtonMultitouchEnabled(SPR_VOLUMES) and GetPointerState() = 0
@@ -263,7 +263,7 @@ function LoopSettings()
 			volumeSE = 75
 			SetSpriteX(SPR_VOLUMES_SLIDER, GetSpriteX(SPR_VOLUMES)-sliderRange/4)
 		endif
-		PlaySoundR(turnS, volumeSE)
+		PlaySoundR(turnS, 100)
 	endif
 	
 	
@@ -272,7 +272,7 @@ function LoopSettings()
 	
 	if ButtonMultitouchEnabled(SPRS_FRAMEUP) or ButtonMultitouchEnabled(SPRS_FRAMEDOWN)
 		SetTextString(TXTS_FRAMECUR, Str(fpsChunk[targetFPS]))
-		if GetSoundPlayingR(buttonSound) = 0 then PlaySoundR(buttonSound, volumeSE)
+		if GetSoundPlayingR(buttonSound) = 0 then PlaySoundR(buttonSound, 100)
 		
 		if targetFPS = 5
 			SetTextString(TXTS_FRAMECUR, "MAX")
@@ -297,7 +297,7 @@ function LoopSettings()
 	
 	if ButtonMultitouchEnabled(SPRS_EXIT) or inputExit
 		inputSelect = 0
-		PlaySoundR(fwipS, volumeSE)
+		PlaySoundR(fwipS, 100)
 		stayIn = 0
 	endif
 	

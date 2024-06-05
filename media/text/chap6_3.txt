@@ -1,22 +1,22 @@
 bg 4
 music retro7
-IJ: The re-sealed mouth of the treasure, it should be right here!
+IJ: BOFA; The re-sealed mouth of the treasure, it should be right here!
+CC: BMFOa; My own hidden pocket dimension, known by me and only me-
 music
-CC: My own hidden pocket dimension, known by me and only me!
-!
-IJ: Oh, a fellow adventurer! How did-
+BSFMa; !
+IJ: BMFQb; Oh, a fellow adventurer! How did-
 music retro5
 fight 63646
 music retro8
-CC: Another strong crab... is there no end to the galaxy's mockery of me?
-IJ: Haha, you sure are a strange fellow!
-Throwing out your fisticuffs before we have a chance to antiquate!
-I'll start. I'm Inianda Jeff - explorer and treasure seeker.
-CC: Hmmm...
-Please disregard my original hostility, strong Jeffery.
-IJ: Who's Jeffery?
-CC: I think we can, moving forward, create a 'team up'.
-Become my ally, and not only can we beat the villianous Star Seekers...
-But also conquer the Mirror Dimension!
-IJ: Oh! Is that what this tear in space is called?
-I want to ask about that.
+CC: BXF0; Another abnormally strong crab... is there no end to the galaxy's mockery of me?
+IJ: BAFAf; Haha, you sure are a strange fellow!
+BIFA; Throwing out your fisticuffs before we have a chance to antiquate!
+BMFAa; I'll start. I'm Inianda Jeff - explorer and treasure seeker.
+CC: BMFMa; Hmmm...
+BAFQa; Please disregard my original hostility, strong Jeffery.
+IJ: BAFJa; Who's Jeffery?
+CC: BPFQ; I think we can, moving forward, create a 'team up'.
+BAFB; Become my ally, and not only can we beat the villainous Star Seekers...
+BKFDb; But also conquer the Mirror Dimension!
+IJ: BNFA; Oh! Is that what this tear in space is called?
+BNFCa; I want to ask about that.
