@@ -1,10 +1,10 @@
 bg 5
 ??: Taxi. I request your services.
 TX: Ah, sure. I was going to call it quits, but if you're going nearby, I can take you.
-NC: I do not care to travel. Rather, I want to inqure about the Taxi you drive.
+NC: I do not care to travel. Rather, I want to inquire about the Taxi you drive.
 TX: Are you with Ned's Vehicle Inspections?
 I already got the car inspected, quit buggin' me about it.
-NC: I have no affilliates... not anymore.
+NC: I have no affiliates... not anymore.
 But you clearly do, based on the contents of your car...
 music tomato
 THIS. A Star Seekers poster!
@@ -14,7 +14,7 @@ The advertiser.
 How many crabs have you driven since this poster was placed?
 TX: I don't really keep track of my clients. I've been busy though- a few hundred, maybe?
 NC: A few HUNDRED?!
-Your reach is as unparralled as it is dangerous. While you may remain...
+Your reach is as unparalleled as it is dangerous. While you may remain...
 The same can not be said about your Taxi.
 TX: Hey, hands off the car!
 Looks like I need to break it out one more time...

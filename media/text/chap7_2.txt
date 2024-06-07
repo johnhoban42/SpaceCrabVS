@@ -2,7 +2,7 @@ bg 5
 music fightJ
 ??: Taxi, hey! Can you give me a lift?
 TX: That's what I'm here to do. Where are you going?
-TP: Take me to the more intense, dangerous place you can think of.
+TP: Take me to the most intense, dangerous place you can think of.
 TX: ...Really?
 TP: I've got to train to be the best. That starts with toughing out the worst conditions!
 TX: Hmm... I might have a place in mind.

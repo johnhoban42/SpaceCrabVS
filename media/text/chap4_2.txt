@@ -13,17 +13,17 @@ TP: I'm glad you came my way!
 Starting is the first step to a better self.
 Plus, training is my specialty.
 We'll work out a routine plan which you can start after a rest day.
-Then, check back in with me after a 2 weeks to see how you're feeling.
+Then, check back in with me after 2 weeks to see how you're feeling.
 TC: B-but I want to start now!
 TP: Oh, eager, are you?
-Then lets start with the warm up - get out there and dodge at least 20 meteors!
+Then let's start with the warm up - get out there and dodge at least 20 meteors!
 TC: Yes! Will do!
 music fightJ
 classic 20
 music retro2
 TC: Whew, that was tough! I might need to warm up to that in the future.
-TP: Silly guy, that WAS the warmup!
-Now, follow me, so we can start you routine for the day.
+TP: Silly guy, that WAS the warm up!
+Now, follow me, so we can start your routine for the day.
 exit 2
 TC: Oh geez...
 Well, if this is what it takes to get stronger, then I'll do it.

@@ -8,11 +8,11 @@ RL: It's about time, Toppy! Where were you?
 TC: Well, I was practicing my spinning for the Star Seekers, and I guess I lost track of time...
 That's why I got here 58 minutes early instead of the full hour! Again, so sorry!
 RL: You think you're EARLY? I've been playing without a stage this whole time!
-Let's set things up before anyone else sees this embarrasment of a setup.
+Let's set things up before anyone else sees this embarrassment of a setup.
 And our setup song? Shooting Stars into Dreams, REMix!
 Let's go!
 music ssidREM
-fight 33848
+vs TC (fight goes here)
 music retro2
 RL: Through all that chaos, we got the stage ready.
 Nicely done! You must be working on your debilitating clumsiness.

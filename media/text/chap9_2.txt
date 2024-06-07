@@ -13,14 +13,12 @@ IJ: Alas... I doubt there is a crab alive who's safety could be assured.
 Well... aside from *him*...
 TP: Let me prove myself! A one-on-one match, if I win, you tell me where it is.
 IJ: Ah, well, who am I to get in the way of an adventurer's spirit? Let's begin!
-music fightA
-fight 56654
-music retro8
-IJ: The exploratory spirit is alive an well within you!
+GAMEPLAY: Vs. Inianda Jeff
+IJ: The exploratory spirit is alive and well within you!
 As promised, let me point out the constellations which guided me there.
-Right... there!
+...
 TP: Ah, I see now! Thank you sir! If this place is as promising as you say, you'll get a special shoutout in my marathon victor's speech.
-exit 1
+*Team Player leaves.*
 IJ: I hope that youngster is ready to take on... the *Mirror Dimension*...
 ...
-Ahh, he'll be fine!
+He'll be fine!

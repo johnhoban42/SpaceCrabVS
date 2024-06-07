@@ -198,9 +198,9 @@ endfunction
 
 if debug
 	curChapter = 8
-	curScene = 1
+	curScene = 2
 	highestScene = 101
-	appState = START
+	appState = STORY
 	crab1Type = 6
 	crab1Alt = 3
 	

@@ -19,7 +19,7 @@ music retro6
 fight 45646
 music retro1
 TX: Hey, guy. Wake up.
-HC: Huh? Whuh happenned?
+HC: Huh? Whuh happened?
 TX: We fought and you passed out.
 Got you to your destination, though.
 HC: Wow, the Garra Bonito! Thank you so much!
