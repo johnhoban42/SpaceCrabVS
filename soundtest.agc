@@ -12,6 +12,13 @@ global soundPlaying = 0
 #constant sprSoundSelectRight = 6903
 #constant sprSoundTitle = 6904
 #constant sprSoundCharacter = 6905
+#constant sprSoundDisplay = 6906
+
+// Sound Check Tweens
+#constant twnSCLeftIn = 6950
+#constant twnSCLeftOut = 6951
+#constant twnSCRightIn = 6952
+#constant twnSCRightOut = 6953
 
 // list of sound IDs to play
 global soundList as integer [4] = [ titleMusic, characterMusic, resultsMusic, loserMusic ]
@@ -45,8 +52,37 @@ function InitSoundTest()
 	SetSpriteExpress(sprSoundControl, 100, 100, w / 2 - 50, h * 2 / 5 - 50, 69)
 	AddButton(sprSoundControl)
 	
+	// create the music display sprite with each frame tied to one of the songs in our list
+	// TODO: replace with song art assets when they're ready and included in the project
+	CreateSprite(sprSoundDisplay, 0)
+	AddSpriteAnimationFrame(sprSoundDisplay, flameI1)
+	AddSpriteAnimationFrame(sprSoundDisplay, flameI2)
+	AddSpriteAnimationFrame(sprSoundDisplay, flameI3)
+	AddSpriteAnimationFrame(sprSoundDisplay, flameI4)
+	SetSpriteExpress(sprSoundDisplay, 100,100, w / 2 - 50, h / 5 - 50, 70)
+	
+	// create the tweens for moving the display sprite around when switching songs
+	CreateTweenSprite(twnSCLeftIn, .5)
+	SetTweenSpriteX(twnSCLeftIn, -100, w / 2 - 50, TweenOvershoot())	
+	CreateTweenSprite(twnSCLeftOut, .5)
+	SetTweenSpriteX(twnSCLeftOut, w / 2 - 50, w + 100, TweenOvershoot())
+	CreateTweenSprite(twnSCRightIn, .5)
+	SetTweenSpriteX(twnSCRightIn, w + 100, w / 2 - 50, TweenOvershoot())
+	CreateTweenSprite(twnSCRightOut, .5)
+	SetTweenSpriteX(twnSCRightOut, w / 2 - 50, -100, TweenOvershoot())
+	
 	soundtestStateInitialized = 1
 endfunction
+
+// Change the selected crab
+// dir -> -1 for left, 1 for right
+//~function ChangeSongs(dir as integer, startCycle as integer)
+//~	PlayTweenSprite(tween1, songSprite, 0)
+//~	PlayTweenSprite(tween2, songSprite, .5)
+//~	if GetTweenSpritePlaying(tween2, songSprite) 
+//~		SetSpriteFrame(songSprite, songImgs[x])
+//~	endif
+//~endfunction
 
 // Soundtest screen execution loop
 // Each time this loop exits, return the next state to enter into
@@ -96,12 +132,16 @@ function DoSoundTest()
 			if soundIndex = -1
 				soundIndex = soundList.length - 1
 			endif
+			PlayTweenSprite(twnSCLeftOut, sprSoundDisplay, 0)
+			PlayTweenSprite(twnSCLeftIn, sprSoundDisplay, .5)
 		// scroll right
 		elseif ButtonMultitouchEnabled(sprSoundSelectRight)
 			soundIndex = soundIndex + 1
 			if soundIndex = soundList.length
 				soundIndex = 0
 			endif
+			PlayTweenSprite(twnSCRightOut, sprSoundDisplay, 0)
+			PlayTweenSprite(twnSCRightIn, sprSoundDisplay, .5)
 		endif
 	// set title music
 	elseif ButtonMultiTouchEnabled(sprSoundTitle)
@@ -114,6 +154,11 @@ function DoSoundTest()
 		// add some kind of feedback so the user knows this action was successful before they leave
 	endif
 		
+	// update the display frame when moving the new song in
+	if (GetTweenSpritePlaying(twnSCLeftIn, sprSoundDisplay) or GetTweenSpritePlaying(twnSCRightIn, sprSoundDisplay)) and not GetSpriteCurrentFrame(sprSoundDisplay) = soundIndex + 1
+		SetSpriteFrame(sprSoundDisplay, soundIndex + 1)
+	endif
+	
 //~	print(soundList.length)	
 //~	print(soundIndex)
 //~	print(soundList[soundIndex])
@@ -158,3 +203,7 @@ endfunction
 // AddSpriteAnimationFrame(spriteID, imgID) adds a frame to the passed sprite's "animation array" (indexing starting at 1). this IGNORES any image passed in the sprite setup
 // so I could AddSpriteAnimationFrame the imgIDs for play and pause buttons at indices 1 and 2 and then set the animation frame to 1 or 2 according to what songs are being started/stopped by the user
 // if a sprite is being set up via CreateSprite and AddSpriteAnimationFrame, use SetSpriteExpress to position it, as that takes all the positional infor CreateSpriteExpress does without the initialization code
+	
+// CreateTweenSprite(tweenID, duration)
+// SetTweenSpriteX(tweenID, startX, endX, TweenInterpolationType())
+// PlayTweenSprite(tweenID
