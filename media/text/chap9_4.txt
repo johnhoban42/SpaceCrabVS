@@ -8,17 +8,14 @@ CC: Am I the... what?
 TP: That explorer mentioned you- he said you're strong enough to stay in that dimension as long as you want!
 Will you PLEASE train me? I need to get stronger!!
 CC: ... (disgust)
-music tomato
 ... (evil smile) (music starts)
 How about this, Player of Teams...
 While my talents are slightly more... chronological...
 You can train under me... IF you can defeat me in battle!
 TP: Yes! Of course! Thank you for the opportunity!
-music tomato
-fight 63637
-music fightB
+GAMEPLAY: Vs. Chrono Crab
 TP: Wow, you're as strong as they say! I can't wait to train under you!
 CC: *surprised* (This kid is potential overflow! A perfect addition to our ranks...)
-Yes, it is encouraging that you could take on 15%... no... 18% of my total strength.
-Come now! Let me introduce you to your... 'team-mates'.
+CC: Yes, it is encouraging that you could take on 15%... no... 18% of my total strength.
+CC: Come now! Let me introduce you to your... 'team-mates'.
 TP: Awesome! At this pace, first place in the planetary marathon is mine for sure!!

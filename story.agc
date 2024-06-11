@@ -594,8 +594,11 @@ function ShowScene(chap, scene)
 					//Unique sprite (WIP)
 					SetSpriteImage(SPR_CRAB1_COSTUME, LoadImageR("blank.png"))
 					SetSpriteImage(SPR_CRAB1_BODY, LoadImageR(folderB$ + "body" + str(crab1Type) + AltStr(crab1Alt) + body$ + phoneBonus$ + ".png"))
-					SetSpriteImage(SPR_CRAB1_FACE, LoadImageR(folderF$ + "face" + str(crab1Type) + AltStr(crab1Alt) + face$ + ".png"))
-					if GetFileExists(folderF$ + "face" + str(crab1Type) + AltStr(crab1Alt) + face$ + ".png") = 0 then SetSpriteImage(SPR_CRAB2_FACE, LoadImageR(folderF$ + "face" + face$ + ".png"))
+					if GetFileExists(folderF$ + "face" + str(crab1Type) + AltStr(crab1Alt) + face$ + ".png") = 0
+						SetSpriteImage(SPR_CRAB2_FACE, LoadImageR(folderF$ + "face" + face$ + ".png"))
+					else
+						SetSpriteImage(SPR_CRAB1_FACE, LoadImageR(folderF$ + "face" + str(crab1Type) + AltStr(crab1Alt) + face$ + ".png"))
+					endif
 				elseif cosType = 4
 					//Posed costume
 					if GetFileExists("costume/costume" + str(crab1Type) + AltStr(crab1Alt) + costume$ + ".png") = 0 then costume$ = ""
@@ -637,8 +640,11 @@ function ShowScene(chap, scene)
 					//Unique sprite (WIP)
 					SetSpriteImage(SPR_CRAB2_COSTUME, LoadImageR("blank.png"))
 					SetSpriteImage(SPR_CRAB2_BODY, LoadImageR(folderB$ + "body" + str(crab2Type) + AltStr(crab2Alt) + body$ + phoneBonus$ + ".png"))
-					SetSpriteImage(SPR_CRAB2_FACE, LoadImageR(folderF$ + "face" + str(crab2Type) + AltStr(crab2Alt) + face$ + ".png"))
-					if GetFileExists(folderF$ + "face" + str(crab2Type) + AltStr(crab2Alt) + face$ + ".png") = 0 then SetSpriteImage(SPR_CRAB2_FACE, LoadImageR(folderF$ + "face" + face$ + ".png"))
+					if GetFileExists(folderF$ + "face" + str(crab2Type) + AltStr(crab2Alt) + face$ + ".png") = 0
+						SetSpriteImage(SPR_CRAB2_FACE, LoadImageR(folderF$ + "face" + face$ + ".png"))
+					else
+						SetSpriteImage(SPR_CRAB2_FACE, LoadImageR(folderF$ + "face" + str(crab2Type) + AltStr(crab2Alt) + face$ + ".png"))
+					endif
 				elseif cosType = 4
 					//Posed costume
 					if GetFileExists("costume/costume" + str(crab2Type) + AltStr(crab2Alt) + costume$ + ".png") = 0 then costume$ = ""
@@ -1200,7 +1206,7 @@ function GetCrabCostumeType(cT, cA)
 	if (cT = 2 and cA = 0) or (cT = 4 and cA = 3) or (cT = 6 and cA = 1)
 		//Hat type
 		cosType = 1
-	elseif (cT = 2 and cA = 2) or (cT = 3 and cA = 0) or (cT = 3 and cA = 1) or (cT = 3 and cA = 2) or (cT = 5 and cA = 3)
+	elseif (cT = 2 and cA = 2) or (cT = 3 and cA = 0) or (cT = 3 and cA = 1) or (cT = 3 and cA = 2) or (cT = 5 and cA = 3) or (cT = 6 and cA = 3)
 		//Unique sprite type
 		cosType = 2
 	elseif (cT = 1 and cA = 0) or (cT = 6 and cA = 2)
@@ -1263,7 +1269,7 @@ function SetCrabFromStringChap(str$, chapNum, crabNum)
 		mType = 6
 		mAlt = 0
 		
-	elseif str$ = "CA" or chapNum = 12	//Crab Cake
+	elseif str$ = "CK" or chapNum = 12	//Crab Cake
 		mType = 5
 		mAlt = 3
 		
@@ -1295,7 +1301,7 @@ function SetCrabFromStringChap(str$, chapNum, crabNum)
 		mType = 3
 		mAlt = 2
 		
-	elseif str$ = "CK" or chapNum = 20	//Crabyss Knight
+	elseif str$ = "KN" or chapNum = 20	//Crabyss Knight
 		mType = 2
 		mAlt = 3
 		
