@@ -1,24 +1,27 @@
 bg 1
 music retro2
-IJ: Ah! A fellow explorer of the cosmos, pleased to meet you!
-TP: The cosmos? The only thing I've been exploring is the limits of what my body can achieve!
-Though, if an explorer is all the way out here, then there must be something worth seeing.
-Did you see anything impressive? Maybe I can make it a new training spot!
-IJ: Ah, another eager explorer! Glad to see the spirit of discovery is alive and well.
-Normally, I would share my exploits without hesitation. However...
-What I discovered was a truly dangerous place.
-Strange visions, reflections of the soul, and meteor superstorms. No crab is safe there.
-TP: Meteor SUPERSTORMS?? Sounds like the place to take my skills to the next level!
-IJ: Alas... I doubt there is a crab alive who's safety could be assured. 
-Well... aside from *him*...
-TP: Let me prove myself! A one-on-one match, if I win, you tell me where it is.
-IJ: Ah, well, who am I to get in the way of an adventurer's spirit? Let's begin!
-GAMEPLAY: Vs. Inianda Jeff
-IJ: The exploratory spirit is alive and well within you!
-As promised, let me point out the constellations which guided me there.
-...
-TP: Ah, I see now! Thank you sir! If this place is as promising as you say, you'll get a special shoutout in my marathon victor's speech.
-*Team Player leaves.*
-IJ: I hope that youngster is ready to take on... the *Mirror Dimension*...
-...
-He'll be fine!
+IJ: BMFJb; Ah! A fellow explorer of the cosmos, pleased to meet you!
+TP: BSFB; The cosmos? The only thing I've been exploring is the limits of what my body can achieve!
+BUFCa; Though, if an explorer is all the way out here, then there must be something worth seeing.
+BVFA; Did you see anything impressive? Maybe I can make it a new training spot!
+IJ: BAFAh; Ah, so you're expanding your stomping grounds! Glad to see the spirit of discovery is alive and well.
+BMFDa; Normally, I would share my exploits without hesitation. However...
+BMFDd; What I discovered was a truly dangerous place.
+BVFJe; Strange visions, reflections of the soul, and meteor superstorms. No crab is safe there.
+TP: BKFSb; Meteor SUPERSTORMS?? Sounds like the place to take my skills to the next level!
+IJ: BAFRb; Alas... I doubt there is a crab alive who's safety could be assured. 
+BBFHa; Well... aside from *him*...
+TP: BMFFb; Let me prove myself! A one-on-one match, and if I win, you tell me where it is.
+IJ: BAFGb; Well, who am I to get in the way of an adventurer's spirit? Let's begin!
+music fightA
+fight 56654
+music retro8
+IJ: BAFOe; I see it now... The exploratory spirit is alive an well within you!
+BAFA; As promised, let me point out the constellations which guided me there.
+BOFJb; Right... there!
+TP: BIFJb; Ah, I see now! Thank you sir!
+BIFOf; If this place is as promising as you say, I'll give you a shout out in my victory speech!
+exit 1
+IJ: BBFGd; I hope that youngster is ready to take on... the MIRROR DIMENSION...
+BBFJ; ...
+BSFGb; Ahh, he'll be fine!

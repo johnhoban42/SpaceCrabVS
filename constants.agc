@@ -610,6 +610,8 @@ global jumpPartI as Integer[6, 4]
 #constant unlockMusic 112	//Unlocking Jingle
 #constant emotionMusic 113	//Emotional Song
 #constant fightFMusic 114	//Fight For the Future!
+#constant fightAJMusic 115	//To Battle
+#constant chillMusic 116		//Back to my Hunch
 
 #constant dangerAMusic 211
 #constant dangerBMusic 212
@@ -617,6 +619,7 @@ global jumpPartI as Integer[6, 4]
 #constant dangerCMusic 214
 #constant dangerTMusic 215
 #constant dangerFMusic 216
+#constant dangerAJMusic 217
 
 #constant raveBass1 121
 #constant raveBass2 122
@@ -759,6 +762,7 @@ global firstStartup = 0
 global speedUnlock = 0
 global hardBattleUnlock
 global musicBattleUnlock = 0
+global evilUnlock = 0
 global unlockAIHard = 0
 global musicUnlocked = 0 	//Not finalized yet, but this will increment for every song unlockes
 
@@ -1008,6 +1012,14 @@ function PlayMusicOGGSP(songID, loopYN)
 			LoadMusicOGG(fightFMusic, "fightF.ogg")
 			SetMusicLoopTimesOGG(fightFMusic, 6.25, -1)
 		endif
+		if songID = fightAJMusic
+			LoadMusicOGG(fightAJMusic, "fightAJ.ogg")
+			SetMusicLoopTimesOGG(fightAJMusic, 7.2, -1)
+		endif
+		if songID = chillMusic
+			LoadMusicOGG(chillMusic, "chill.ogg")
+			SetMusicLoopTimesOGG(chillMusic, 0.967, -1)
+		endif
 		if songID = unlockMusic then LoadMusicOGG(unlockMusic, "unlock.ogg")
 		
 		if songID = dangerAMusic then LoadMusicOGG(dangerAMusic, "dangerA.ogg")
@@ -1016,9 +1028,12 @@ function PlayMusicOGGSP(songID, loopYN)
 		if songID = dangerCMusic then LoadMusicOGG(dangerCMusic, "dangerC.ogg")
 		if songID = dangerTMusic then LoadMusicOGG(dangerTMusic, "dangerT.ogg")
 		if songID = dangerFMusic then LoadMusicOGG(dangerFMusic, "dangerF.ogg")
+		if songID = dangerAJMusic then LoadMusicOGG(dangerAJMusic, "dangerAJ.ogg")
 		
-		if songID = raveBass1 then LoadMusicOGG(raveBass1, "special4"+AltStr(crab1Alt)+".ogg")
-		if songID = raveBass2 then LoadMusicOGG(raveBass2, "special4"+AltStr(crab2Alt)+".ogg")
+		if songID = raveBass1 and crab1Evil = 0 then LoadMusicOGG(raveBass1, "special4"+AltStr(crab1Alt)+".ogg")
+		if songID = raveBass1 and crab1Evil = 1 then LoadMusicOGG(raveBass1, "fire.ogg")
+		if songID = raveBass2 and crab2Evil = 0 then LoadMusicOGG(raveBass2, "special4"+AltStr(crab2Alt)+".ogg")
+		if songID = raveBass2 and crab2Evil = 1 then LoadMusicOGG(raveBass2, "fire.ogg")
 		if songID = fireMusic then LoadMusicOGG(fireMusic, "fire.ogg")
 		
 		if songID = retro1M then LoadMusicOGG(retro1M, "special4a.ogg")
@@ -1045,8 +1060,10 @@ function PlayMusicOGGSPStr(str$, loopYN)
 	if str$ = "fightB" then id = fightBMusic
 	if str$ = "fightJ" then id = fightJMusic
 	if str$ = "fightD" then id = tutorialMusic
+	if str$ = "fightAJ" then id = fightAJMusic
 	if str$ = "tomato" then id = tomatoMusic
 	if str$ = "emotion" then id = emotionMusic
+	if str$ = "chill" then id = chillMusic
 	if str$ = "love" then id = loveMusic
 	if str$ = "characterSelect" then id = characterMusic
 	if str$ = "results" then id = resultsMusic
@@ -1056,6 +1073,8 @@ function PlayMusicOGGSPStr(str$, loopYN)
 	if str$ = "dangerB" then id = dangerBMusic
 	if str$ = "dangerJ" then id = dangerJMusic
 	if str$ = "dangerC" then id = dangerCMusic
+	if str$ = "dangerF" then id = dangerFMusic
+	if str$ = "dangerAJ" then id = dangerAJMusic
 	if str$ = "rave1" then id = raveBass1
 	if str$ = "rave2" then id = raveBass2
 	
@@ -1084,11 +1103,19 @@ function LoadJumpSounds()
 	SetFolder("/media/sounds")
 	if GetFileExists("jump" + str(crab1Type) + AltStr(crab1Alt) + ".ogg")
 		LoadMusicOGG(jump1S, "jump" + str(crab1Type) + AltStr(crab1Alt) + ".ogg")
+		if crab1Evil and crab1Type = 4 and crab1Alt = 3
+			DeleteMusicOGG(jump1S)
+			LoadMusicOGG(jump1S, "arrow.ogg")
+		endif
 	else
 		LoadMusicOGG(jump1S, "jump" + str(crab1Type) + ".ogg")
 	endif
 	if GetFileExists("jump" + str(crab2Type) + AltStr(crab2Alt) + ".ogg")
 		LoadMusicOGG(jump2S, "jump" + str(crab2Type) + AltStr(crab2Alt) + ".ogg")
+		if crab2Evil and crab2Type = 4 and crab2Alt = 3
+			DeleteMusicOGG(jump2S)
+			LoadMusicOGG(jump2S, "arrow.ogg")
+		endif
 	else
 		LoadMusicOGG(jump2S, "jump" + str(crab2Type) + ".ogg")
 	endif
@@ -1317,7 +1344,10 @@ function LoadGameImages(loading)
 					num = -14
 				endif
 				
-				file$ = "crab" + str(crabType) + alt$ + act$ + str(j+num) + ".png"
+				evilS$ = ""
+				if i = 1 and crab1evil then evilS$ = "2"
+				if i = 2 and crab2evil then evilS$ = "2"
+				file$ = "crab" + str(crabType) + alt$ + evilS$ + act$ + str(j+num) + ".png"
 				if GetFileExists(file$)
 					LoadImage(index, file$)
 				else
@@ -1332,19 +1362,19 @@ function LoadGameImages(loading)
 			SetFolder("/media/art")
 			
 			index = crab1attack1I - 1 + i
-			file$ = "crab" + str(crabType) + alt$ + "attack1.png"
+			file$ = "crab" + str(crabType) + alt$ + evilS$ + "attack1.png"
 			if GetFileExists(file$)
 				LoadImage(index, file$)
 			else
 				LoadImage(index, "white.png")
 			endif
-			file$ = "crab" + str(crabType) + alt$ + "attack2.png"
+			file$ = "crab" + str(crabType) + alt$ + evilS$ + "attack2.png"
 			if GetFileExists(file$)
 				LoadImage(index+10, file$)
 			else
 				LoadImage(index+10, "white.png")
 			endif
-			file$ = "crab" + str(crabType) + alt$ + "attack3.png"
+			file$ = "crab" + str(crabType) + alt$ + evilS$ + "attack3.png"
 			if GetFileExists(file$)
 				LoadImage(index+20, file$)
 			else
@@ -1358,7 +1388,7 @@ function LoadGameImages(loading)
 			//Lives loading
 			index = crab1life1I + (i-1)*3
 			for k = 1 to 3
-				file$ = "crab" + str(crabType) + alt$ + "life" + str(k) + ".png"
+				file$ = "crab" + str(crabType) + alt$ + evilS$ + "life" + str(k) + ".png"
 				if GetFileExists(file$)
 					LoadImage(index, file$)
 				else
@@ -1444,7 +1474,7 @@ endfunction
 
 
 global crabPause1 as string[6]
-global crabPause2 as string[24]
+global crabPause2 as string[25]
 
 function SetCrabPauseStrings()
 	crabPause1[1] = "Speed: {{{}} Turn: {{{}}" + chr(10) + "Double-tap: Roll Forward"
@@ -1478,6 +1508,7 @@ function SetCrabPauseStrings()
 	crabPause2[22] = "Special: Heavenly Light" + chr(10) + "Blind your adversary with" + chr(10) + "the power of holy glow."
 	crabPause2[23] = "Special: Birthday Blast" + chr(10) + "Make your opponent age quicker," + chr(10) + "doubling their speed."
 	crabPause2[24] = "Special: Shrimp Sorcery" + chr(10) + "Blast mythical shrimp" + chr(10) + "directly through the screen."
+	crabPause2[25] = "Special: Devilish Light" + chr(10) + "Blind your adversary with" + chr(10) + "the devil's influence."
 	//crabPause2[] = "Special: " + chr(10) + "" + chr(10) + ""
 endfunction
 

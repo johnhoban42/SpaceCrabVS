@@ -7,7 +7,7 @@ global characterSelectStateInitialized as integer = 0
 global csc1 as CharacterSelectController
 global csc2 as CharacterSelectController
 
-global crabNames as string[NUM_CRABS] = [
+global crabNames as string[27] = [
 	"NULL CRAB",
 	"SPACE CRAB",
 	"LADDER WIZARD",
@@ -32,7 +32,10 @@ global crabNames as string[NUM_CRABS] = [
 	"SK8R CRAB",
 	"HOLY CRAB",
 	"CRAB CAKE",
-	"CHIMERA CRAB"]
+	"CHIMERA CRAB",
+	"CRIXEL",
+	"BETA CRAB",
+	"DEVIL CRAB"]
 
 global crabDescs as string[NUM_CRABS]
 
@@ -416,19 +419,29 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 	SetTextSpacing(csc.txtReady, -30)
 	SetTextMiddleScreenOffset(csc.txtReady, f, 0, p*7*h/16)
 	SetTextColorAlpha(csc.txtReady, 0)
-	/*
+	
 	SetFolder("/media/ui")
-	CreateSpriteExpress(csc.sprEvil, 150, 102, GetSpriteWidth(, 0, 5)
-	SetSpriteMiddleScreenX(csc.sprEvil, 150, 102, 0, 0, 5)
-	img = 
+	CreateSpriteExpress(csc.sprEvil, 150, 102, GetSpriteMiddleX(csc.sprReady)+270*p - 75, GetSpriteMiddleY(csc.sprReady)-51, 5)
+	if spType = STORYMODE then img = LoadImage("storydif1.png")
+	if spType <> STORYMODE then img = LoadImage("evil1.png")
 	AddSpriteAnimationFrame(csc.sprEvil, img)
 	trashBag.insert(img)
-	img = 
+	if spType = STORYMODE then img = LoadImage("storydif2.png")
+	if spType <> STORYMODE then img = LoadImage("evil2.png")
 	AddSpriteAnimationFrame(csc.sprEvil, img)
 	trashBag.insert(img)
 	SetSpriteFrame(csc.sprEvil, 1)
-	*/
+	SetSpriteFlip(csc.sprEvil, f, f)
+	AddButton(csc.sprEvil)
+	SetSpriteVisible(csc.sprEvil, 0)
+	if dispH then SetSpriteSize(csc.sprEvil, 120, 82)
+	
 	if csc.player = 2 and spType = AIBATTLE
+		
+		SetSpriteFlip(csc.sprEvil, 0, 0)
+		SetSpritePosition(csc.sprEvil, 20, 520)
+		if dispH then SetSpritePosition(csc.sprEvil, 600, 520)
+		//SetSpriteVisible(csc.sprEvil, 1)
 		
 		for i = 0 to NUM_CRABS-1
 			spr = csc.sprCrabs + i
@@ -534,6 +547,8 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 			IncSpriteX(csc.sprRightArrow, w/4-86)
 		
 		endif
+		SetSpritePosition(csc.sprEvil, GetSpriteMiddleX(csc.sprReady)+210*p - 75, GetSpriteMiddleY(csc.sprReady)-41)
+		if csc.player = 2 and spType = AIBATTLE then SetSpritePosition(csc.sprEvil, 705, 535)
 	endif
 	
 	
@@ -738,7 +753,7 @@ function InitCharacterSelect()
 	if spType = STORYMODE or speedUnlock = 0 then IncSpriteY(SPR_CS_FASTGAME, 9999)
 	if spType = STORYMODE or hardBattleUnlock = 0 then IncSpriteY(SPR_CS_HARDGAME, 9999)
 	if spType = STORYMODE or musicBattleUnlock = 0 then IncSpriteY(SPR_CS_MUSICPICK, 9999)
-		
+	
 	PlayMusicOGGSP(characterMusic, 1)
 	PlayMusicOGGSP(fireMusic, 1)
 	SetMusicVolumeOGG(fireMusic, 20*volumeM/100)
@@ -771,6 +786,7 @@ function ChangeCrabs(csc ref as CharacterSelectController, dir as integer, start
 		SetSpriteVisible(csc.sprLeftArrow, 0)
 		SetSpriteVisible(csc.sprRightArrow, 0)
 		SetSpriteVisible(csc.sprReady, 0)
+		SetSpriteVisible(csc.sprEvil, 0)
 		
 		//The change of the crab is done up here to make the glide work
 		good = 0
@@ -783,7 +799,7 @@ function ChangeCrabs(csc ref as CharacterSelectController, dir as integer, start
 		
 		//FIRST: Loading in the high def crab images, if they aren't in already
 		//Only unfortunate thing is that we can't reuse images from one side into another side; if memory becomes an issue, we'll do this
-		if GetSpriteFrameCount(csc.sprCrabs + csc.crabSelected) <> 12 - 6*spActive
+		if GetSpriteFrameCount(csc.sprCrabs + csc.crabSelected) < 12 - 6*spActive
 			SetFolder("/media/art")
 			if spActive
 				curChapter = csc.crabSelected+1
@@ -923,6 +939,7 @@ function SetArrowVisibility(csc ref as CharacterSelectController)
 			SetSpriteVisible(csc.sprRightArrow, 1)
 		endif
 		//SetSpriteVisible(csc.sprReady, 1)
+		SetSpriteVisible(csc.sprEvil, 1)
 	else
 		if csc.CrabSelected <> 0
 			SetSpriteVisible(csc.sprLeftArrow, 1)
@@ -939,6 +956,15 @@ function SetArrowVisibility(csc ref as CharacterSelectController)
 			SetSpriteVisible(csc.sprRightArrow, 1)
 		endif
 		SetSpriteVisible(csc.sprReady, 1)
+		
+		SetSpriteVisible(csc.sprEvil, 0)
+		SetSpriteFrame(csc.sprEvil, 1)
+		if evilUnlock
+			if csc.CrabSelected = 0 then SetSpriteVisible(csc.sprEvil, 1)
+			if csc.CrabSelected = 18 then SetSpriteVisible(csc.sprEvil, 1)
+			if csc.CrabSelected = 21 then SetSpriteVisible(csc.sprEvil, 1)
+			if csc.CrabSelected = 23 then SetSpriteVisible(csc.sprEvil, 1)
+		endif
 	endif
 endfunction
 
@@ -958,6 +984,7 @@ function SelectCrab(csc ref as CharacterSelectController)
 	//SetSpriteVisible(csc.sprReady, 0)
 	SetSpriteVisible(csc.sprLeftArrow, 0)
 	SetSpriteVisible(csc.sprRightArrow, 0)
+	SetSpriteVisible(csc.sprEvil, 0)
 	
 	if spType <> STORYMODE then PlayTweenSprite(tweenSprFadeOut, csc.sprReady, 0)
 	if spType <> STORYMODE then PlayTweenText(tweenTxtFadeIn, csc.txtReady, 0)
@@ -993,6 +1020,36 @@ endfunction
 function DoCharacterSelectController(csc ref as CharacterSelectController)
 
 	if not csc.ready
+		Print(GetSpriteFrameCount(csc.sprCrabs + csc.crabSelected))
+		if ButtonMultitouchEnabled(csc.sprEvil) and csc.stage = 2 and GetSpriteVisible(csc.sprEvil)
+			SetSpriteFrame(csc.sprEvil, Mod(GetSpriteCurrentFrame(csc.sprEvil), 2)+1)
+			if csc.player = 1 then myEvil = Mod(crab1Evil+1, 2)
+			if csc.player = 1 then crab1Evil = Mod(crab1Evil+1, 2)
+			if csc.player = 2 then myEvil = Mod(crab2Evil+1, 2)
+			if csc.player = 2 then crab2Evil = Mod(crab2Evil+1, 2)
+			
+			if GetSpriteFrameCount(csc.sprCrabs + csc.crabSelected) <> 18 - 6*spActive
+				SetFolder("/media/art")
+				crabRefType = Mod(csc.crabSelected, 6)+1
+				crabRefAlt = (csc.crabSelected)/6
+				for i = 1 to 6
+					img = LoadImageResizedR("crab" + str(crabRefType) + AltStr(crabRefAlt) + "2select" + Str(i) + ".png", .8)
+					if img <> 0
+						AddSpriteAnimationFrame(csc.sprCrabs + csc.crabSelected, img)
+						trashBag.insert(img)
+					endif
+				next i
+			endif
+			if crabRefType = 1 and crabRefAlt = 0 then SetTextString(csc.txtCrabName, "CRIXEL")
+			if crabRefType = 1 and crabRefAlt = 3 then SetTextString(csc.txtCrabName, "BETA CRAB")
+			if crabRefType = 4 and crabRefAlt = 3 then SetTextString(csc.txtCrabName, "DEVIL CRAB")
+			if myEvil
+				PlaySprite(csc.sprCrabs + csc.crabSelected, 18, 1, 13, 18)
+			else
+				PlaySprite(csc.sprCrabs + csc.crabSelected, 18, 1, 7, 12)
+			endif
+			
+		endif
 		
 		if spActive = 1 and csc.stage = 1
 			SetVisibleCharacterUI(2, csc)
@@ -1001,6 +1058,8 @@ function DoCharacterSelectController(csc ref as CharacterSelectController)
 			csc.stage = 2
 			ClearMultiTouch()
 		endif
+		
+		
 		
 		//The 6-crab view
 		if csc.stage = 1
@@ -1040,10 +1099,14 @@ function DoCharacterSelectController(csc ref as CharacterSelectController)
 			elseif (ButtonMultitouchEnabled(csc.sprLeftArrow) or (GetMultitouchPressedTopRight() and csc.player = 2 and dispH = 0) or (GetMultitouchPressedBottomLeft() and csc.player = 1 and dispH = 0)) and csc.crabSelected > 0
 				PlaySoundR(arrowS, 100)
 				ChangeCrabs(csc, -1, 1)
+				if csc.player = 1 then crab1Evil = 0
+				if csc.player = 2 then crab2Evil = 0
 			// Scroll right
 			elseif (ButtonMultitouchEnabled(csc.sprRightArrow) or (GetMultitouchPressedTopLeft() and csc.player = 2 and dispH = 0) or (GetMultitouchPressedBottomRight() and csc.player = 1 and dispH = 0)) and ((csc.crabSelected < lastChar and spType <> STORYMODE) or (csc.crabSelected < Min(clearedChapter, finalChapter-1) and spType = STORYMODE))
 				PlaySoundR(arrowS, 100)
 				ChangeCrabs(csc, 1, 1)
+				if csc.player = 1 then crab1Evil = 0
+				if csc.player = 2 then crab2Evil = 0
 			endif
 			
 			if spType = STORYMODE
@@ -1084,6 +1147,12 @@ function DoCharacterSelectController(csc ref as CharacterSelectController)
 				csc.stage = 1
 				if csc.player = 1 then TurnOffSelect()
 				if csc.player = 2 then TurnOffSelect2()
+				SetSpriteVisible(csc.sprEvil, 0)
+				SetSpriteFrame(csc.sprEvil, 1)
+				PlaySprite(csc.sprCrabs + csc.crabSelected, 18, 1, 7, 12)
+				if csc.player = 1 then crab1Evil = 0
+				if csc.player = 2 then crab2Evil = 0
+				
 				//i = NUM_CRABS + spActive*STORY_CS_BONUS
 			endif
 			//next i
@@ -1165,9 +1234,16 @@ function DoAISelectController(csc ref as CharacterSelectController)
 			PlaySoundR(arrowS, 40)
 			PlaySoundR(buttonSound, 40)
 			
+			if GetSpriteExists(csc.sprCrabs + csc.crabSelected-1) then PlaySprite(csc.sprCrabs + csc.crabSelected-1, 18, 1, 1, 6)
+			
 			csc.crabSelected = i+1
 			crab2Type = Mod(csc.crabSelected-1, 6) + 1
 			crab2Alt = (csc.crabSelected-1)/6
+			
+			SetSpriteVisible(csc.sprEvil, 0)
+			SetSpriteFrame(csc.sprEvil, 1)
+			crab2Evil = 0
+			if csc.crabSelected = 1 or csc.crabSelected = 19 or csc.crabSelected = 22 or csc.crabSelected = 24 then SetSpriteVisible(csc.sprEvil, 1)
 			
 			//Making all other crabs darker
 			for k = 0 to NUM_CRABS-1
@@ -1186,6 +1262,33 @@ function DoAISelectController(csc ref as CharacterSelectController)
 			ClearMultiTouch()
 		endif
 	next i
+	
+	if ButtonMultitouchEnabled(csc.sprEvil) and GetSpriteVisible(csc.sprEvil)
+		if crab2Evil
+			crab2Evil = 0
+			SetSpriteFrame(csc.sprEvil, 1)
+			PlaySprite(csc.sprCrabs + csc.crabSelected-1, 18, 1, 1, 6)
+		else
+			crab2Evil = 1
+			SetSpriteFrame(csc.sprEvil, 2)
+			if GetSpriteFrameCount(csc.sprCrabs + csc.crabSelected-1) < 12
+				SetFolder("/media/art")
+				crabRefType = Mod(csc.crabSelected-1, 6)+1
+				crabRefAlt = (csc.crabSelected-1)/6
+				for i = 1 to 6
+					img = LoadImageResizedR("crab" + str(crabRefType) + AltStr(crabRefAlt) + "2select" + Str(i) + ".png", .5)
+					if img <> 0
+						AddSpriteAnimationFrame(csc.sprCrabs + csc.crabSelected-1, img)
+						trashBag.insert(img)
+					endif
+				next i
+			endif
+			PlaySprite(csc.sprCrabs + csc.crabSelected-1, 18, 1, 7, 12)
+		endif
+		
+	endif
+	
+	//Print(GetSpriteFrameCount(csc.sprCrabs + csc.crabSelected-1))
 	
 	//Fun recoloring of the difficulty number, only animating
 	if spAIDiff = 9 then SetSpriteColorByCycleC(csc.sprTxtBack, 720.0*GetMusicPositionOGG(characterMusic)/(11-spAIDiff))
@@ -1403,6 +1506,7 @@ function CleanupCharacterSelectController(csc ref as CharacterSelectController)
 	DeleteText(csc.txtCrabStats)
 	DeleteText(csc.txtReady)
 	DeleteSprite(csc.sprTxtBack)
+	DeleteSprite(csc.sprEvil)
 	for spr = csc.sprCrabs to csc.sprCrabs + NUM_CRABS-1 + STORY_CS_BONUS
 		if GetSpriteExists(spr) then DeleteSprite(spr)
 		if GetTweenExists(spr) then DeleteTween(spr)

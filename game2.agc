@@ -117,8 +117,10 @@ function CreateGame2()
 	SetSpriteColor(meteorMarker2, 30, 100, 255, 255)
 	SetSpriteAngle(meteorMarker2, 180-180*dispH)
 	
-	if GetFileExists("crab" + str(crab2Type) + AltStr(crab2Alt) + "special1.png")
-		LoadAnimatedSprite(specialButton2, "crab" + str(crab2Type) + AltStr(crab2Alt) + "special", 5)
+	evilS$ = ""
+	if crab2evil then evilS$ = "2"
+	if GetFileExists("crab" + str(crab2Type) + AltStr(crab2Alt) + evilS$ + "special1.png")
+		LoadAnimatedSprite(specialButton2, "crab" + str(crab2Type) + AltStr(crab2Alt) + evilS$ + "special", 5)
 	else
 		LoadAnimatedSprite(specialButton2, "crab" + str(crab2Type) + "special", 5)
 	endif
@@ -235,9 +237,9 @@ function DoGame2()
 	if specialTimerAgainst2# > 0 and crab1Type = 4
 		for i = special1Ex1 to special1Ex5
 			if crab1Alt = 0 then SetSpriteColorByCycle(i, specialTimerAgainst2#)
-			if crab1Alt = 1 then SetSpriteColorByCycleA(i, specialTimerAgainst2#)
 			if crab1Alt = 2 then SetSpriteColorByCycleB(i, specialTimerAgainst2#)
 			if crab1Alt = 3 then SetSpriteColorByCycleC(i, specialTimerAgainst2#)
+			if crab1Alt = 1 or (crab1Alt = 3 and crab1Evil) then SetSpriteColorByCycleA(i, specialTimerAgainst2#)
 		next i
 		SetSpriteColor(special1Ex5, (GetSpriteColorRed(special1Ex5)+510)/3, (GetSpriteColorGreen(special1Ex5)+510)/3, (GetSpriteColorBlue(special1Ex5)+510)/3, 255)
 		if specialTimerAgainst2# < raveCrabTimeMax/8

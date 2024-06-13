@@ -1,17 +1,19 @@
 bg 5
 music chromecoast
-TP: This is the place!
-It smells... metallic?
-Not a deterrent!
-Back to the training plan...
-Next, I'll up my meteor dodging count by 10.
-Go in, get my 60 dodges, and keep going as long as I can.
-Here goes nothing!
-*TP jumps into the bottom of the screen.*
-Chrono Crab (CC): Wait! Don't go in there!
-GAMEPLAY: Score 60 in mirror mode.
-TP: Whew! Now that's a challenge!
-Moving 12 legs instead of 6 is tough, but I feel so coordinated now.
-It's starting to get late though- maybe I should pack it in for the night.
-??: You IMBECILE!
-TP: Huh?
+TP: BF; This must be the place!
+BF; It smells... metallic?
+BF; Not a deterrent!
+BF; So, back to the training plan...
+BF; Next, I'll up my meteor dodging count by 10.
+BF; Go in, get my 50 dodges, and keep going as long as I can.
+BF; Here goes nothing!
+exit 1
+CC: BF; Wait! Don't go in there!
+music chromecoast
+mirror 50
+music chromecoast
+TP: BF; Whew! Now that's a challenge!
+BF; Moving 12 legs instead of 6 is tough, but I feel so coordinated now.
+BF; It's starting to get late though- maybe I should pack it in for the night.
+??: BF; You IMBECILE!
+TP: BF;  Huh?

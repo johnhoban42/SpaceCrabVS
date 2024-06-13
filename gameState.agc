@@ -934,16 +934,32 @@ function PauseGame()
 	next i
 	
 	//Making the crab title and description
-	SetTextString(pauseTitle1, crabNames[crab1Type+crab1Alt*6])
+	crab1ID = crab1Type+crab1Alt*6
+	e1Mod = 0
+	if crab1Evil and crab1Type = 1 and crab1Alt = 0 then crab1ID = 25
+	if crab1Evil and crab1Type = 1 and crab1Alt = 3 then crab1ID = 26
+	if crab1Evil and crab1Type = 4 and crab1Alt = 3
+		crab1ID = 27
+		e1Mod = 3
+	endif
+	SetTextString(pauseTitle1, crabNames[crab1ID])
 	SetTextString(pauseDesc1, crabPause1[crab1Type])
-	if spType = 0 or spType = STORY or spType = AIBATTLE then SetTextString(pauseDesc1, GetTextString(pauseDesc1) + chr(10) + chr(10) + crabPause2[crab1Type+crab1Alt*6])
+	if spType = 0 or spType = STORY or spType = AIBATTLE then SetTextString(pauseDesc1, GetTextString(pauseDesc1) + chr(10) + chr(10) + crabPause2[crab1Type+crab1Alt*6+e1Mod])
 	
 	if (spType = 0)
 		//For a multiplayer game
+		crab2ID = crab2Type+crab2Alt*6
+		e2Mod = 0
+		if crab2Evil and crab2Type = 1 and crab2Alt = 0 then crab2ID = 25
+		if crab2Evil and crab2Type = 1 and crab2Alt = 3 then crab2ID = 26
+		if crab2Evil and crab2Type = 4 and crab2Alt = 3
+			crab2ID = 27
+			e2Mod = 3
+		endif
 		SetTextY(pauseTitle2, h/2 - (GetTextY(pauseTitle1)-h/2))
 		SetTextY(pauseDesc2, h/2 - (GetTextY(pauseDesc1)-h/2))
-		SetTextString(pauseTitle2, crabNames[crab2Type+crab2Alt*6])
-		SetTextString(pauseDesc2, crabPause1[crab2Type] + chr(10) + chr(10) + crabPause2[crab2Type+crab2Alt*6])
+		SetTextString(pauseTitle2, crabNames[crab2ID])
+		SetTextString(pauseDesc2, crabPause1[crab2Type] + chr(10) + chr(10) + crabPause2[crab2Type+crab2Alt*6+e2Mod])
 	endif
 	
 	//The single player special text
@@ -1444,6 +1460,7 @@ function ShowSpecialAnimation(crabType, crabAlt, playerNum, fast)
 		SetTextDepth(i, 1)
 		SetTextSpacing(i, -20)
 		SetTextString(i, Upper(GetSpecialName(crabType + crabAlt*6)))
+		if crabType = 4 and crabAlt = 3 and ((crab1Evil and playerNum = 1) or (crab2Evil and playerNum = 2)) then  SetTextString(i, Upper(GetSpecialName(25)))
 	next i
 	
 	
@@ -2240,6 +2257,12 @@ function InitJumpParticles()
 			AddParticlesColorKeyFrame (i, lifeEnd#/3, 255, 255, 255, 255 )
 			AddParticlesColorKeyFrame (i, lifeEnd#, 255, 255, 0, 0 )
 			SetParticlesRotationRange(i, 470, 870)
+			if (i = par1jump and crab1Evil) or (i = par2jump and crab2Evil)
+				ClearParticlesColors(i)
+				AddParticlesColorKeyFrame (i, 0.0, 255, 0, 0, 255 )
+				AddParticlesColorKeyFrame (i, lifeEnd#/3, 255, 0, 0, 255 )
+				AddParticlesColorKeyFrame (i, lifeEnd#, 255, 0, 0, 0 )
+			endif
 			SetParticlesAngle(i, 30)
 		elseif cType = 5
 			AddParticlesColorKeyFrame (i, 0.0, 80, 80, 80, 255 )
@@ -2462,6 +2485,7 @@ function PlayDangerMusic(startNew)
 			if GetMusicPlayingOGGSP(spMusic) then oldSong = spMusic
 			if GetMusicPlayingOGGSP(tomatoMusic) then oldSong = tomatoMusic
 			if GetMusicPlayingOGGSP(fightFMusic) then oldSong = fightFMusic
+			if GetMusicPlayingOGGSP(fightAJMusic) then oldSong = fightAJMusic
 			
 			if oldSong <> 0 then StopGamePlayMusic()
 			
@@ -2473,6 +2497,7 @@ function PlayDangerMusic(startNew)
 			if oldSong = spMusic then PlayMusicOGGSP(dangerCMusic, 1)
 			if oldSong = tomatoMusic then PlayMusicOGGSP(dangerTMusic, 1)
 			if oldSong = fightFMusic then PlayMusicOGGSP(dangerFMusic, 1)
+			if oldSong = fightAJMusic then PlayMusicOGGSP(dangerAJMusic, 1)
 			
 		endif
 		
@@ -2490,8 +2515,9 @@ function StopGamePlayMusic()
 	if GetMusicPlayingOGGSP(tomatoMusic) then StopMusicOGGSP(tomatoMusic)
 	if GetMusicPlayingOGGSP(emotionMusic) then StopMusicOGGSP(emotionMusic)
 	if GetMusicPlayingOGGSP(fightFMusic) then StopMusicOGGSP(fightFMusic)
+	if GetMusicPlayingOGGSP(fightAJMusic) then StopMusicOGGSP(fightAJMusic)
 	
-	for i = dangerAMusic to dangerFMusic
+	for i = dangerAMusic to dangerAJMusic
 		if GetMusicPlayingOGGSP(i) then StopMusicOGGSP(i)
 	next i
 	

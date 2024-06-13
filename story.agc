@@ -607,9 +607,11 @@ function ShowScene(chap, scene)
 					//Blank costume
 					SetSpriteImage(SPR_CRAB1_COSTUME, LoadImageR("blank.png"))
 				endif
-				PlayTweenSprite(SPR_CRAB1_FACE, SPR_CRAB1_BODY, 0)
-				PlayTweenSprite(SPR_CRAB1_FACE, SPR_CRAB1_FACE, 0)
-				PlayTweenSprite(SPR_CRAB1_FACE, SPR_CRAB1_COSTUME, 0)
+				if GetTweenSpritePlaying(SPR_CRAB1_FACE, SPR_CRAB1_FACE) = 0 and GetTweenSpritePlaying(SPR_CRAB1_FACE, SPR_CRAB1_BODY) = 0
+					PlayTweenSprite(SPR_CRAB1_FACE, SPR_CRAB1_BODY, 0)
+					PlayTweenSprite(SPR_CRAB1_FACE, SPR_CRAB1_FACE, 0)
+					PlayTweenSprite(SPR_CRAB1_FACE, SPR_CRAB1_COSTUME, 0)
+				endif
 				
 				for i = SPR_CRAB1_BODY to SPR_CRAB1_COSTUME
 					trashBag.insert(GetSpriteImageID(i))
@@ -653,10 +655,12 @@ function ShowScene(chap, scene)
 					//Blank costume
 					SetSpriteImage(SPR_CRAB2_COSTUME, LoadImageR("blank.png"))
 				endif
-				PlayTweenSprite(SPR_CRAB2_FACE, SPR_CRAB2_BODY, 0)
-				PlayTweenSprite(SPR_CRAB2_FACE, SPR_CRAB2_FACE, 0)
-				PlayTweenSprite(SPR_CRAB2_FACE, SPR_CRAB2_COSTUME, 0)
-				
+				if GetTweenSpritePlaying(SPR_CRAB2_FACE, SPR_CRAB2_FACE) = 0 and GetTweenSpritePlaying(SPR_CRAB2_BODY, SPR_CRAB2_FACE) = 0
+					PlayTweenSprite(SPR_CRAB2_FACE, SPR_CRAB2_BODY, 0)
+					PlayTweenSprite(SPR_CRAB2_FACE, SPR_CRAB2_FACE, 0)
+					PlayTweenSprite(SPR_CRAB2_FACE, SPR_CRAB2_COSTUME, 0)
+				endif
+
 				for i = SPR_CRAB2_BODY to SPR_CRAB2_COSTUME
 					trashBag.insert(GetSpriteImageID(i))
 				next i

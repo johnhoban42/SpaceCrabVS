@@ -51,22 +51,34 @@ function InitResultsController(rc ref as ResultsController)
 	if resultsWinner = 1
 		winnerCrab = crab1Type
 		winnerAlt = crab1Alt
+		winnerEvil = crab1Evil
 		loserCrab = crab2Type
 		loserAlt = crab2Alt
+		loserEvil = crab2Evil
 	else
 		winnerCrab = crab2Type
 		winnerAlt = crab2Alt
+		winnerEvil = crab2Evil
 		loserCrab = crab1Type
 		loserAlt = crab1Alt
+		loserEvil = crab1Evil
 	endif
 	
 	rc.frame = 0
 	
 	// The offset mumbo-jumbo with f-coefficients is because AGK's text rendering is awful
 	if rc.isWinner
-		CreateText(rc.txtCrabMsg, winText[winnerCrab+winnerAlt*6 - 1])
+		winID = winnerCrab+winnerAlt*6 - 1
+		if winnerEvil and winnerCrab = 1 and winnerAlt = 0 then winID = 24
+		if winnerEvil and winnerCrab = 1 and winnerAlt = 3 then winID = 25
+		if winnerEvil and winnerCrab = 4 and winnerAlt = 3 then winID = 26
+		CreateText(rc.txtCrabMsg, winText[winID])
 	else
-		CreateText(rc.txtCrabMsg, loseText[loserCrab+loserAlt*6 - 1])
+		loseID = loserCrab+loserAlt*6 - 1
+		if loserEvil and loserCrab = 1 and loserAlt = 0 then loseID = 24
+		if loserEvil and loserCrab = 1 and loserAlt = 3 then loseID = 25
+		if loserEvil and loserCrab = 4 and loserAlt = 3 then loseID = 26
+		CreateText(rc.txtCrabMsg, loseText[loseID])
 	endif
 	SetTextSize(rc.txtCrabMsg, 48)
 	SetTextAngle(rc.txtCrabMsg, f*180)
@@ -96,7 +108,10 @@ function InitResultsController(rc ref as ResultsController)
 	SetTweenTextSpacing(rc.twnWinMsg, -28, -22, TweenSmooth2())
 	SetTweenTextY(rc.twnWinMsg, GetTextY(rc.txtWinMsg), GetTextY(rc.txtWinMsg) + p*325, TweenSmooth2())
 	
-	sprCrabLose$ = "/media/art/crab" + Str(loserCrab) + AltStr(loserAlt) + "rLose.png"
+	evilMod$ = ""
+	if loserEvil then evilMod$ = "2"
+	if loserCrab = 6 and loserAlt = 3 then evilMod$ = ""
+	sprCrabLose$ = "/media/art/crab" + Str(loserCrab) + AltStr(loserAlt) + evilMod$ + "rLose.png"
 	if GetFileExists(sprCrabLose$)
 		LoadSprite(rc.sprCrabLose, sprCrabLose$)
 	else
@@ -107,7 +122,10 @@ function InitResultsController(rc ref as ResultsController)
 	SetSpriteFlip(rc.sprCrabLose, f, f)
 	SetSpriteVisible(rc.sprCrabLose, 0)
 	
-	sprCrabWin$ = "/media/art/crab" + Str(winnerCrab) + AltStr(winnerAlt) + "rWin.png"
+	evilMod$ = ""
+	if winnerEvil then evilMod$ = "2"
+	if winnerCrab = 6 and winnerAlt = 3 then evilMod$ = ""
+	sprCrabWin$ = "/media/art/crab" + Str(winnerCrab) + AltStr(winnerAlt) + evilMod$ + "rWin.png"
 	if GetFileExists(sprCrabWin$)
 		LoadSprite(rc.sprCrabWin, sprCrabWin$)
 	else
@@ -205,7 +223,6 @@ function InitResultsController(rc ref as ResultsController)
 		
 	endif
 	
-	
 endfunction
 
 // Initialize the results screen
@@ -269,7 +286,7 @@ function InitResults()
 	loseText[23] = "Chimera Crab is just a puppeted" + chr(10) + "freak, after all..."
 	loseText[24] = "Crixel torn to bits" + chr(10) + "over this harsh loss..."
 	loseText[25] = "Beta Crab is feeling awful about" + chr(10) + "the loss - I'm sure of it."
-	loseText[26] = "Devil Crab is locked away, until" + chr(10) + "someone makes a deal with him..."
+	loseText[26] = "Devil Crab is locked away, until" + chr(10) + "another fool makes a deal with him..."
 	
 	// Determine the winner
 	if crab1Deaths = 3

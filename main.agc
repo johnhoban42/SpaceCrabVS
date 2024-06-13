@@ -56,7 +56,7 @@ global h = 1600
 SetVirtualResolution(w, h) // doesn't have to match the window
 
 global dispH = 0		//Variable for horizontal display
-if deviceType = 5//DESKTOP
+if deviceType = DESKTOP
 	dispH = 1
 	w = 1280
 	h = 720
@@ -161,6 +161,7 @@ function SaveGame()
 	WriteInteger(3, volumeSE)
 	WriteInteger(3, targetFPS)
 	WriteInteger(3, windowSize)
+	WriteInteger(3, evilUnlock)
 	
 	CloseFile(3)
 endfunction
@@ -190,6 +191,7 @@ function LoadGame()
 	volumeSE = ReadInteger(3)
 	targetFPS = ReadInteger(3)
 	windowSize = ReadInteger(3)
+	evilUnlock = ReadInteger(3)
 	CloseFile(3)
 endfunction
 
@@ -200,11 +202,11 @@ if debug
 	curChapter = 8
 	curScene = 2
 	highestScene = 101
-	appState = STORY
+	appState = START
 	crab1Type = 6
 	crab1Alt = 3
 	
-	//spType = AIBATTLE
+	spType = AIBATTLE
 	altUnlocked[1] = 3
 	altUnlocked[2] = 3
 	altUnlocked[3] = 3
@@ -217,6 +219,7 @@ if debug
 	musicBattleUnlock = 1
 	unlockAIHard = 1
 	musicUnlocked = 1
+	evilUnlock = 1
 	
 else
 	LoadGame()
@@ -610,6 +613,7 @@ function CreateSelectButtons()
 	next i
 	endif
 endfunction
+
 
 function MoveSelect()
 	

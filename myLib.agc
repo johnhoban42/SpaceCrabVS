@@ -453,7 +453,7 @@ function GetMulitouchPressedButton(spr)
 	for i = 1 to currentTouch.length
 		x = GetRawTouchCurrentX(currentTouch[i])
 		y = GetRawTouchCurrentY(currentTouch[i])		
-		if GetSpriteHitTest(spr, x, y) then result = 1
+		if GetSpriteHitTest(spr, x, y) and GetSpriteVisible(spr) and GetSpriteColorAlpha(spr) <> 0 then result = 1
 	next i
 	
 endfunction result
