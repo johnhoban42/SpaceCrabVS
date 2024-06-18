@@ -167,6 +167,7 @@ global gameDifficulty1 = 1
 global gameDifficulty2 = 1
 global difficultyBar = 10	//The amount of meteors it takes to make the difficulty go up
 global difficultyMax = 7
+global storyEasy = 0
 
 global meteorTotal1 = 0
 global meteorTotal2 = 0
@@ -343,6 +344,7 @@ global met3CD2# = 0 //400
 #constant fontDescItalI 4	//Tahoma (Italicized)
 #constant fontCrabI 3	//Somerset Barnyard
 #constant fontScoreI 1001	//SnowTunes UI Font
+#constant fontTitleScreenI 1002	//Cambria Math (Italicised)
 
 #constant starParticleI 11
 
@@ -612,6 +614,7 @@ global jumpPartI as Integer[6, 4]
 #constant fightFMusic 114	//Fight For the Future!
 #constant fightAJMusic 115	//To Battle
 #constant chillMusic 116		//Back to my Hunch
+#constant ragMusic 117		//Space Crab Rag
 
 #constant dangerAMusic 211
 #constant dangerBMusic 212
@@ -634,6 +637,9 @@ global jumpPartI as Integer[6, 4]
 #constant retro7M 137
 #constant retro8M 138
 
+#constant voice1 161
+#constant voice2 162
+
 global oldSong = 0
 
 //Volume for music and sound effects & other settings
@@ -644,37 +650,38 @@ global windowSize = 1
 
 //SetMusicSystemVolumeOGG(volumeM)
 
-//Start screen sprites 
+//Start screen sprites
 #constant SPR_TITLE 200 
-#constant SPR_START1 201
-#constant SPR_START2 203
-#constant SPR_BG_START 202
-#constant SPR_STARTMIRROR 204
-#constant TXT_WAIT1 201
-#constant TXT_WAIT2 202
-#constant TXT_HIGHSCORE 203
-#constant TXT_SP_DESC 204
-#constant SPR_STARTAI 212
-#constant SPR_LOGO_HORIZ 213
-#constant SPR_LEADERBOARD 214
-#constant SPR_CLASSIC 215
-#constant SPR_STORY_START 216
-#constant TXT_ALONE 216
-#constant SPR_CHALLENGE 217
+#constant SPR_STORY_START 201
+#constant SPR_STARTAI 202
+#constant SPR_STARTMIRROR 203
+#constant SPR_CLASSIC 204
+#constant SPR_START1 205
+#constant SPR_JUKEBOX 206
+#constant SPR_STATS 207
+//SPR_SETTINGS 208
+#constant SPR_EXIT_GAME 209
 
-#constant SPR_BACK_1P 221
-#constant SPR_BACK_2P 222
-#constant SPR_BACK_VAULT 223
+#constant TXT_SINGLE 211
+#constant TXT_MULTI 212
+#constant TXT_OTHER 213
+
+
+#constant SPR_LOGO_HORIZ 215
+#constant SPR_LEADERBOARD 214
+#constant TXT_ALONE 216
+
+#constant TXT_HIGHSCORE 231
+#constant TXT_SP_DESC 232
+
+#constant SPR_BG_START 299
 
 
 //Different Crab buttons for the single player mode
-#constant SPR_SP_C1 255
-#constant SPR_SP_C2 256
-#constant SPR_SP_C3 257
-#constant SPR_SP_C4 258
-#constant SPR_SP_C5 259
-#constant SPR_SP_C6 260
- 
+#constant SPR_SP_C1 256
+#constant SPR_SP_C6 261
+#constant SPR_SP_C24 279
+
 //Character select screen sprites - player 1 
 #constant SPR_CS_READY_1 300 
 #constant SPR_CS_ARROW_L_1 301 
@@ -1020,6 +1027,10 @@ function PlayMusicOGGSP(songID, loopYN)
 			LoadMusicOGG(chillMusic, "chill.ogg")
 			SetMusicLoopTimesOGG(chillMusic, 0.967, -1)
 		endif
+		if songID = ragMusic
+			LoadMusicOGG(ragMusic, "rag.ogg")
+			SetMusicLoopTimesOGG(ragMusic, 3.158, -1)
+		endif
 		if songID = unlockMusic then LoadMusicOGG(unlockMusic, "unlock.ogg")
 		
 		if songID = dangerAMusic then LoadMusicOGG(dangerAMusic, "dangerA.ogg")
@@ -1064,6 +1075,7 @@ function PlayMusicOGGSPStr(str$, loopYN)
 	if str$ = "tomato" then id = tomatoMusic
 	if str$ = "emotion" then id = emotionMusic
 	if str$ = "chill" then id = chillMusic
+	if str$ = "rag" then id = ragMusic
 	if str$ = "love" then id = loveMusic
 	if str$ = "characterSelect" then id = characterMusic
 	if str$ = "results" then id = resultsMusic
@@ -1130,6 +1142,7 @@ function LoadBaseImages()
 	LoadImage(fontDescItalI, "fontDescItal.png")
 	LoadImage(fontCrabI, "fontCrab.png")
 	LoadImage(fontScoreI, "ScoreFont.png")
+	LoadImage(fontTitleScreenI, "fontTitleScreen.png")
 	
 	//#constant fontDesc 2
 	
@@ -1154,17 +1167,18 @@ function LoadBaseImages()
 //~	next i
 	
 	SetFolder("/media/envi")
-	
-	LoadImage(bg1I, "bg1.png")
-	LoadImage(bg2I, "bg2.png")
-	LoadImage(bg3I, "bg3.png")
-	LoadImage(bg4I, "bg4.png")
-	LoadImage(bg5I, "bg5.png")
-	LoadImage(bg6I, "bg6.png")
-	LoadImage(bg7I, "bg7.png")
-	LoadImage(bg8I, "bg8.png")
-	LoadImage(bg9I, "bg9.png")
-	LoadImage(bgPI, "pauseForeground.png")
+	size# = 1
+	if dispH = 0 then size# = .5
+	LoadImageResized(bg1I, "bg1.png", size#, size#, 0)
+	LoadImageResized(bg2I, "bg2.png", size#, size#, 0)
+	LoadImageResized(bg3I, "bg3.png", size#, size#, 0)
+	LoadImageResized(bg4I, "bg4.png", size#, size#, 0)
+	LoadImageResized(bg5I, "bg5.png", size#, size#, 0)
+	LoadImageResized(bg6I, "bg6.png", size#, size#, 0)
+	LoadImageResized(bg7I, "bg7.png", size#, size#, 0)
+	LoadImageResized(bg8I, "bg8.png", size#, size#, 0)
+	LoadImageResized(bg9I, "bg9.png", size#, size#, 0)
+	LoadImageResized(bgPI, "pauseForeground.png", size#, size#, 0)
 	LoadImage(bgRainSwipeI, "rainbowSwipe.png")
 	
 	LoadImage(starParticleI, "starParticle.png")
@@ -1250,6 +1264,18 @@ function LoadBaseImages()
 	
 	LoadImage(boarderI, "boader.png")
 	
+endfunction
+
+function LoadSelectCrabImages()
+	SetFolder("/media/art")
+	for i = 0 to NUM_CRABS-1 + spActive*STORY_CS_BONUS 
+		crabRefType = Mod(i, 6)+1
+		crabRefAlt = (i)/6
+		for j = 1 to 6
+			img = LoadImageResizedR("crab" + str(crabRefType) + AltStr(crabRefAlt) + "select" + Str(j) + ".png", .25)
+			if j = 1 then IMG_CS_CRAB[i] = img
+		next j
+	next i
 endfunction
 
 function LoadGameImages(loading)
@@ -1599,6 +1625,19 @@ function SetStoryShortStrings()
 	chapterDesc[25] = "" + chr(10) + "The end." + chr(10) + "" + chr(10) + ""
 	
 endfunction
+
+function PlayVoice(vID, crabT, crabA, evil)
+	if GetMusicExistsOGG(vID) then StopMusicOGGSP(vID)
+	SetFolder("/media/sounds/announcer")
+	bonus$ = "1"
+	if Random(1, 5) = 5 then bonus$ = "2"
+	evil$ = ""
+	if evil then evil$ = "2"
+	LoadMusicOGG(vID, "crab" + Str(crabT) + AltStr(crabA) + evil$ + bonus$ + ".ogg")
+	PlayMusicOGG(vID, 0)
+	SetMusicVolumeOGG(vID, volumeSE)
+endfunction
+
 
 
 function AltStr(alt)

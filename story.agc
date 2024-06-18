@@ -406,7 +406,7 @@ function ShowScene(chap, scene)
 			spActive = 0
 			spType = STORYMODE
 			ai$ = GetStringToken(wholeRow$, " ", 2)
-			if Len(ai$) = 5 then SetAIDifficulty(Val(Mid(ai$, 1, 1)), Val(Mid(ai$, 2, 1)), Val(Mid(ai$, 3, 1)), Val(Mid(ai$, 4, 1)), Val(Mid(ai$, 5, 1)))
+			if Len(ai$) = 5 then SetAIDifficulty(Val(Mid(ai$, 1, 1))-storyEasy*4, Val(Mid(ai$, 2, 1)), Val(Mid(ai$, 3, 1)), Val(Mid(ai$, 4, 1)), Val(Mid(ai$, 5, 1)))
 			knowingAI = Val(Mid(ai$, 5, 1))
 			firstFight = 0
 			SetCrabFromChapter(curChapter)
@@ -553,6 +553,10 @@ function ShowScene(chap, scene)
 			body$ = Mid(str$, FindString(str$, "B")+1, 1)
 			face$ = Mid(str$, FindString(str$, "F")+1, -1)
 			
+			//For Z faces
+			z$ = ""
+			if body$ = "Z" then z$ = "Z"
+			
 			//For the shiny eyes
 			folderF$ = ""
 			if FindString(face$, "1") > 0 then folderF$ = "blueeyes/"
@@ -582,27 +586,32 @@ function ShowScene(chap, scene)
 			if targetCrab = 1
 				//1st Crab Target
 				cosType = GetCrabCostumeType(crab1Type, crab1Alt)
+				if cosType = 2 then folderF$ = "speyes/"
 				
 				if cosType <> 2
-					SetSpriteImage(SPR_CRAB1_BODY, LoadImageR(folderB$ + "body" + body$ + phoneBonus$ + ".png"))
+					if z$ <> ""
+						SetSpriteImage(SPR_CRAB1_BODY, LoadImageR(folderB$ + "body" + body$ + str(crab1Type+crab1Alt*6) + ".png"))
+					else
+						SetSpriteImage(SPR_CRAB1_BODY, LoadImageR(folderB$ + "body" + body$ + phoneBonus$ + ".png"))
+					endif
 					SetSpriteImage(SPR_CRAB1_FACE, LoadImageR(folderF$ + "face" + face$ + ".png"))
 				endif
 				if cosType = 1
 					//Hat costume
-					SetSpriteImage(SPR_CRAB1_COSTUME, LoadImageR("costume/costume" + str(crab1Type) + AltStr(crab1Alt) + hatBonus$ + ".png"))
+					SetSpriteImage(SPR_CRAB1_COSTUME, LoadImageR("costume/costume" + str(crab1Type) + AltStr(crab1Alt) + z$ + hatBonus$ + ".png"))
 				elseif cosType = 2
 					//Unique sprite (WIP)
 					SetSpriteImage(SPR_CRAB1_COSTUME, LoadImageR("blank.png"))
 					SetSpriteImage(SPR_CRAB1_BODY, LoadImageR(folderB$ + "body" + str(crab1Type) + AltStr(crab1Alt) + body$ + phoneBonus$ + ".png"))
-					if GetFileExists(folderF$ + "face" + str(crab1Type) + AltStr(crab1Alt) + face$ + ".png") = 0
-						SetSpriteImage(SPR_CRAB2_FACE, LoadImageR(folderF$ + "face" + face$ + ".png"))
+					if GetFileExists(folderF$ + "face" + z$ + str(crab1Type+crab1Alt*6) + face$ + ".png")
+						SetSpriteImage(SPR_CRAB1_FACE, LoadImageR(folderF$ + "face" + z$ + str(crab1Type+crab1Alt*6) + face$ + ".png"))
 					else
-						SetSpriteImage(SPR_CRAB1_FACE, LoadImageR(folderF$ + "face" + str(crab1Type) + AltStr(crab1Alt) + face$ + ".png"))
+						SetSpriteImage(SPR_CRAB2_FACE, LoadImageR(folderF$ + "face" + face$ + ".png"))
 					endif
 				elseif cosType = 4
 					//Posed costume
-					if GetFileExists("costume/costume" + str(crab1Type) + AltStr(crab1Alt) + costume$ + ".png") = 0 then costume$ = ""
-					SetSpriteImage(SPR_CRAB1_COSTUME, LoadImageR("costume/costume" + str(crab1Type) + AltStr(crab1Alt) + costume$ + ".png"))
+					if GetFileExists("costume/costume" + str(crab1Type) + AltStr(crab1Alt) + costume$ + z$ + ".png") = 0 then costume$ = ""
+					SetSpriteImage(SPR_CRAB1_COSTUME, LoadImageR("costume/costume" + str(crab1Type) + AltStr(crab1Alt) + costume$ + z$ + ".png"))
 				else
 					//Blank costume
 					SetSpriteImage(SPR_CRAB1_COSTUME, LoadImageR("blank.png"))
@@ -630,27 +639,32 @@ function ShowScene(chap, scene)
 				
 				//2nd Crab Target
 				cosType = GetCrabCostumeType(crab2Type, crab2Alt)
+				if cosType = 2 then folderF$ = "speyes/"
 				
 				if cosType <> 2
-					SetSpriteImage(SPR_CRAB2_BODY, LoadImageR(folderB$ + "body" + body$ + phoneBonus$ + ".png"))
+					if z$ <> ""
+						SetSpriteImage(SPR_CRAB2_BODY, LoadImageR(folderB$ + "body" + body$ + str(crab1Type+crab1Alt*6) + ".png"))
+					else
+						SetSpriteImage(SPR_CRAB2_BODY, LoadImageR(folderB$ + "body" + body$ + phoneBonus$ + ".png"))
+					endif
 					SetSpriteImage(SPR_CRAB2_FACE, LoadImageR(folderF$ + "face" + face$ + ".png"))
 				endif
 				if cosType = 1
 					//Hat costume
-					SetSpriteImage(SPR_CRAB2_COSTUME, LoadImageR("costume/costume" + str(crab2Type) + AltStr(crab2Alt) + hatBonus$ + ".png"))
+					SetSpriteImage(SPR_CRAB2_COSTUME, LoadImageR("costume/costume" + str(crab2Type) + AltStr(crab2Alt) + z$ + hatBonus$ + ".png"))
 				elseif cosType = 2
 					//Unique sprite (WIP)
 					SetSpriteImage(SPR_CRAB2_COSTUME, LoadImageR("blank.png"))
 					SetSpriteImage(SPR_CRAB2_BODY, LoadImageR(folderB$ + "body" + str(crab2Type) + AltStr(crab2Alt) + body$ + phoneBonus$ + ".png"))
-					if GetFileExists(folderF$ + "face" + str(crab2Type) + AltStr(crab2Alt) + face$ + ".png") = 0
-						SetSpriteImage(SPR_CRAB2_FACE, LoadImageR(folderF$ + "face" + face$ + ".png"))
+					if GetFileExists(folderF$ + "face" + z$ + str(crab2Type+crab2Alt*6) + face$ + ".png")
+						SetSpriteImage(SPR_CRAB2_FACE, LoadImageR(folderF$ + "face" + z$ + str(crab2Type+crab2Alt*6) + face$ + ".png"))
 					else
-						SetSpriteImage(SPR_CRAB2_FACE, LoadImageR(folderF$ + "face" + str(crab2Type) + AltStr(crab2Alt) + face$ + ".png"))
+						SetSpriteImage(SPR_CRAB2_FACE, LoadImageR(folderF$ + "face" + face$ + ".png"))
 					endif
 				elseif cosType = 4
 					//Posed costume
-					if GetFileExists("costume/costume" + str(crab2Type) + AltStr(crab2Alt) + costume$ + ".png") = 0 then costume$ = ""
-					SetSpriteImage(SPR_CRAB2_COSTUME, LoadImageR("costume/costume" + str(crab2Type) + AltStr(crab2Alt) + costume$ + ".png"))
+					if GetFileExists("costume/costume" + str(crab2Type) + AltStr(crab2Alt) + costume$ + z$ + ".png") = 0 then costume$ = ""
+					SetSpriteImage(SPR_CRAB2_COSTUME, LoadImageR("costume/costume" + str(crab2Type) + AltStr(crab2Alt) + costume$ + z$ + ".png"))
 				else
 					//Blank costume
 					SetSpriteImage(SPR_CRAB2_COSTUME, LoadImageR("blank.png"))

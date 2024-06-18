@@ -67,13 +67,13 @@ endif
 CreateSelectButtons()
 
 
-SetAntialiasMode( 1 )
+SetAntialiasMode(1)
 
 // set display properties
 SetVirtualResolution(w, h)
 SetOrientationAllowed(1, 0, 0, 0) // allow both portrait and landscape on mobile devices
 SetSyncRate( 120, 0 ) // 30fps instead of 60 to save battery	//LOL
-SetScissor( 0,0,0,0 ) // use the maximum available screen space, no black borders
+SetScissor(0, 0, 0, 0) // use the maximum available screen space, no black borders
 UseNewDefaultFonts( 1 )
 
 SetVSync(1)
@@ -143,7 +143,6 @@ function SaveGame()
 	
 	WriteInteger(3, spHighScore)
 	WriteString(3, spHighCrab$)
-	WriteString(3, spHighCrab$)
 	WriteInteger(3, spHighScoreClassic)
 	WriteString(3, spHighCrabClassic$)
 	WriteInteger(3, curChapter)
@@ -154,6 +153,7 @@ function SaveGame()
 	next i
 	WriteInteger(3, firstStartup)
 	WriteInteger(3, speedUnlock)
+	WriteInteger(3, hardBattleUnlock)
 	WriteInteger(3, musicBattleUnlock)
 	WriteInteger(3, unlockAIHard)
 	WriteInteger(3, musicUnlocked)
@@ -162,6 +162,7 @@ function SaveGame()
 	WriteInteger(3, targetFPS)
 	WriteInteger(3, windowSize)
 	WriteInteger(3, evilUnlock)
+	WriteInteger(3, storyEasy)
 	
 	CloseFile(3)
 endfunction
@@ -192,6 +193,7 @@ function LoadGame()
 	targetFPS = ReadInteger(3)
 	windowSize = ReadInteger(3)
 	evilUnlock = ReadInteger(3)
+	storyEasy = ReadInteger(3)
 	CloseFile(3)
 endfunction
 
@@ -199,14 +201,14 @@ endfunction
 //clearedChapter = 0
 
 if debug
-	curChapter = 8
-	curScene = 2
-	highestScene = 101
+	curChapter = 2
+	curScene = 1
+	highestScene = 10
 	appState = START
 	crab1Type = 6
 	crab1Alt = 3
 	
-	spType = AIBATTLE
+	//spType = AIBATTLE
 	altUnlocked[1] = 3
 	altUnlocked[2] = 3
 	altUnlocked[3] = 3
@@ -220,15 +222,14 @@ if debug
 	unlockAIHard = 1
 	musicUnlocked = 1
 	evilUnlock = 1
-	
 else
 	LoadGame()
-	altUnlocked[1] = 2
-	altUnlocked[2] = 2
-	altUnlocked[3] = 1
-	altUnlocked[4] = 0
-	altUnlocked[5] = 1
-	altUnlocked[6] = 0
+	//altUnlocked[1] = 2
+	//altUnlocked[2] = 2
+	//altUnlocked[3] = 1
+	//altUnlocked[4] = 0
+	//altUnlocked[5] = 1
+	//altUnlocked[6] = 0
 	if highestScene <= 0 then highestScene = 1
 	if firstStartup = 0
 		//This is initial variable setting
@@ -237,6 +238,11 @@ else
 		targetFPS = 5
 		windowSize = 1
 	endif
+	if altUnlocked[1] = 3 or altUnlocked[2] = 3 or altUnlocked[3] = 3 or altUnlocked[4] = 3 or altUnlocked[5] = 3 or altUnlocked[6] = 3 then LoadSelectCrabImages()
+	targetFPS = Min(5, targetFPS)
+	targetFPS = Max(1, targetFPS)
+	windowSize = Min(3, windowSize)
+	windowSize = Max(1, windowSize)
 	if targetFPS <> 5
 		SetVSync(0)
 		SetSyncRate(fpsChunk[targetFPS], 0)
@@ -818,12 +824,15 @@ function MoveSelect2()
 					
 					spr = buttons[i]
 					if GetSpriteVisible(spr) and GetSpriteColorAlpha(spr) <> 0 and spr <> selectTarget2 and GetSpriteX(spr) > 0 and GetSpriteX(spr) < w and GetSpriteY(spr) > 0 and GetSpriteY(spr) < h and spr <> SPR_TITLE
-						rightT = inputRight2 and GetSpriteX(spr) > GetSpriteX(selectTarget2) and (GetSpriteX(spr) <= GetSpriteX(newT) or newT = selectTarget2)
-						leftT = inputLeft2 and GetSpriteX(spr) < GetSpriteX(selectTarget2) and (GetSpriteX(spr) >= GetSpriteX(newT) or newT = selectTarget2)
-						upT = inputUp2 and GetSpriteY(spr) < GetSpriteY(selectTarget2) and (GetSpriteY(spr) >= GetSpriteY(newT) or newT = selectTarget2)
-						downT = inputDown2 and GetSpriteY(spr) > GetSpriteY(selectTarget2) and (GetSpriteY(spr) <= GetSpriteY(newT) or newT = selectTarget2)
+						rightT = inputRight2 and GetSpriteMiddleX(spr) > GetSpriteMiddleX(selectTarget2) and (GetSpriteMiddleX(spr) < GetSpriteMiddleX(newT) or newT = selectTarget2)
+						leftT = inputLeft2 and GetSpriteMiddleX(spr) < GetSpriteMiddleX(selectTarget2) and (GetSpriteMiddleX(spr) > GetSpriteMiddleX(newT) or newT = selectTarget2)
+						upT = inputUp2 and GetSpriteMiddleY(spr) < GetSpriteMiddleY(selectTarget2) and (GetSpriteMiddleY(spr) > GetSpriteMiddleY(newT) or newT = selectTarget2)
+						downT = inputDown2 and GetSpriteMiddleY(spr) > GetSpriteMiddleY(selectTarget2) and (GetSpriteMiddleY(spr) < GetSpriteMiddleY(newT) or newT = selectTarget2)
+						
+						//if newT <> selectTarget2 and GetSpriteDistance(spr, selectTarget2) < GetSpriteDistance(newT, selectTarget2) then newT = selectTarget2
 						
 						if newT <> selectTarget2
+							
 							if GetSpriteDistance(spr, selectTarget2) > GetSpriteDistance(newT, selectTarget2)
 								rightT = 0
 								leftT = 0
@@ -833,7 +842,8 @@ function MoveSelect2()
 							if Abs(GetSpriteMiddleX(spr) - GetSpriteMiddleX(selectTarget2)) < Abs(GetSpriteMiddleY(spr) - GetSpriteMiddleY(selectTarget2))
 								rightT = 0
 								leftT = 0
-							elseif Abs(GetSpriteMiddleX(spr) - GetSpriteMiddleX(selectTarget2)) > Abs(GetSpriteMiddleY(spr) - GetSpriteMiddleY(selectTarget2))
+							endif
+							if Abs(GetSpriteMiddleX(spr) - GetSpriteMiddleX(selectTarget2)) > Abs(GetSpriteMiddleY(spr) - GetSpriteMiddleY(selectTarget2))
 								upT = 0
 								downT = 0
 							endif

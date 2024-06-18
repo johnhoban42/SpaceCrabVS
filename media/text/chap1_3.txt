@@ -1,5 +1,5 @@
 bg 1
-music retro4 1
+music retro4
 SC: BAFC; Hmm, Ladder Wizard was my only lead for potential Star Seekers.
 BDFEd; I mean, I've MET a lot of crabs, but I don't know any THAT well.
 BBFHa; The only guy whose phone number I actually have saved is Space Ned.
@@ -8,25 +8,25 @@ BBFJ; ...Right?
 BAFIa; Dang, I thought that would work.
 ??: Wh-whoa! Watch out!
 SC: BBFSa; (Holy Crab, thank you!)
-TC: BBFB; Sorry! Sorry. I have such a hard time keeping control.
-BBFBc; Balancing isn't my strong suit. 
-BDFD; WhOAH!
+TC: BAFTa; Sorry! Sorry. I have such a hard time keeping control.
+BAFEd; Balancing isn't my strong suit. 
+BYFZ; WhOAH!
 SC: BAFCb; No worries, kid. Say, if it's stability you want-
-TC: BBFBb; Sorry, I can't hear you! I'm spinning way too fast!
-BBFB; Please knock me down so we can talk!
-BDFD; PL-PLEASE!
+TC: BSFT; Sorry, I can't hear you! I'm spinning way too fast!
+BAFJe; Please knock me down so we can talk!
+BYFZ; PL-PLEASE!
 music fightA 1
 fight 18692
 music retro6 1
-TC: BEFEb; Whew, what a relief! I could get used to this kind of steadiness.
+TC: BZFh; Whew, what a relief! I could get used to this kind of steadiness.
 SC: BAFA; Well, if you want steady, why not join the Star Seekers?
-BLFAb; While we plan on discovering wonderous new places,
-you'll always have a steady group of crabs to back you up!
-TC: BEFEd; Wow! A group like that exists? Count me in!
+BLFAb; While we plan on discovering the wonderous unknown...
+You'll always have a reliable group of crabs to back you up!
+TC: BZFE; Wow! A group like that exists? Count me in!
 SC: BIFT; Really? Cool! Very cool!
-TC: BEFEa; I want to ask, though- can my friend join, too?
-BEFEc; Well, maybe he's not my 'friend'...
-I do owe him a favor though. Can you consider it?
+TC: BZFj; I want to ask, though- can my friend join, too?
+BZFo; Well, maybe he's not my 'friend'...
+BZFe; I do owe him a favor though. Can you consider it?
 SC: BLFO; Consider it done!
 BAFQb; (Boy, things have gone great for the Star Seekers so far!)
 BAFOc; (What could possibly mess it up now?)

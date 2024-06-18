@@ -4,7 +4,7 @@
 //Settings range: 801-900
 
 #constant SPR_CONTROLS 800 //(this one doesn't quite belong here, but it's here for the ride)
-#constant SPR_SETTINGS 801
+#constant SPR_SETTINGS 208
 
 #constant SPR_VOLUME 822
 #constant SPR_VOLUME_SLIDER 823
@@ -33,6 +33,11 @@ global settingsActive = 0
 #constant sliderRange 166
 #constant knobOff 260
 global fpsChunk as integer[5]
+fpsChunk[1] = 15
+fpsChunk[2] = 30
+fpsChunk[3] = 60
+fpsChunk[4] = 144
+fpsChunk[5] = 0
 
 
 function StartSettings()
@@ -316,12 +321,12 @@ function EndSettings()
 	PlayTweenSprite(tweenSprFadeOutFull, SPRS_BG, 0)
 	
 	TurnOffSelect()
-	
+	SaveGame()
 	settingsActive = 0
 	
 endfunction
 
-Function SetWindowChunkSize(num)
+function SetWindowChunkSize(num)
 	if num = 1
 		SetWindowSize(1280, 720, 0)
 	elseif num = 2

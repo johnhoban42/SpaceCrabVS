@@ -1,5 +1,5 @@
 bg 2
-music chill
+music retro3
 LW: BDFDa; So, I was given an IMPORTANT task...
 BAFJd; Ask ANYONE I can think of to join this 'Star Seekers' group...
 BMFU1a; I just have no idea where to start!
@@ -11,9 +11,9 @@ AL: BAFUa; You're being far more transparent than you typically are.
 BAFC; That's Sparse Crab's thing.
 BAFU; Is this that big of a deal to you?
 LW: BKFA1; Well, yeah, this was a request from THE Space Crab. I can't ignore that!
-AL: BAFH; Hmm... I would like to give you an answer, but I'm all booked up.
-BMFH; Not only am I supposed to file taxes for Crabacus, but King Crab also booked me for a consultation.
-BMFJ; Something about employment rights under a monarchial reign.
+AL: BZFUa; Hmm... I would like to give you an answer, but I'm all booked up.
+BZFDd; Not only am I supposed to file taxes for Crabacus, but King Crab also booked me for a consultation.
+BZFH; Something about employment rights under a monarchial reign.
 LW: BPFB1; Have room for one more appointment? A battle, with me!
 BAFA1g; When I win, you'll clear your schedule, and join the Star Seekers!
 AL: BAFD; Honestly, that's doubtful. Though, I'll entertain the challenge.
@@ -27,9 +27,9 @@ BAFP; Uh. Gotta go! Gotta reschedule! Leaving now!
 exit 2
 LW: BMFOa; Wait! Al! You left your schedule behind!
 BMFJa; ...
-BMFU; Crabacus, King Crab...
-BIFJc; If these two have Al Legal working for them, they MUST be powerful.
-BMFW; Wait, Crabacus...
+BZFU; Crabacus, King Crab...
+BZFJc; If these two have Al Legal working for them, they MUST be powerful.
+BZFW; Wait, Crabacus...
 BAFOf; I went to school with him! They called him a 'Numerical Wizard'!
 BOFJ1b; If the Star Seekers want to succeed, they'll need more magicians. He's my top priority!
 

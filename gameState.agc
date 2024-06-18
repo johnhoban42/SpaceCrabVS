@@ -70,6 +70,9 @@ function InitGame()
 	if spType = STORYMODE or spType = AIBATTLE then diffMod = 1
 	difficultyBar = 9 - diffMod*(knowingAI/3)
 	
+	if GetTextExists(TXT_SP_SCORE) then SetTextDepth(TXT_SP_SCORE, 5)
+	if GetTextExists(TXT_SP_DANGER) then SetTextDepth(TXT_SP_DANGER, 5)
+	
 	if spType = MIRRORMODE and dispH
 		SetTextPosition(TXT_SP_SCORE, w/2 - 120, 40)
 		SetTextPosition(TXT_SP_DANGER, w/2, GetTextY(TXT_SP_SCORE) + GetTextSize(TXT_SP_SCORE))
@@ -752,23 +755,19 @@ function ExitGame()
 		if spType = MIRRORMODE
 			if spHighScore < spScore
 				spHighScore = spScore
-				if crab1Type = 1 then spHighCrab$ = "Space Crab"
-				if crab1Type = 2 then spHighCrab$ = "Ladder Wizard"
-				if crab1Type = 3 then spHighCrab$ = "Top Crab"
-				if crab1Type = 4 then spHighCrab$ = "Rave Crab"
-				if crab1Type = 5 then spHighCrab$ = "Chrono Crab"
-				if crab1Type = 6 then spHighCrab$ = "Ninja Crab"
+				spHighCrab$ = crabNames[crab1Type + crab1Alt*6]
+				if crab1Evil and crab1Type = 1 and crab1Alt = 0 then spHighCrab$ = "CRIXEL"
+				if crab1Evil and crab1Type = 1 and crab1Alt = 3 then spHighCrab$ = "BETA CRAB"
+				if crab1Evil and crab1Type = 4 and crab1Alt = 3 then spHighCrab$ = "DEVIL CRAB"
 				SaveGame()
 			endif
 		elseif spType = CLASSIC
 			if spHighScoreClassic < spScore
 				spHighScoreClassic = spScore
-				if crab1Type = 1 then spHighCrabClassic$ = "Space Crab"
-				if crab1Type = 2 then spHighCrabClassic$ = "Ladder Wizard"
-				if crab1Type = 3 then spHighCrabClassic$ = "Top Crab"
-				if crab1Type = 4 then spHighCrabClassic$ = "Rave Crab"
-				if crab1Type = 5 then spHighCrabClassic$ = "Chrono Crab"
-				if crab1Type = 6 then spHighCrabClassic$ = "Ninja Crab"
+				spHighCrabClassic$ = crabNames[crab1Type + crab1Alt*6]
+				if crab1Evil and crab1Type = 1 and crab1Alt = 0 then spHighCrabClassic$ = "CRIXEL"
+				if crab1Evil and crab1Type = 1 and crab1Alt = 3 then spHighCrabClassic$ = "BETA CRAB"
+				if crab1Evil and crab1Type = 4 and crab1Alt = 3 then spHighCrabClassic$ = "DEVIL CRAB"
 				SaveGame()
 			endif
 		endif
@@ -2516,6 +2515,8 @@ function StopGamePlayMusic()
 	if GetMusicPlayingOGGSP(emotionMusic) then StopMusicOGGSP(emotionMusic)
 	if GetMusicPlayingOGGSP(fightFMusic) then StopMusicOGGSP(fightFMusic)
 	if GetMusicPlayingOGGSP(fightAJMusic) then StopMusicOGGSP(fightAJMusic)
+	if GetMusicPlayingOGGSP(chillMusic) then StopMusicOGGSP(chillMusic)
+	if GetMusicPlayingOGGSP(ragMusic) then StopMusicOGGSP(ragMusic)
 	
 	for i = dangerAMusic to dangerAJMusic
 		if GetMusicPlayingOGGSP(i) then StopMusicOGGSP(i)
