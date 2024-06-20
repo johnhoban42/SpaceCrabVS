@@ -1,31 +1,31 @@
 bg 2
 music retro2
 1F: BKFOb; Top Crab! You won't believe the big news! The latest scoop!
-TC: BEFEc; Is this about your hero guy? I think you're getting a bit obsessed...
+TC: BBFEb; Is this about your hero guy? I think you're getting a bit obsessed...
 1F: BDFEb; He's not my 'hero', I just... like reading about him.
 BMFBd; Plus, I'm a completionist! If I don't know all of the news, then what am I doing this for?
-TC: BEFEa; You could just spend your time doing something else.
-BBFBa; As for me, I got asked to join a cool new group - so I'm putting all of my time into my spinning practice.
-BBFA; If I'm going to be a part of it, then I need to be useful!
-BBFBc; Or consistant, at least.
+TC: BCFEa; You could just spend your time doing something else.
+BMFOc; As for me, I got asked to join a cool new group - so I'm putting all of my time into my spinning practice.
+BMFDd; If I'm going to be a part of it, then I need to be useful!
+BSFEd; Or consistant, at least.
 1F: BNFHa; A group, a group...
 BKFS; THAT'S IT! Maybe we heard about the same group!
 BOFSb; Buddy, do you remember who asked you to join?
-TC: BAFB; Now that you mention it, I don't think I asked his name.
-BAFBa; What kind of crab was he? Spade Crab? Shade Crab?
+TC: BDFKi; Now that you mention it, I don't think I asked his name.
+BWFG; What kind of crab was he? Spade Crab? Shade Crab?
 BAFA; Maybe I'll remember the name if we recreate the situation.
 1F: BSFSa; Of course! I NEED the info you have.
 BMFS; What were you doing before he asked you to join?
-TC: BDFD; Battling!
+TC: BPFDb; Battling!
 music fightA
 fight 47194
 music retro2
-TC: BEFEd; Space Crab! It was Space Crab.
+TC: BZFe; Space Crab! It was Space Crab.
 1F: BAFO; I KNEW IT!!
 BSFS; He asked YOU to join the Star Seekers?? That's incredible!
 BVFOc; Maybe there's hope for me to join, too!
-TC: BEFEc; Uhh, yeah, I think so - he seemed pretty open to let anyone join.
-BEFEc; I think you're making a bigger deal out of this than-
+TC: BZFi; Uhh, yeah, I think so - he seemed pretty open to let anyone join.
+BZFj; I think you're making a bigger deal out of this than-
 exit 1
-BEFEc; Ah- nevermind, then.
-BCFBa; I need to get back to my spin training, anyways.
+BZFf; Oh- nevermind, then.
+BZFq; I need to get back to my spin training, anyways.

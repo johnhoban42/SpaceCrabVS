@@ -2414,7 +2414,7 @@ endfunction
 
 function StartGameMusic()
 	
-	if gameSongSet <> 0 and spType <> STORYMODE
+	if gameSongSet <> 0 and storyActive = 0
 		//This is where the song IDs would play, based on which one was picked
 		//The ID-ing is not fully set yet, though - so this will be nothing much, for now
 		PlayMusicOGGSP(retro1M + gameSongSet, 1)

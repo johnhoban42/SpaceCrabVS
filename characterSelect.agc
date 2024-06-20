@@ -1477,7 +1477,7 @@ function DoCharacterSelect()
 	
 	//Going to the story mode!
 	if csc1.ready and spActive
-		if ButtonMultitouchEnabled(csc1.sprReady) and GetSpriteVisible(csc1.sprReady) then curScene = Mod(highestScene-1, 4)+1
+		if GetSpriteVisible(csc1.sprReady) then curScene = Mod(highestScene-1, 4)+1
 		spActive = 1
 		spType = STORYMODE
 		state = STORY

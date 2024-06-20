@@ -33,7 +33,8 @@ function InitStory()
 		//SetSpriteSize(i, GetSpriteWidth(i), GetSpriteHeight(i) + 30)	//Originally for the bottom one
 		SetSpriteMiddleScreenX(i)
 		SetSpriteY(i, h/2 + 70 - (i - SPR_TEXT_BOX)*(GetSpriteHeight(i) + 60))
-		if dispH then SetSpriteY(i, h - GetSpriteHeight(i) - 90 - (i - SPR_TEXT_BOX)*(GetSpriteHeight(i) + 30))
+		//if dispH then SetSpriteY(i, h - GetSpriteHeight(i) - 90 - (i - SPR_TEXT_BOX)*(GetSpriteHeight(i) + 30))
+		if dispH then SetSpriteY(i, h - GetSpriteHeight(i) - 125 - (i - SPR_TEXT_BOX)*(GetSpriteHeight(i) + 14))
 		FixSpriteToScreen(i, 1)
 		
 		CreateTweenSprite(i, .3)
@@ -116,7 +117,6 @@ function InitStory()
 	CreateTweenSprite(SPR_CRAB1_COSTUME, .3)
 	SetTweenSpriteX(SPR_CRAB1_COSTUME, 20, -cSize-200, TweenSmooth2())
 	//Just need to test that these tweens work!
-	
 	
 	
 	SetFolder("/media/sounds")
@@ -564,7 +564,7 @@ function ShowScene(chap, scene)
 			//Make an "if face contains 1, get from other folder" statement (organizing)
 			costume$ = body$
 			closedEye = 0
-			if Mid(face$, 1, 1) = "I" or Mid(face$, 1, 1) = "L" or Mid(face$, 1, 1) = "O" or Mid(face$, 1, 2) = "Af" or Mid(face$, 1, 2) = "Ai" or Mid(face$, 1, 2) = "Md" or Mid(face$, 1, 2) = "Xa" or Mid(face$, 1, 2) = "Xb" or Mid(face$, 1, 2) = "Yg" or Mid(face$, 1, 2) = "Yh"
+			if Mid(face$, 1, 1) = "I" or Mid(face$, 1, 1) = "L" or Mid(face$, 1, 1) = "O" or Mid(face$, 1, 2) = "Af" or Mid(face$, 1, 2) = "Ai" or Mid(face$, 1, 2) = "Md" or (Mid(face$, 1, 1) = "T" and Len(face$) = 2) or Mid(face$, 1, 2) = "Xa" or Mid(face$, 1, 2) = "Xb" or Mid(face$, 1, 2) = "Yg" or Mid(face$, 1, 2) = "Yh"
 				body$ = body$ + "r"
 				closedEye = 1
 			endif
@@ -587,6 +587,7 @@ function ShowScene(chap, scene)
 				//1st Crab Target
 				cosType = GetCrabCostumeType(crab1Type, crab1Alt)
 				if cosType = 2 then folderF$ = "speyes/"
+				if cosType <> 2 and crab1Type+crab1Alt*6 = 18 or crab1Type+crab1Alt*6 = 20 then folderF$ = "speyes/"
 				
 				if cosType <> 2
 					if z$ <> ""
@@ -594,7 +595,11 @@ function ShowScene(chap, scene)
 					else
 						SetSpriteImage(SPR_CRAB1_BODY, LoadImageR(folderB$ + "body" + body$ + phoneBonus$ + ".png"))
 					endif
-					SetSpriteImage(SPR_CRAB1_FACE, LoadImageR(folderF$ + "face" + face$ + ".png"))
+					if folderF$ = "speyes/"
+						SetSpriteImage(SPR_CRAB1_FACE, LoadImageR("speyes/face" + str(crab1Type+crab1Alt*6) + face$ + ".png"))
+					else
+						SetSpriteImage(SPR_CRAB1_FACE, LoadImageR(folderF$ + "face" + face$ + ".png"))
+					endif
 				endif
 				if cosType = 1
 					//Hat costume
@@ -606,7 +611,7 @@ function ShowScene(chap, scene)
 					if GetFileExists(folderF$ + "face" + z$ + str(crab1Type+crab1Alt*6) + face$ + ".png")
 						SetSpriteImage(SPR_CRAB1_FACE, LoadImageR(folderF$ + "face" + z$ + str(crab1Type+crab1Alt*6) + face$ + ".png"))
 					else
-						SetSpriteImage(SPR_CRAB2_FACE, LoadImageR(folderF$ + "face" + face$ + ".png"))
+						SetSpriteImage(SPR_CRAB2_FACE, LoadImageR("face" + face$ + ".png"))
 					endif
 				elseif cosType = 4
 					//Posed costume
@@ -616,7 +621,7 @@ function ShowScene(chap, scene)
 					//Blank costume
 					SetSpriteImage(SPR_CRAB1_COSTUME, LoadImageR("blank.png"))
 				endif
-				if GetTweenSpritePlaying(SPR_CRAB1_FACE, SPR_CRAB1_FACE) = 0 and GetTweenSpritePlaying(SPR_CRAB1_FACE, SPR_CRAB1_BODY) = 0
+				if GetTweenSpritePlaying(SPR_CRAB1_FACE, SPR_CRAB1_FACE) = 0 and GetTweenSpritePlaying(SPR_CRAB1_BODY, SPR_CRAB1_FACE) = 0
 					PlayTweenSprite(SPR_CRAB1_FACE, SPR_CRAB1_BODY, 0)
 					PlayTweenSprite(SPR_CRAB1_FACE, SPR_CRAB1_FACE, 0)
 					PlayTweenSprite(SPR_CRAB1_FACE, SPR_CRAB1_COSTUME, 0)
@@ -640,14 +645,23 @@ function ShowScene(chap, scene)
 				//2nd Crab Target
 				cosType = GetCrabCostumeType(crab2Type, crab2Alt)
 				if cosType = 2 then folderF$ = "speyes/"
+				if cosType <> 2 and (crab2Type+crab2Alt*6 = 18 or crab2Type+crab2Alt*6 = 20) then folderF$ = "speyes/"
 				
 				if cosType <> 2
 					if z$ <> ""
-						SetSpriteImage(SPR_CRAB2_BODY, LoadImageR(folderB$ + "body" + body$ + str(crab1Type+crab1Alt*6) + ".png"))
+						SetSpriteImage(SPR_CRAB2_BODY, LoadImageR(folderB$ + "body" + body$ + str(crab2Type+crab2Alt*6) + ".png"))
+						//Print(folderB$ + "body" + body$ + str(crab2Type+crab2Alt*6) + ".png")
+						//Sync()
+						//Sleep(3000)
 					else
 						SetSpriteImage(SPR_CRAB2_BODY, LoadImageR(folderB$ + "body" + body$ + phoneBonus$ + ".png"))
 					endif
-					SetSpriteImage(SPR_CRAB2_FACE, LoadImageR(folderF$ + "face" + face$ + ".png"))
+					if folderF$ = "speyes/"
+						SetSpriteImage(SPR_CRAB2_FACE, LoadImageR("speyes/face" + str(crab2Type+crab2Alt*6) + face$ + ".png"))
+					else
+						SetSpriteImage(SPR_CRAB2_FACE, LoadImageR(folderF$ + "face" + face$ + ".png"))
+					endif
+					
 				endif
 				if cosType = 1
 					//Hat costume
@@ -659,7 +673,7 @@ function ShowScene(chap, scene)
 					if GetFileExists(folderF$ + "face" + z$ + str(crab2Type+crab2Alt*6) + face$ + ".png")
 						SetSpriteImage(SPR_CRAB2_FACE, LoadImageR(folderF$ + "face" + z$ + str(crab2Type+crab2Alt*6) + face$ + ".png"))
 					else
-						SetSpriteImage(SPR_CRAB2_FACE, LoadImageR(folderF$ + "face" + face$ + ".png"))
+						SetSpriteImage(SPR_CRAB2_FACE, LoadImageR("face" + face$ + ".png"))
 					endif
 				elseif cosType = 4
 					//Posed costume
@@ -669,7 +683,7 @@ function ShowScene(chap, scene)
 					//Blank costume
 					SetSpriteImage(SPR_CRAB2_COSTUME, LoadImageR("blank.png"))
 				endif
-				if GetTweenSpritePlaying(SPR_CRAB2_FACE, SPR_CRAB2_FACE) = 0 and GetTweenSpritePlaying(SPR_CRAB2_BODY, SPR_CRAB2_FACE) = 0
+				if GetTweenSpritePlaying(SPR_CRAB2_FACE, SPR_CRAB2_FACE) = 0 and GetTweenSpritePlaying(SPR_CRAB2_FACE, SPR_CRAB2_BODY) = 0
 					PlayTweenSprite(SPR_CRAB2_FACE, SPR_CRAB2_BODY, 0)
 					PlayTweenSprite(SPR_CRAB2_FACE, SPR_CRAB2_FACE, 0)
 					PlayTweenSprite(SPR_CRAB2_FACE, SPR_CRAB2_COSTUME, 0)
@@ -820,7 +834,6 @@ function ShowScene(chap, scene)
 			if hurryUp then UpdateAllTweens(.1)
 			if storyInput and GetTweenCharPlaying(storyFitter, storyText, len(displayString$)) = 0 and GetTweenCharPlaying(storyFitter+1, storyText, len(displayString$)) = 0 and GetTweenCharPlaying(storyFitter+2, storyText, len(displayString$)) = 0 and GetTweenCharPlaying(storyFitter+3, storyText, len(displayString$)) = 0 then nextLine = 1
 			if debug then Print(GetImageMemoryUsage())
-			Print(curScene)
 			SyncG()
 		endwhile
 		
@@ -873,6 +886,7 @@ function StartEndScreen()
 		SetTextString(TXT_RESULT1, crab1Str$)
 		SetTextString(TXT_RESULT2, "STORY")
 		SetTextString(TXT_RESULT3, "CLEAR!")
+		
 		for i = TXT_RESULT1 to TXT_RESULT3
 			if GetTweenExists(i) then DeleteTween(i)
 			CreateTweenText(i, .8)
@@ -886,7 +900,7 @@ function StartEndScreen()
 		else
 			
 		endif
-		
+		//UnlockSong(1, 1)
 	else
 		SetTextString(TXT_RESULT1, "-SCENE-")
 		SetTextString(TXT_RESULT2, "-CLEAR-")
@@ -978,6 +992,7 @@ function DoStoryEndScreen()
 		
 		ProcessMultitouch()
 		DoInputs()
+		ProcessPopup()
 		if inputLeft or inputRight or inputUp or inputDown then MoveSelect()
 		
 		if curScene < 5
@@ -1221,7 +1236,7 @@ endfunction
 
 function GetCrabCostumeType(cT, cA)
 	cosType = 0
-	if (cT = 2 and cA = 0) or (cT = 4 and cA = 3) or (cT = 6 and cA = 1)
+	if (cT = 2 and cA = 0) or (cT = 4 and cA = 3)
 		//Hat type
 		cosType = 1
 	elseif (cT = 2 and cA = 2) or (cT = 3 and cA = 0) or (cT = 3 and cA = 1) or (cT = 3 and cA = 2) or (cT = 5 and cA = 3) or (cT = 6 and cA = 3)

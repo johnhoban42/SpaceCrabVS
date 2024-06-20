@@ -202,19 +202,19 @@ endfunction
 
 if debug
 	curChapter = 2
-	curScene = 1
-	highestScene = 10
+	curScene = 2
+	highestScene = 25
 	appState = START
 	crab1Type = 6
 	crab1Alt = 3
 	
 	//spType = AIBATTLE
-	altUnlocked[1] = 3
-	altUnlocked[2] = 3
-	altUnlocked[3] = 3
-	altUnlocked[4] = 3
-	altUnlocked[5] = 3
-	altUnlocked[6] = 3
+	altUnlocked[1] = 0
+	altUnlocked[2] = 0
+	altUnlocked[3] = 0
+	altUnlocked[4] = 0
+	altUnlocked[5] = 0
+	altUnlocked[6] = 0
 	firstStartup = 1
 	speedUnlock = 1
 	hardBattleUnlock = 1
@@ -238,7 +238,8 @@ else
 		targetFPS = 5
 		windowSize = 1
 	endif
-	if altUnlocked[1] = 3 or altUnlocked[2] = 3 or altUnlocked[3] = 3 or altUnlocked[4] = 3 or altUnlocked[5] = 3 or altUnlocked[6] = 3 then LoadSelectCrabImages()
+	//if altUnlocked[1] = 3 or altUnlocked[2] = 3 or altUnlocked[3] = 3 or altUnlocked[4] = 3 or altUnlocked[5] = 3 or altUnlocked[6] = 3 then LoadSelectCrabImages()
+	LoadSelectCrabImages()
 	targetFPS = Min(5, targetFPS)
 	targetFPS = Max(1, targetFPS)
 	windowSize = Min(3, windowSize)
@@ -344,7 +345,7 @@ function DoInputs()
 	if GetRawJoystickConnected(1)
 		for i = 1 to 64
 			//For testing controller inputs
-			if GetRawJoystickButtonState(1, i) then Print(i)
+			if GetRawJoystickButtonState(1, i) and debug then Print(i)
 		next i
 		if GetRawJoystickButtonPressed(1, 1) or GetRawJoystickButtonPressed(1, 4) then inputSelect = 1
 		if GetRawJoystickButtonPressed(1, 7) or GetRawJoystickButtonPressed(1, 8) then inputExit = 1
@@ -912,6 +913,16 @@ function UnlockCrab(cType, cAlt, animation)
 	altUnlocked[cType] = Max(altUnlocked[cType], cAlt)
 endfunction
 
+function UnlockSong(sID, animation)
+	if musicUnlocked < sID
+		if animation
+			//Popup for crab
+			Popup(MIDDLE, sID+30)
+		endif
+		musicUnlocked = sID
+	endif
+endfunction
+
 #constant G1 1
 #constant G2 2
 #constant MIDDLE 3
@@ -984,8 +995,8 @@ function Popup(area, unlockNum)
 		SetSpriteImage(spr+1, img)
 		trashBag.insert(img)
 	else
-		//Newly unlocked song
-		
+		//Newly unlocked song, they are 30+
+		sID = unlockNum-30
 	endif
 	
 	//Creating the text message of the popup
@@ -1096,12 +1107,14 @@ function ProcessPopup()
 		if (ButtonMultitouchEnabled(SPR_POPUP_BG) or inputSelect) and GetSpriteColorAlpha(SPR_POPUP_BG) > 10
 			ClearPopup1()
 			ClearMultiTouch()
+			inputSelect = 0
 		endif
 	endif
 	if GetSpriteExists(SPR_POPUP_BG_2)
 		if (ButtonMultitouchEnabled(SPR_POPUP_BG_2) or inputSelect2) and GetSpriteColorAlpha(SPR_POPUP_BG_2) > 10
 			ClearPopup2()
 			ClearMultiTouch()
+			inputSelect = 0
 		endif
 	endif
 endfunction
