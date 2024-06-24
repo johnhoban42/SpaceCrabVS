@@ -2415,51 +2415,36 @@ endfunction
 function StartGameMusic()
 	
 	if gameSongSet <> 0 and storyActive = 0
-		//This is where the song IDs would play, based on which one was picked
-		//The ID-ing is not fully set yet, though - so this will be nothing much, for now
-		PlayMusicOGGSP(retro1M + gameSongSet, 1)
+		
+		if gameSongSet <= musicUnlocked
+			PlayMusicOGGSP(GetMusicByID(gameSongSet), 1)
+		else
+			//The retro songs
+			PlayMusicOGGSP(GetMusicByID(gameSongSet-musicUnlocked+30), 1)
+		endif
+		
 		exitFunction
 	endif
 	
 	if storyActive = 0 and spType <> CHALLENGEMODE
 		if spType = 0 or spType = AIBATTLE
-			pass = 0
-			while pass = 0
-				rnd = Random(1, 5)
-				if rnd = 1 and oldSong <> fightAMusic
-					PlayMusicOGGSP(fightAMusic, 1)
-					oldSong = fightAMusic
-					pass = 1
-				elseif rnd = 2 and oldSong <> fightBMusic
-					PlayMusicOGGSP(fightBMusic, 1)
-					oldSong = fightBMusic
-					pass = 1
-				elseif rnd = 3 and oldSong <> fightJMusic
-					PlayMusicOGGSP(fightJMusic, 1)
-					oldSong = fightJMusic
-					pass = 1
-				elseif rnd = 4 and oldSong <> spMusic
-					PlayMusicOGGSP(spMusic, 1)
-					oldSong = spMusic
-					pass = 1
-				elseif rnd = 5 and oldSong <> tomatoMusic
-					PlayMusicOGGSP(tomatoMusic, 1)
-					oldSong = tomatoMusic
-					pass = 1
-				endif
+			rnd = 5
+			while (rnd >= 4 and rnd <= 7) or GetMusicByID(rnd) = oldSong
+				rnd = Random(1, musicUnlocked)
 			endwhile
+			PlayMusicOGGSP(GetMusicByID(rnd), 1)
+			oldSong = GetMusicByID(rnd)
 		endif
 		
-		if spType <> 0 
-			if spType = MIRRORMODE
-				PlayMusicOGGSP(spMusic, 1)
-			
-			elseif GetMusicPlayingOGGSP(retro1M) = 0 and spType = CLASSIC
-				StopMusicOGGSP(loserMusic)
-				PlayMusicOGGSP(retro1M + Random(0, 7), 1)
-			endif
+		if spType = MIRRORMODE
+			PlayMusicOGGSP(spMusic, 1)
+			if GetMusicExistsOGG(spMusic) then SetMusicLoopTimesOGG(spMusic, 6.932, -1)
 		endif
-		if GetMusicExistsOGG(spMusic) then SetMusicLoopTimesOGG(spMusic, 6.932, -1)
+		if spType = CLASSIC and GetMusicPlayingOGGSP(retro1M) = 0
+			StopMusicOGGSP(loserMusic)
+			PlayMusicOGGSP(retro1M + Random(0, 7), 1)
+		endif
+		
 	endif
 	
 	if spType = CHALLENGEMODE
@@ -2517,12 +2502,14 @@ function StopGamePlayMusic()
 	if GetMusicPlayingOGGSP(fightAJMusic) then StopMusicOGGSP(fightAJMusic)
 	if GetMusicPlayingOGGSP(chillMusic) then StopMusicOGGSP(chillMusic)
 	if GetMusicPlayingOGGSP(ragMusic) then StopMusicOGGSP(ragMusic)
+	if GetMusicPlayingOGGSP(ssidMusic) then StopMusicOGGSP(ssidMusic)
+	if GetMusicPlayingOGGSP(mcbMusic) then StopMusicOGGSP(mcbMusic)
 	
 	for i = dangerAMusic to dangerAJMusic
 		if GetMusicPlayingOGGSP(i) then StopMusicOGGSP(i)
 	next i
 	
-	for i = retro1M to retro8M
+	for i = retro1M to retro11M
 		if GetMusicPlayingOGGSP(i) then StopMusicOGGSP(i)
 	next i
 	

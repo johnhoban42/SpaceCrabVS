@@ -1,21 +1,24 @@
-bg 5
-music retro4
-CC: How MORONIC must a crab be to WILLINGLY dive into a DEATH TRAP??
-TP: Sorry, sir! I heard how intense the meteors were, and had to see it myself.
-And the training conditions did not disappoint!
-Are you the coach of this dimension?
-CC: Am I the... what?
-TP: That explorer mentioned you- he said you're strong enough to stay in that dimension as long as you want!
-Will you PLEASE train me? I need to get stronger!!
-CC: ... (disgust)
-... (evil smile) (music starts)
-How about this, Player of Teams...
-While my talents are slightly more... chronological...
-You can train under me... IF you can defeat me in battle!
-TP: Yes! Of course! Thank you for the opportunity!
-GAMEPLAY: Vs. Chrono Crab
-TP: Wow, you're as strong as they say! I can't wait to train under you!
-CC: *surprised* (This kid is potential overflow! A perfect addition to our ranks...)
-CC: Yes, it is encouraging that you could take on 15%... no... 18% of my total strength.
-CC: Come now! Let me introduce you to your... 'team-mates'.
-TP: Awesome! At this pace, first place in the planetary marathon is mine for sure!!
+bg 4
+music chill
+CC: BOFBd; How MORONIC must a crab be to WILLINGLY dive into a DEATH TRAP??
+TP: BCFI; Sorry, sir! I heard how intense the meteors were, and had to see it myself.
+BIFOc; And the training conditions did not disappoint!
+BAFJb; Are you the coach of this dimension?
+CC: BVFKc; Am I the... what?
+TP: BOFJb; That explorer mentioned you- he said you're strong enough to be in charge of that dimension!
+BVFOb; Will you PLEASE train me? I need to get stronger!!
+CC: BAFMb; ...
+music tomato
+BAFKd; ...
+BCFKd; How about this, Player of Teams...
+BMFHa; While my talents are slightly more... chronological...
+BPFKe; You can train under me... IF you can defeat me in battle!
+TP: BKFAf; Yes! Of course! Thank you for the opportunity!
+music tomato
+fight 523446
+music retro5
+TP: BAFAd; Wow, you're as strong as they say! I can't wait to train under you!
+CC: BJFXi; (This kid is potential overflow! A perfect addition to our ranks...)
+CC: BMFQa; Yes, it is encouraging that you could take on 15%... no... 18% of my total strength.
+CC: BSFOe; Come now! Let me introduce you to your... 'team-mates'.
+TP: BKFOa; Awesome! At this pace, first place in the planetary marathon is mine for sure!!

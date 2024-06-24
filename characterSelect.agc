@@ -221,6 +221,11 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 								img = LoadImageResizedR("crab" + str(crabRefType) + AltStr(crabRefAlt) + "select" + Str(j) + ".png", .4*scale#)
 							else
 								img = IMG_CS_CRAB[i]+j-1
+								//Print(img)
+								//Print(GetImageWidth(img))
+								//Print(GetImageHeight(img))
+								//Sync()
+								//Sleep(5000)
 							endif
 							if j = 1 and firstTimeLoad then IMG_CS_CRAB[i] = img
 						else
@@ -231,6 +236,8 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 							endif
 						endif
 						if img <> 0
+							//SetSpriteImage(csc.sprCrabs + i, img)
+							//SetSpriteAnimation(csc.sprCrabs + i, 3510/3, 2140/2, 6)
 							AddSpriteAnimationFrame(csc.sprCrabs + i, img)
 							//trashBag.insert(img)
 						endif
@@ -570,7 +577,7 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 		
 		SetFolder("/media/envi")
 		
-		LoadSpriteExpress(SPR_CS_BG_2, "bg5.png", w*1.4, w*1.4, -w*0.2, -w*0.2, 199)
+		CreateSpriteExpressImage(SPR_CS_BG_2, bg5I, w*1.4, w*1.4, -w*0.2, -w*0.2, 199)
 		
 		for i = 1 to 4
 			spr = SPR_SCENE1 - 1 + i
@@ -588,11 +595,12 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 		SetFolder("/media/ui")
 		
 		if Mod(highestScene, 4) = 1
-			SetSpriteImage(csc.sprReady, LoadImage("storystart.png"))
+			img = LoadImage("storystart.png")
 		else
-			SetSpriteImage(csc.sprReady, LoadImage("storycontinue.png"))
+			img = LoadImage("storycontinue.png")
 		endif
-		trashBag.insert(GetSpriteImageID(csc.sprReady))
+		SetSpriteImage(csc.sprReady, img)
+		trashBag.insert(img)
 		
 		SetFolder("/media")
 	
@@ -733,9 +741,9 @@ function InitCharacterSelect()
 	
 	//The button that will change the song for the next round
 	CreateSpriteExpress(SPR_CS_MUSICPICK, 300, 90, w/2+85, h/2-45, 5)
-	for i = 0 to 50
-			if GetFileExists("musicBanners/testBanner" + Str(i) + ".png")
-			img = LoadImage("musicBanners/testBanner" + Str(i) + ".png")
+	for i = 0 to 41
+		if GetFileExists("musicBanners/banner" + Str(i) + ".png") and (i > 30 or i <= musicUnlocked)
+			img = LoadImage("musicBanners/banner" + Str(i) + ".png")
 			AddSpriteAnimationFrame(SPR_CS_MUSICPICK, img)
 			trashBag.insert(img)
 		endif
@@ -1091,11 +1099,12 @@ function DoCharacterSelectController(csc ref as CharacterSelectController)
 			for i = 0 to NUM_CRABS-1 + spActive*STORY_CS_BONUS
 				spr = csc.sprCrabs + i
 				if ButtonMultitouchEnabled(spr) and GetSpriteVisible(spr) and GetSpriteGroup(spr) = 0
+					csc.crabSelected = i-1
 					for j = 0 to NUM_CRABS-1 + spActive*STORY_CS_BONUS
 						StopTweenSprite(csc.sprCrabs + j, csc.sprCrabs + j)
+						if j <> csc.crabSelected+1 and dispH then SetSpriteColorAlpha(csc.sprCrabs + j, 0)
 					next j
 					SetVisibleCharacterUI(2, csc)
-					csc.crabSelected = i-1
 					PlaySoundR(arrowS, 40)
 					ChangeCrabs(csc, 1, 1)
 					csc.stage = 2
@@ -1167,7 +1176,8 @@ function DoCharacterSelectController(csc ref as CharacterSelectController)
 				for j = 0 to NUM_CRABS-1 + spActive*STORY_CS_BONUS
 					PlayTweenSprite(csc.sprCrabs + j, csc.sprCrabs + j, 0.003*j)
 					//if j < unlockedCrab then SetSpriteColorAlpha(csc.sprCrabs + j, 255)
-					SetSpriteColorAlpha(csc.sprCrabs + j, 255)
+					//SetSpriteColorAlpha(csc.sprCrabs + j, 255)
+					if j <> csc.crabSelected and dispH then PlayTweenSprite(tweenSprFadeIn, csc.sprCrabs + j, 0)
 				next j
 				PlaySoundR(arrowS, 100)
 				csc.stage = 1
@@ -1551,10 +1561,12 @@ function ExitCharacterSelect()
 		DeleteText(TXT_CS_CRAB_DESC_2)
 		for i = 1 to 4
 			spr = SPR_SCENE1 - 1 + i
+			DeleteImage(GetSpriteImageID(spr))
 			if GetSpriteExists(spr) then DeleteSprite(spr)
 			if GetTextExists(spr) then DeleteText(spr)
 		next i
 		DeleteText(TXT_SCENE)
+		
 	endif
 	
 	DeleteSprite(SPR_MENU_BACK)

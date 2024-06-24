@@ -1,14 +1,14 @@
 bg 1
 music retro4
 1F: BOFSb; Taxi Crab! Taxi Crab! I need you to take me to Space Crab, STAT!
-TX: BBFJ; Hold your horses. We've talked about this before, right?
-BBFHa; I can take you to places, but not crabs.
+TX: BBFUa; Hold your horses. We've talked about this before, right?
+BBFDa; I can take you to places, but not crabs.
 BKFJd; Remember your King Crab phase?
-BDFJe; He said he'd lock you up if he ever saw you creeping on him again.
+BDFDd; He said he'd lock you up if he ever saw you creeping on him again.
 1F: BSFTs; This is different! Apparently, Space Crab WANTS crabs to come to him.
 BUFOf; He's making a Star Seekers group!
 BWFA; And I'm not giving up my chance to join!
-TX: BBFJ; Tell ya what... my drives have been long and dull for a while, yeah?
+TX: BBFGa; Tell ya what... my drives have been long and dull for a while, yeah?
 BBFJa; Could use some excitement.
 BKFJc; Let's have a quick tussle, get some blood pumping, then I'll give you a lift.
 1F: BVFOd; Yes!
@@ -16,14 +16,14 @@ music retro4
 fight 46485
 music retro6
 TX: BQFJc; Joints are loose, adrenaline is pumping, and the gas pedal is raring to be pushed.
-BSFAb; Hop in, kid.
+BSFAb; Hop on in.
 1F: BKFOb; OMIGOSH! Thank you!
 BMFA; I also printed out flyers for the Star Seekers!
 BAFAd; Can I hang them all over the backseat?
 music
-TX: BAFJ; Don't push your luck, kid.
+TX: BAFDa; Don't push your luck, kid.
 1F: BTFN; ...
 TX: BAFU; ...
 music retro6
-BQFHa; One. You can put one up.
+BQFH; One. You can put one up.
 1F: BVFOd; Yes!

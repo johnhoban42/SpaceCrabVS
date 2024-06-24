@@ -344,7 +344,7 @@ global met3CD2# = 0 //400
 #constant fontDescItalI 4	//Tahoma (Italicized)
 #constant fontCrabI 3	//Somerset Barnyard
 #constant fontScoreI 1001	//SnowTunes UI Font
-#constant fontTitleScreenI 1002	//Cambria Math (Italicised)
+#constant fontTitleScreenI 1002	//Corbel (Italicised)
 
 #constant starParticleI 11
 
@@ -615,6 +615,8 @@ global jumpPartI as Integer[6, 4]
 #constant fightAJMusic 115	//To Battle
 #constant chillMusic 116		//Back to my Hunch
 #constant ragMusic 117		//Space Crab Rag
+#constant ssidMusic 118  	//Shooting Stars into Dreams - REMix
+#constant mcbMusic 119		//Melted Chocolate Bar
 
 #constant dangerAMusic 211
 #constant dangerBMusic 212
@@ -636,6 +638,9 @@ global jumpPartI as Integer[6, 4]
 #constant retro6M 136
 #constant retro7M 137
 #constant retro8M 138
+#constant retro9M 139
+#constant retro10M 140
+#constant retro11M 141
 
 #constant voice1 161
 #constant voice2 162
@@ -771,7 +776,7 @@ global hardBattleUnlock
 global musicBattleUnlock = 0
 global evilUnlock = 0
 global unlockAIHard = 0
-global musicUnlocked = 0 	//Not finalized yet, but this will increment for every song unlockes
+global musicUnlocked = 7 	//Not finalized yet, but this will increment for every song unlockes
 
 global gameIsFast = 0
 global gameIsHard = 0
@@ -1032,6 +1037,11 @@ function PlayMusicOGGSP(songID, loopYN)
 			SetMusicLoopTimesOGG(ragMusic, 3.158, -1)
 		endif
 		if songID = unlockMusic then LoadMusicOGG(unlockMusic, "unlock.ogg")
+		if songID = ssidMusic then LoadMusicOGG(ssidMusic, "ssid.ogg")
+		if songID = mcbMusic
+			LoadMusicOGG(mcbMusic, "mcb.ogg")
+			SetMusicLoopTimesOGG(mcbMusic, 3.803, -1)
+		endif
 		
 		if songID = dangerAMusic then LoadMusicOGG(dangerAMusic, "dangerA.ogg")
 		if songID = dangerBMusic then LoadMusicOGG(dangerBMusic, "dangerB.ogg")
@@ -1055,6 +1065,12 @@ function PlayMusicOGGSP(songID, loopYN)
 		if songID = retro6M then LoadMusicOGG(retro6M, "retro6.ogg")
 		if songID = retro7M then LoadMusicOGG(retro7M, "retro7.ogg")
 		if songID = retro8M then LoadMusicOGG(retro8M, "retro8.ogg")
+		if songID = retro9M
+			LoadMusicOGG(retro9M, "retro9.ogg")
+			SetMusicLoopTimesOGG(retro9M, 3.855, -1)
+		endif
+		if songID = retro10M then LoadMusicOGG(retro10M, "retro10.ogg")
+		if songID = retro11M then LoadMusicOGG(retro11M, "retro11.ogg")
 	
 	endif
 		
@@ -1107,6 +1123,49 @@ function PlayMusicOGGSPStr(str$, loopYN)
 	endif
 endfunction
 
+function GetMusicByID(id)
+	song = 0
+	
+	//Default unlocked songs
+	if id = 1 then song = fightBMusic
+	if id = 2 then song = fightAMusic
+	if id = 3 then song = fightJMusic
+	if id = 4 then song = ragMusic
+	if id = 5 then song = chillMusic
+	if id = 6 then song = characterMusic
+	if id = 7 then song = resultsMusic
+	
+	//Songs unlocked through the game
+	if id = 8 then song = tomatoMusic
+	if id = 9 then song = fightAJMusic
+	if id = 10 then song = spMusic
+	if id = 11 then song = ssidMusic
+	if id = 12 then song = mcbMusic
+	if id = 13 then song = loveMusic
+	//if id = 14 then song = angerMusic
+	if id = 15 then song = emotionMusic
+	//if id = 16 then song = fightBVocalMusic
+	//if id = 17 then song = creditsMusic
+	//if id = 18 then song = skateMusic
+	//if id = 19 then song = skateVocalMusic
+	//if id = 20 then song = puppetMusic
+	if id = 21 then song = fightFMusic
+	
+	if id = 31 then song = retro1M
+	if id = 32 then song = retro2M
+	if id = 33 then song = retro3M
+	if id = 34 then song = retro4M
+	if id = 35 then song = retro5M
+	if id = 36 then song = retro6M
+	if id = 37 then song = retro7M
+	if id = 38 then song = retro8M
+	if id = 39 then song = retro9M 	//Planetarium
+	if id = 40 then song = retro10M //Cosmic Corner Store
+	if id = 41 then song = retro11M //Takeoff
+	
+	if song = 0 then song = retro9M
+	
+endfunction song
 
 function LoadJumpSounds()
 	if GetMusicExistsOGG(jump1S) then DeleteMusicOGG(jump1S)
@@ -1268,11 +1327,18 @@ endfunction
 
 function LoadSelectCrabImages()
 	SetFolder("/media/art")
+	if dispH then scale# = 1
+	if dispH = 0 then scale# = .5
 	for i = 0 to NUM_CRABS-1 + spActive*STORY_CS_BONUS 
 		crabRefType = Mod(i, 6)+1
 		crabRefAlt = (i)/6
 		for j = 1 to 6
 			img = LoadImageResizedR("crab" + str(crabRefType) + AltStr(crabRefAlt) + "select" + Str(j) + ".png", .25)
+			//img = LoadImageResizedR("crab" + str(crabRefType) + AltStr(crabRefAlt) + "sheet.png", scale#)
+			//img = LoadImageResizedR("crab" + str(crabRefType) + AltStr(crabRefAlt) + "sheet.png", 1)
+			//Regular size is 3510 by 2140
+			//ResizeImage(img, 3510, 2140)
+			//702 by 428
 			if j = 1 then IMG_CS_CRAB[i] = img
 		next j
 	next i
@@ -1284,51 +1350,13 @@ function LoadGameImages(loading)
 		//Loading all of the images
 		
 		SetFolder("/media/envi")
-		//LoadImage(bg1I, "bg1.png")
-		//LoadImage(bg2I, "bg2.png")
-		//LoadImage(bg3I, "bg3.png")
 		
 		LoadImage(meteorI1, "meteor1.png")
 		LoadImage(meteorI2, "meteor2.png")
 		LoadImage(meteorI3, "meteor3.png")
 		LoadImage(meteorI4, "meteor4.png")
 		LoadImage(meteorTractorI, "tractor.png")
-		
-		//for i = 1 to planetIMax
-			//LoadImage(planetVarI[i], "p" + str(i) + ".png")
-		//next i
-		//for i = 1 to planetITotalMax - planetIMax
-			//LoadImage(planetVarI[planetIMax + i], "legendp" + str(i) + ".png")
-		//next i
-		
-		
-		
-//~		if GetDeviceBaseName() = "android"
-//~			SetFolder("/media/sounds")
-//~			
-//~			if crab1Type = 1 or crab2Type = 1 then LoadMusicOGG(ufoS, "ufo.ogg")
-//~			if crab1Type = 2 or crab2Type = 2
-//~				LoadMusicOGG(wizardSpell1S, "wizardSpell1.ogg")
-//~				LoadMusicOGG(wizardSpell2S, "wizardSpell2.ogg")
-//~			endif
-//~			if crab1Type = 6 or crab2Type = 6 then LoadMusicOGG(ninjaStarS, "ninjaStar.ogg")
-//~			
-//~			LoadMusicOGG(turnS, "turn.ogg")
-//~			LoadMusicOGG(specialS, "special.ogg")
-//~			LoadMusicOGG(specialExitS, "specialExit.ogg")
-//~			LoadMusicOGG(explodeS, "explode.ogg")
-//~			LoadMusicOGG(launchS, "launch.ogg")
-//~			LoadMusicOGG(crackS, "crack.ogg")
-//~			LoadMusicOGG(flyingS, "flying.ogg")
-//~			LoadMusicOGG(landingS, "landing.ogg")		
-//~		
-//~			//LoadMusicOGG(exp1S, "exp1.ogg")
-//~			//LoadMusicOGG(exp2S, "exp2.ogg")
-//~			//LoadMusicOGG(exp3S, "exp3.ogg")
-//~			//LoadMusicOGG(exp4S, "exp4.ogg")
-//~			//LoadMusicOGG(exp5S, "exp5.ogg")
-//~			
-//~		endif
+
 		
 		//The dynamic crab loader!
 		for i = 1 to 2
@@ -1492,12 +1520,6 @@ function LoadGameImages(loading)
 	endif
 	
 endfunction
-
-function LoadResultImages(loading)
-	
-	
-endfunction
-
 
 global crabPause1 as string[6]
 global crabPause2 as string[25]
@@ -1681,60 +1703,6 @@ AddSpriteAnimationFrame(crab1, crab1start1I)	//1
 #constant crab3skid1I 155
 #constant crab3skid2I 156
 #constant crab3skid3I 157
-
-#constant crab4start1I 161
-#constant crab4start2I 162
-#constant crab4walk1I 163
-#constant crab4walk2I 164
-#constant crab4walk3I 165
-#constant crab4walk4I 166
-#constant crab4walk5I 167
-#constant crab4walk6I 168
-#constant crab4walk7I 169
-#constant crab4walk8I 170
-#constant crab4jump1I 171
-#constant crab4jump2I 172
-#constant crab4death1I 173
-#constant crab4death2I 174
-#constant crab4skid1I 175
-#constant crab4skid2I 176
-#constant crab4skid3I 177
-
-#constant crab5start1I 181
-#constant crab5start2I 182
-#constant crab5walk1I 183
-#constant crab5walk2I 184
-#constant crab5walk3I 185
-#constant crab5walk4I 186
-#constant crab5walk5I 187
-#constant crab5walk6I 188
-#constant crab5walk7I 189
-#constant crab5walk8I 190
-#constant crab5jump1I 191
-#constant crab5jump2I 192
-#constant crab5death1I 193
-#constant crab5death2I 194
-#constant crab5skid1I 195
-#constant crab5skid2I 196
-#constant crab5skid3I 197
-
-#constant crab6start1I 201
-#constant crab6start2I 202
-#constant crab6walk1I 203
-#constant crab6walk2I 204
-#constant crab6walk3I 205
-#constant crab6walk4I 206
-#constant crab6walk5I 207
-#constant crab6walk6I 208
-#constant crab6walk7I 209
-#constant crab6walk8I 210
-#constant crab6jump1I 211
-#constant crab6jump2I 212
-#constant crab6death1I 213
-#constant crab6death2I 214
-#constant crab6skid1I 215
-#constant crab6skid2I 216
-#constant crab6skid3I 217
 
 #constant specialPrice1 20
 #constant specialPrice2 20

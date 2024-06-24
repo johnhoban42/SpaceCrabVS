@@ -1,6 +1,6 @@
 bg 3
 music retro7
-IJ: BAFKh; Fear not, bystander! I'm hear to clean this mess on the path towards treasure.
+IJ: BAFKh; Fear not, bystander! I'm here to clean this mess on the path towards treasure.
 HC: BVFEa; Oh good, you must be the new temp worker.
 BKFEe; The meteors here are picking up at crazy rates!
 BNFEd; Help me with these. Please, now! We'll talk about your pay later.

@@ -201,26 +201,26 @@ endfunction
 //clearedChapter = 0
 
 if debug
-	curChapter = 2
-	curScene = 2
-	highestScene = 25
+	curChapter = 3
+	curScene = 3
+	highestScene = 100
 	appState = START
 	crab1Type = 6
 	crab1Alt = 3
 	
-	//spType = AIBATTLE
-	altUnlocked[1] = 0
-	altUnlocked[2] = 0
-	altUnlocked[3] = 0
+	spType = AIBATTLE
+	altUnlocked[1] = 2
+	altUnlocked[2] = 2
+	altUnlocked[3] = 2
 	altUnlocked[4] = 0
-	altUnlocked[5] = 0
+	altUnlocked[5] = 2
 	altUnlocked[6] = 0
 	firstStartup = 1
 	speedUnlock = 1
 	hardBattleUnlock = 1
 	musicBattleUnlock = 1
 	unlockAIHard = 1
-	musicUnlocked = 1
+	musicUnlocked = 21
 	evilUnlock = 1
 else
 	LoadGame()
@@ -237,6 +237,7 @@ else
 		volumeSE = 100
 		targetFPS = 5
 		windowSize = 1
+		musicUnlocked = 7
 	endif
 	//if altUnlocked[1] = 3 or altUnlocked[2] = 3 or altUnlocked[3] = 3 or altUnlocked[4] = 3 or altUnlocked[5] = 3 or altUnlocked[6] = 3 then LoadSelectCrabImages()
 	LoadSelectCrabImages()
@@ -668,53 +669,54 @@ function MoveSelect()
 		endif
 	else
 		
+		minDis = 9999
 		newT = selectTarget
-		for j = 1 to 2
-			for i = 0 to buttons.length
-				if GetSpriteExists(buttons[i])
+		for i = 0 to buttons.length
+			if GetSpriteExists(buttons[i])
+				
+				spr = buttons[i]
+				if GetSpriteVisible(spr) and GetSpriteColorAlpha(spr) <> 0 and spr <> selectTarget and GetSpriteX(spr) > 0 and GetSpriteX(spr) < w and GetSpriteY(spr) > 0 and GetSpriteY(spr) < h and spr <> SPR_TITLE
 					
-					spr = buttons[i]
-					if GetSpriteVisible(spr) and GetSpriteColorAlpha(spr) <> 0 and spr <> selectTarget and GetSpriteX(spr) > 0 and GetSpriteX(spr) < w and GetSpriteY(spr) > 0 and GetSpriteY(spr) < h and spr <> SPR_TITLE
-						rightT = inputRight and GetSpriteX(spr) > GetSpriteX(selectTarget) and (GetSpriteX(spr) <= GetSpriteX(newT) or newT = selectTarget)
-						leftT = inputLeft and GetSpriteX(spr) < GetSpriteX(selectTarget) and (GetSpriteX(spr) >= GetSpriteX(newT) or newT = selectTarget)
-						upT = inputUp and GetSpriteY(spr) < GetSpriteY(selectTarget) and (GetSpriteY(spr) >= GetSpriteY(newT) or newT = selectTarget)
-						downT = inputDown and GetSpriteY(spr) > GetSpriteY(selectTarget) and (GetSpriteY(spr) <= GetSpriteY(newT) or newT = selectTarget)
-						
-						if newT <> selectTarget
-							if GetSpriteDistance(spr, selectTarget) > GetSpriteDistance(newT, selectTarget)
-								rightT = 0
-								leftT = 0
-								upT = 0
-								downT = 0
-							endif
-							if Abs(GetSpriteMiddleX(spr) - GetSpriteMiddleX(selectTarget)) < Abs(GetSpriteMiddleY(spr) - GetSpriteMiddleY(selectTarget))
-								rightT = 0
-								leftT = 0
-							else
-								upT = 0
-								downT = 0
-							endif
-						endif
-						
-						if (appState = CHARACTER_SELECT) and GetSpriteMiddleX(spr) > w/2+20 and spType = 0
-							rightT = 0
-							leftT = 0
-							upT = 0
-							downT = 0
-						endif
-						
-						if (settingsActive = 1) and GetSpriteDepth(spr) <> 1
-							rightT = 0
-							leftT = 0
-							upT = 0
-							downT = 0
-						endif
-						
-						if rightT or leftT or upT or downT then newT = spr
+					xDis = GetSpriteMiddleX(spr)-GetSpriteMiddleX(selectTarget)
+					yDis = GetSpriteMiddleY(spr)-GetSpriteMiddleY(selectTarget)
+					
+					rightT = inputRight and xDis > 0 and Abs(xDis) > Abs(yDis)
+					leftT = inputLeft and xDis < 0 and Abs(xDis) > Abs(yDis)
+					upT = inputUp and yDis < 0 and Abs(xDis) < Abs(yDis)
+					downT = inputDown and yDis > 0 and Abs(xDis) < Abs(yDis)
+					
+					if (appState = CHARACTER_SELECT) and GetSpriteMiddleX(spr) > w/2+20 and spType = 0
+						rightT = 0
+						leftT = 0
+						upT = 0
+						downT = 0
 					endif
+					
+					if (appState = CHARACTER_SELECT) and spType = STORYMODE and (spr >= SPR_CS_CRABS_1 and spr <= SPR_CS_CRABS_1+25)
+						rightT = 0
+						leftT = 0
+						upT = 0
+						downT = 0
+					endif
+					
+					if (settingsActive = 1) and GetSpriteDepth(spr) <> 1
+						rightT = 0
+						leftT = 0
+						upT = 0
+						downT = 0
+					endif
+					
+					if rightT or leftT or upT or downT
+						newDis = Abs(Sqrt(Pow(xDis, 2)) + Sqrt(Pow(yDis, 2)))
+						if newDis < minDis
+							minDis = newDis
+							newT = spr
+						endif
+					endif
+
 				endif
-			next i
-		next j
+			endif
+		next i
 		
 		if newT <> selectTarget
 			selectTarget = newT
@@ -789,7 +791,7 @@ function MoveSelect2()
 		if appState = START
 			selectTarget2 = SPR_START1//SPR_STORY_START
 			//selectTarget2 = SPR_START2
-		elseif appState = CHARACTER_SELECT
+		elseif appState = CHARACTER_SELECT and spType = 0
 			selectTarget2 = SPR_CS_READY_2
 			if GetSpriteVisible(SPR_CS_READY_2) = 0
 				//if spType = STORYMODE then selectTarget = SPR_SCENE1
@@ -819,50 +821,45 @@ function MoveSelect2()
 	else
 		
 		newT = selectTarget2
-		for j = 1 to 2
-			for i = 0 to buttons.length
-				if GetSpriteExists(buttons[i])
+		minDis = 9999
+		for i = 0 to buttons.length
+			if GetSpriteExists(buttons[i])
+				
+				spr = buttons[i]
+				if GetSpriteVisible(spr) and GetSpriteColorAlpha(spr) <> 0 and spr <> selectTarget2 and GetSpriteX(spr) > 0 and GetSpriteX(spr) < w and GetSpriteY(spr) > 0 and GetSpriteY(spr) < h and spr <> SPR_TITLE
 					
-					spr = buttons[i]
-					if GetSpriteVisible(spr) and GetSpriteColorAlpha(spr) <> 0 and spr <> selectTarget2 and GetSpriteX(spr) > 0 and GetSpriteX(spr) < w and GetSpriteY(spr) > 0 and GetSpriteY(spr) < h and spr <> SPR_TITLE
-						rightT = inputRight2 and GetSpriteMiddleX(spr) > GetSpriteMiddleX(selectTarget2) and (GetSpriteMiddleX(spr) < GetSpriteMiddleX(newT) or newT = selectTarget2)
-						leftT = inputLeft2 and GetSpriteMiddleX(spr) < GetSpriteMiddleX(selectTarget2) and (GetSpriteMiddleX(spr) > GetSpriteMiddleX(newT) or newT = selectTarget2)
-						upT = inputUp2 and GetSpriteMiddleY(spr) < GetSpriteMiddleY(selectTarget2) and (GetSpriteMiddleY(spr) > GetSpriteMiddleY(newT) or newT = selectTarget2)
-						downT = inputDown2 and GetSpriteMiddleY(spr) > GetSpriteMiddleY(selectTarget2) and (GetSpriteMiddleY(spr) < GetSpriteMiddleY(newT) or newT = selectTarget2)
-						
-						//if newT <> selectTarget2 and GetSpriteDistance(spr, selectTarget2) < GetSpriteDistance(newT, selectTarget2) then newT = selectTarget2
-						
-						if newT <> selectTarget2
-							
-							if GetSpriteDistance(spr, selectTarget2) > GetSpriteDistance(newT, selectTarget2)
-								rightT = 0
-								leftT = 0
-								upT = 0
-								downT = 0
-							endif
-							if Abs(GetSpriteMiddleX(spr) - GetSpriteMiddleX(selectTarget2)) < Abs(GetSpriteMiddleY(spr) - GetSpriteMiddleY(selectTarget2))
-								rightT = 0
-								leftT = 0
-							endif
-							if Abs(GetSpriteMiddleX(spr) - GetSpriteMiddleX(selectTarget2)) > Abs(GetSpriteMiddleY(spr) - GetSpriteMiddleY(selectTarget2))
-								upT = 0
-								downT = 0
-							endif
-							
+					xDis = GetSpriteMiddleX(spr)-GetSpriteMiddleX(selectTarget2)
+					yDis = GetSpriteMiddleY(spr)-GetSpriteMiddleY(selectTarget2)
+					
+					rightT = inputRight2 and xDis > 0 and Abs(xDis) > Abs(yDis)
+					leftT = inputLeft2 and xDis < 0 and Abs(xDis) > Abs(yDis)
+					upT = inputUp2 and yDis < 0 and Abs(xDis) < Abs(yDis)
+					downT = inputDown2 and yDis > 0 and Abs(xDis) < Abs(yDis)
+					
+					if (appState = CHARACTER_SELECT) and GetSpriteMiddleX(spr) < w/2-20 and spType = 0
+						rightT = 0
+						leftT = 0
+						upT = 0
+						downT = 0
+					endif
+					
+					if (settingsActive = 1) and GetSpriteDepth(spr) <> 1
+						rightT = 0
+						leftT = 0
+						upT = 0
+						downT = 0
+					endif
+					
+					if rightT or leftT or upT or downT
+						newDis = Abs(Sqrt(Pow(xDis, 2)) + Sqrt(Pow(yDis, 2)))
+						if newDis < minDis
+							minDis = newDis
+							newT = spr
 						endif
-						
-						if (appState = CHARACTER_SELECT) and GetSpriteMiddleX(spr) < w/2-20
-							rightT = 0
-							leftT = 0
-							upT = 0
-							downT = 0
-						endif
-						
-						if rightT or leftT or upT or downT then newT = spr
 					endif
 				endif
-			next i
-		next j
+			endif
+		next i
 		
 		if newT <> selectTarget2
 			selectTarget2 = newT
@@ -1008,7 +1005,7 @@ function Popup(area, unlockNum)
 	SetTextLineSpacing(spr+2, 5-(dispH-1)*6)
 	
 	if unlockNum = -1 then SetTextString(spr+2, "")
-	if unlockNum = -2 then SetTextString(spr+2, "Space Crab VS" + chr(10) + "uses autosaves." + chr(10)+chr(10)+chr(10)+chr(10)+chr(10) + "When leaving," + chr(10) + "all is saved!")
+	if unlockNum = -2 then SetTextString(spr+2, "Space Crab VS" + chr(10) + "uses autosaves." + chr(10)+chr(10)+chr(10)+chr(10)+chr(10) + "When leaving," + chr(10) + "all is saved.")
 	
 	if area = G2 and dispH = 0
 		SetTextAngle(spr+2, 180)

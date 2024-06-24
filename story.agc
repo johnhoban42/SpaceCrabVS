@@ -434,6 +434,7 @@ function ShowScene(chap, scene)
 			lineSkipTo = lineOverall+1
 			if GetSpriteExists(SPR_CRAB1_BODY)
 				PlayMirrorModeScene()
+				Sleep(1000)
 			else
 				TransitionStart(Random(1,lastTranType))
 			endif
@@ -589,7 +590,7 @@ function ShowScene(chap, scene)
 				if cosType = 2 then folderF$ = "speyes/"
 				if cosType <> 2 and crab1Type+crab1Alt*6 = 18 or crab1Type+crab1Alt*6 = 20 then folderF$ = "speyes/"
 				
-				if cosType <> 2
+				if cosType <> 2 and cosType <> 5
 					if z$ <> ""
 						SetSpriteImage(SPR_CRAB1_BODY, LoadImageR(folderB$ + "body" + body$ + str(crab1Type+crab1Alt*6) + ".png"))
 					else
@@ -617,6 +618,11 @@ function ShowScene(chap, scene)
 					//Posed costume
 					if GetFileExists("costume/costume" + str(crab1Type) + AltStr(crab1Alt) + costume$ + z$ + ".png") = 0 then costume$ = ""
 					SetSpriteImage(SPR_CRAB1_COSTUME, LoadImageR("costume/costume" + str(crab1Type) + AltStr(crab1Alt) + costume$ + z$ + ".png"))
+				elseif cosType = 5
+					//Taxi Type, unique body AND costume, normal face
+					SetSpriteImage(SPR_CRAB1_BODY, LoadImageR(folderB$ + "body" + str(crab1Type) + AltStr(crab1Alt) + body$ + ".png"))
+					SetSpriteImage(SPR_CRAB1_FACE, LoadImageR(folderF$ + "face" + face$ + ".png"))
+					SetSpriteImage(SPR_CRAB1_COSTUME, LoadImageR("costume/costume" + str(crab1Type) + AltStr(crab1Alt) + costume$ + ".png"))
 				else
 					//Blank costume
 					SetSpriteImage(SPR_CRAB1_COSTUME, LoadImageR("blank.png"))
@@ -647,7 +653,7 @@ function ShowScene(chap, scene)
 				if cosType = 2 then folderF$ = "speyes/"
 				if cosType <> 2 and (crab2Type+crab2Alt*6 = 18 or crab2Type+crab2Alt*6 = 20) then folderF$ = "speyes/"
 				
-				if cosType <> 2
+				if cosType <> 2 and cosType <> 5
 					if z$ <> ""
 						SetSpriteImage(SPR_CRAB2_BODY, LoadImageR(folderB$ + "body" + body$ + str(crab2Type+crab2Alt*6) + ".png"))
 						//Print(folderB$ + "body" + body$ + str(crab2Type+crab2Alt*6) + ".png")
@@ -679,6 +685,11 @@ function ShowScene(chap, scene)
 					//Posed costume
 					if GetFileExists("costume/costume" + str(crab2Type) + AltStr(crab2Alt) + costume$ + z$ + ".png") = 0 then costume$ = ""
 					SetSpriteImage(SPR_CRAB2_COSTUME, LoadImageR("costume/costume" + str(crab2Type) + AltStr(crab2Alt) + costume$ + z$ + ".png"))
+				elseif cosType = 5
+					//Taxi Type, unique body AND costume, normal face
+					SetSpriteImage(SPR_CRAB2_BODY, LoadImageR(folderB$ + "body" + str(crab2Type) + AltStr(crab2Alt) + body$ + ".png"))
+					SetSpriteImage(SPR_CRAB2_FACE, LoadImageR(folderF$ + "face" + face$ + ".png"))
+					SetSpriteImage(SPR_CRAB2_COSTUME, LoadImageR("costume/costume" + str(crab2Type) + AltStr(crab2Alt) + costume$ + ".png"))
 				else
 					//Blank costume
 					SetSpriteImage(SPR_CRAB2_COSTUME, LoadImageR("blank.png"))
@@ -1239,12 +1250,15 @@ function GetCrabCostumeType(cT, cA)
 	if (cT = 2 and cA = 0) or (cT = 4 and cA = 3)
 		//Hat type
 		cosType = 1
-	elseif (cT = 2 and cA = 2) or (cT = 3 and cA = 0) or (cT = 3 and cA = 1) or (cT = 3 and cA = 2) or (cT = 5 and cA = 3) or (cT = 6 and cA = 3)
+	elseif (cT = 2 and cA = 2) or (cT = 3 and cA = 0) or (cT = 3 and cA = 2) or (cT = 5 and cA = 3) or (cT = 6 and cA = 3)
 		//Unique sprite type
 		cosType = 2
 	elseif (cT = 1 and cA = 0) or (cT = 6 and cA = 2)
 		//Blank costume type
 		cosType = 3
+	elseif (cT = 3 and cA = 1)
+		//Unique body AND costume (taxi crab)
+		cosType = 5
 	else
 		//Full body type (costume has gloves/sleeves, AKA most crabs)
 		cosType = 4
