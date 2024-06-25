@@ -1,19 +1,20 @@
-bg 5
+bg 4
 music chromecoast
-TP: This is the place!
-It smells... metallic?
-Not a deterrent!
-Back to the training plan...
-Next, I'll up my meteor dodging count by 10.
-Go in, get my 60 dodges, and keep going as long as I can.
-Here goes nothing!
+TP: BAFA; I think I found the way in!
+BMFHa; It smells... metallic?
+BUFJc; Not a deterrent!
+BBFJa; So, back to the training plan...
+BAFAd; Next, I'll up my meteor dodging count by ten.
+BOFA; Go in, get my fifty dodges, and keep going as long as I can.
+BPFOd; Here goes nothing!
 exit 1
-CC: Wait! Don't go in there!
+CC: BVFMa; Wait!! Halt your entering!
 music chromecoast
-mirror 60
+mirror 50
 music chromecoast
-TP: Whew! Now that's a challenge!
-Moving 12 legs instead of 6 is tough, but I feel so coordinated now.
-It's starting to get late though- maybe I should pack it in for the night.
+TP: BUFOb; Whew! Now that's a challenge!
+BMFGb; Moving 12 legs instead of 6 is tough, but I feel so coordinated now.
+BAFTn; It's starting to get late though- maybe I should pack it in for the night.
+music
 ??: You IMBECILE!
-TP: Huh?
+TP: BBFJa; Huh?

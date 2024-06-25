@@ -1,7 +1,7 @@
 bg 3
 music retro5
 LW: BOFDa; Who's there? I've got a re-visibility spell at the ready!
-NC: BAFA; Not invisible. Only quiet.
+NC: BWFA; Not invisible. Only quiet.
 BAFAc; I will not be deceptive. Just quick.
 BIFAe; Stop what you are doing. Now.
 LW: BDFIa; I was only talking on the phone.
@@ -26,3 +26,12 @@ music tomato
 BIFD; Battle me, if your will is as strong as your sentiment.
 music tomato
 fight 53525
+music
+LW: BPFB1; HYAA! Take that!
+BNbFC1d; Huh? Where did that crab go?
+BNbFH1a; ...
+music retro2
+BBFR1; It looks like he ran away.
+BUaFA1; Which is a good thing! Now I can keep finding crabs for the Star Seekers.
+BNbFJ1d; I wonder if he'll show up again...?
+BAFJ1c; Well, when he does, I should have a LOT more help to back me up!

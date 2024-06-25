@@ -15,7 +15,7 @@ RL: Hey, all good with me. I won't be losing with my next song.
 Sunset Siesta, here we go!
 I think you'll like this one, Maddy~
 music retro5
-fight 78382
+vs MC (fight goes here)
 music results
 RL: Hey, a little lover's quarrel never hurt anyone, right?
 MC: Ugh.

@@ -1,25 +1,25 @@
 bg 3
+music chill
+KC: BBFD; Everyone sure is hung up on those Star Seekers.
+BMbFM; They should be hung up on ME!
+BAFBd; Ninjy, who did you say was their leader?
+NC: BAFA; Space Crab, sir.
+exit 2
+KC: BUFDa; Well! 
+BOFDb; I summon you. INIANDA JEFF!
+IJ: BAFA; That's me! The intrepid explorer.
+BSFAg; Ready for a mission!
+KC: BMFB; Find Space Crab, and bring him to me. I'll take the rest from there.
+IJ: BLFAd; Got it, sir! You have my explorer's promise.
+exit 2
+KC: BSFD; Actually... halt your departure.
+IJ: BIFAb; Yes, sir!
+KC: BPFB; Let me demonstrate something for you.
 music fightJ
-KC: Everyone sure is hung up on those Star Seekers.
-They should be hung up on ME!
-Ninjy, who did you say was their leader?
-NC: Space Crab, sir.
-exit 2
-KC: Well! 
-I summon you. INIANDA JEFF!
-IJ: That's me! The intrepid explorer.
-Ready for a mission!
-KC: Find Space Crab, and bring him to me. I'll take the rest from there.
-IJ: Got it, sir! You have my explorer's promise.
-exit 2
-KC: Actually... halt your departure.
-IJ: Yes, sir!
-KC: Let me demonstrate something for you.
-music retro3
 fight 37653
-music retro2
-KC: You see...
-I feel particularly angry at this 'Space Crab'.
-When you see him, I want you to beat him to a pulp, like I just did to you.
-Understood?
-IJ: Yeahth, shthir. (Knocked out, on the ground)
+music retro3
+KC: BUaFD; You see...
+BMFDe; I feel a particular anger towards this 'Space Crab'.
+BWFBb; When you see him, I want you to beat him to a pulp, like I just did to you.
+BOFBb; Understood?
+IJ: BJFX; Yehth, shthir.

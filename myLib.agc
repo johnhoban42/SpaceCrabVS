@@ -3,11 +3,6 @@ function SyncG()
 	PingUpdate()
 	ButtonsUpdate()
 	UpdateAllTweens(GetFrameTime())
-	//if GetSpriteColorAlpha(SPR_SELECT1) > 0
-		//for i = SPR_SELECT1 to SPR_SELECT4
-			//SetSpriteColorByCycle(i, gameTime#*2)
-		//next i
-	//endif
     Sync()
 endfunction
 
@@ -221,6 +216,16 @@ function CreateTextExpress(txt, content$, size, fontI, alignment, x, y, depth)
 	SetTextAlignment(txt, alignment)
 	SetTextPosition(txt, x, y)
 	SetTextDepth(txt, depth)
+endfunction
+
+function SetTextExpress(txt, content$, size, fontI, alignment, x, y, depth, spacing)
+	SetTextString(txt, content$)
+	SetTextSize(txt, size)
+	SetTextFontImage(txt, fontI)
+	SetTextAlignment(txt, alignment)
+	SetTextPosition(txt, x, y)
+	SetTextDepth(txt, depth)
+	SetTextSpacing(txt, spacing)
 endfunction
 
 function IncSpriteX(spr, amt)
@@ -448,7 +453,7 @@ function GetMulitouchPressedButton(spr)
 	for i = 1 to currentTouch.length
 		x = GetRawTouchCurrentX(currentTouch[i])
 		y = GetRawTouchCurrentY(currentTouch[i])		
-		if GetSpriteHitTest(spr, x, y) then result = 1
+		if GetSpriteHitTest(spr, x, y) and GetSpriteVisible(spr) and GetSpriteColorAlpha(spr) <> 0 then result = 1
 	next i
 	
 endfunction result
@@ -531,6 +536,12 @@ function ButtonMultitouchEnabled(spr)
 	if GetSpriteExists(spr)
 	    if (Button(spr) and (GetPointerPressed() or inputSelect or inputSelect2) and deviceType = DESKTOP) or (GetMulitouchPressedButton(spr) and deviceType = MOBILE)
 	        returnValue = 1
+	        if GetTextExists(TXT_POPUP)
+	        	if GetTextString(TXT_POPUP) <> "" then ClearPopup1()
+	        endif
+	        if GetTextExists(TXT_POPUP_2)
+	        	if GetTextString(TXT_POPUP_2) <> "" then ClearPopup2()
+	        endif
 	    else
 	        returnValue = 0
 	    endif
@@ -774,6 +785,54 @@ function GetColorByCycle(numOf360, rgb$)
 	DeleteSprite(tmpSpr)
 endfunction result
 
+function SetSpriteColorByCycleA(spr, numOf360)
+	//Make sure the cycleLength is divisible by 6!
+	cycleLength = 360
+	colorTime = Mod(numOf360*3, 360)
+	phaseLen = cycleLength/2
+	
+	tmpSpr = CreateSprite(0)
+	
+	//Each colorphase will last for one phaseLen
+	if colorTime <= phaseLen	//Red -> Black
+		t = colorTime
+		SetSpriteColor(tmpSpr, (t*255.0)/phaseLen, 0, 0, 255)
+		
+	else //Black -> Red
+		t = colorTime-phaseLen
+		SetSpriteColor(tmpSpr, 255-(t*255.0)/phaseLen, 0, 0, 255)
+	endif
+	
+	r = GetSpriteColorRed(tmpSpr)
+	SetSpriteColor(spr, r, 0, 0, GetSpriteColorAlpha(spr))
+	
+	DeleteSprite(tmpSpr)
+endfunction
+
+function SetSpriteColorByCycleB(spr, numOf360)
+	//Make sure the cycleLength is divisible by 6!
+	cycleLength = 360
+	colorTime = Mod(numOf360*3, 360)
+	phaseLen = cycleLength/2
+	
+	tmpSpr = CreateSprite(0)
+	
+	//Each colorphase will last for one phaseLen
+	if colorTime <= phaseLen	//Cyan -> Blue
+		t = colorTime
+		SetSpriteColor(tmpSpr, 0, (t*255.0)/phaseLen, 255, 255)
+		
+	else //Blue -> Cyan
+		t = colorTime-phaseLen
+		SetSpriteColor(tmpSpr, 0, 255-(t*255.0)/phaseLen, 255, 255)
+	endif
+	
+	g = GetSpriteColorGreen(tmpSpr)
+	SetSpriteColor(spr, 0, g, 255, GetSpriteColorAlpha(spr))
+	
+	DeleteSprite(tmpSpr)
+endfunction
+
 function SetSpriteColorByCycleC(spr, numOf360)
 	//Make sure the cycleLength is divisible by 6!
 	cycleLength = 360
@@ -792,13 +851,12 @@ function SetSpriteColorByCycleC(spr, numOf360)
 		SetSpriteColor(tmpSpr, 255, 255, 255-(t*255.0)/phaseLen, 255)
 	endif
 	
-	r = GetSpriteColorRed(tmpSpr)
-	g = GetSpriteColorGreen(tmpSpr)
 	b = GetSpriteColorBlue(tmpSpr)
-	SetSpriteColor(spr, r, g, b, GetSpriteColorAlpha(spr))
+	SetSpriteColor(spr, 255, 255, b, GetSpriteColorAlpha(spr))
 	
 	DeleteSprite(tmpSpr)
 endfunction
+
 
 
 global pingList as Integer[0]
@@ -942,27 +1000,29 @@ function ButtonsUpdate()
 					if spr >= SPR_CS_CRABS_1 then skip = 1
 				next i
 				
-				//The case for playing the tween
-				//The sound logic makes sure that
-				if skip = 0
-					if GetTweenExists(tweenButton) = 0 then CreateTweenSprite(tweenButton, .3)
-					//GetTween
-					impact# = 1.2
-					SetTweenSpriteSizeX(tweenButton, GetSpriteWidth(spr)*impact#, GetSpriteWidth(spr), TweenOvershoot())
-					SetTweenSpriteSizeY(tweenButton, GetSpriteHeight(spr)*impact#, GetSpriteHeight(spr), TweenOvershoot())
-					SetTweenSpriteX(tweenButton, GetSpriteMiddleX(spr)-(GetSpriteWidth(spr)*impact#)/2, GetSpriteX(spr), TweenOvershoot())
-					SetTweenSpriteY(tweenButton, GetSpriteMiddleY(spr)-(GetSpriteHeight(spr)*impact#)/2, GetSpriteY(spr), TweenOvershoot())
-					PlayTweenSprite(tweenButton, spr, 0)
-					
-					tweenButtonOld = tweenButton
-					inc tweenButton, 1
-					if tweenButton > 35 then tweenButton = 15
-					
-					//if appState <> CHARACTER_SELECT then PlaySoundR(buttonSound, 100)
-					PlaySoundR(buttonSound, 100)
-				else
-					//if GetSoundPlayingR(buttonSound) = 0 and appState <> CHARACTER_SELECT then PlaySoundR(buttonSound, 100)
-					if GetSoundPlayingR(buttonSound) = 0 then PlaySoundR(buttonSound, 100)
+				if settingsActive = 0 or (spr >= 802 and spr <= 900)
+					//The case for playing the tween
+					//The sound logic makes sure that
+					if skip = 0
+						if GetTweenExists(tweenButton) = 0 then CreateTweenSprite(tweenButton, .3)
+						//GetTween
+						impact# = 1.2
+						SetTweenSpriteSizeX(tweenButton, GetSpriteWidth(spr)*impact#, GetSpriteWidth(spr), TweenOvershoot())
+						SetTweenSpriteSizeY(tweenButton, GetSpriteHeight(spr)*impact#, GetSpriteHeight(spr), TweenOvershoot())
+						SetTweenSpriteX(tweenButton, GetSpriteMiddleX(spr)-(GetSpriteWidth(spr)*impact#)/2, GetSpriteX(spr), TweenOvershoot())
+						SetTweenSpriteY(tweenButton, GetSpriteMiddleY(spr)-(GetSpriteHeight(spr)*impact#)/2, GetSpriteY(spr), TweenOvershoot())
+						PlayTweenSprite(tweenButton, spr, 0)
+						
+						tweenButtonOld = tweenButton
+						inc tweenButton, 1
+						if tweenButton > 35 then tweenButton = 15
+						
+						//if appState <> CHARACTER_SELECT then PlaySoundR(buttonSound, 100)
+						PlaySoundR(buttonSound, 100)
+					else
+						//if GetSoundPlayingR(buttonSound) = 0 and appState <> CHARACTER_SELECT then PlaySoundR(buttonSound, 100)
+						if GetSoundPlayingR(buttonSound) = 0 then PlaySoundR(buttonSound, 100)
+					endif
 				endif
 				
 			endif
@@ -987,6 +1047,17 @@ buttons.sort()
 		buttons.remove(index)
 	endif
 	
+endfunction
+
+function InvertImage(img)
+	myMem = CreateMemblockFromImage(img)
+	for i = 13 to GetMemblockSize(myMem)-1
+		if Mod(i, 4) <> 3
+			SetMemblockByte(myMem, i, 255 - GetMemblockByte(myMem, i))
+		endif
+	next i
+	CreateImageFromMemblock(img, myMem)
+	DeleteMemblock(myMem)	
 endfunction
 
 function SetTweenPulse(twn, spr, impact#)

@@ -7,7 +7,7 @@ global characterSelectStateInitialized as integer = 0
 global csc1 as CharacterSelectController
 global csc2 as CharacterSelectController
 
-global crabNames as string[NUM_CRABS] = [
+global crabNames as string[27] = [
 	"NULL CRAB",
 	"SPACE CRAB",
 	"LADDER WIZARD",
@@ -32,7 +32,10 @@ global crabNames as string[NUM_CRABS] = [
 	"SK8R CRAB",
 	"HOLY CRAB",
 	"CRAB CAKE",
-	"KYLE CRAB"]
+	"CHIMAERA CRAB",
+	"CRIXEL",
+	"BETA CRAB",
+	"DEVIL CRAB"]
 
 global crabDescs as string[NUM_CRABS]
 
@@ -59,9 +62,9 @@ global chapNames as string[NUM_CHAPTERS] = [
 	"SPACE BARC",
 	"CRABYSS KNIGHT",
 	"CHRONO CRAB",
-	"SPACE CRAB 2",
+	"SPACE CRAB VS",
 	"SK8R CRAB",
-	"KYLE CRAB",
+	"CHIMERA CRAB",
 	"FUTURE CRAB"]
 
 // Controller that holds state data for each screen
@@ -88,6 +91,8 @@ type CharacterSelectController
 	txtCrabStats as integer
 	txtReady as integer
 	sprTxtBack as integer
+	sprEvil as integer
+	
 	// Sprite index of the first crab shown on the select screen
 	sprCrabs as integer
 	
@@ -189,8 +194,12 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 	highAlt = GetHighAlt()
 	scale# = 1
 	if highAlt = 1 then scale# = .8
-	if highAlt = 2 then scale# = .5
-	if highAlt = 3 then scale# = .4
+	if highAlt = 2 or highAlt = 3 then scale# = .5
+	//if highAlt = 3 then scale# = .4
+	
+	firstTimeLoad = 1
+	if IMG_CS_CRAB[1] <> 0 then firstTimeLoad = 0
+	
 	for i = 0 to NUM_CRABS-1 + spActive*STORY_CS_BONUS 
 		SyncG()
 		locked = 0
@@ -199,7 +208,7 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 		//if i = 0 or i = 1 or i = 3 or i = 5
 			CreateSprite(csc.sprCrabs + i, 0)
 			if spActive = 0
-				
+
 				//Loading images for the crabs in, the first time; however, they will be SMALLER!
 				SetFolder("/media/art")
 				crabRefType = Mod(i, 6)+1
@@ -208,8 +217,17 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 				if locked = 0
 					for j = 1 to 6
 						if csc.player = 1
-							img = LoadImageResizedR("crab" + str(crabRefType) + AltStr(crabRefAlt) + "select" + Str(j) + ".png", .4*scale#)
-							if j = 1 then IMG_CS_CRAB[i] = img
+							if firstTimeLoad
+								img = LoadImageResizedR("crab" + str(crabRefType) + AltStr(crabRefAlt) + "select" + Str(j) + ".png", .4*scale#)
+							else
+								img = IMG_CS_CRAB[i]+j-1
+								//Print(img)
+								//Print(GetImageWidth(img))
+								//Print(GetImageHeight(img))
+								//Sync()
+								//Sleep(5000)
+							endif
+							if j = 1 and firstTimeLoad then IMG_CS_CRAB[i] = img
 						else
 							if IMG_CS_CRAB[i] <> 0
 								img = IMG_CS_CRAB[i]+j-1		//Re-using the images from player one
@@ -218,8 +236,10 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 							endif
 						endif
 						if img <> 0
+							//SetSpriteImage(csc.sprCrabs + i, img)
+							//SetSpriteAnimation(csc.sprCrabs + i, 3510/3, 2140/2, 6)
 							AddSpriteAnimationFrame(csc.sprCrabs + i, img)
-							trashBag.insert(img)
+							//trashBag.insert(img)
 						endif
 					next j
 					PlaySprite(csc.sprCrabs + i, 18, 1, 1, 6)
@@ -339,6 +359,8 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 	
 	next i
 	
+	
+	
 	//Descriptions were moved down here to include newline characters
 	crabDescs[0] = crabDescs[0] + 	"Known far and wide, he's ready to claim his fame!" + chr(10) +	"Double-tap for his galaxy famous quick-dodge!"
 	crabDescs[1] = crabDescs[1] + 	"The most magical being this side of the nebula." + chr(10) + 	"Launch into the skies with a double-tap spell!"
@@ -349,12 +371,21 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 	crabDescs[6] = crabDescs[6] + 	"It's true that anger can be weaponized-" + chr(10) + 			"just ask this guy! He has no need for meditation."
 	crabDescs[7] = crabDescs[7] + 	"'Opulence is dish best served cold.'" + chr(10) + 				"'What do you mean that doesn't make sense??'"
 	crabDescs[8] = crabDescs[8] + 	"Having chauffeured half the galaxy," + chr(10) + 				"this crab has learned many attacks & counters."
+	crabDescs[9] = crabDescs[9] + 	"Don't doubt the power of a fan. Years of" + chr(10) + 			"studying the best has lead to this moment!"
 	crabDescs[10] = crabDescs[10] + 	"(Mis)hearing whisperings of an otherworldy" + chr(10) +			"movie, this young adventurer took the mantle!"
 	crabDescs[11] = crabDescs[11] + 	"A quarterback at heart, this Team Player" + chr(10) + 			"has no trouble going solo to beat his opponent."
 	crabDescs[12] = crabDescs[12] + 	"The pen is mightier than the sword, yes - but" + chr(10) + 		"will it stand up to a swarm of incoming meteors?"
 	crabDescs[13] = crabDescs[13] + 	"It's always been numbers. The angles, velocities," + chr(10) + 	"polar coordinates. This crab figured it all out!"
+	crabDescs[14] = crabDescs[14] + 	"They're putting DOGS in space? What's next," 	+ chr(10) + 	"fighting crabs? Where will they draw the line??"
+	crabDescs[15] = crabDescs[15] + 	"He's using his vacation time be at" + chr(10) + 				"this fight, so you better make it quick."
+	crabDescs[16] = crabDescs[16] + 	"The only thing that hits harder than his" + chr(10) + 			"melodies are his FISTS! He'll rock your world."
+	crabDescs[17] = crabDescs[17] + 	"So Klawaii! This cute face will be the last thing" 	+ chr(10) + "you see before being pummled into the planet."
+	crabDescs[18] = crabDescs[18] + 	"Rescued from a future which ceased to exist," 	+ chr(10) + 	"destined to battle until he comes to an end."
+	crabDescs[19] = crabDescs[19] + 	"Weilds a sword forged in the heat of a dying sun." + chr(10) + 	"Will always take the chance to tell you about it."
+	crabDescs[20] = crabDescs[20] + 	"This rebel almost didn't wear a helmet - but" + chr(10) + 		"changed his mind after losing his first life."
 	crabDescs[21] = crabDescs[21] + 	"An angelic presence, from on high. Will they" + chr(10) + 		"show mercy, or smite us for our wrongdoings?"
-	//crabDescs[] = crabDescs[] + "" + chr(10) + 													""
+	crabDescs[22] = crabDescs[22] + "This sweet treat packs a tart punch!" 	+ chr(10) + 			"Not famailiar with the bitter taste of defeat."
+	crabDescs[23] = crabDescs[23] + "Never bring puppets to a meteor fight. However," + chr(10) + 	"looks are decieving when magic is involved..."
 	for i = 0 to NUM_CRABS-1
 		crabDescs[i] = crabDescs[i] + chr(10) + "Special Attack: " + GetSpecialName(i+1)
 	next i
@@ -396,7 +427,68 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 	SetTextMiddleScreenOffset(csc.txtReady, f, 0, p*7*h/16)
 	SetTextColorAlpha(csc.txtReady, 0)
 	
+	SetFolder("/media/ui")
+	CreateSpriteExpress(csc.sprEvil, 150, 102, GetSpriteMiddleX(csc.sprReady)+270*p - 75, GetSpriteMiddleY(csc.sprReady)-51, 5)
+	if spType = STORYMODE then img = LoadImage("storydif1.png")
+	if spType <> STORYMODE then img = LoadImage("evil1.png")
+	AddSpriteAnimationFrame(csc.sprEvil, img)
+	trashBag.insert(img)
+	if spType = STORYMODE then img = LoadImage("storydif2.png")
+	if spType <> STORYMODE then img = LoadImage("evil2.png")
+	AddSpriteAnimationFrame(csc.sprEvil, img)
+	trashBag.insert(img)
+	SetSpriteFrame(csc.sprEvil, 1)
+	if spType = STORYMODE and storyEasy = 1 then SetSpriteFrame(csc.sprEvil, 2)
+	SetSpriteFlip(csc.sprEvil, f, f)
+	AddButton(csc.sprEvil)
+	if spType <> STORYMODE then SetSpriteVisible(csc.sprEvil, 0)
+	if dispH then SetSpriteSize(csc.sprEvil, 120, 82)
 	
+	
+	if csc.player = 2 and spType = AIBATTLE
+		
+		SetSpriteFlip(csc.sprEvil, 0, 0)
+		SetSpritePosition(csc.sprEvil, 20, 520)
+		if dispH then SetSpritePosition(csc.sprEvil, 600, 520)
+		//SetSpriteVisible(csc.sprEvil, 1)
+		
+		for i = 0 to NUM_CRABS-1
+			spr = csc.sprCrabs + i
+			
+			//Changing the positions/orientation for mobile
+			if dispH = 0
+				MatchSpritePosition(spr, csc1.sprCrabs + i)
+				IncSpriteY(spr, -h/2-50)
+				SetSpriteAngle(spr, 0)
+				SetSpriteFlip(spr, 0, 0)
+				SetTextY(csc.txtCrabName, 40)
+				SetTextAngle(csc.txtCrabName, 0)
+			endif
+			
+			//Altering the tweens for AI Battling
+			DeleteTween(spr)
+			CreateTweenSprite(spr, .3)
+			if dispH then SetTweenSpriteY(spr, GetSpriteY(spr), GetSpriteY(spr) - 160, TweenSmooth2())
+			if dispH = 0 then SetTweenSpriteY(spr, GetSpriteY(spr), GetSpriteY(spr) - 170, TweenSmooth2())
+		next i
+		
+		if dispH = 0
+			SetSpriteFlip(csc.sprRightArrow, 0, 0)
+			SetSpriteFlip(csc.sprLeftArrow, 0, 0)
+		endif
+		
+		csc.crabSelected = 0
+		IncSpriteY(csc1.sprReady, 900)
+		
+		//This sprite is being transformed into the difficulty number
+		for i = 1 to 10
+			SetFolder("/media/envi")
+			img = LoadImage("mAlt" + str(i) + ".png")
+			AddSpriteAnimationFrame(csc.sprTxtBack, img)
+			trashBag.insert(img)
+		next i
+		SetSpriteFrame(csc.sprTxtBack, spAIDiff)
+	endif
 	
 	if dispH
 		//Most of these elements are resized in similar ways; just the x's are different
@@ -464,6 +556,8 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 			IncSpriteX(csc.sprRightArrow, w/4-86)
 		
 		endif
+		SetSpritePosition(csc.sprEvil, GetSpriteMiddleX(csc.sprReady)+210*p - 75, GetSpriteMiddleY(csc.sprReady)-41)
+		if csc.player = 2 and spType = AIBATTLE then SetSpritePosition(csc.sprEvil, 705, 535)
 	endif
 	
 	
@@ -477,17 +571,17 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 		SetTextSpacing(TXT_CS_CRAB_NAME_2, -24)
 		SetTextSpacing(TXT_CS_CRAB_DESC_2, -17)
 		
-		SetSpriteSize(csc.sprTxtBack, w, 140)
+		SetSpriteSize(csc.sprTxtBack, w/2, 140)
 		IncSpriteY(csc.sprTxtBack, 40)
 		IncTextY(csc.txtCrabDesc, 34)
 		
 		SetFolder("/media/envi")
 		
-		LoadSpriteExpress(SPR_CS_BG_2, "bg5.png", w*1.4, w*1.4, -w*0.2, -w*0.2, 199)
+		CreateSpriteExpressImage(SPR_CS_BG_2, bg5I, w*1.4, w*1.4, -w*0.2, -w*0.2, 199)
 		
 		for i = 1 to 4
 			spr = SPR_SCENE1 - 1 + i
-			CreateSpriteExpress(spr, 100, 100, w*2/4 + GetSpriteHeight(split)/4 - 50 + (i-2.5)*130, h - 120, 10)
+			CreateSpriteExpress(spr, 100, 100, w*2/4 + GetSpriteHeight(split)/4 - 50 + (i-2.5)*130 - 130, h - 120, 10)
 			CreateTextExpress(spr, Str(i), 60, fontScoreI, 1, GetSpriteX(spr) + 90, GetSpriteY(spr) + 50,  9)
 			AddButton(spr)
 		next i
@@ -501,11 +595,12 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 		SetFolder("/media/ui")
 		
 		if Mod(highestScene, 4) = 1
-			SetSpriteImage(csc.sprReady, LoadImage("storystart.png"))
+			img = LoadImage("storystart.png")
 		else
-			SetSpriteImage(csc.sprReady, LoadImage("storycontinue.png"))
+			img = LoadImage("storycontinue.png")
 		endif
-		trashBag.insert(GetSpriteImageID(csc.sprReady))
+		SetSpriteImage(csc.sprReady, img)
+		trashBag.insert(img)
 		
 		SetFolder("/media")
 	
@@ -538,6 +633,8 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 			SetSpriteY(csc.sprReady, h-140)
 			SetSpriteSize(csc.sprReady, 842/2.7, 317/2.7)
 			SetSpriteMiddleScreenXDispH2(csc.sprReady)
+			
+			SetSpritePosition(csc.sprEvil, w - 146, 20)
 						
 		endif
 	
@@ -556,9 +653,17 @@ function InitCharacterSelect()
 	if spActive = 1 then spType = STORYMODE
 	if spType = STORYMODE then spActive = 1
 	storyActive = 0
+	//spAIDiff = 3
+	
+	if spType = 0 and debug = 0
+		Popup(1, -1)
+		Popup(2, -1)
+	endif
 	
 	crab1Alt = 0
 	crab2Alt = 0
+	crab1Evil = 0
+	crab2Evil = 0
 	
 	lineSkipTo = 0
 	
@@ -579,6 +684,7 @@ function InitCharacterSelect()
 	csc1.txtReady = TXT_CS_READY_1
 	csc1.sprCrabs = SPR_CS_CRABS_1
 	csc1.sprTxtBack = SPR_CS_TXT_BACK_1
+	csc1.sprEvil = SPR_CS_EVILSWITCH_1
 	
 	csc2.player = 2
 	csc2.ready = 0
@@ -594,6 +700,7 @@ function InitCharacterSelect()
 	csc2.txtReady = TXT_CS_READY_2
 	csc2.sprCrabs = SPR_CS_CRABS_2
 	csc2.sprTxtBack = SPR_CS_TXT_BACK_2
+	csc2.sprEvil = SPR_CS_EVILSWITCH_2
 	
 	InitCharacterSelectController(csc1)
 	
@@ -607,9 +714,59 @@ function InitCharacterSelect()
 	LoadSpriteExpress(SPR_MENU_BACK, "ui/mainmenu.png", 140, 140, 0, 0, 3)
 	SetSpriteMiddleScreen(SPR_MENU_BACK)
 	AddButton(SPR_MENU_BACK)
-	if dispH then IncSpriteY(SPR_MENU_BACK, -200)
+	if dispH then IncSpriteY(SPR_MENU_BACK, -150)
 	
-	PlayMusicOGGSP(currentCharacterMusic, 1)
+	//Making the game-altering buttons
+	opSize = 110
+	
+	//The button that will speed the game up, when active
+	CreateSpriteExpress(SPR_CS_FASTGAME, opSize, opSize, 50, h/2-opSize/2, 5)
+	for i = 1 to 2
+		img = LoadImage("ui/speedButton" + Str(i) + ".png")
+		AddSpriteAnimationFrame(SPR_CS_FASTGAME, img)
+		trashBag.insert(img)
+	next i
+	SetSpriteFrame(SPR_CS_FASTGAME, 1+gameIsFast)
+	AddButton(SPR_CS_FASTGAME)
+	
+	//The button that will make the game harder, when active
+	CreateSpriteExpress(SPR_CS_HARDGAME, opSize, opSize, 50 + opSize*1.2, h/2-opSize/2, 5)
+	for i = 1 to 2
+		img = LoadImage("ui/hardButton" + Str(i) + ".png")
+		AddSpriteAnimationFrame(SPR_CS_HARDGAME, img)
+		trashBag.insert(img)
+	next i
+	SetSpriteFrame(SPR_CS_HARDGAME, 1+gameIsHard)
+	AddButton(SPR_CS_HARDGAME)
+	
+	//The button that will change the song for the next round
+	CreateSpriteExpress(SPR_CS_MUSICPICK, 300, 90, w/2+85, h/2-45, 5)
+	for i = 0 to 41
+		if GetFileExists("musicBanners/banner" + Str(i) + ".png") and (i > 30 or i <= musicUnlocked)
+			img = LoadImage("musicBanners/banner" + Str(i) + ".png")
+			AddSpriteAnimationFrame(SPR_CS_MUSICPICK, img)
+			trashBag.insert(img)
+		endif
+	next i
+	SetSpriteFrame(SPR_CS_MUSICPICK, 1)
+	AddButton(SPR_CS_MUSICPICK)
+	
+	if dispH
+		//Adjusting the unlockable buttons for the horizontal desktop
+		for i = SPR_CS_FASTGAME to SPR_CS_MUSICPICK
+			SetSpriteMiddleScreenX(i)
+		next i
+		SetSpriteY(SPR_CS_MUSICPICK, 10)
+		SetSpriteY(SPR_CS_FASTGAME, h/2)
+		SetSpriteY(SPR_CS_HARDGAME, h/2+opSize*1.2)
+		
+	endif
+	
+	if spType = STORYMODE or speedUnlock = 0 then IncSpriteY(SPR_CS_FASTGAME, 9999)
+	if spType = STORYMODE or hardBattleUnlock = 0 then IncSpriteY(SPR_CS_HARDGAME, 9999)
+	if spType = STORYMODE or musicBattleUnlock = 0 then IncSpriteY(SPR_CS_MUSICPICK, 9999)
+	
+	PlayMusicOGGSP(characterMusic, 1)
 	PlayMusicOGGSP(fireMusic, 1)
 	SetMusicVolumeOGG(fireMusic, 20*volumeM/100)
 	
@@ -641,6 +798,7 @@ function ChangeCrabs(csc ref as CharacterSelectController, dir as integer, start
 		SetSpriteVisible(csc.sprLeftArrow, 0)
 		SetSpriteVisible(csc.sprRightArrow, 0)
 		SetSpriteVisible(csc.sprReady, 0)
+		if spType <> STORYMODE then SetSpriteVisible(csc.sprEvil, 0)
 		
 		//The change of the crab is done up here to make the glide work
 		good = 0
@@ -648,12 +806,18 @@ function ChangeCrabs(csc ref as CharacterSelectController, dir as integer, start
 			csc.crabSelected = csc.crabSelected + dir
 			if GetSpriteGroup(csc.sprCrabs + csc.crabSelected) = 0 then good = 1 
 		endwhile
-		
+		if spType <> STORYMODE
+			if p = 1 then PlayVoice(voice1, Mod(csc.crabSelected, 6)+1, (csc.crabSelected)/6, 0)
+			if p = -1 then PlayVoice(voice2, Mod(csc.crabSelected, 6)+1, (csc.crabSelected)/6, 0)
+		else
+			SetCrabFromChapter(csc.crabSelected+1)
+			PlayVoice(voice1, crab1Type, crab1Alt, 0)
+		endif
 		//Now that we've changed the selected crab, we're going to update the game screen:
 		
 		//FIRST: Loading in the high def crab images, if they aren't in already
 		//Only unfortunate thing is that we can't reuse images from one side into another side; if memory becomes an issue, we'll do this
-		if GetSpriteFrameCount(csc.sprCrabs + csc.crabSelected) <> 12 - 6*spActive
+		if GetSpriteFrameCount(csc.sprCrabs + csc.crabSelected) < 12 - 6*spActive
 			SetFolder("/media/art")
 			if spActive
 				curChapter = csc.crabSelected+1
@@ -793,6 +957,7 @@ function SetArrowVisibility(csc ref as CharacterSelectController)
 			SetSpriteVisible(csc.sprRightArrow, 1)
 		endif
 		//SetSpriteVisible(csc.sprReady, 1)
+		SetSpriteVisible(csc.sprEvil, 1)
 	else
 		if csc.CrabSelected <> 0
 			SetSpriteVisible(csc.sprLeftArrow, 1)
@@ -809,6 +974,16 @@ function SetArrowVisibility(csc ref as CharacterSelectController)
 			SetSpriteVisible(csc.sprRightArrow, 1)
 		endif
 		SetSpriteVisible(csc.sprReady, 1)
+		
+		SetSpriteVisible(csc.sprEvil, 0)
+		SetSpriteFrame(csc.sprEvil, 1)
+		if evilUnlock
+			if csc.CrabSelected = 0 then SetSpriteVisible(csc.sprEvil, 1)
+			if csc.CrabSelected = 18 then SetSpriteVisible(csc.sprEvil, 1)
+			if csc.CrabSelected = 21 then SetSpriteVisible(csc.sprEvil, 1)
+			if csc.CrabSelected = 23 then SetSpriteVisible(csc.sprEvil, 1)
+		endif
+		if spType = STORYMODE and csc.player = 1 then SetSpriteVisible(csc.sprEvil, 1)
 	endif
 endfunction
 
@@ -828,6 +1003,7 @@ function SelectCrab(csc ref as CharacterSelectController)
 	//SetSpriteVisible(csc.sprReady, 0)
 	SetSpriteVisible(csc.sprLeftArrow, 0)
 	SetSpriteVisible(csc.sprRightArrow, 0)
+	SetSpriteVisible(csc.sprEvil, 0)
 	
 	if spType <> STORYMODE then PlayTweenSprite(tweenSprFadeOut, csc.sprReady, 0)
 	if spType <> STORYMODE then PlayTweenText(tweenTxtFadeIn, csc.txtReady, 0)
@@ -835,7 +1011,7 @@ function SelectCrab(csc ref as CharacterSelectController)
 	
 	
 	//Text gets bigger to show that a selection has been locked in
-	if csc.crabSelected <> 1 then SetTextSize(csc.txtCrabName, GetTextSize(csc.txtCrabName) + 10)
+	if csc.crabSelected <> 1 and csc.crabSelected <> 15 then SetTextSize(csc.txtCrabName, GetTextSize(csc.txtCrabName) + 10)
 	
 	csc.ready = 1
 	
@@ -853,7 +1029,7 @@ function UnselectCrab(csc ref as CharacterSelectController)
 	PlaySprite(csc.sprReady, 9+csc.player, 1, 7+8*(csc.player-1), 14+8*(csc.player-1))
 	
 	//Text gets smaller again
-	if csc.crabSelected <> 1 then SetTextSize(csc.txtCrabName, GetTextSize(csc.txtCrabName) - 10)
+	if csc.crabSelected <> 1 and csc.crabSelected <> 15 then SetTextSize(csc.txtCrabName, GetTextSize(csc.txtCrabName) - 10)
 	
 	csc.ready = 0
 	
@@ -863,6 +1039,50 @@ endfunction
 function DoCharacterSelectController(csc ref as CharacterSelectController)
 
 	if not csc.ready
+		if spType <> STORYMODE
+			if ButtonMultitouchEnabled(csc.sprEvil) and csc.stage = 2 and GetSpriteVisible(csc.sprEvil)
+				SetSpriteFrame(csc.sprEvil, Mod(GetSpriteCurrentFrame(csc.sprEvil), 2)+1)
+				if csc.player = 1 then myEvil = Mod(crab1Evil+1, 2)
+				if csc.player = 1 then crab1Evil = Mod(crab1Evil+1, 2)
+				if csc.player = 2 then myEvil = Mod(crab2Evil+1, 2)
+				if csc.player = 2 then crab2Evil = Mod(crab2Evil+1, 2)
+				
+				if GetSpriteFrameCount(csc.sprCrabs + csc.crabSelected) <> 18 - 6*spActive
+					SetFolder("/media/art")
+					crabRefType = Mod(csc.crabSelected, 6)+1
+					crabRefAlt = (csc.crabSelected)/6
+					for i = 1 to 6
+						img = LoadImageResizedR("crab" + str(crabRefType) + AltStr(crabRefAlt) + "2select" + Str(i) + ".png", .8)
+						if img <> 0
+							AddSpriteAnimationFrame(csc.sprCrabs + csc.crabSelected, img)
+							trashBag.insert(img)
+						endif
+					next i
+				endif
+				if crabRefType = 1 and crabRefAlt = 0 then SetTextString(csc.txtCrabName, "CRIXEL")
+				if crabRefType = 1 and crabRefAlt = 3 then SetTextString(csc.txtCrabName, "BETA CRAB")
+				if crabRefType = 4 and crabRefAlt = 3 then SetTextString(csc.txtCrabName, "DEVIL CRAB")
+				if myEvil
+					PlaySprite(csc.sprCrabs + csc.crabSelected, 18, 1, 13, 18)
+				else
+					PlaySprite(csc.sprCrabs + csc.crabSelected, 18, 1, 7, 12)
+					SetTextString(csc.txtCrabName, crabNames[csc.crabSelected+1])
+				endif
+				if csc.player = 1 then PlayVoice(voice1, Mod(csc.crabSelected, 6)+1, (csc.crabSelected)/6, crab1Evil)
+				if csc.player = 2 then PlayVoice(voice2, Mod(csc.crabSelected, 6)+1, (csc.crabSelected)/6, crab2Evil)
+			endif
+		else
+			//Story Easy/Normal
+			if ButtonMultitouchEnabled(csc.sprEvil)
+				if storyEasy
+					storyEasy = 0
+					SetSpriteFrame(csc.sprEvil, 1)
+				else
+					storyEasy = 1
+					SetSpriteFrame(csc.sprEvil, 2)
+				endif
+			endif
+		endif
 		
 		if spActive = 1 and csc.stage = 1
 			SetVisibleCharacterUI(2, csc)
@@ -872,16 +1092,19 @@ function DoCharacterSelectController(csc ref as CharacterSelectController)
 			ClearMultiTouch()
 		endif
 		
+		
+		
 		//The 6-crab view
 		if csc.stage = 1
 			for i = 0 to NUM_CRABS-1 + spActive*STORY_CS_BONUS
 				spr = csc.sprCrabs + i
 				if ButtonMultitouchEnabled(spr) and GetSpriteVisible(spr) and GetSpriteGroup(spr) = 0
+					csc.crabSelected = i-1
 					for j = 0 to NUM_CRABS-1 + spActive*STORY_CS_BONUS
 						StopTweenSprite(csc.sprCrabs + j, csc.sprCrabs + j)
+						if j <> csc.crabSelected+1 and dispH then SetSpriteColorAlpha(csc.sprCrabs + j, 0)
 					next j
 					SetVisibleCharacterUI(2, csc)
-					csc.crabSelected = i-1
 					PlaySoundR(arrowS, 40)
 					ChangeCrabs(csc, 1, 1)
 					csc.stage = 2
@@ -890,6 +1113,9 @@ function DoCharacterSelectController(csc ref as CharacterSelectController)
 					i = NUM_CRABS + spActive*STORY_CS_BONUS
 					ClearMultiTouch()
 					i = NUM_CRABS + spActive*STORY_CS_BONUS
+				endif
+				if ButtonMultitouchEnabled(spr) and GetSpriteVisible(spr) and GetSpriteGroup(spr) <> 0
+					Popup(csc.player, 0)
 				endif
 			next i
 		
@@ -907,10 +1133,15 @@ function DoCharacterSelectController(csc ref as CharacterSelectController)
 			elseif (ButtonMultitouchEnabled(csc.sprLeftArrow) or (GetMultitouchPressedTopRight() and csc.player = 2 and dispH = 0) or (GetMultitouchPressedBottomLeft() and csc.player = 1 and dispH = 0)) and csc.crabSelected > 0
 				PlaySoundR(arrowS, 100)
 				ChangeCrabs(csc, -1, 1)
+				if csc.player = 1 then crab1Evil = 0
+				if csc.player = 2 then crab2Evil = 0
 			// Scroll right
 			elseif (ButtonMultitouchEnabled(csc.sprRightArrow) or (GetMultitouchPressedTopLeft() and csc.player = 2 and dispH = 0) or (GetMultitouchPressedBottomRight() and csc.player = 1 and dispH = 0)) and ((csc.crabSelected < lastChar and spType <> STORYMODE) or (csc.crabSelected < Min(clearedChapter, finalChapter-1) and spType = STORYMODE))
 				PlaySoundR(arrowS, 100)
 				ChangeCrabs(csc, 1, 1)
+				if csc.player = 1 then crab1Evil = 0
+				if csc.player = 2 then crab2Evil = 0
+				
 			endif
 			
 			if spType = STORYMODE
@@ -945,12 +1176,19 @@ function DoCharacterSelectController(csc ref as CharacterSelectController)
 				for j = 0 to NUM_CRABS-1 + spActive*STORY_CS_BONUS
 					PlayTweenSprite(csc.sprCrabs + j, csc.sprCrabs + j, 0.003*j)
 					//if j < unlockedCrab then SetSpriteColorAlpha(csc.sprCrabs + j, 255)
-					SetSpriteColorAlpha(csc.sprCrabs + j, 255)
+					//SetSpriteColorAlpha(csc.sprCrabs + j, 255)
+					if j <> csc.crabSelected and dispH then PlayTweenSprite(tweenSprFadeIn, csc.sprCrabs + j, 0)
 				next j
 				PlaySoundR(arrowS, 100)
 				csc.stage = 1
 				if csc.player = 1 then TurnOffSelect()
 				if csc.player = 2 then TurnOffSelect2()
+				SetSpriteVisible(csc.sprEvil, 0)
+				SetSpriteFrame(csc.sprEvil, 1)
+				PlaySprite(csc.sprCrabs + csc.crabSelected, 18, 1, 7, 12)
+				if csc.player = 1 then crab1Evil = 0
+				if csc.player = 2 then crab2Evil = 0
+				
 				//i = NUM_CRABS + spActive*STORY_CS_BONUS
 			endif
 			//next i
@@ -958,7 +1196,7 @@ function DoCharacterSelectController(csc ref as CharacterSelectController)
 	endif
 		
 	//Slowly lighting the backgrounds
-	SetSpriteColorAlpha(csc.sprBG, 205+abs(50*cos(90*csc.player + 80*GetMusicPositionOGG(currentCharacterMusic))))
+	SetSpriteColorAlpha(csc.sprBG, 205+abs(50*cos(90*csc.player + 80*GetMusicPositionOGG(characterMusic))))
 	IncSpriteAngle(csc.sprBGB, 1.8*fpsr#)
 	if spActive then IncSpriteAngle(SPR_CS_BG_2, -0.8*fpsr#)
 	//IncSpriteAngle(csc.sprBGB, 6*fpsr#)
@@ -971,6 +1209,150 @@ function DoCharacterSelectController(csc ref as CharacterSelectController)
 			dec csc.glideFrame
 		endif
 	endif
+	
+endfunction
+
+// Game loop for the AI screen
+function DoAISelectController(csc ref as CharacterSelectController)
+	
+	//The 6-crab view
+	for i = 0 to NUM_CRABS-1
+		spr = csc.sprCrabs + i
+		if ButtonMultitouchEnabled(spr) and GetSpriteVisible(spr) and GetSpriteGroup(spr) = 0
+			
+			//The one time, first selection stuff
+			if GetTextString(csc.txtCrabName) <> "Set Difficulty:"
+				for j = 0 to NUM_CRABS-1
+					PlayTweenSprite(csc.sprCrabs + j, csc.sprCrabs + j, 0)
+				next j
+				SetTextColorAlpha(csc.txtCrabName, 0)
+				
+				if dispH
+					//Desktop
+					SetTextExpress(csc.txtCrabName, "Set Difficulty:", 60, fontDescI, 0, 0, 0, 5, -17)
+					SetTextPosition(csc.txtCrabName, w/2 + 65, h - 100)
+				else
+					//Mobile
+					SetTextExpress(csc.txtCrabName, "Set Difficulty:", 80, fontDescI, 0, 0, 0, 5, -21)
+					SetTextPosition(csc.txtCrabName, 35, h/2 - 175)
+				
+				endif
+				PlayTweenText(tweenTxtFadeIn, csc.txtCrabName, .2)
+				
+				IncSpriteY(csc1.sprReady, -900)
+				TurnOffSelect()
+				
+				sSq = 50
+				if dispH = 0 then sSq = 60
+				SetSpriteExpress(csc.sprLeftArrow, sSq, sSq, GetTextX(csc.txtCrabName)+330, GetTextY(csc.txtCrabName)+10, 5)
+				if dispH = 0 then IncSpriteX(csc.sprLeftArrow, 130)
+				SetSpriteExpress(csc.sprRightArrow, sSq, sSq, GetSpriteX(csc.sprLeftArrow)+180, GetSpriteY(csc.sprLeftArrow), 5)
+				SetSpriteVisible(csc.sprLeftArrow, 1)
+				SetSpriteVisible(csc.sprRightArrow, 1)
+				
+				
+				SetSpriteExpress(csc.sprTxtBack, 540/5, 742/5, GetSpriteX(csc.sprLeftArrow)+15+sSq, GetSpriteY(csc.sprLeftArrow)-70, 5)
+				SetSpriteVisible(csc.sprTxtBack, 1)
+				SetSpriteColorByCycle(csc.sprTxtBack, 260-spAIDiff*10)
+				if dispH = 0 then IncSpriteX(csc.sprTxtBack, -10)
+				
+				SetSpriteColorAlpha(csc.sprLeftArrow, 0)
+				SetSpriteColorAlpha(csc.sprRightArrow, 0)
+				SetSpriteColorAlpha(csc.sprTxtBack, 0)
+				PlayTweenSprite(tweenSprFadeIn, csc.sprLeftArrow, .2)
+				PlayTweenSprite(tweenSprFadeIn, csc.sprRightArrow, .2)
+				PlayTweenSprite(tweenSprFadeIn, csc.sprTxtBack, .2)
+				
+				
+				
+			endif
+			
+			PlaySoundR(arrowS, 40)
+			PlaySoundR(buttonSound, 40)
+			
+			if GetSpriteExists(csc.sprCrabs + csc.crabSelected-1) then PlaySprite(csc.sprCrabs + csc.crabSelected-1, 18, 1, 1, 6)
+			
+			csc.crabSelected = i+1
+			crab2Type = Mod(csc.crabSelected-1, 6) + 1
+			crab2Alt = (csc.crabSelected-1)/6
+			
+			SetSpriteVisible(csc.sprEvil, 0)
+			SetSpriteFrame(csc.sprEvil, 1)
+			crab2Evil = 0
+			if csc.crabSelected = 1 or csc.crabSelected = 19 or csc.crabSelected = 22 or csc.crabSelected = 24 then SetSpriteVisible(csc.sprEvil, 1)
+			
+			//Making all other crabs darker
+			for k = 0 to NUM_CRABS-1
+				if k <> i
+					SetSpriteColor(csc.sprCrabs + k, 140, 140, 140, 255)
+					SetSpriteDepth(csc.sprCrabs + k, 4)
+				endif
+				if k = i
+					SetSpriteColor(csc.sprCrabs + k, 255, 255, 255, 255)
+					SetSpriteDepth(csc.sprCrabs + k, 3)
+				endif
+			next k
+			
+			
+			i = NUM_CRABS
+			ClearMultiTouch()
+		endif
+	next i
+	
+	if ButtonMultitouchEnabled(csc.sprEvil) and GetSpriteVisible(csc.sprEvil)
+		if crab2Evil
+			crab2Evil = 0
+			SetSpriteFrame(csc.sprEvil, 1)
+			PlaySprite(csc.sprCrabs + csc.crabSelected-1, 18, 1, 1, 6)
+		else
+			crab2Evil = 1
+			SetSpriteFrame(csc.sprEvil, 2)
+			if GetSpriteFrameCount(csc.sprCrabs + csc.crabSelected-1) < 12
+				SetFolder("/media/art")
+				crabRefType = Mod(csc.crabSelected-1, 6)+1
+				crabRefAlt = (csc.crabSelected-1)/6
+				for i = 1 to 6
+					img = LoadImageResizedR("crab" + str(crabRefType) + AltStr(crabRefAlt) + "2select" + Str(i) + ".png", .5)
+					if img <> 0
+						AddSpriteAnimationFrame(csc.sprCrabs + csc.crabSelected-1, img)
+						trashBag.insert(img)
+					endif
+				next i
+			endif
+			PlaySprite(csc.sprCrabs + csc.crabSelected-1, 18, 1, 7, 12)
+		endif
+		
+	endif
+	
+	//Print(GetSpriteFrameCount(csc.sprCrabs + csc.crabSelected-1))
+	
+	//Fun recoloring of the difficulty number, only animating
+	if spAIDiff = 9 then SetSpriteColorByCycleC(csc.sprTxtBack, 720.0*GetMusicPositionOGG(characterMusic)/(11-spAIDiff))
+	if spAIDiff > 9 then SetSpriteColorByCycleA(csc.sprTxtBack, 720.0*GetMusicPositionOGG(characterMusic)/(11-spAIDiff))
+	//SetTextColor(TXT_SP_DANGER, 255, 160 - 10*(gameDifficulty1) + (0.0+10*gameDifficulty1)*sin(gameTimer#*(5+gameDifficulty1)), 160 - 10*(gameDifficulty1) + (0.0+10*gameDifficulty1)*sin(gameTimer#*(5+gameDifficulty1)), 255)
+	//Like above line: let's make this RED at higher difficulties
+	
+	
+	//Repurpose the select buttons, and make 
+	if ButtonMultitouchEnabled(csc.sprLeftArrow)
+		PlaySoundR(arrowS, 100)
+		spAIDiff = Max(1, spAIDiff-1)
+		SetSpriteFrame(csc.sprTxtBack, spAIDiff)
+		SetSpriteColorByCycle(csc.sprTxtBack, 260-spAIDiff*10)	//Offsetting based on the total
+	elseif ButtonMultitouchEnabled(csc.sprRightArrow)
+		PlaySoundR(arrowS, 100)
+		spAIDiff = Min(9+unlockAIHard, spAIDiff+1)
+		SetSpriteFrame(csc.sprTxtBack, spAIDiff)
+		SetSpriteColorByCycle(csc.sprTxtBack, 260-spAIDiff*10)
+	endif
+		
+	//Slowly lighting the backgrounds
+	SetSpriteColorAlpha(csc.sprBG, 205+abs(50*cos(90*csc.player + 80*GetMusicPositionOGG(characterMusic))))
+	IncSpriteAngle(csc.sprBGB, 1.8*fpsr#)
+	if spActive then IncSpriteAngle(SPR_CS_BG_2, -0.8*fpsr#)
+	//IncSpriteAngle(csc.sprBGB, 6*fpsr#)
+	
+
 	
 endfunction
 
@@ -1011,7 +1393,8 @@ function DoCharacterSelect()
 	endif
 	
 	DoCharacterSelectController(csc1)
-	if spActive = 0 then DoCharacterSelectController(csc2)
+	if spActive = 0 and spType <> AIBATTLE then DoCharacterSelectController(csc2)
+	if spType = AIBATTLE then DoAISelectController(csc2)
 	
 	doJit = 0
 	inc TextJitterTimer#, GetFrameTime()
@@ -1034,30 +1417,56 @@ function DoCharacterSelect()
 	else
 		txt = csc1.txtReady
 		for i = 0 to GetTextLength(txt)
-			SetTextCharY(txt, GetTextLength(txt)-i, 58.0 - 8.0*abs(8*cos(GetMusicPositionOGG(currentCharacterMusic)*200+i*10 )))	//Code from SnowTunes
-			if dispH then SetTextCharY(txt, GetTextLength(txt)-i, 28.0 - 5.0*abs(8*cos(GetMusicPositionOGG(currentCharacterMusic)*200+i*10 )))	//Code from SnowTunes
+			SetTextCharY(txt, GetTextLength(txt)-i, 58.0 - 8.0*abs(8*cos(GetMusicPositionOGG(characterMusic)*200+i*10 )))	//Code from SnowTunes
+			if dispH then SetTextCharY(txt, GetTextLength(txt)-i, 28.0 - 5.0*abs(8*cos(GetMusicPositionOGG(characterMusic)*200+i*10 )))	//Code from SnowTunes
 		next i		
 	endif
 	
 	if spActive = 0
 		if csc2.ready = 0 and doJit
 			txt = csc2.txtCrabName
-			for i = 0 to GetTextLength(txt)
-				SetTextCharY(txt, i, -102 + 102*dispH -1 * (jitterNum + csc2.glideFrame) + Random(0, (jitterNum + csc2.glideFrame)*2))
-				if csc2.stage = 1 and i > 12 then SetTextCharY(csc2.txtCrabName, i, -102 + 102*dispH -1 * (jitterNum + csc2.glideFrame) + Random(0, (jitterNum + csc2.glideFrame)*2) - (1-dispH*2)*GetTextSize(txt))
-				SetTextCharAngle(txt, i, 180*(1-dispH) - 1*(jitterNum + csc2.glideFrame) + Random(0, jitterNum + csc2.glideFrame)*2)
-			next i
+			aiB = 0
+			if dispH = 0 and spType = AIBATTLE then aiB = 1
+			if ((aiB = 0 or aiB = 1 or dispH) and GetTextString(csc2.txtCrabName) <> "Set Difficulty:")
+				for i = 0 to GetTextLength(txt)
+					SetTextCharY(txt, i, -102 + 102*dispH + 102*aiB -1 * (jitterNum + csc2.glideFrame) + Random(0, (jitterNum + csc2.glideFrame)*2))
+					if csc2.stage = 1 and i > 12 then SetTextCharY(csc2.txtCrabName, i, -102 + 102*dispH + 102*aiB -1 * (jitterNum + csc2.glideFrame) + Random(0, (jitterNum + csc2.glideFrame)*2) - (1-dispH*2-aiB*2)*GetTextSize(txt))
+					SetTextCharAngle(txt, i, 180*(1-dispH-aiB) - 1*(jitterNum + csc2.glideFrame) + Random(0, jitterNum + csc2.glideFrame)*2)
+				next i
+			endif
 		else
 			txt = csc2.txtReady
 			for i = 0 to GetTextLength(txt)
-				SetTextCharY(txt, GetTextLength(txt)-i, -140.0 + 8.0*abs(8*cos(GetMusicPositionOGG(currentCharacterMusic)*200+i*10 )))	//Code from SnowTunes
-				if dispH then SetTextCharY(txt, GetTextLength(txt)-i, 28.0 - 5.0*abs(8*cos(GetMusicPositionOGG(currentCharacterMusic)*200+i*10 )))	//Code from SnowTunes
+				SetTextCharY(txt, GetTextLength(txt)-i, -140.0 + 8.0*abs(8*cos(GetMusicPositionOGG(characterMusic)*200+i*10 )))	//Code from SnowTunes
+				if dispH then SetTextCharY(txt, GetTextLength(txt)-i, 28.0 - 5.0*abs(8*cos(GetMusicPositionOGG(characterMusic)*200+i*10 )))	//Code from SnowTunes
 			next i
 		endif
 	endif
 	
-	//Spinning the main menu button
+	//Spinning the circular buttons
 	IncSpriteAngle(SPR_MENU_BACK, 1*fpsr#)
+	IncSpriteAngle(SPR_CS_FASTGAME, 1.2*fpsr#)
+	IncSpriteAngle(SPR_CS_HARDGAME, -1.2*fpsr#)
+	
+	if ButtonMultitouchEnabled(SPR_CS_FASTGAME)
+		gameIsFast = Mod(gameIsFast+1, 2)
+		SetSpriteFrame(SPR_CS_FASTGAME, 1+gameIsFast)
+	endif
+	
+	if ButtonMultitouchEnabled(SPR_CS_HARDGAME)
+		gameIsHard = Mod(gameIsHard+1, 2)
+		SetSpriteFrame(SPR_CS_HARDGAME, 1+gameIsHard)
+	endif
+	
+	if ButtonMultitouchEnabled(SPR_CS_MUSICPICK)
+		if GetSpriteCurrentFrame(SPR_CS_MUSICPICK) = 1 and gameSongSet <> 0
+			//This is the first frame selected
+		else
+			inc gameSongSet, 1
+		endif
+		if gameSongSet+1 > GetSpriteFrameCount(SPR_CS_MUSICPICK) then gameSongSet = 0
+		SetSpriteFrame(SPR_CS_MUSICPICK, 1+gameSongSet)
+	endif
 	
 	if ButtonMultitouchEnabled(SPR_MENU_BACK) or inputExit
 		state = START
@@ -1067,6 +1476,7 @@ function DoCharacterSelect()
 	endif
 	
 	if csc1.ready and csc2.ready
+		gameSongSet = GetSpriteCurrentFrame(SPR_CS_MUSICPICK)-1
 		spActive = 0
 		spType = 0
 		state = GAME
@@ -1077,10 +1487,19 @@ function DoCharacterSelect()
 	
 	//Going to the story mode!
 	if csc1.ready and spActive
-		if ButtonMultitouchEnabled(csc1.sprReady) and GetSpriteVisible(csc1.sprReady) then curScene = Mod(highestScene-1, 4)+1
+		if GetSpriteVisible(csc1.sprReady) then curScene = Mod(highestScene-1, 4)+1
 		spActive = 1
 		spType = STORYMODE
 		state = STORY
+		TransitionStart(Random(1,lastTranType))
+	endif
+	
+	//Going to the AI Battle
+	if csc1.ready and spType = AIBATTLE
+		gameSongSet = GetSpriteCurrentFrame(SPR_CS_MUSICPICK)-1
+		spType = AIBATTLE
+		SetAIDifficulty(spAIDiff, 11 - spAIDiff, 4-(spAIDiff/3), 11- spAIDiff, spAIDiff)
+		state = GAME
 		TransitionStart(Random(1,lastTranType))
 	endif
 	
@@ -1096,6 +1515,7 @@ endfunction state
 function SetVisibleCharacterUI(stage, csc ref as CharacterSelectController)
 	
 	if stage = 1 then SetTextString(csc.txtCrabName, "CHOOSE YOUR" + chr(13)+chr(10) + "CRUSTACEAN!")
+	if csc.player = 2 and spType = AIBATTLE then SetTextString(csc.txtCrabName, "CHOOSE YOUR" + chr(13)+chr(10) + "OPPONENT:")
 	
 	SetSpriteVisible(csc.sprReady, stage-1)
 	SetSpriteVisible(csc.sprLeftArrow, stage-1)
@@ -1119,6 +1539,7 @@ function CleanupCharacterSelectController(csc ref as CharacterSelectController)
 	DeleteText(csc.txtCrabStats)
 	DeleteText(csc.txtReady)
 	DeleteSprite(csc.sprTxtBack)
+	DeleteSprite(csc.sprEvil)
 	for spr = csc.sprCrabs to csc.sprCrabs + NUM_CRABS-1 + STORY_CS_BONUS
 		if GetSpriteExists(spr) then DeleteSprite(spr)
 		if GetTweenExists(spr) then DeleteTween(spr)
@@ -1140,15 +1561,21 @@ function ExitCharacterSelect()
 		DeleteText(TXT_CS_CRAB_DESC_2)
 		for i = 1 to 4
 			spr = SPR_SCENE1 - 1 + i
+			DeleteImage(GetSpriteImageID(spr))
 			if GetSpriteExists(spr) then DeleteSprite(spr)
 			if GetTextExists(spr) then DeleteText(spr)
 		next i
 		DeleteText(TXT_SCENE)
+		
 	endif
 	
 	DeleteSprite(SPR_MENU_BACK)
 	
-	if GetMusicPlayingOGGSP(currentCharacterMusic) then StopMusicOGGSP(currentCharacterMusic)
+	DeleteSprite(SPR_CS_FASTGAME)
+	DeleteSprite(SPR_CS_HARDGAME)
+	DeleteSprite(SPR_CS_MUSICPICK)
+	
+	if GetMusicPlayingOGGSP(characterMusic) then StopMusicOGGSP(characterMusic)
 	if GetMusicPlayingOGGSP(fireMusic) then StopMusicOGGSP(fireMusic)
 	
 	characterSelectStateInitialized = 0

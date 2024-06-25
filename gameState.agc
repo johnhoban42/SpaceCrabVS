@@ -16,6 +16,10 @@ function InitGame()
 		
 	gameDifficulty1 = 1
 	gameDifficulty2 = 1
+	if gameIsHard and spType <> STORYMODE
+		gameDifficulty1 = 4
+		gameDifficulty2 = 4
+	endif
 	CreateGame1()
 	CreateGame2()
 	LoadJumpSounds()
@@ -40,17 +44,17 @@ function InitGame()
 	LoadSpriteExpress(pauseButton, "pause.png", 100, 100, 0, 0, 9)
 	SetSpriteMiddleScreen(pauseButton)
 	
-	LoadSpriteExpress(playButton, "resume.png", 185, 185, 0, 0, 1)
+	LoadSpriteExpress(playButton, "resume.png", 185, 185, 0, 0, 2)
 	SetSpriteMiddleScreen(playButton)
 	SetSpriteVisible(playButton, 0)
 	
-	LoadSpriteExpress(exitButton, "crabselect.png", 140, 140, 0, 0, 1)
+	LoadSpriteExpress(exitButton, "crabselect.png", 140, 140, 0, 0, 2)
 	SetSpriteMiddleScreen(exitButton)
 	if dispH = 0 then IncSpriteX(exitButton, 270)
 	if dispH then IncSpriteY(exitButton, 220)
 	SetSpriteVisible(exitButton, 0)
 	
-	LoadSpriteExpress(mainmenuButton, "mainmenu.png", 140, 140, 0, 0, 1)
+	LoadSpriteExpress(mainmenuButton, "mainmenu.png", 140, 140, 0, 0, 2)
 	SetSpriteMiddleScreen(mainmenuButton)
 	if dispH = 0 then IncSpriteX(mainmenuButton, -270)
 	if dispH then IncSpriteY(mainmenuButton, -220)
@@ -62,7 +66,12 @@ function InitGame()
 	AddButton(mainmenuButton)
 	
 	difficultyMax = 7
-	difficultyBar = 9 - aiActive*(knowingAI/3)
+	diffMod = 0
+	if spType = STORYMODE or spType = AIBATTLE then diffMod = 1
+	difficultyBar = 9 - diffMod*(knowingAI/3)
+	
+	if GetTextExists(TXT_SP_SCORE) then SetTextDepth(TXT_SP_SCORE, 5)
+	if GetTextExists(TXT_SP_DANGER) then SetTextDepth(TXT_SP_DANGER, 5)
 	
 	if spType = MIRRORMODE and dispH
 		SetTextPosition(TXT_SP_SCORE, w/2 - 120, 40)
@@ -244,9 +253,26 @@ function DoGame()
 		IncSpriteAngle(exitButton, -fpsr#)
 		IncSpriteAngle(mainmenuButton, -fpsr#)
 		IncSpriteAngle(playButton, fpsr#)
+		IncSpriteAngle(SPR_SETTINGS, fpsr#)
+		
+		ProcessPopup()
+		
+		if ButtonMultitouchEnabled(SPR_SETTINGS) then StartSettings()
+		if dispH
+			if ButtonMultitouchEnabled(SPR_CONTROLS)
+				if spType = 0
+					Popup(1, -1)
+					Popup(2, -1)
+				else
+					Popup(MIDDLE, -1)
+				endif
+			endif
+		endif
 		
 		if ButtonMultitouchEnabled(playButton) or inputExit
 			paused = 0
+			DeletePopup1()
+			DeletePopup2()
 			UnpauseGame()
 		endif
 		
@@ -276,6 +302,7 @@ function DoGame()
 	
 	if state = RESULTS
 		EndGameScene()
+		
 		if storyActive
 			//This is the case of ending story mode in a VS battle
 			state = STORY
@@ -488,6 +515,7 @@ function EndMirrorScene()
 	endStage = 0
 	
 	//Setup for the scene
+	SetFolder("/media")
 	LoadSprite(bgHit1, "envi/bg0.png")
 	SetSpriteSizeSquare(bgHit1, w)
 	if crab1Deaths = 1
@@ -727,23 +755,19 @@ function ExitGame()
 		if spType = MIRRORMODE
 			if spHighScore < spScore
 				spHighScore = spScore
-				if crab1Type = 1 then spHighCrab$ = "Space Crab"
-				if crab1Type = 2 then spHighCrab$ = "Ladder Wizard"
-				if crab1Type = 3 then spHighCrab$ = "Top Crab"
-				if crab1Type = 4 then spHighCrab$ = "Rave Crab"
-				if crab1Type = 5 then spHighCrab$ = "Chrono Crab"
-				if crab1Type = 6 then spHighCrab$ = "Ninja Crab"
+				spHighCrab$ = crabNames[crab1Type + crab1Alt*6]
+				if crab1Evil and crab1Type = 1 and crab1Alt = 0 then spHighCrab$ = "CRIXEL"
+				if crab1Evil and crab1Type = 1 and crab1Alt = 3 then spHighCrab$ = "BETA CRAB"
+				if crab1Evil and crab1Type = 4 and crab1Alt = 3 then spHighCrab$ = "DEVIL CRAB"
 				SaveGame()
 			endif
 		elseif spType = CLASSIC
 			if spHighScoreClassic < spScore
 				spHighScoreClassic = spScore
-				if crab1Type = 1 then spHighCrabClassic$ = "Space Crab"
-				if crab1Type = 2 then spHighCrabClassic$ = "Ladder Wizard"
-				if crab1Type = 3 then spHighCrabClassic$ = "Top Crab"
-				if crab1Type = 4 then spHighCrabClassic$ = "Rave Crab"
-				if crab1Type = 5 then spHighCrabClassic$ = "Chrono Crab"
-				if crab1Type = 6 then spHighCrabClassic$ = "Ninja Crab"
+				spHighCrabClassic$ = crabNames[crab1Type + crab1Alt*6]
+				if crab1Evil and crab1Type = 1 and crab1Alt = 0 then spHighCrabClassic$ = "CRIXEL"
+				if crab1Evil and crab1Type = 1 and crab1Alt = 3 then spHighCrabClassic$ = "BETA CRAB"
+				if crab1Evil and crab1Type = 4 and crab1Alt = 3 then spHighCrabClassic$ = "DEVIL CRAB"
 				SaveGame()
 			endif
 		endif
@@ -830,6 +854,7 @@ function ExitGame()
 	// Whatever we do for something like ExitGame1() and ExitGame2() will go here
 	gameStateInitialized = 0
 	
+	
 	ClearMultiTouch()
 	
 endfunction
@@ -838,12 +863,12 @@ function PauseGame()
 	
 	PlaySoundR(buttonSound, 100)
 	zoom# = GetViewZoom()
-	CreateSpriteExpress(curtainB, h/zoom#, h/zoom#, 0, 0, 2)
+	CreateSpriteExpress(curtainB, h/zoom#, h/zoom#, 0, 0, 3)
 	SetSpriteImage(curtainB, bg3I)
 	if dispH then SetSpriteSize(curtainB, w/zoom#, w/zoom#)
 	SetSpriteMiddleScreen(curtainB)
 	
-	CreateSpriteExpress(curtain, w/zoom#*1.3, h/zoom#*1.3, 0, 0, 2)
+	CreateSpriteExpress(curtain, w/zoom#*1.3, h/zoom#*1.3, 0, 0, 3)
 	SetSpriteImage(curtain, bgPI)
 	if dispH
 		SetSpriteSize(curtain, 800, 1600)
@@ -851,6 +876,11 @@ function PauseGame()
 		
 	endif
 	SetSpriteMiddleScreen(curtain)
+	
+	SetFolder("/media/ui")
+	LoadSpriteExpress(SPR_SETTINGS, "settingss1.png", 120, 120, w-135, 15, 3)
+	
+	if dispH then LoadSpriteExpress(SPR_CONTROLS, "controls.png", 217, 120, GetSpriteX(SPR_SETTINGS)-240, 15, 3)
 	
 	if spType = CLASSIC
 		IncSpriteSizeCenteredMult(curtain, GetViewZoom())
@@ -900,20 +930,35 @@ function PauseGame()
 			SetTextAngle(i, 180)
 		endif
 		
-		
 	next i
 	
 	//Making the crab title and description
-	SetTextString(pauseTitle1, crabNames[crab1Type+crab1Alt*6])
+	crab1ID = crab1Type+crab1Alt*6
+	e1Mod = 0
+	if crab1Evil and crab1Type = 1 and crab1Alt = 0 then crab1ID = 25
+	if crab1Evil and crab1Type = 1 and crab1Alt = 3 then crab1ID = 26
+	if crab1Evil and crab1Type = 4 and crab1Alt = 3
+		crab1ID = 27
+		e1Mod = 3
+	endif
+	SetTextString(pauseTitle1, crabNames[crab1ID])
 	SetTextString(pauseDesc1, crabPause1[crab1Type])
-	if spType = 0 or spType = STORY or spType = AIBATTLE then SetTextString(pauseDesc1, GetTextString(pauseDesc1) + chr(10) + chr(10) + crabPause2[crab1Type+crab1Alt*6])
+	if spType = 0 or spType = STORY or spType = AIBATTLE then SetTextString(pauseDesc1, GetTextString(pauseDesc1) + chr(10) + chr(10) + crabPause2[crab1Type+crab1Alt*6+e1Mod])
 	
-	if (spType = 0 and aiActive = 0)
+	if (spType = 0)
 		//For a multiplayer game
+		crab2ID = crab2Type+crab2Alt*6
+		e2Mod = 0
+		if crab2Evil and crab2Type = 1 and crab2Alt = 0 then crab2ID = 25
+		if crab2Evil and crab2Type = 1 and crab2Alt = 3 then crab2ID = 26
+		if crab2Evil and crab2Type = 4 and crab2Alt = 3
+			crab2ID = 27
+			e2Mod = 3
+		endif
 		SetTextY(pauseTitle2, h/2 - (GetTextY(pauseTitle1)-h/2))
 		SetTextY(pauseDesc2, h/2 - (GetTextY(pauseDesc1)-h/2))
-		SetTextString(pauseTitle2, crabNames[crab2Type+crab2Alt*6])
-		SetTextString(pauseDesc2, crabPause1[crab2Type] + chr(10) + chr(10) + crabPause2[crab2Type+crab2Alt*6])
+		SetTextString(pauseTitle2, crabNames[crab2ID])
+		SetTextString(pauseDesc2, crabPause1[crab2Type] + chr(10) + chr(10) + crabPause2[crab2Type+crab2Alt*6+e2Mod])
 	endif
 	
 	//The single player special text
@@ -1045,6 +1090,9 @@ function UnpauseGame()
 	
 	TurnOffSelect()
 	TurnOffSelect2()
+	
+	DeleteSprite(SPR_SETTINGS)
+	if dispH then DeleteSprite(SPR_CONTROLS)
 	
 	//Only playing the button sound if the game wasn't exited
 	if GetParticlesExists(11) = 0 then PlaySoundR(buttonSound, 100)
@@ -1351,7 +1399,7 @@ function ShowSpecialAnimation(crabType, crabAlt, playerNum, fast)
 		
 	next i
 	animType = 0
-	if (crabType = 3 and crabAlt = 0) or (crabType = 5 and crabAlt = 0) or (crabType = 2 and crabAlt = 2)
+	if (crabType = 5 and crabAlt = 3) or (crabType = 3 and crabAlt = 0) or (crabType = 5 and crabAlt = 0) or (crabType = 2 and crabAlt = 2) or (crabType = 6 and crabAlt = 2) or (crabType = 5 and crabAlt = 2) or (crabType = 3 and crabAlt = 2)
 		SetFolder("/media/art")
 		LoadSprite(specialSprBacker1, "crab" + str(crabType) + AltStr(crabAlt) + "attack3.png")
 		LoadSprite(specialSprBacker2, "crab" + str(crabType) + AltStr(crabAlt) + "attack3.png")
@@ -1363,10 +1411,10 @@ function ShowSpecialAnimation(crabType, crabAlt, playerNum, fast)
 		SetSpriteSizeSquare(specialSprBacker2, specSize)
 		animType = 1
 	endif
-	if (crabType = 4 and crabAlt = 0) or (crabType = 4 and crabAlt = 3) then animType = 2
+	if (crabType = 4) or (crabType = 3 and crabAlt = 3) then animType = 2
 	
 	//Offsetting the clock hands so that they rotate properly
-	if crabType = 5
+	if crabType = 5 and crabAlt = 0
 		SetSpriteOffset(specialSprFront1, specSize*700/1356.0, specSize*932/1356.0)
 		SetSpriteOffset(specialSprBack1, specSize*700/1356.0, specSize*932/1356.0)
 		SetSpriteOffset(specialSprFront2, specSize*700/1356.0, specSize*932/1356.0)
@@ -1387,10 +1435,10 @@ function ShowSpecialAnimation(crabType, crabAlt, playerNum, fast)
 	SetSpritePosition(specialSprBack2, -100 - specSize, 100 + offsetY)
 	//SetSpritePosition(specialSprBack2, -100 - specSize, 250 + offsetY)
 	
-	if (crabType = 4 and crabAlt = 0) or (crabType = 4 and crabAlt = 3)
+	if (crabType = 4) or (crabType = 3 and crabAlt = 3)
 		SetSpritePosition(specialSprBack2, -100 - specSize, 100 + offsetY - specSize*0.4)
 		SetSpritePosition(specialSprFront2, w + 100, 30 + offsetY)
-	SetSpritePosition(specialSprFront1, -100 - specSize, h - 700 - offsetY + 70)
+		SetSpritePosition(specialSprFront1, -100 - specSize, h - 700 - offsetY + 70)
 	endif
 	
 	//The text for the special
@@ -1411,6 +1459,7 @@ function ShowSpecialAnimation(crabType, crabAlt, playerNum, fast)
 		SetTextDepth(i, 1)
 		SetTextSpacing(i, -20)
 		SetTextString(i, Upper(GetSpecialName(crabType + crabAlt*6)))
+		if crabType = 4 and crabAlt = 3 and ((crab1Evil and playerNum = 1) or (crab2Evil and playerNum = 2)) then  SetTextString(i, Upper(GetSpecialName(25)))
 	next i
 	
 	
@@ -1438,7 +1487,7 @@ function ShowSpecialAnimation(crabType, crabAlt, playerNum, fast)
 			SetTextY(specialSprFront1, h/2 + GetSpriteHeight(specialSprFront1)/2)
 			SetTextSize(specialSprFront1, GetTextSize(specialSprFront2))
 		endif
-		if (crabType = 3 and crabAlt = 0) or (crabType = 5 and crabAlt = 0) or (crabType = 2 and crabAlt = 2)
+		if animType = 1
 			SetSpriteFlip(specialSprBacker1, 0, 1)
 			SetSpriteMiddleScreen(specialSprFront1)
 			SetSpriteMiddleScreen(specialSprBack1)
@@ -1513,6 +1562,16 @@ function ShowSpecialAnimation(crabType, crabAlt, playerNum, fast)
 		
 		//Top crab & Chrono crab
 		if animType = 1
+			cake = 0
+			if crabType = 5 and crabAlt = 3 then cake = 1
+			if cake
+				if dispH then SetSpriteFlip(specialSprBacker1, 1, 1)
+				MatchSpritePosition(specialSprBack1, specialSprBacker1)
+				MatchSpritePosition(specialSprFront1, specialSprBacker1)
+				MatchSpritePosition(specialSprBack2, specialSprBacker2)
+				MatchSpritePosition(specialSprFront2, specialSprBacker2)
+			endif
+			
 			if i = 1
 				if dispH = 0 and spType <> STORYMODE
 					DrawPolar1(specialSprFront1, 0, 270)
@@ -1534,6 +1593,7 @@ function ShowSpecialAnimation(crabType, crabAlt, playerNum, fast)
 			endif
 				
 			for j = specialSprFront1 to specialSprBacker2
+				if cake and i < iEnd*1/9 and (j <> specialSprBacker1 and j <> specialSprBacker2) then continue
 				if i < iEnd*1/9
 					FadeSpriteOut(j, i, 0, iEnd*1/9)
 					FadeSpriteOut(j, i, 0, iEnd*1/9)
@@ -1551,33 +1611,55 @@ function ShowSpecialAnimation(crabType, crabAlt, playerNum, fast)
 				endif	
 			next j
 			
-			//Making the components bigger, and also repositioning the top
-			IncSpriteSizeCentered(specialSprBacker1, 1*fpsr#)
-			IncSpriteSizeCentered(specialSprBacker2, 1*fpsr#)
-			IncSpriteSizeCentered(specialSprBack1, 1*fpsr#)
-			IncSpriteSizeCentered(specialSprBack2, 1*fpsr#)
-			IncSpriteSizeCentered(specialSprFront1, 1*fpsr#)
-			IncSpriteSizeCentered(specialSprFront2, 1*fpsr#)
-			if crabType = 5
-				IncSpritePosition(specialSprFront2, -.125*fpsr#, -.25*fpsr#)
-				IncSpritePosition(specialSprBack2, -.125*fpsr#, -.25*fpsr#)
-				if dispH or spType = STORYMODE
-					IncSpritePosition(specialSprFront1, -.125*fpsr#, .25*fpsr#*0)
-					IncSpritePosition(specialSprBack1, -.125*fpsr#, .25*fpsr#*0)
+			if cake and i < iEnd*8/9
+				for j = specialSprFront1 to specialSprBacker2
+					if (j = specialSprBacker1 or j = specialSprBacker2) then continue
+					SetSpriteColorAlpha(j, 255-255.0*i/(iEnd*8/9))
+				next j
+				
+				if i <= iEnd/29
+					for j = specialSprFront1 to specialSprBacker2
+						SetSpriteColorAlpha(j, 0)
+					next j
 				endif
+					
+			endif
+			if cake and i > iEnd*8/9-1
+				SetSpriteVisible(specialSprFront1, 0)
+				SetSpriteVisible(specialSprBack1, 0)
+				SetSpriteVisible(specialSprFront2, 0)
+				SetSpriteVisible(specialSprBack2, 0)
 			endif
 			
-			//Goes around once for top, 3 times for chrono
-			for j = 2 to crabType
-				//TODO: Make this display right
-				IncSpriteAngle(specialSprFront1, -1*fpsr# - i/(25.0)*fpsr#)
-				IncSpriteAngle(specialSprFront2, -1*fpsr# - i/(25.0)*fpsr#)
-				IncSpriteAngle(specialSprBack1, 1.5*fpsr# + i/(25.0)*fpsr#)
-				IncSpriteAngle(specialSprBack2, 1.5*fpsr# + i/(25.0)*fpsr#)
-			next j
+			
+			if cake = 0
+				//Making the components bigger, and also repositioning the top
+				IncSpriteSizeCentered(specialSprBacker1, 1*fpsr#)
+				IncSpriteSizeCentered(specialSprBacker2, 1*fpsr#)
+				IncSpriteSizeCentered(specialSprBack1, 1*fpsr#)
+				IncSpriteSizeCentered(specialSprBack2, 1*fpsr#)
+				IncSpriteSizeCentered(specialSprFront1, 1*fpsr#)
+				IncSpriteSizeCentered(specialSprFront2, 1*fpsr#)
+				if crabType = 5
+					IncSpritePosition(specialSprFront2, -.125*fpsr#, -.25*fpsr#)
+					IncSpritePosition(specialSprBack2, -.125*fpsr#, -.25*fpsr#)
+					if dispH or spType = STORYMODE
+						IncSpritePosition(specialSprFront1, -.125*fpsr#, .25*fpsr#*0)
+						IncSpritePosition(specialSprBack1, -.125*fpsr#, .25*fpsr#*0)
+					endif
+				endif
+				
+				//Goes around once for top, 3 times for chrono
+				for j = 2 to 4
+					//TODO: Make this display right
+					IncSpriteAngle(specialSprFront1, -1*fpsr# - i/(25.0)*fpsr#)
+					IncSpriteAngle(specialSprFront2, -1*fpsr# - i/(25.0)*fpsr#)
+					IncSpriteAngle(specialSprBack1, 1.5*fpsr# + i/(25.0)*fpsr#)
+					IncSpriteAngle(specialSprBack2, 1.5*fpsr# + i/(25.0)*fpsr#)
+				next j 
+			endif
 			
 		endif
-		
 		
 		if i < iEnd*5/7
 			GlideTextToX(specialSprFront1, w/2, 6)
@@ -1593,7 +1675,7 @@ function ShowSpecialAnimation(crabType, crabAlt, playerNum, fast)
 				SetTextCharColor(j, k, GetColorByCycle(i*1.1 + k*10, "r"), GetColorByCycle(i*1.1 + k*10, "g"), GetColorByCycle(i*1.1 + k*10, "b"), 255)
 			next k
 		next j
-		
+	
 		SyncG()
 	next i
 	
@@ -1853,7 +1935,7 @@ function CreateMeteor(gameNum, category, special)
 endfunction
 
 function AddMeteorAnimation(spr, animType)
-	if fruitMode = 0 and animType = 0
+	if fruitMode = 0 and (animType = 0 or animType = 3)
 		AddSpriteAnimationFrame(spr, meteorI1)
 		AddSpriteAnimationFrame(spr, meteorI2)
 		AddSpriteAnimationFrame(spr, meteorI3)
@@ -1983,7 +2065,7 @@ function UpdateSPScore(added)
 		endif
 		
 		
-		if spScore = storyMinScore and storyActive then PlaySoundR(rainbowSweepS, volumeSE)
+		if spScore = storyMinScore and storyActive then PlaySoundR(rainbowSweepS, 100)
 		
 	endif
 	
@@ -2056,6 +2138,17 @@ function InitJumpParticles()
 			SetParticlesFrequency(i, 200)
 			SetParticlesMax (i, 50)
 			SetParticlesAngle(i, 30)
+		elseif cType = 31	//Future Crab
+			SetParticlesLife(i, lifeEnd#/2)
+			AddParticlesColorKeyFrame (i, 0.0, 0, 0, 0, 255 )
+			AddParticlesColorKeyFrame (i, lifeEnd#/3, 255, 255, 255, 255)
+			AddParticlesColorKeyFrame (i, lifeEnd#/2, 0, 0, 0, 0 )
+			SetParticlesDirection(i, 5*gameScale#, 5*gameScale#)
+			SetParticlesRotationRange(i, 1410, 1590)
+			SetParticlesSize(i, 7)
+			SetParticlesFrequency(i, 200)
+			SetParticlesMax (i, 60)
+			SetParticlesAngle(i, 360)
 		elseif cType = 2
 			AddParticlesColorKeyFrame (i, 0.0, 255, 0, 0, 255 )
 			AddParticlesColorKeyFrame (i, lifeEnd#/3, 0, 0, 255, 255 )
@@ -2084,6 +2177,15 @@ function InitJumpParticles()
 			SetParticlesFrequency(i, 70)
 			SetParticlesMax (i, 20)
 			SetParticlesAngle(i, 0)
+		elseif cType = 32	//Crabyss Knight
+			AddParticlesColorKeyFrame (i, 0.0, 132, 0, 255, 255)
+			AddParticlesColorKeyFrame (i, lifeEnd#*4/5, 255, 0, 0, 255)
+			AddParticlesColorKeyFrame (i, lifeEnd#, 255, 0, 0, 0)
+			SetParticlesRotationRange(i, -50, 50)
+			SetParticlesSize(i, 22)
+			SetParticlesFrequency(i, 70)
+			SetParticlesMax (i, 20)
+			SetParticlesAngle(i, 30)
 		elseif cType = 3
 			AddParticlesColorKeyFrame (i, 0.0, 255, 0, 0, 255 )
 			AddParticlesColorKeyFrame (i, lifeEnd#/3, 100, 100, 100, 255 )
@@ -2104,38 +2206,103 @@ function InitJumpParticles()
 			SetParticlesDirection(i, 100*gameScale#, 100*gameScale#)
 			SetParticlesAngle(i, 10)
 			SetParticlesMax (i, 80)
+		elseif cType = 23	//Space Bark
+			AddParticlesColorKeyFrame (i, 0.0, 255, 255, 255, 255 )
+			AddParticlesColorKeyFrame (i, lifeEnd#/3, 255, 255, 255, 255 )
+			AddParticlesColorKeyFrame (i, lifeEnd#/2, 40, 40, 40, 0 )
+			SetParticlesRotationRange(i, 10, 90)
+			SetParticlesDirection(i, 20*gameScale#, 20*gameScale#)
+			SetParticlesSize(i, 7)
+			SetParticlesFrequency(i, 300)
+			SetParticlesMax (i, 10)
+			SetParticlesAngle(i, 360)
+		elseif cType = 33	//Sk8r Crab
+			AddParticlesColorKeyFrame (i, 0.0, 200, 140, 0, 255 )
+			AddParticlesColorKeyFrame (i, lifeEnd#/3, 100, 100, 100, 255 )
+			AddParticlesColorKeyFrame (i, lifeEnd#/2, 40, 40, 40, 0 )
+			SetParticlesRotationRange(i, 10, 90)
+			SetParticlesSize(i, 20)
+			SetParticlesFrequency(i, 300)
+			SetParticlesMax (i, 20)
+			SetParticlesAngle(i, 40)
 		elseif cType = 4
 			AddParticlesColorKeyFrame (i, 0.0, 0, 255, 0, 255 )
 			AddParticlesColorKeyFrame (i, lifeEnd#/3, 0, 255, 255, 255 )
 			AddParticlesColorKeyFrame (i, lifeEnd#*2/3, 255, 255, 0, 0 )
 			SetParticlesRotationRange(i, 470, 870)
 			SetParticlesAngle(i, 20)
+		elseif cType = 14	//#1 Fan Crab
+			AddParticlesColorKeyFrame (i, 0.0, 255, 0, 0, 255 )
+			AddParticlesColorKeyFrame (i, lifeEnd#/3, 255, 100, 100, 255 )
+			AddParticlesColorKeyFrame (i, lifeEnd#*2/3, 255, 200, 200, 0 )
+			SetParticlesRotationRange(i, 470, 870)
+			SetParticlesDirection(i, 80*gameScale#, 80*gameScale#)
+			SetParticlesSize(i, 25)
+			SetParticlesFrequency(i, 80)
+			SetParticlesMax (i, 5)
+			SetParticlesAngle(i, 40)
+		elseif cType = 24	//Hawaiian
+			AddParticlesColorKeyFrame (i, 0.0, 0, 100, 255, 255 )
+			AddParticlesColorKeyFrame (i, lifeEnd#/3, 0, 200, 255, 255 )
+			AddParticlesColorKeyFrame (i, lifeEnd#*2/3, 0, 50, 255, 0 )
+			SetParticlesRotationRange(i, 470, 870)
+			SetParticlesDirection(i, 80*gameScale#, 80*gameScale#)
+			SetParticlesSize(i, 14)
+			SetParticlesFrequency(i, 150)
+			SetParticlesMax (i, 100)
+			SetParticlesAngle(i, 20)
 		elseif cType = 34	//Holy Crab
 			AddParticlesColorKeyFrame (i, 0.0, 255, 255, 0, 255 )
 			AddParticlesColorKeyFrame (i, lifeEnd#/3, 255, 255, 255, 255 )
 			AddParticlesColorKeyFrame (i, lifeEnd#, 255, 255, 0, 0 )
 			SetParticlesRotationRange(i, 470, 870)
+			if (i = par1jump and crab1Evil) or (i = par2jump and crab2Evil)
+				ClearParticlesColors(i)
+				AddParticlesColorKeyFrame (i, 0.0, 255, 0, 0, 255 )
+				AddParticlesColorKeyFrame (i, lifeEnd#/3, 255, 0, 0, 255 )
+				AddParticlesColorKeyFrame (i, lifeEnd#, 255, 0, 0, 0 )
+			endif
 			SetParticlesAngle(i, 30)
 		elseif cType = 5
 			AddParticlesColorKeyFrame (i, 0.0, 80, 80, 80, 255 )
 			AddParticlesColorKeyFrame (i, lifeEnd#/2, 200, 255, 60, 255 )
 			AddParticlesColorKeyFrame (i, lifeEnd#, 255, 255, 255, 0 )
 			SetParticlesRotationRange(i, 470, 870)
-			SetParticlesSize(i, 30)
+			SetParticlesSize(i, 22)
 			SetParticlesAngle(i, 360)
 			SetParticlesFrequency(i, 1000)
 			SetParticlesMax (i, 12)
 			SetParticlesVelocityRange (i, 2, 2)
 		elseif cType = 15	//Jeff
-			AddParticlesColorKeyFrame (i, 0.0, 80, 0, 0, 255 )
-			AddParticlesColorKeyFrame (i, lifeEnd#/2, 150, 80, 60, 255 )
-			AddParticlesColorKeyFrame (i, lifeEnd#, 150, 80, 60, 0)
+			AddParticlesColorKeyFrame (i, 0.0, 150, 160, 60, 255 )
+			AddParticlesColorKeyFrame (i, lifeEnd#/4, 150, 80, 60, 255 )
+			AddParticlesColorKeyFrame (i, lifeEnd#/2, 150, 80, 60, 0)
 			SetParticlesRotationRange(i, 470, 870)
 			SetParticlesSize(i, 20)
 			SetParticlesAngle(i, 360)
 			SetParticlesFrequency(i, 1000)
 			SetParticlesMax (i, 12)
 			SetParticlesVelocityRange (i, 2, 2)
+		elseif cType = 25	//Rock Lobster
+			AddParticlesColorKeyFrame (i, 0.0, 50, 160, 250, 255 )
+			AddParticlesColorKeyFrame (i, lifeEnd#/2, 150, 80, 250, 255 )
+			AddParticlesColorKeyFrame (i, lifeEnd#*2/3, 150, 80, 60, 0)
+			SetParticlesRotationRange(i, 470, 870)
+			SetParticlesSize(i, 14)
+			SetParticlesAngle(i, 360)
+			SetParticlesFrequency(i, 1000)
+			SetParticlesMax (i, 12)
+			SetParticlesRotationRange(i, 100, 300)
+			SetParticlesVelocityRange (i, 2, 2)
+		elseif cType = 35	//Crab Cake
+			AddParticlesColorKeyFrame (i, 0.0, 255, 150, 0, 255 )
+			AddParticlesColorKeyFrame (i, lifeEnd#/3, 255, 200, 0, 255 )
+			AddParticlesColorKeyFrame (i, lifeEnd#, 255, 0, 0, 0 )
+			SetParticlesRotationRange(i, 52, 400)
+			SetParticlesSize(i, 15)
+			SetParticlesFrequency(i, 70)
+			SetParticlesMax (i, 10)
+			SetParticlesAngle(i, 40)
 		elseif cType = 6
 			AddParticlesColorKeyFrame (i, 0.0, 150, 150, 150, 255 )
 			AddParticlesColorKeyFrame (i, lifeEnd#/3, 255, 255, 255, 120 )
@@ -2158,7 +2325,27 @@ function InitJumpParticles()
 			SetParticlesMax (i, 40)
 			SetParticlesAngle(i, 40)
 			SetParticlesDepth(i, 2)
-			
+		elseif cType = 26	//Cranime
+			AddParticlesColorKeyFrame (i, 0.0, 255, 50, 255, 255 )
+			AddParticlesColorKeyFrame (i, lifeEnd#*2/3, 255, 180, 255, 255 )
+			AddParticlesColorKeyFrame (i, lifeEnd#, 255, 60, 255, 0 )
+			SetParticlesRotationRange(i, 10, 360)
+			SetParticlesSize(i, 16)
+			SetParticlesFrequency(i, 1000)
+			SetParticlesMax (i, 15)
+			SetParticlesAngle(i, 360)
+			SetParticlesDepth(i, 2)
+		elseif cType = 36	//Chimera Crab
+			AddParticlesColorKeyFrame (i, 0.0, 30, 155, 30, 255 )
+			AddParticlesColorKeyFrame (i, lifeEnd#/3, 180, 255, 180, 120 )
+			AddParticlesColorKeyFrame (i, lifeEnd#/2, 180, 255, 180, 0 )
+			SetParticlesLife(i, lifeEnd#/2)
+			SetParticlesRotationRange(i, 10, 90)
+			SetParticlesSize(i, 30)
+			SetParticlesFrequency(i, 1000)
+			SetParticlesMax (i, 40)
+			SetParticlesAngle(i, 360)
+			SetParticlesDepth(i, 2)
 		endif
 		
 	next i
@@ -2227,45 +2414,37 @@ endfunction
 
 function StartGameMusic()
 	
-	if storyActive = 0 and spType <> CHALLENGEMODE
-		if spType = 0
-			pass = 0
-			while pass = 0
-				rnd = Random(1, 5)
-				if rnd = 1 and oldSong <> fightAMusic
-					PlayMusicOGGSP(fightAMusic, 1)
-					oldSong = fightAMusic
-					pass = 1
-				elseif rnd = 2 and oldSong <> fightBMusic
-					PlayMusicOGGSP(fightBMusic, 1)
-					oldSong = fightBMusic
-					pass = 1
-				elseif rnd = 3 and oldSong <> fightJMusic
-					PlayMusicOGGSP(fightJMusic, 1)
-					oldSong = fightJMusic
-					pass = 1
-				elseif rnd = 4 and oldSong <> spMusic
-					PlayMusicOGGSP(spMusic, 1)
-					oldSong = spMusic
-					pass = 1
-				elseif rnd = 5 and oldSong <> tomatoMusic
-					PlayMusicOGGSP(tomatoMusic, 1)
-					oldSong = tomatoMusic
-					pass = 1
-				endif
-			endwhile
+	if gameSongSet <> 0 and storyActive = 0
+		
+		if gameSongSet <= musicUnlocked
+			PlayMusicOGGSP(GetMusicByID(gameSongSet), 1)
+		else
+			//The retro songs
+			PlayMusicOGGSP(GetMusicByID(gameSongSet-musicUnlocked+30), 1)
 		endif
 		
-		if spType <> 0 
-			if spType = MIRRORMODE
-				PlayMusicOGGSP(spMusic, 1)
-			
-			elseif GetMusicPlayingOGGSP(retro1M) = 0 and spType = CLASSIC
-				StopMusicOGGSP(loserMusic)
-				PlayMusicOGGSP(retro1M + Random(0, 7), 1)
-			endif
+		exitFunction
+	endif
+	
+	if storyActive = 0 and spType <> CHALLENGEMODE
+		if spType = 0 or spType = AIBATTLE
+			rnd = 5
+			while (rnd >= 4 and rnd <= 7) or GetMusicByID(rnd) = oldSong
+				rnd = Random(1, musicUnlocked)
+			endwhile
+			PlayMusicOGGSP(GetMusicByID(rnd), 1)
+			oldSong = GetMusicByID(rnd)
 		endif
-		if GetMusicExistsOGG(spMusic) then SetMusicLoopTimesOGG(spMusic, 6.932, -1)
+		
+		if spType = MIRRORMODE
+			PlayMusicOGGSP(spMusic, 1)
+			if GetMusicExistsOGG(spMusic) then SetMusicLoopTimesOGG(spMusic, 6.932, -1)
+		endif
+		if spType = CLASSIC and GetMusicPlayingOGGSP(retro1M) = 0
+			StopMusicOGGSP(loserMusic)
+			PlayMusicOGGSP(retro1M + Random(0, 7), 1)
+		endif
+		
 	endif
 	
 	if spType = CHALLENGEMODE
@@ -2289,6 +2468,8 @@ function PlayDangerMusic(startNew)
 			if GetMusicPlayingOGGSP(fightJMusic) then oldSong = fightJMusic
 			if GetMusicPlayingOGGSP(spMusic) then oldSong = spMusic
 			if GetMusicPlayingOGGSP(tomatoMusic) then oldSong = tomatoMusic
+			if GetMusicPlayingOGGSP(fightFMusic) then oldSong = fightFMusic
+			if GetMusicPlayingOGGSP(fightAJMusic) then oldSong = fightAJMusic
 			
 			if oldSong <> 0 then StopGamePlayMusic()
 			
@@ -2299,6 +2480,8 @@ function PlayDangerMusic(startNew)
 			if oldSong = fightJMusic then PlayMusicOGGSP(dangerJMusic, 1)
 			if oldSong = spMusic then PlayMusicOGGSP(dangerCMusic, 1)
 			if oldSong = tomatoMusic then PlayMusicOGGSP(dangerTMusic, 1)
+			if oldSong = fightFMusic then PlayMusicOGGSP(dangerFMusic, 1)
+			if oldSong = fightAJMusic then PlayMusicOGGSP(dangerAJMusic, 1)
 			
 		endif
 		
@@ -2314,12 +2497,19 @@ function StopGamePlayMusic()
 	
 	if GetMusicPlayingOGGSP(spMusic) then StopMusicOGGSP(spMusic)
 	if GetMusicPlayingOGGSP(tomatoMusic) then StopMusicOGGSP(tomatoMusic)
+	if GetMusicPlayingOGGSP(emotionMusic) then StopMusicOGGSP(emotionMusic)
+	if GetMusicPlayingOGGSP(fightFMusic) then StopMusicOGGSP(fightFMusic)
+	if GetMusicPlayingOGGSP(fightAJMusic) then StopMusicOGGSP(fightAJMusic)
+	if GetMusicPlayingOGGSP(chillMusic) then StopMusicOGGSP(chillMusic)
+	if GetMusicPlayingOGGSP(ragMusic) then StopMusicOGGSP(ragMusic)
+	if GetMusicPlayingOGGSP(ssidMusic) then StopMusicOGGSP(ssidMusic)
+	if GetMusicPlayingOGGSP(mcbMusic) then StopMusicOGGSP(mcbMusic)
 	
-	for i = dangerAMusic to dangerTMusic
+	for i = dangerAMusic to dangerAJMusic
 		if GetMusicPlayingOGGSP(i) then StopMusicOGGSP(i)
 	next i
 	
-	for i = retro1M to retro8M
+	for i = retro1M to retro11M
 		if GetMusicPlayingOGGSP(i) then StopMusicOGGSP(i)
 	next i
 	
@@ -2583,14 +2773,13 @@ function PlayOpeningScene()
 		SetTextAngle(i, (i-TXT_INTRO1)*180)
 		SetTextSpacing(i, -30)
 		SetTextY(i, h*3/4  - h/2*(i-TXT_INTRO1))
-		SetTextDepth(i, 3)
+		SetTextDepth(i, 4)
 		
 		if dispH
 			SetTextMiddleScreen(TXT_INTRO1, 0)
 			SetTextY(TXT_INTRO2, 9999)
 		endif
 	next i	
-		
 	
 endfunction
 

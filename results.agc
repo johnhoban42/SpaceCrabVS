@@ -9,8 +9,8 @@ global resultsWinner as integer = 0
 global rc1 as ResultsController
 global rc2 as ResultsController
 
-global winText as string[NUM_CRABS]
-global loseText as string[NUM_CRABS]
+global winText as string[27]
+global loseText as string[27]
 
 global FRAMES_WIN_MSG# = 17
 global FRAMES_SHOW_UI# = 185
@@ -42,6 +42,7 @@ function InitResultsController(rc ref as ResultsController)
 	p as integer, f as integer
 	if rc.player = 1 then p = 1 else p = -1 // makes the position calculations easier
 	if rc.player = 1 then f = 0 else f = 1 // makes the flip calculations easier
+	if spType = AIBATTLE then f = 0
 	if dispH
 		p = 1
 		f = 0
@@ -50,22 +51,34 @@ function InitResultsController(rc ref as ResultsController)
 	if resultsWinner = 1
 		winnerCrab = crab1Type
 		winnerAlt = crab1Alt
+		winnerEvil = crab1Evil
 		loserCrab = crab2Type
 		loserAlt = crab2Alt
+		loserEvil = crab2Evil
 	else
 		winnerCrab = crab2Type
 		winnerAlt = crab2Alt
+		winnerEvil = crab2Evil
 		loserCrab = crab1Type
 		loserAlt = crab1Alt
+		loserEvil = crab1Evil
 	endif
 	
 	rc.frame = 0
 	
 	// The offset mumbo-jumbo with f-coefficients is because AGK's text rendering is awful
 	if rc.isWinner
-		CreateText(rc.txtCrabMsg, winText[winnerCrab+winnerAlt*6 - 1])
+		winID = winnerCrab+winnerAlt*6 - 1
+		if winnerEvil and winnerCrab = 1 and winnerAlt = 0 then winID = 24
+		if winnerEvil and winnerCrab = 1 and winnerAlt = 3 then winID = 25
+		if winnerEvil and winnerCrab = 4 and winnerAlt = 3 then winID = 26
+		CreateText(rc.txtCrabMsg, winText[winID])
 	else
-		CreateText(rc.txtCrabMsg, loseText[loserCrab+loserAlt*6 - 1])
+		loseID = loserCrab+loserAlt*6 - 1
+		if loserEvil and loserCrab = 1 and loserAlt = 0 then loseID = 24
+		if loserEvil and loserCrab = 1 and loserAlt = 3 then loseID = 25
+		if loserEvil and loserCrab = 4 and loserAlt = 3 then loseID = 26
+		CreateText(rc.txtCrabMsg, loseText[loseID])
 	endif
 	SetTextSize(rc.txtCrabMsg, 48)
 	SetTextAngle(rc.txtCrabMsg, f*180)
@@ -95,7 +108,10 @@ function InitResultsController(rc ref as ResultsController)
 	SetTweenTextSpacing(rc.twnWinMsg, -28, -22, TweenSmooth2())
 	SetTweenTextY(rc.twnWinMsg, GetTextY(rc.txtWinMsg), GetTextY(rc.txtWinMsg) + p*325, TweenSmooth2())
 	
-	sprCrabLose$ = "/media/art/crab" + Str(loserCrab) + AltStr(loserAlt) + "rLose.png"
+	evilMod$ = ""
+	if loserEvil then evilMod$ = "2"
+	if loserCrab = 6 and loserAlt = 3 then evilMod$ = ""
+	sprCrabLose$ = "/media/art/crab" + Str(loserCrab) + AltStr(loserAlt) + evilMod$ + "rLose.png"
 	if GetFileExists(sprCrabLose$)
 		LoadSprite(rc.sprCrabLose, sprCrabLose$)
 	else
@@ -106,7 +122,10 @@ function InitResultsController(rc ref as ResultsController)
 	SetSpriteFlip(rc.sprCrabLose, f, f)
 	SetSpriteVisible(rc.sprCrabLose, 0)
 	
-	sprCrabWin$ = "/media/art/crab" + Str(winnerCrab) + AltStr(winnerAlt) + "rWin.png"
+	evilMod$ = ""
+	if winnerEvil then evilMod$ = "2"
+	if winnerCrab = 6 and winnerAlt = 3 then evilMod$ = ""
+	sprCrabWin$ = "/media/art/crab" + Str(winnerCrab) + AltStr(winnerAlt) + evilMod$ + "rWin.png"
 	if GetFileExists(sprCrabWin$)
 		LoadSprite(rc.sprCrabWin, sprCrabWin$)
 	else
@@ -204,7 +223,6 @@ function InitResultsController(rc ref as ResultsController)
 		
 	endif
 	
-	
 endfunction
 
 // Initialize the results screen
@@ -223,11 +241,24 @@ function InitResults()
 	winText[6] = "Mad Crab is angry about this" + chr(10) + "win, as he should be."
 	winText[7] = "Truly, was there ever any doubt?" + chr(10) + "Of COURSE King Crab is the winner!"
 	winText[8] = "Taxi Crab collects his cab fare," + chr(10) + "as well as his win!"
+	winText[9] = "Number One! Number One! This" + chr(10) + "Fan Crab is NUMBER ONE!"
 	winText[10] = "Inianda Jeff has secured the" + chr(10) + "treasure, and a win, too!"
 	winText[11] = "Team Player has secured" + chr(10) + "his solo victory!"
 	winText[12] = "The gavel of justice declares" + chr(10) + "Al Legal the winner!"
 	winText[13] = "Crabacus' win was calculated" + chr(10) + "from the very start!"
+	winText[14] = "Space Barc finally reached that" + chr(10) + "itchy spot behind his ear!"
+	winText[15] = "Hawaiian Crab has packed his" + chr(10) + "bags for the winner's circle!"
+	winText[16] = "Rock Lobster's win was as" + chr(10) + "awesome as his hit single!"
+	winText[17] = "Cranime's been renewed for" + chr(10) + "another two seasons! Sugoi!"
+	winText[18] = "Future Crab has earned the right" + chr(10) + "to stay in this time- for now..."
+	winText[19] = "Crabyss Knight has slain his evil" + chr(10) + "opponent, bringing peace to the galaxy!"
+	winText[20] = "Rockin' up CTV, it's Sk8r Crab!" + chr(10) + "Now he's a superstar!"
 	winText[21] = "Holy Crab ascends to the winner's" + chr(10) + "circle, purifing all who witness it!"
+	winText[22] = "Cake slices for everyone at" + chr(10) + "Crab Cake's victory party!"
+	winText[23] = "The wrath of the transformer!" + chr(10) + "Chimera Crab is victorious!"
+	winText[24] = "Crixel took his bit of the lead" + chr(10) + "and crushed the competition!"
+	winText[25] = "Beta Crab is as cheerful as ever" + chr(10) + "ever about this win."
+	winText[26] = "Devil Crab escaped the underworld" + chr(10) + "and is coming straight for YOU!"
 	
 	loseText[0] = "Space Crab's orbital ordnance was" + chr(10) + "overpowered by a mightier opponent..."
 	loseText[1] = "Ladder Wizard was vexed, hexed," + chr(10) + "and wrecked in this battle..."
@@ -238,11 +269,24 @@ function InitResults()
 	loseText[6] = "Mad Crab won't let his anger" + chr(10) + "show for such an embarrasing event..."
 	loseText[7] = "Greed has overtaken King Crab," + chr(10) + "stuck in the grasp of Midas' touch..."
 	loseText[8] = "A broken down car is nothing" + chr(10) + "compared to his broken down spirit..."
+	loseText[9] = "#1 Fan Crab can no longer show" + chr(10) + "his face in the Cosmic Corner Store..."
 	loseText[10] = "In the search for treasure and" + chr(10) + "victory, Inianda Jeff is empty handed..."
 	loseText[11] = "Team Player needed team" + chr(10) + "support after all..."
 	loseText[12] = "Al Legal should have spent" + chr(10) + "more time building a case..."
 	loseText[13] = "Crabacus couldn't calculate" + chr(10) + "a win this time..."
+	loseText[14] = "Space Barc has barked his" + chr(10) + "last bark, for now..."
+	loseText[15] = "Another vacation ruined." + chr(10) + "It's all your fault."
+	loseText[16] = "Equipment issues ruined Rock" + chr(10) + "Lobster's big show..."
+	loseText[17] = "Cranime should have stayed" + chr(10) + "as just a manga..."
+	loseText[18] = "This lonely, bitter old man will" + chr(10) + "remain this way for the rest of time..."
+	loseText[19] = "The once proud knight has" + chr(10) + "discarded his gear, and his legacy..."
+	loseText[20] = "Ouch! That's gotta hurt..." + chr(10) + "At least you were wearing protection."
 	loseText[21] = "Holy Crab subcummed to the" + chr(10) + "devil on their sholder..."
+	loseText[22] = "Don't cry over spilled cake." + chr(10) + "Crab Cake will do that for you."
+	loseText[23] = "Chimera Crab is just a puppeted" + chr(10) + "freak, after all..."
+	loseText[24] = "Crixel torn to bits" + chr(10) + "over this harsh loss..."
+	loseText[25] = "Beta Crab is feeling awful about" + chr(10) + "the loss - I'm sure of it."
+	loseText[26] = "Devil Crab is locked away, until" + chr(10) + "another fool makes a deal with him..."
 	
 	// Determine the winner
 	if crab1Deaths = 3
@@ -335,7 +379,7 @@ function DoResultsController(rc ref as ResultsController)
 	// Max alpha = 255
 	if rc.frame <= FRAMES_WIN_MSG#
 		SetTextColorAlpha(rc.txtWinMsg, rc.frame * (255 / FRAMES_WIN_MSG#)) 
-		SetSpriteColorAlpha(coverS, 255 - rc.frame * (255 / FRAMES_WIN_MSG#))
+		if GetSpriteExists(coverS) then SetSpriteColorAlpha(coverS, 255 - rc.frame * (255 / FRAMES_WIN_MSG#))
 	endif
 	//print(rc.frame)
 	

@@ -1,25 +1,25 @@
-bg 6
+bg 9
 music retro6
-HC: Finally, the resort of my dreams - Garra Bonito, at the Aquarias Stream!
-Well, this SHOULD be like a dream-
-But I've been so stressed about my reservations not working that I've barely slept!
-Once I check in, I can FINALLY start relaxing.
-Ah! Here's the check in desk!
-AL: Hello sir, welcome to Garra Bonito. Do you have a reservation with us?
-We ARE fully booked, so you know, and anyone without a proper reservation will be turned away.
-HC: Y-yes! I have everything. Right here.
-Booking Number, 09292019.
-Confirmation Code, AKRBTKJRH.
-Room Code, SLAMJMMDAB.
-Or was it SSAM...?
-Oh! And Claw Code, SNIP83.
-AL: Is that all? There's still one more step, you know.
-HC: Huh? But that's everything the booking agency sent me!
-AL: A verification battle, of course! Let's see if you battle like the true Hawaiian Crab!
+HC: BAFO; Finally, the resort of my dreams - Garra Bonito, at the Aquarias Stream!
+BBFCd; Well, this SHOULD be like a dream-
+BUFOj; But I've been so stressed about my reservation not working that I've barely slept!
+BDFOg; Once I check in, I can FINALLY start relaxing.
+BCFJb; Ah! Here's the check in desk!
+AL: BAFA; Hello sir, welcome to Garra Bonito. Do you have a reservation with us?
+BUFC; We ARE fully booked, so you know, and anyone without a reservation will be turned away.
+HC: BNFEd; Y-yes! I have everything. Right here.
+BAFJd; Booking Number, 09292019.
+BIFFd; Confirmation Code, AKRBTKJRH.
+BMFHa; Room Code, SLAMJMMDAB.
+BUFKi; Or was it SSAM...?
+BAFFe; Oh! And Claw Code, SNIP83.
+AL: BAFDa; Is that all? There's still one more step, you know.
+HC: BIFEd; Huh? But that's everything the booking agency sent me!
+AL: BPFKh; A verification battle, of course! Let's see if you battle like the true Hawaiian Crab!
 music fightA
 fight 43256
 music retro6
-AL: Thank you for your patience. Your reservation has been confirmed.
-AL: Here is your room key. The pool is open from 9AM to 8PM.
-HC: ... (shocked, tired expression)
-HC: ...Thank you. (Smiling, eyes closed, blushing expression)
+AL: BUFA; Thank you for your patience. Your reservation has been confirmed.
+AL: BMFAf; Here is your room key. The pool is open from 9AM to 8PM.
+HC: BBFKc; ...
+HC: BBFOg;  ...Thank you.

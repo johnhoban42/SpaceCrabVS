@@ -84,15 +84,16 @@ global metSizeY = 80
 #constant chronoCrabTimeMax 1900	//Is longer because the timer goes down faster
 #constant ninjaCrabTimeMax 500	
 
-//										D		D		D		D		D		D																																
-//									Nul	Space	Wizard	Top		Rave	Chrono	Ninja	Mad		King	Taxi	Fan		Jeff	Team P	Al		Cbcus	Barc	Hwaii	Rock	Crnme	Future	Knight	Sk8r	Holy	Cake	Kyle
-global crabVel as float [24] = 		[0,	 1.28,	1.08,	2.48,	1.59,	1.38,	1.5,	1.3,	1.06,	2.78,	1,		1.33,	1.6,	1.30,	1.12,	1,		1,		1,		1,		1,		1,		1,		1.45,	1,		1]
-global crabAccel as float [24] = 	[0,	 0.1,	0.13,	0.03,	0.08,	0.1,	0.1,	0.09,	0.13,	0.024,	1,		0.115,	0.1,	0.1,	0.12,	1,		1,		1,		1,		1,		1,		1,		0.08,	1,		1]	
-global crabJumpHMax as float [24] = 	[0,	 5,		10.5,	8.0,	10.0,	5.0,	6.0,	4,		11.5,	7.0,	1,		5.0,	2,		6,		10.5,	1,		1,		1,		1,		1,		1,		1,		15,		1,		1]
-global crabJumpSpeed as float [24] =	[0,	 1.216,	1.516,	-3,		-1.28,	-3.216,	.816,	1.2,	1.516,	-2,		1,		-3.22,	.8,		1.116,	1.516,	1,		1,		1,		1,		1,		1,		1,		-1.28,	1,		1]
-global crabJumpDMax as float [24] =	[0,	 28,	40,		32,		43,		28,		26,		29,		38,		32,		1,		28,		27,		28,		40,		1,		1,		1,		1,		1,		1,		1,		55,		1,		1]
-global crabFramerate as integer[24]=	[0,  10,	13,		10,		18,		10,		15,		14,		12,		15,		1,		10,		15,		12,		12,		1,		1,		1,		1,		1,		1,		1,		10,		1,		1]
-global crabSPAtck as integer[24] = 	[0,	 20,	20,		25,		23,		30,		18,		20,		16,		25,		1,		29,		20,		20,		20,		1,		1,		1,		1,		1,		1,		1,		26,		1,		1]
+//										D		D		D		D		D		D		1		2		3		4		5		6		1		2		3		4		5		6		1		2		3		4		5		6
+//									Nul	Space	Wizard	Top		Rave	Chrono	Ninja	Mad		King	Taxi	Fan		Jeff	Team P	Al		Cbcus	Barc	Hwaii	Rock	Crnme	Future	Knight	Sk8r	Holy	Cake	Chimera
+global crabVel as float [24] = 		[0,	 1.28,	1.08,	2.48,	1.59,	1.38,	1.5,	1.3,	1.06,	2.78,	1.52,	1.33,	1.6,	1.30,	1.12,	2.2,	1.46,	1.4,	1.4,	1.39,	1.18,	2.3,	1.45,	1.36,	1.4]
+global crabAccel as float [24] = 	[0,	 0.1,	0.13,	0.03,	0.08,	0.1,	0.1,	0.09,	0.13,	0.024,	0.09,	0.115,	0.1,	0.1,	0.12,	0.06,	0.09,	0.1,	0.1,	0.11,	0.14,	0.052,	0.08,	0.12,	0.1]	
+global crabJumpHMax as float [24] = 	[0,	 5,		10.5,	8.0,	10.0,	5.0,	6.0,	4,		11.5,	7.0,	9.8,	5.0,	2,		6,		10.5,	3.0,	11.0,	6.0,	2.0,	-4,		9.0,	8.2,	15,		4.5,	7.0]
+global crabJumpSpeed as float [24] =	[0,	 1.216,	1.516,	-3,		-1.28,	-3.216,	.816,	1.2,	1.516,	-2,		-1.0,	-3.22,	.8,		1.116,	1.516,	-3,		-2,		-4.0,	0.5,	1.3,	1.416,	-2.6,	-1.28,	-2.9,	.9]
+global crabJumpDMax as float [24] =	[0,	 28,	40,		32,		43,		28,		26,		29,		38,		32,		37,		28,		27,		28,		40,		32,		45,		22,		27,		28,		35,		30,		55,		25,		25]
+global crabFramerate as integer[24]=	[0,  10,	13,		10,		18,		10,		15,		14,		12,		15,		12,		10,		15,		12,		12,		16,		10,		12,		12,		10,		10,		14,		10,		12,		10]
+global crabSPAtck as integer[24] = 	[0,	 20,	20,		25,		23,		30,		18,		20,		16,		21,		25,		29,		20,		20,		20,		25,		23,		30,		20,		17,		23,		25,		26,		30,		20]
+//global crabSPAtck as integer[24] = 	[0,	 20,	20,		25,		23,		0,		18,		20,		16,		21,		1,		0,		20,		20,		20,		1,		1,		0,		1,		1,		1,		1,		1,		0,		1]
 
 
 #constant lastTranType 2
@@ -124,6 +125,7 @@ global crab1JumpD# = 0
 global crab1JumpHMax# = 5
 global crab1JumpSpeed# = 1.216
 global crab1JumpDMax = 28	//This variable used to be in degrees, now it's in ticks
+global crab1Evil = 0
 //Original jump values: 3.5, 38
 //Original jump values: 3.5, 38
 
@@ -150,6 +152,7 @@ global crab2JumpD# = 0
 global crab2JumpHMax# = 5
 global crab2JumpSpeed# = 1.216
 global crab2JumpDMax = 28	//This variable used to be in degrees, now it's in ticks
+global crab2Evil = 0
 
 global crab2Deaths = 0
 global crab2PlanetS as Integer[3]
@@ -164,6 +167,7 @@ global gameDifficulty1 = 1
 global gameDifficulty2 = 1
 global difficultyBar = 10	//The amount of meteors it takes to make the difficulty go up
 global difficultyMax = 7
+global storyEasy = 0
 
 global meteorTotal1 = 0
 global meteorTotal2 = 0
@@ -340,6 +344,7 @@ global met3CD2# = 0 //400
 #constant fontDescItalI 4	//Tahoma (Italicized)
 #constant fontCrabI 3	//Somerset Barnyard
 #constant fontScoreI 1001	//SnowTunes UI Font
+#constant fontTitleScreenI 1002	//Corbel (Italicised)
 
 #constant starParticleI 11
 
@@ -408,10 +413,16 @@ global met3CD2# = 0 //400
 #constant bg3I 83
 #constant bg4I 84
 #constant bg5I 85
-#constant bgPI 87 	//Pause foreground
-#constant bgRainSwipeI 88
+#constant bg6I 86
+#constant bg7I 87
+#constant bg8I 88
+#constant bg9I 89
+#constant bgPI 90 	//Pause foreground
+#constant bgRainSwipeI 92
 
-#constant meteorGlowI 86
+#constant meteorGlowI 91
+
+
 
 global loadedCrabSprites as Integer[0]
 
@@ -463,9 +474,10 @@ global loadedCrabSprites as Integer[0]
 #constant crabpingI 400
 
 //Planets images are 401 to 430
-#constant planetIMax 23
-#constant planetITotalMax 29
-global planetVarI as Integer[planetITotalMax]
+#constant planetIMax 60
+//#constant planetITotalMax 29
+#constant planetILegMax 23
+//global planetVarI as Integer[planetITotalMax]
 
 #constant warpI1 431
 #constant warpI2 432
@@ -565,6 +577,7 @@ global jumpPartI as Integer[6, 4]
 #constant chooseS 12
 #constant gongS 13
 #constant buttonSound 14
+#constant turnSDog 15
 
 #constant exp1S 16
 #constant exp2S 17
@@ -583,6 +596,7 @@ global jumpPartI as Integer[6, 4]
 #constant fwipS 28
 
 #constant kingSpellS 29
+#constant knightSpellS 30
 
 
 //Music Indexes
@@ -597,12 +611,23 @@ global jumpPartI as Integer[6, 4]
 #constant tutorialMusic 107	//The tutorial song
 #constant spMusic 108		//Mirror Music (Chrome Coast)
 #constant tomatoMusic 110 	//End of Chapter song (Marigold Tomato)
+#constant loveMusic 111		//Love Me Space Crab!!
+#constant unlockMusic 112	//Unlocking Jingle
+#constant emotionMusic 113	//Emotional Song
+#constant fightFMusic 114	//Fight For the Future!
+#constant fightAJMusic 115	//To Battle
+#constant chillMusic 116		//Back to my Hunch
+#constant ragMusic 117		//Space Crab Rag
+#constant ssidMusic 118  	//Shooting Stars into Dreams - REMix
+#constant mcbMusic 119		//Melted Chocolate Bar
 
 #constant dangerAMusic 211
 #constant dangerBMusic 212
 #constant dangerJMusic 213
 #constant dangerCMusic 214
 #constant dangerTMusic 215
+#constant dangerFMusic 216
+#constant dangerAJMusic 217
 
 #constant raveBass1 121
 #constant raveBass2 122
@@ -616,48 +641,57 @@ global jumpPartI as Integer[6, 4]
 #constant retro6M 136 // Sky Tides
 #constant retro7M 137
 #constant retro8M 138
+#constant retro9M 139
+#constant retro10M 140
+#constant retro11M 141
+
+#constant voice1 161
+#constant voice2 162
 
 global oldSong = 0
 global currentTitleMusic = titleMusic
 global currentCharacterMusic = characterMusic
 
-//Volume for music and sound effects
+//Volume for music and sound effects & other settings
 global volumeM = 100
 global volumeSE = 100
+global targetFPS = 5
+global windowSize = 1
 
 //SetMusicSystemVolumeOGG(volumeM)
 
-//Start screen sprites 
+//Start screen sprites
 #constant SPR_TITLE 200 
-#constant SPR_START1 201
-#constant SPR_START2 203
-#constant SPR_BG_START 202
-#constant SPR_STARTMIRROR 204
-#constant TXT_WAIT1 201
-#constant TXT_WAIT2 202
-#constant TXT_HIGHSCORE 203
-#constant TXT_SP_DESC 204
-#constant SPR_STARTAI 212
-#constant SPR_LOGO_HORIZ 213
-#constant SPR_LEADERBOARD 214
-#constant SPR_CLASSIC 215
-#constant SPR_STORY_START 216
-#constant TXT_ALONE 216
-#constant SPR_CHALLENGE 217
+#constant SPR_STORY_START 201
+#constant SPR_STARTAI 202
+#constant SPR_STARTMIRROR 203
+#constant SPR_CLASSIC 204
+#constant SPR_START1 205
+#constant SPR_JUKEBOX 206
+#constant SPR_STATS 207
+//SPR_SETTINGS 208
+#constant SPR_EXIT_GAME 209
 
-#constant SPR_BACK_1P 221
-#constant SPR_BACK_2P 222
-#constant SPR_BACK_VAULT 223
+#constant TXT_SINGLE 211
+#constant TXT_MULTI 212
+#constant TXT_OTHER 213
+
+
+#constant SPR_LOGO_HORIZ 215
+#constant SPR_LEADERBOARD 214
+#constant TXT_ALONE 216
+
+#constant TXT_HIGHSCORE 231
+#constant TXT_SP_DESC 232
+
+#constant SPR_BG_START 299
 
 
 //Different Crab buttons for the single player mode
-#constant SPR_SP_C1 255
-#constant SPR_SP_C2 256
-#constant SPR_SP_C3 257
-#constant SPR_SP_C4 258
-#constant SPR_SP_C5 259
-#constant SPR_SP_C6 260
- 
+#constant SPR_SP_C1 256
+#constant SPR_SP_C6 261
+#constant SPR_SP_C24 279
+
 //Character select screen sprites - player 1 
 #constant SPR_CS_READY_1 300 
 #constant SPR_CS_ARROW_L_1 301 
@@ -665,11 +699,15 @@ global volumeSE = 100
 #constant SPR_CS_BG_1 306
 #constant SPR_CS_BG_1B 307
 #constant TXT_CS_CRAB_NAME_1 303
-#constant TXT_CS_CRAB_DESC_1 304 
+#constant TXT_CS_CRAB_DESC_1 304
 #constant TXT_CS_CRAB_STATS_1 306
 #constant TXT_CS_READY_1 305 
 #constant SPR_CS_CRABS_1 4390
 #constant SPR_CS_TXT_BACK_1 389
+#constant SPR_CS_FASTGAME 308
+#constant SPR_CS_HARDGAME 309
+#constant SPR_CS_MUSICPICK 310
+#constant SPR_CS_EVILSWITCH_1 311
 
 #constant SPR_SCENE1 321 
 #constant SPR_SCENE2 322 
@@ -691,6 +729,7 @@ global volumeSE = 100
 #constant TXT_CS_READY_2 405
 #constant SPR_CS_CRABS_2 4900 
 #constant SPR_CS_TXT_BACK_2 489
+#constant SPR_CS_EVILSWITCH_2 411
 
 //Character select sprite indexes
 global IMG_CS_CRAB as Integer[NUM_CRABS]
@@ -721,9 +760,7 @@ global IMG_CS_CRAB as Integer[NUM_CRABS]
 #constant SPR_STORY_EXIT 621
 #constant SPR_STORY_SKIP 622
 
-//Settings Sprites
-#constant SPR_VOLUME 801
-#constant SPR_VOLUME_SLIDER 802
+//Settings Sprites: 801-900
 
 global curChapter = 3
 global curScene = 0
@@ -738,7 +775,29 @@ global storyTimer# = 0
 
 //Overall game unlocks
 global altUnlocked as integer[6]
+global firstStartup = 0
+global speedUnlock = 0
+global hardBattleUnlock
+global musicBattleUnlock = 0
+global evilUnlock = 0
+global unlockAIHard = 0
+global musicUnlocked = 7 	//Not finalized yet, but this will increment for every song unlockes
+
+global gameIsFast = 0
+global gameIsHard = 0
+global gameSongSet = 1
+#constant gameFastSpeed 1.4
+
 //Ping sprites - 701 through 750
+
+//Popup Sprite
+#constant SPR_POPUP_BG 761
+#constant SPR_POPUP_C 762
+#constant TXT_POPUP 763
+
+#constant SPR_POPUP_BG_2 766
+#constant SPR_POPUP_C_2 767
+#constant TXT_POPUP_2 768
 
 //Tweens
 #constant selectTweenTime# .4 //In seconds
@@ -749,21 +808,6 @@ global altUnlocked as integer[6]
 
 //global tweenButton = 5
 //tweenButton lasts until 25
-
-#constant tweenFadeLen# .2
-#constant tweenSprFadeIn 101
-//CreateTweenSprite(tweenSprFadeIn, tweenFadeLen#)
-//SetTweenSpriteAlpha(tweenSprFadeIn, 140, 255, TweenSmooth2())
-#constant tweenSprFadeOut 102
-#constant tweenSprFadeOutFull 105
-//CreateTweenSprite(tweenSprFadeOut, tweenFadeLen#)
-//SetTweenSpriteAlpha(tweenSprFadeOut, 255, 140, TweenSmooth2())
-#constant tweenTxtFadeIn 103
-//CreateTweenText(tweenTxtFadeIn, tweenFadeLen#)
-//SetTweenTextAlpha(tweenTxtFadeIn, 0, 255, TweenSmooth2())
-//#constant tweenTxtFadeOut 104
-//CreateTweenText(tweenTxtFadeOut, tweenFadeLen#)
-//SetTweenTextAlpha(tweenTxtFadeOut, 255, 0, TweenSmooth2())
 
 // Results screen sprites - player 1
 #constant TXT_R_CRAB_MSG_1 = 500
@@ -796,10 +840,10 @@ global altUnlocked as integer[6]
 #constant SOUNDTEST 6
 #constant STATISTICS 7
 global spActive = 0 //Single Player active
-global aiActive = 0 //VS AI active
 global paused = 0	//Game is currently paused
 global pauseTimer# = 0
 global spType = 0
+global spAIDiff = 3
 global fruitMode = 0
 #constant MIRRORMODE 1
 #constant CLASSIC 2
@@ -808,6 +852,8 @@ global fruitMode = 0
 #constant AIBATTLE 5
 
 global fruitUnlock# = -300
+
+
 
 #constant glowS 20000
 type meteor
@@ -832,6 +878,7 @@ function LoadBaseSounds()
 	
 	if GetDeviceBaseName() <> "android"
 		LoadSoundOGG(turnS, "turn.ogg")
+		LoadSoundOGG(turnSDog, "turnDog.ogg")
 		//LoadSoundOGG(jumpS, "jump.ogg")
 		LoadSoundOGG(specialS, "special.ogg")
 		LoadSoundOGG(specialExitS, "specialExit.ogg")
@@ -860,6 +907,7 @@ function LoadBaseSounds()
 		LoadSoundOGG(wizardSpell1S, "wizardSpell1.ogg")
 		LoadSoundOGG(wizardSpell2S, "wizardSpell2.ogg")
 		LoadSoundOGG(kingSpellS, "kingSpell.ogg")
+		LoadSoundOGG(knightSpellS, "knightSpell.ogg")
 		LoadSoundOGG(ninjaStarS, "ninjaStar.ogg")
 	endif
 	
@@ -893,6 +941,7 @@ function LoadBaseSounds()
 		LoadMusicOGG(wizardSpell1S, "wizardSpell1.ogg")
 		LoadMusicOGG(wizardSpell2S, "wizardSpell2.ogg")
 		LoadMusicOGG(kingSpellS, "kingSpell.ogg")
+		LoadMusicOGG(knightSpellS, "knightSpell.ogg")
 		LoadMusicOGG(ninjaStarS, "ninjaStar.ogg")
 	endif
 			
@@ -967,19 +1016,53 @@ function PlayMusicOGGSP(songID, loopYN)
 			
 			SetMusicLoopTimesOGG(spMusic, 6.932, -1)
 			if appState = START then SetMusicLoopTimesOGG(spMusic, .769, 25.384)
-			
 		endif
+		if songID = loveMusic
+			LoadMusicOGG(loveMusic, "love.ogg")
+			SetMusicLoopTimesOGG(loveMusic, 3.077, -1)
+		endif
+		if songID = emotionMusic
+			LoadMusicOGG(emotionMusic, "emotion.ogg")
+			SetMusicLoopTimesOGG(emotionMusic, 7.5, -1)
+		endif
+		if songID = fightFMusic
+			LoadMusicOGG(fightFMusic, "fightF.ogg")
+			SetMusicLoopTimesOGG(fightFMusic, 6.25, -1)
+		endif
+		if songID = fightAJMusic
+			LoadMusicOGG(fightAJMusic, "fightAJ.ogg")
+			SetMusicLoopTimesOGG(fightAJMusic, 7.2, -1)
+		endif
+		if songID = chillMusic
+			LoadMusicOGG(chillMusic, "chill.ogg")
+			SetMusicLoopTimesOGG(chillMusic, 0.967, -1)
+		endif
+		if songID = ragMusic
+			LoadMusicOGG(ragMusic, "rag.ogg")
+			SetMusicLoopTimesOGG(ragMusic, 3.158, -1)
+		endif
+		if songID = unlockMusic then LoadMusicOGG(unlockMusic, "unlock.ogg")
+		if songID = ssidMusic then LoadMusicOGG(ssidMusic, "ssid.ogg")
+		if songID = mcbMusic
+			LoadMusicOGG(mcbMusic, "mcb.ogg")
+			SetMusicLoopTimesOGG(mcbMusic, 3.803, -1)
+		endif
+		
 		if songID = dangerAMusic then LoadMusicOGG(dangerAMusic, "dangerA.ogg")
 		if songID = dangerBMusic then LoadMusicOGG(dangerBMusic, "dangerB.ogg")
 		if songID = dangerJMusic then LoadMusicOGG(dangerJMusic, "dangerJ.ogg")
 		if songID = dangerCMusic then LoadMusicOGG(dangerCMusic, "dangerC.ogg")
 		if songID = dangerTMusic then LoadMusicOGG(dangerTMusic, "dangerT.ogg")
+		if songID = dangerFMusic then LoadMusicOGG(dangerFMusic, "dangerF.ogg")
+		if songID = dangerAJMusic then LoadMusicOGG(dangerAJMusic, "dangerAJ.ogg")
 		
-		if songID = raveBass1 then LoadMusicOGG(raveBass1, "special4"+AltStr(crab1Alt)+".ogg")
-		if songID = raveBass2 then LoadMusicOGG(raveBass2, "special4"+AltStr(crab1Alt)+".ogg")
+		if songID = raveBass1 and crab1Evil = 0 then LoadMusicOGG(raveBass1, "special4"+AltStr(crab1Alt)+".ogg")
+		if songID = raveBass1 and crab1Evil = 1 then LoadMusicOGG(raveBass1, "fire.ogg")
+		if songID = raveBass2 and crab2Evil = 0 then LoadMusicOGG(raveBass2, "special4"+AltStr(crab2Alt)+".ogg")
+		if songID = raveBass2 and crab2Evil = 1 then LoadMusicOGG(raveBass2, "fire.ogg")
 		if songID = fireMusic then LoadMusicOGG(fireMusic, "fire.ogg")
 		
-		if songID = retro1M then LoadMusicOGG(retro1M, "retro1.ogg")
+		if songID = retro1M then LoadMusicOGG(retro1M, "special4a.ogg")
 		if songID = retro2M then LoadMusicOGG(retro2M, "retro2.ogg")
 		if songID = retro3M then LoadMusicOGG(retro3M, "retro3.ogg")
 		if songID = retro4M then LoadMusicOGG(retro4M, "retro4.ogg")
@@ -987,6 +1070,12 @@ function PlayMusicOGGSP(songID, loopYN)
 		if songID = retro6M then LoadMusicOGG(retro6M, "retro6.ogg")
 		if songID = retro7M then LoadMusicOGG(retro7M, "retro7.ogg")
 		if songID = retro8M then LoadMusicOGG(retro8M, "retro8.ogg")
+		if songID = retro9M
+			LoadMusicOGG(retro9M, "retro9.ogg")
+			SetMusicLoopTimesOGG(retro9M, 3.855, -1)
+		endif
+		if songID = retro10M then LoadMusicOGG(retro10M, "retro10.ogg")
+		if songID = retro11M then LoadMusicOGG(retro11M, "retro11.ogg")
 	
 	endif
 		
@@ -1003,7 +1092,12 @@ function PlayMusicOGGSPStr(str$, loopYN)
 	if str$ = "fightB" then id = fightBMusic
 	if str$ = "fightJ" then id = fightJMusic
 	if str$ = "fightD" then id = tutorialMusic
+	if str$ = "fightAJ" then id = fightAJMusic
 	if str$ = "tomato" then id = tomatoMusic
+	if str$ = "emotion" then id = emotionMusic
+	if str$ = "chill" then id = chillMusic
+	if str$ = "rag" then id = ragMusic
+	if str$ = "love" then id = loveMusic
 	if str$ = "characterSelect" then id = characterMusic
 	if str$ = "results" then id = resultsMusic
 	if str$ = "loserXD" then id = loserMusic
@@ -1012,6 +1106,8 @@ function PlayMusicOGGSPStr(str$, loopYN)
 	if str$ = "dangerB" then id = dangerBMusic
 	if str$ = "dangerJ" then id = dangerJMusic
 	if str$ = "dangerC" then id = dangerCMusic
+	if str$ = "dangerF" then id = dangerFMusic
+	if str$ = "dangerAJ" then id = dangerAJMusic
 	if str$ = "rave1" then id = raveBass1
 	if str$ = "rave2" then id = raveBass2
 	
@@ -1032,6 +1128,49 @@ function PlayMusicOGGSPStr(str$, loopYN)
 	endif
 endfunction
 
+function GetMusicByID(id)
+	song = 0
+	
+	//Default unlocked songs
+	if id = 1 then song = fightBMusic
+	if id = 2 then song = fightAMusic
+	if id = 3 then song = fightJMusic
+	if id = 4 then song = ragMusic
+	if id = 5 then song = chillMusic
+	if id = 6 then song = characterMusic
+	if id = 7 then song = resultsMusic
+	
+	//Songs unlocked through the game
+	if id = 8 then song = tomatoMusic
+	if id = 9 then song = fightAJMusic
+	if id = 10 then song = spMusic
+	if id = 11 then song = ssidMusic
+	if id = 12 then song = mcbMusic
+	if id = 13 then song = loveMusic
+	//if id = 14 then song = angerMusic
+	if id = 15 then song = emotionMusic
+	//if id = 16 then song = fightBVocalMusic
+	//if id = 17 then song = creditsMusic
+	//if id = 18 then song = skateMusic
+	//if id = 19 then song = skateVocalMusic
+	//if id = 20 then song = puppetMusic
+	if id = 21 then song = fightFMusic
+	
+	if id = 31 then song = retro1M
+	if id = 32 then song = retro2M
+	if id = 33 then song = retro3M
+	if id = 34 then song = retro4M
+	if id = 35 then song = retro5M
+	if id = 36 then song = retro6M
+	if id = 37 then song = retro7M
+	if id = 38 then song = retro8M
+	if id = 39 then song = retro9M 	//Planetarium
+	if id = 40 then song = retro10M //Cosmic Corner Store
+	if id = 41 then song = retro11M //Takeoff
+	
+	if song = 0 then song = retro9M
+	
+endfunction song
 
 function LoadJumpSounds()
 	if GetMusicExistsOGG(jump1S) then DeleteMusicOGG(jump1S)
@@ -1040,11 +1179,19 @@ function LoadJumpSounds()
 	SetFolder("/media/sounds")
 	if GetFileExists("jump" + str(crab1Type) + AltStr(crab1Alt) + ".ogg")
 		LoadMusicOGG(jump1S, "jump" + str(crab1Type) + AltStr(crab1Alt) + ".ogg")
+		if crab1Evil and crab1Type = 4 and crab1Alt = 3
+			DeleteMusicOGG(jump1S)
+			LoadMusicOGG(jump1S, "arrow.ogg")
+		endif
 	else
 		LoadMusicOGG(jump1S, "jump" + str(crab1Type) + ".ogg")
 	endif
 	if GetFileExists("jump" + str(crab2Type) + AltStr(crab2Alt) + ".ogg")
 		LoadMusicOGG(jump2S, "jump" + str(crab2Type) + AltStr(crab2Alt) + ".ogg")
+		if crab2Evil and crab2Type = 4 and crab2Alt = 3
+			DeleteMusicOGG(jump2S)
+			LoadMusicOGG(jump2S, "arrow.ogg")
+		endif
 	else
 		LoadMusicOGG(jump2S, "jump" + str(crab2Type) + ".ogg")
 	endif
@@ -1059,6 +1206,7 @@ function LoadBaseImages()
 	LoadImage(fontDescItalI, "fontDescItal.png")
 	LoadImage(fontCrabI, "fontCrab.png")
 	LoadImage(fontScoreI, "ScoreFont.png")
+	LoadImage(fontTitleScreenI, "fontTitleScreen.png")
 	
 	//#constant fontDesc 2
 	
@@ -1083,13 +1231,18 @@ function LoadBaseImages()
 //~	next i
 	
 	SetFolder("/media/envi")
-	
-	LoadImage(bg1I, "bg1.png")
-	LoadImage(bg2I, "bg2.png")
-	LoadImage(bg3I, "bg3.png")
-	LoadImage(bg4I, "bg4.png")
-	LoadImage(bg5I, "bg5.png")
-	LoadImage(bgPI, "pauseForeground.png")
+	size# = 1
+	if dispH = 0 then size# = .5
+	LoadImageResized(bg1I, "bg1.png", size#, size#, 0)
+	LoadImageResized(bg2I, "bg2.png", size#, size#, 0)
+	LoadImageResized(bg3I, "bg3.png", size#, size#, 0)
+	LoadImageResized(bg4I, "bg4.png", size#, size#, 0)
+	LoadImageResized(bg5I, "bg5.png", size#, size#, 0)
+	LoadImageResized(bg6I, "bg6.png", size#, size#, 0)
+	LoadImageResized(bg7I, "bg7.png", size#, size#, 0)
+	LoadImageResized(bg8I, "bg8.png", size#, size#, 0)
+	LoadImageResized(bg9I, "bg9.png", size#, size#, 0)
+	LoadImageResized(bgPI, "pauseForeground.png", size#, size#, 0)
 	LoadImage(bgRainSwipeI, "rainbowSwipe.png")
 	
 	LoadImage(starParticleI, "starParticle.png")
@@ -1126,9 +1279,9 @@ function LoadBaseImages()
 	*/
 
 	//Setting up the planet image indexes for later
-	for i = 1 to planetITotalMax
-		planetVarI[i] = 400 + i
-	next i
+	//for i = 1 to planetITotalMax
+	//	planetVarI[i] = 400 + i
+	//next i
 	
 	
 	LoadImage(fruit1I, "fruit1.png")
@@ -1157,7 +1310,7 @@ function LoadBaseImages()
 			
 	SetFolder("/media/ui")
 	
-	LoadImage(logoI, "title.png")
+	LoadImage(logoI, "vslogo.png")
 	LoadImage(logoDemoI, "titleDemo.png")
 	LoadImage(logoFruitI, "titleFruit.png")
 	LoadImage(playI, "play.png")
@@ -1179,57 +1332,38 @@ function LoadBaseImages()
 	
 endfunction
 
+function LoadSelectCrabImages()
+	SetFolder("/media/art")
+	if dispH then scale# = 1
+	if dispH = 0 then scale# = .5
+	for i = 0 to NUM_CRABS-1 + spActive*STORY_CS_BONUS 
+		crabRefType = Mod(i, 6)+1
+		crabRefAlt = (i)/6
+		for j = 1 to 6
+			img = LoadImageResizedR("crab" + str(crabRefType) + AltStr(crabRefAlt) + "select" + Str(j) + ".png", .25)
+			//img = LoadImageResizedR("crab" + str(crabRefType) + AltStr(crabRefAlt) + "sheet.png", scale#)
+			//img = LoadImageResizedR("crab" + str(crabRefType) + AltStr(crabRefAlt) + "sheet.png", 1)
+			//Regular size is 3510 by 2140
+			//ResizeImage(img, 3510, 2140)
+			//702 by 428
+			if j = 1 then IMG_CS_CRAB[i] = img
+		next j
+	next i
+endfunction
+
 function LoadGameImages(loading)
 	
 	if loading
 		//Loading all of the images
 		
 		SetFolder("/media/envi")
-		//LoadImage(bg1I, "bg1.png")
-		//LoadImage(bg2I, "bg2.png")
-		//LoadImage(bg3I, "bg3.png")
 		
 		LoadImage(meteorI1, "meteor1.png")
 		LoadImage(meteorI2, "meteor2.png")
 		LoadImage(meteorI3, "meteor3.png")
 		LoadImage(meteorI4, "meteor4.png")
 		LoadImage(meteorTractorI, "tractor.png")
-		
-		for i = 1 to planetIMax
-			LoadImage(planetVarI[i], "p" + str(i) + ".png")
-		next i
-		for i = 1 to planetITotalMax - planetIMax
-			LoadImage(planetVarI[planetIMax + i], "legendp" + str(i) + ".png")
-		next i
-		
-		
-		
-//~		if GetDeviceBaseName() = "android"
-//~			SetFolder("/media/sounds")
-//~			
-//~			if crab1Type = 1 or crab2Type = 1 then LoadMusicOGG(ufoS, "ufo.ogg")
-//~			if crab1Type = 2 or crab2Type = 2
-//~				LoadMusicOGG(wizardSpell1S, "wizardSpell1.ogg")
-//~				LoadMusicOGG(wizardSpell2S, "wizardSpell2.ogg")
-//~			endif
-//~			if crab1Type = 6 or crab2Type = 6 then LoadMusicOGG(ninjaStarS, "ninjaStar.ogg")
-//~			
-//~			LoadMusicOGG(turnS, "turn.ogg")
-//~			LoadMusicOGG(specialS, "special.ogg")
-//~			LoadMusicOGG(specialExitS, "specialExit.ogg")
-//~			LoadMusicOGG(explodeS, "explode.ogg")
-//~			LoadMusicOGG(launchS, "launch.ogg")
-//~			LoadMusicOGG(crackS, "crack.ogg")
-//~			LoadMusicOGG(flyingS, "flying.ogg")
-//~			LoadMusicOGG(landingS, "landing.ogg")		
-//~		
-//~			//LoadMusicOGG(exp1S, "exp1.ogg")
-//~			//LoadMusicOGG(exp2S, "exp2.ogg")
-//~			//LoadMusicOGG(exp3S, "exp3.ogg")
-//~			//LoadMusicOGG(exp4S, "exp4.ogg")
-//~			//LoadMusicOGG(exp5S, "exp5.ogg")
-//~			
-//~		endif
+
 		
 		//The dynamic crab loader!
 		for i = 1 to 2
@@ -1271,7 +1405,10 @@ function LoadGameImages(loading)
 					num = -14
 				endif
 				
-				file$ = "crab" + str(crabType) + alt$ + act$ + str(j+num) + ".png"
+				evilS$ = ""
+				if i = 1 and crab1evil then evilS$ = "2"
+				if i = 2 and crab2evil then evilS$ = "2"
+				file$ = "crab" + str(crabType) + alt$ + evilS$ + act$ + str(j+num) + ".png"
 				if GetFileExists(file$)
 					LoadImage(index, file$)
 				else
@@ -1286,19 +1423,19 @@ function LoadGameImages(loading)
 			SetFolder("/media/art")
 			
 			index = crab1attack1I - 1 + i
-			file$ = "crab" + str(crabType) + alt$ + "attack1.png"
+			file$ = "crab" + str(crabType) + alt$ + evilS$ + "attack1.png"
 			if GetFileExists(file$)
 				LoadImage(index, file$)
 			else
 				LoadImage(index, "white.png")
 			endif
-			file$ = "crab" + str(crabType) + alt$ + "attack2.png"
+			file$ = "crab" + str(crabType) + alt$ + evilS$ + "attack2.png"
 			if GetFileExists(file$)
 				LoadImage(index+10, file$)
 			else
 				LoadImage(index+10, "white.png")
 			endif
-			file$ = "crab" + str(crabType) + alt$ + "attack3.png"
+			file$ = "crab" + str(crabType) + alt$ + evilS$ + "attack3.png"
 			if GetFileExists(file$)
 				LoadImage(index+20, file$)
 			else
@@ -1312,7 +1449,7 @@ function LoadGameImages(loading)
 			//Lives loading
 			index = crab1life1I + (i-1)*3
 			for k = 1 to 3
-				file$ = "crab" + str(crabType) + alt$ + "life" + str(k) + ".png"
+				file$ = "crab" + str(crabType) + alt$ + evilS$ + "life" + str(k) + ".png"
 				if GetFileExists(file$)
 					LoadImage(index, file$)
 				else
@@ -1369,12 +1506,12 @@ function LoadGameImages(loading)
 		DeleteImage(meteorI4)
 		DeleteImage(meteorTractorI)
 		
-		for i = 1 to planetIMax
-			DeleteImage(planetVarI[i])
-		next i
-		for i = 1 to planetITotalMax - planetIMax
-			DeleteImage(planetVarI[planetIMax + i])
-		next i
+		//for i = 1 to planetIMax
+		//	DeleteImage(planetVarI[i])
+		//next i
+		//for i = 1 to planetITotalMax - planetIMax
+		//	DeleteImage(planetVarI[planetIMax + i])
+		//next i
 		
 		//if GetImageExists(crab3attack3I) then DeleteImage(crab3attack3I)
 		//if GetImageExists(crab5attack3I) then DeleteImage(crab5attack3I)
@@ -1391,14 +1528,8 @@ function LoadGameImages(loading)
 	
 endfunction
 
-function LoadResultImages(loading)
-	
-	
-endfunction
-
-
 global crabPause1 as string[6]
-global crabPause2 as string[24]
+global crabPause2 as string[25]
 
 function SetCrabPauseStrings()
 	crabPause1[1] = "Speed: {{{}} Turn: {{{}}" + chr(10) + "Double-tap: Roll Forward"
@@ -1417,11 +1548,22 @@ function SetCrabPauseStrings()
 	crabPause2[7] = "Special: Mad-eor Shower" + chr(10) + "Call Angry Ned to rain down" + chr(10) + "fast meteors on your opponent."
 	crabPause2[8] = "Special: Royal Order" + chr(10) + "Order shrimp to fire three" + chr(10) + "rounds of canons on your enemy."
 	crabPause2[9] = "Special: Stardust Spinout" + chr(10) + "Twists the opponent to make" + chr(10) + "all of their stuff spinout."
+	crabPause2[10] = "Special: Crab-stalgia" + chr(10) + "Obscure your opponent's vision" + chr(10) + "with memories of the past."
 	crabPause2[11] = "Special: Hourglass Curse" + chr(10) + "Speed up your enemy's" + chr(10) + "game with a cursed artifact."
 	crabPause2[12] = "Special: Claw-Ball Toss" + chr(10) + "Fling flaming projecticles" + chr(10) + "directly through the screen."
 	crabPause2[13] = "Special: Termination Claws" + chr(10) + "Incite The Law to catch" + chr(10) + "your opponent off gaurd."
 	crabPause2[14] = "Special: Meteor Math" + chr(10) + "Send dangerous numbers to" + chr(10) + "the opposite screen."
-	crabPause2[22] = "Special: Heavenly Light" + chr(10) + "Blind your adversary with" + chr(10) + "the power of the holy glow."
+	crabPause2[15] = "Special: Tail Chase" + chr(10) + "Makes the oppenent dizzy," + chr(10) + "spinning all of their stuff."
+	crabPause2[16] = "Special: Ride the Wave" + chr(10) + "Obscure your opponent's vision" + chr(10) + "with gnarly beach waves."
+	crabPause2[17] = "Special: Double Time" + chr(10) + "Speed up your opponent's" + chr(10) + "tempo, doubling their speed."
+	crabPause2[18] = "Special: Heart Blast!!" + chr(10) + "Send deadly love bombs" + chr(10) + "directly through the screen."
+	crabPause2[19] = "Special: Blackest Hole" + chr(10) + "Rip meteors from a black" + chr(10) + "hole, and onto your opponent."
+	crabPause2[20] = "Special: Summon the Storm" + chr(10) + "Send meteors raining down" + chr(10) + "to your opponent's planet."
+	crabPause2[21] = "Special: See You Later" + chr(10) + "He was a punk, she did ballet," + chr(10) + "this spins your opponent away."
+	crabPause2[22] = "Special: Heavenly Light" + chr(10) + "Blind your adversary with" + chr(10) + "the power of holy glow."
+	crabPause2[23] = "Special: Birthday Blast" + chr(10) + "Make your opponent age quicker," + chr(10) + "doubling their speed."
+	crabPause2[24] = "Special: Shrimp Sorcery" + chr(10) + "Blast mythical shrimp" + chr(10) + "directly through the screen."
+	crabPause2[25] = "Special: Devilish Light" + chr(10) + "Blind your adversary with" + chr(10) + "the devil's influence."
 	//crabPause2[] = "Special: " + chr(10) + "" + chr(10) + ""
 endfunction
 
@@ -1446,7 +1588,7 @@ function SetStoryShortStrings()
 	chapterDesc[3] = "Something big has happened" + chr(10) + "in the galaxy, and the" + chr(10) + "#1 Fan Crab is sure it's" + chr(10) + "because of Space Crab!"
 	
 	chapterTitle[4] = "The Trainee"
-	chapterDesc[4] = "Top Crab is eager to" + chr(10) + "prove his worth, but does" + chr(10) + "he even HAVE worth?" + chr(10) + "Let's find out!"
+	chapterDesc[4] = "Top Crab is eager to prove" + chr(10) + "his worth, but does he" + chr(10) + "even HAVE worth?" + chr(10) + "Let's find out!"
 	
 	chapterTitle[5] = "Political Influence"
 	chapterDesc[5] = "Royalty, meddling in the" + chr(10) + "affairs of commoners?" + chr(10) + "It's a thankless job, and" + chr(10) + "he won't let you forget it."
@@ -1454,7 +1596,7 @@ function SetStoryShortStrings()
 	chapterTitle[6] = "The Adventurer"
 	chapterDesc[6] = "Daring escapes!" + chr(10) + "Multiplying meteors!" + chr(10) + "It's all here, and more!" + chr(10) + ""
 	
-	chapterTitle[7] = "The Transport Guy"
+	chapterTitle[7] = "The Transport"
 	chapterDesc[7] = "Does Taxi Crab have" + chr(10) + "what it takes to" + chr(10) + "'roll' with the youth" + chr(10) + "of today?"
 	
 	chapterTitle[8] = "The Vacation"
@@ -1467,10 +1609,10 @@ function SetStoryShortStrings()
 	chapterDesc[10] = "Sound check, one, two." + chr(10) + "Rock Lobster's got a new" + chr(10) + "set, and you've got" + chr(10) + "front row seats."
 	
 	chapterTitle[11] = "The History"
-	chapterDesc[11] = "A generational legacy comes" + chr(10) + "to a head after" + chr(10) + "family gets involved." + chr(10) + ""
+	chapterDesc[11] = "A generational legacy" + chr(10) + "comes to a head after" + chr(10) + "family gets involved." + chr(10) + ""
 	
 	chapterTitle[12] = "The Cosmic Cook"
-	chapterDesc[12] = "'Space Crab placed an" + chr(10) + "order? With ME? That must" + chr(10) + "be a prank. Throw that" + chr(10) + "one in the trash.'"
+	chapterDesc[12] = "'Space Crab placed an order?" + chr(10) + "With ME? That must" + chr(10) + "be a prank. Throw that" + chr(10) + "one in the trash.'"
 	
 	chapterTitle[13] = "Single & Mingling"
 	chapterDesc[13] = "Cranime Wants to Indulge /" + chr(10) + "Crabacus Makes a Choice / " + chr(10) + "Cranime Finds Love Pt. 1 /" + chr(10) + "Cranime Finds Love Pt. 2"
@@ -1479,39 +1621,52 @@ function SetStoryShortStrings()
 	chapterDesc[14] = "It's the opening day" + chr(10) + "of the Star Seekers!" + chr(10) + "But is it everything" + chr(10) + "that was promised...?"
 	
 	chapterTitle[15] = "The Party...?"
-	chapterDesc[15] = "Rave Crab's eternal party" + chr(10) + "may end sooner than" + chr(10) + "he anticipated." + chr(10) + ""
+	chapterDesc[15] = "Rave Crab's eternal" + chr(10) + "party may end sooner" + chr(10) + "than anticipated." + chr(10) + ""
 	
 	chapterTitle[16] = "Voice of Reason"
-	chapterDesc[16] = "'SOMEONE'S GOTTA PUT" + chr(10) + "SPACE CRAB IN " + chr(10) + "HIS PLACE, AND I DON'T" + chr(10) + "SEE THEM STEPPING UP!!'"
+	chapterDesc[16] = "'SOMEONE'S GOTTA PUT" + chr(10) + "SPACE CRAB IN HIS" + chr(10) + "PLACE, AND I DON'T" + chr(10) + "SEE THEM STEPPING UP!!'"
 	
-	chapterTitle[17] = "The Divine Eye-in-the-Sky"
-	chapterDesc[17] = "" + chr(10) + "" + chr(10) + "" + chr(10) + ""
+	chapterTitle[17] = "The Eye-in-the-Sky"
+	chapterDesc[17] = "Answering a prayer from" + chr(10) + "below, Holy Crab descends" + chr(10) + "to help the lost crabs" + chr(10) + "find their way."
 	
-	chapterTitle[18] = "The Crab Resources Department"
-	chapterDesc[18] = "" + chr(10) + "" + chr(10) + "" + chr(10) + ""
+	chapterTitle[18] = "Crab Resources Dept."
+	chapterDesc[18] = "'Dealing with the consequences" + chr(10) + "of your actions? Al Legal is" + chr(10) + "here to get it all in writing." + chr(10) + "Just need you to sign here.'"
 	
-	chapterTitle[19] = "The Other Side of the Paw"
-	chapterDesc[19] = "" + chr(10) + "" + chr(10) + "" + chr(10) + ""
+	chapterTitle[19] = "Other Side of the Paw"
+	chapterDesc[19] = "Let's hear what Space Barc" + chr(10) + "has to say about all this!" + chr(10) + "There's gotta be something" + chr(10) + "in that little dog brain."
 	
 	chapterTitle[20] = "The Valiant Defender"
-	chapterDesc[20] = "" + chr(10) + "" + chr(10) + "" + chr(10) + ""
+	chapterDesc[20] = "An evil force is rising." + chr(10) + "Will Crabyss Knight be" + chr(10) + "able to locate and stop" + chr(10) + "it in time?"
 	
 	chapterTitle[21] = "The Starlight Rival"
-	chapterDesc[21] = "" + chr(10) + "" + chr(10) + "" + chr(10) + ""
+	chapterDesc[21] = "The sceme has been revealed!" + chr(10) + "Will Chrono Crab pull off" + chr(10) + "his master plot, and best" + chr(10) + "his Starlight Rival?"
 	
 	chapterTitle[22] = "Fight for the Future!"
-	chapterDesc[22] = "" + chr(10) + "" + chr(10) + "" + chr(10) + ""
+	chapterDesc[22] = "With the Star Seekers united," + chr(10) + "Space Crab is left to deal" + chr(10) + "with one final question:" + chr(10) + "What happens next?"
 	
-	chapterTitle[23] = "Bonus 1: "
-	chapterDesc[23] = "" + chr(10) + "" + chr(10) + "" + chr(10) + ""
+	chapterTitle[23] = "Bonus 1: The Punk"
+	chapterDesc[23] = "Many find Sk8r Crab to be" + chr(10) + "obnoxious. But will they say" + chr(10) + "the same about his song?" + chr(10) + ""
 	
-	chapterTitle[24] = "Bonus 2: "
-	chapterDesc[24] = "" + chr(10) + "" + chr(10) + "" + chr(10) + ""
+	chapterTitle[24] = "Bonus 2: The Jester"
+	chapterDesc[24] = "This humble crab gets" + chr(10) + "more than he bargined for" + chr(10) + "when making a deal with" + chr(10) + "the devil."
 	
-	chapterTitle[25] = "Bonus 3: The Future"
-	chapterDesc[25] = "" + chr(10) + "" + chr(10) + "" + chr(10) + ""
+	chapterTitle[25] = "The Future"
+	chapterDesc[25] = "" + chr(10) + "The end." + chr(10) + "" + chr(10) + ""
 	
 endfunction
+
+function PlayVoice(vID, crabT, crabA, evil)
+	if GetMusicExistsOGG(vID) then StopMusicOGGSP(vID)
+	SetFolder("/media/sounds/announcer")
+	bonus$ = "1"
+	if Random(1, 5) = 5 then bonus$ = "2"
+	evil$ = ""
+	if evil then evil$ = "2"
+	LoadMusicOGG(vID, "crab" + Str(crabT) + AltStr(crabA) + evil$ + bonus$ + ".ogg")
+	PlayMusicOGG(vID, 0)
+	SetMusicVolumeOGG(vID, volumeSE)
+endfunction
+
 
 
 function AltStr(alt)
@@ -1555,60 +1710,6 @@ AddSpriteAnimationFrame(crab1, crab1start1I)	//1
 #constant crab3skid1I 155
 #constant crab3skid2I 156
 #constant crab3skid3I 157
-
-#constant crab4start1I 161
-#constant crab4start2I 162
-#constant crab4walk1I 163
-#constant crab4walk2I 164
-#constant crab4walk3I 165
-#constant crab4walk4I 166
-#constant crab4walk5I 167
-#constant crab4walk6I 168
-#constant crab4walk7I 169
-#constant crab4walk8I 170
-#constant crab4jump1I 171
-#constant crab4jump2I 172
-#constant crab4death1I 173
-#constant crab4death2I 174
-#constant crab4skid1I 175
-#constant crab4skid2I 176
-#constant crab4skid3I 177
-
-#constant crab5start1I 181
-#constant crab5start2I 182
-#constant crab5walk1I 183
-#constant crab5walk2I 184
-#constant crab5walk3I 185
-#constant crab5walk4I 186
-#constant crab5walk5I 187
-#constant crab5walk6I 188
-#constant crab5walk7I 189
-#constant crab5walk8I 190
-#constant crab5jump1I 191
-#constant crab5jump2I 192
-#constant crab5death1I 193
-#constant crab5death2I 194
-#constant crab5skid1I 195
-#constant crab5skid2I 196
-#constant crab5skid3I 197
-
-#constant crab6start1I 201
-#constant crab6start2I 202
-#constant crab6walk1I 203
-#constant crab6walk2I 204
-#constant crab6walk3I 205
-#constant crab6walk4I 206
-#constant crab6walk5I 207
-#constant crab6walk6I 208
-#constant crab6walk7I 209
-#constant crab6walk8I 210
-#constant crab6jump1I 211
-#constant crab6jump2I 212
-#constant crab6death1I 213
-#constant crab6death2I 214
-#constant crab6skid1I 215
-#constant crab6skid2I 216
-#constant crab6skid3I 217
 
 #constant specialPrice1 20
 #constant specialPrice2 20

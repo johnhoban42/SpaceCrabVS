@@ -1,33 +1,33 @@
 bg 3
-music fight AJ
-KN: You there, screaming on my property. What is your purpose for being here?
-TC: S-s-sir! I'm so so sorry!
-M-my name is Top Crab, I was just training with-
-KN: Does that give a reason to intrude?
-Prepare to duel, if you wish to stand your ground!
-TC: Eep!
+music fightAJ
+KN: BZFAb; You there, screaming on my property. What is your purpose for being here?
+TC: BHFHf; A-AH! I'm sorry! Sorry!
+BSFHj; M-my name is Top Crab, I was just training with-
+KN: BZFBa; Does that give you the the right to intrude?
+BZFD; Prepare to duel, if you wish to stand your ground!
+TC: BAFHk; EEP!
 music
-(Wait, this is my chance...)
+BTFNb; (Wait. This could be my chance...)
 music tomato
-(To use the skills I have to take down this, this... guy!)
+BVFHj; (To use the skills I have to take down this, this... monster!)
 music tomato
 fight 53239
 music fightAJ
-KN: So, you chose to not back down.
-TC: Y-yes.
-KN: Very well.
-I like your spirit. You seem to have skills hidden within you.
-exit 2
-TC: ...
+KN: BOFBa; So, you chose to not back down.
+TC: BWFHj; Y-yes.
+KN: BAFD; Very well.
+BOFB; I like your spirit. You seem to have some latent power within you. That is all.
 music
-TP: Oh, THERE you are, Top Crab!
-Sorry if my dad scared you, he can be scary with the armor on. Haha!
+exit 2
+TC: BBFKc; ...
+TP: BAFOb; Oh, THERE you are, Top Crab!
+BBFIa; Sorry if my dad scared you, he can be scary with the armor on. Haha!
 music rag
-TC: That was your DAD?!
-I was terrified for my life!
-TP: Even though Dad was mostly messing with you, you really held your own out there!
-Since you could put up a fight, maybe you're ready for the Star Seekers already.
-TC: ...Maybe I am ready.
-But that doesn't mean I'm going to stop getting stronger.
-I'll become the most capable crab I can be!
-TP: Wooo! Thats the spirit!
+TC: BAFHk; That was your DAD?!
+BSFHc; I was terrified for my life!
+TP: BAFOe; Even though Dad was just messing with you, you really held your own out there!
+BUFQ; Since you can put up a fight, maybe you're ready for the Star Seekers after all.
+TC: BBFKi; ...Maybe I am ready.
+BDFDb; But that doesn't mean I'm going to stop getting stronger.
+BKFBd; I'll become the most capable crab I can be!
+TP: BKFOa; Wooo! That's the spirit!

@@ -1,21 +1,18 @@
 bg 2
-music fightJ 1
-TP: So, your training is going well?
-...
-Really? You spun around for 11 hours straight? Good going.
-Keep me up to date about any of your future GAINS.
-I need to hop off the call now, though. I'm at the training site.
-Keep it up!
+music fightJ
+se phone
+TP: BEFA; So, your training is going well?
+BEFCb; Really?? You spun around for 11 hours straight? That's great!!
+BEFGb; I can't wait to hear more! I need to hop off the call though. I'm at the training site.
+BEFAf; Keep it up!
+se phone
 *beep*
-Alright! With the planetary marathon coming up soon,
-it's time to officially start my training plan.
-The instructions said to start with a warmup of 50 meteor dodges.
-And it looks like... I'm right in time for the forecasted meteor shower!
-Let the storm commence!
-music fightJ 1
-classic 1
-music results 1
-TP: 50 meteors dodged, all done!
-Next up...
+BMFDb; Alright, with the planetary marathon coming up soon, it's time to officially start my training plan!
+BNFFa; The instructions said to start with a warmup of 40 meteor dodges.
+BLFJb; And it looks like... I'm right in time for the forecasted meteor shower!
+BPFB; Let the storm commence!
+classic 40
+TP: BKFAi; 40 meteors dodged, all done!
+BNFGa; Next up...
 ??: Hello? Anyone out there?
-TP: ...a cool down break, I guess.
+TP: BIFDc; ...a slight detour!

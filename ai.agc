@@ -46,7 +46,7 @@ global doJump = 0 // flag set when crab should "double tap" the turn input in or
 global knowingAI = 0
 
 function SetAIDifficulty(turner, idiot, leaper, clumsy, knowing)
-	turnCooldownMax# = 420 - (knowing+1)*36
+	turnCooldownMax# = 420 - (turner+1)*36
 	randomThinkTicksApplied = 20 + idiot*30 + (Min(idiot, 3)-3)*100 + (Min(idiot, 7)-7)*5000
 	randomJumpPercent = 5 + leaper*10
 	randomTurnPercent = 5 + clumsy*10
