@@ -253,7 +253,7 @@ function DoSoundTest()
 			SetSpriteFrame(sprSoundControl, 1)
 		endif
 	// song scroll left or right
-	elseif ButtonMultitouchEnabled(sprSoundSelectLeft) or ButtonMultitouchEnabled(sprSoundSelectRight)
+	elseif (ButtonMultitouchEnabled(sprSoundSelectLeft) or ButtonMultitouchEnabled(sprSoundSelectRight)) and GetSpriteX(sprSoundDisplay) = w / 2 - 193
 		// stop current music
 		if soundPlaying = 1
 			soundPlaying = 0
@@ -297,7 +297,7 @@ function DoSoundTest()
 //~	print(soundList[soundIndex])		
 		
 	// update the display frame when moving the new song in
-	if (GetTweenSpritePlaying(twnSCLeftIn, sprSoundDisplay) or GetTweenSpritePlaying(twnSCRightIn, sprSoundDisplay)) and not GetSpriteCurrentFrame(sprSoundDisplay) = soundIndex + 1
+	if not GetTweenSpritePlaying(twnSCLeftOut, sprSoundDisplay) and not GetTweenSpritePlaying(twnSCRightOut, sprSoundDisplay) and not GetSpriteCurrentFrame(sprSoundDisplay) = soundIndex + 1
 		SetSpriteFrame(sprSoundDisplay, soundIndex + 1)
 	endif
 			
