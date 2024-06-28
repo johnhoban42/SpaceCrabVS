@@ -16,12 +16,12 @@ music fightAJ
 KN: BOFBa; So, you chose to not back down.
 TC: BWFHj; Y-yes.
 KN: BAFD; Very well.
-BOFB; I like your spirit. You seem to have some latent power within you. That is all.
+BBFKd; I like your spirit. You seem to have some latent power within you. That is all.
 music
 exit 2
 TC: BBFKc; ...
 TP: BAFOb; Oh, THERE you are, Top Crab!
-BBFIa; Sorry if my dad scared you, he can be scary with the armor on. Haha!
+BBFIa; Sorry if my dad spooked you, he can be scary with the armor on. Haha!
 music rag
 TC: BAFHk; That was your DAD?!
 BSFHc; I was terrified for my life!

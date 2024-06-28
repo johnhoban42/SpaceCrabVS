@@ -26,7 +26,7 @@ SetWindowSize( 700, 1400, 0 )
 SetWindowAllowResize( 1 ) // allow the user to resize the window
 
 global demo = 0
-global debug = 1
+global debug = 0
 global onWeb = 0
 
 if debug = 0
@@ -201,10 +201,10 @@ endfunction
 //clearedChapter = 0
 
 if debug
-	curChapter = 3
-	curScene = 3
+	curChapter = 8
+	curScene = 4
 	highestScene = 100
-	appState = START
+	appState = STORY
 	crab1Type = 6
 	crab1Alt = 3
 	
@@ -295,7 +295,6 @@ do
 		//Print(touch)
 		touch = GetRawNextTouchEvent()
 	endwhile
-	
 	
 	
 	if debug

@@ -173,11 +173,9 @@ function InitStart()
 		//Settings Button
 		SetSpriteExpress(SPR_EXIT_GAME, 110, 110, w - 140, 30, sDepth)
 	
-	
 	endif
 
-
-	//Creating the tweens
+	//Creating the tweens for the main menu pieces
 	for i = 0 to 7
 		twn = SPR_STORY_START+i
 		CreateTweenSprite(twn, .3)
@@ -189,7 +187,42 @@ function InitStart()
 		SetTweenTextY(twn, GetTextY(twn)+2000, GetTextY(twn), TweenEaseIn2())
 	next i
 
-	CreateMirrorClassic()
+	//The mirror/classic stuff
+	CreateTextExpress(TXT_SP_LOGO, "MIRROR MODE", 120, fontCrabI, 1, w/2, 60, 5)
+	SetTextSpacing(TXT_SP_LOGO, -36)
+	SetTextVisible(TXT_SP_LOGO, 0)
+	CreateTweenText(TXT_SP_LOGO, .8)
+	SetTweenTextSize(TXT_SP_LOGO, 70, 130, TweenOvershoot())
+	PlayTweenText(TXT_SP_LOGO, TXT_SP_LOGO, 0)
+
+	//CreateTextExpress(TXT_SP_DESC, "WARNING: Magic mirror ahead." + chr(10) + "Soul split is likely. Keep" + chr(10) + "both halves safe to survive.", 59, fontDescI, 1, w/2, 510, 5)
+	CreateTextExpress(TXT_SP_DESC, "", 59, fontDescI, 1, w/2, 510, 5)
+	SetTextSpacing(TXT_SP_DESC, -17)
+	SetTextVisible(TXT_SP_DESC, 0)
+
+	SetFolder("/media")
+	for i = SPR_SP_C1 to SPR_SP_C24
+		num = i-SPR_SP_C1+1
+		crb = i - SPR_SP_C1
+		mImg = LoadImage("art/mystery.png")
+		if altUnlocked[Mod(num, 6)+1] < (num)/6
+			CreateSprite(i, mImg)
+			SetSpriteColor(i, 254, 254, 254, 255)
+		else
+			LoadSprite(i, "art/chibicrab" + str(Mod(crb, 6)+1) + AltStr((crb)/6) + ".png")
+		endif
+		
+		SetSpriteSizeSquare(i, 200)
+		SetSpritePosition(i, 9999, 980 + 150*(Mod(num-1, 6)-2.5))
+		//SetSpritePosition(i, w/2 - GetSpriteWidth(i)/2 - 250 + 250*(Mod(num-1,3)), 1080 + 250*((num-1)/3))
+		
+		CreateTweenSprite(i, .7)
+		SetTweenSpriteX(i, w + 20, w/2 - GetSpriteWidth(i)/2 + 190*((num-1)/6-1.5) , TweenBounce())
+		SetSpriteVisible(i, 0)
+		AddButton(i)
+	next i
+
+	CreateMirror()
 	
 		
 	if spType = 0 or spType = STORYMODE or spType = AIBATTLE then PlayMusicOGGSP(titleMusic, 1)
@@ -197,24 +230,12 @@ function InitStart()
 	
 	startStateInitialized = 1
 	
-	//CreateTextExpress(TXT_ALONE, "Playing alone?" + chr(10) + "Try these!", 80, fontCrabI, 1, 250, GetSpriteY(SPR_START1)+ GetSpriteHeight(SPR_START1)+100, 4)
-	//SetTextSpacing(TXT_ALONE, -23)
-	
 endfunction
 
-function CreateMirrorClassic()
-	LoadSpriteExpress(SPR_LOGO_HORIZ, "logoHoriz.png", w-40, (w-40)/2, 0, 80, 5)
-	SetSpriteMiddleScreen(SPR_LOGO_HORIZ)
-	SetSpriteY(SPR_LOGO_HORIZ, 10)
-	SetSpriteVisible(SPR_LOGO_HORIZ, 0)
+function CreateMirror()
 	
-	CreateTextExpress(SPR_LOGO_HORIZ, "MIRROR MODE", 130, fontCrabI, 1, w/2, 360, 5)
-	SetTextSpacing(SPR_LOGO_HORIZ, -36)
-	SetTextVisible(SPR_LOGO_HORIZ, 0)
-	
-	CreateTextExpress(TXT_SP_DESC, "WARNING: Magic mirror ahead." + chr(10) + "Soul split is likely. Keep" + chr(10) + "both halves safe to survive.", 59, fontDescI, 1, w/2, 510, 5)
-	SetTextSpacing(TXT_SP_DESC, -17)
-	SetTextVisible(TXT_SP_DESC, 0)
+	SetFolder("/media/ui")
+
 	
 	HS_Offset = -140
 	
@@ -233,17 +254,7 @@ function CreateMirrorClassic()
 	//Mostly incomprehensible below here
 	SetFolder("/media")
 	
-	for i = SPR_SP_C1 to SPR_SP_C6
-		num = i-SPR_SP_C1+1
-		LoadSprite(i, "art/chibicrab" + str(num) + ".png")
-		SetSpriteSize(i, 406/1.3, 275/1.3)
-		SetSpritePosition(i, w/2 - GetSpriteWidth(i)/2 - 250 + 250*(Mod(num-1,3)), 1080 + 250*((num-1)/3))
-		
-		CreateTweenSprite(i, .7)
-		//SetTweenSpriteY(i, h + 20, 1080 + 250*((num-1)/3), TweenBounce())
-		SetTweenSpriteY(i, h + 20,  250*((num-1)/3), TweenBounce())
-		AddButton(i)
-	next i
+	
 	
 	CreateTextExpress(TXT_HIGHSCORE, "High Score: " + str(spHighScore) + chr(10) + "with " + spHighCrab$, 74, fontDescI, 1, w*3/4-100, GetSpriteY(SPR_MENU_BACK) + 10, 5)
 	if spHighScore = 0 then SetTextString(TXT_HIGHSCORE, "High Score: None set.")
@@ -254,12 +265,6 @@ function CreateMirrorClassic()
 	SetTextSpacing(SPR_SP_C1, -25)
 	SetTextVisible(SPR_SP_C1, 0)
 	
-	
-	
-	for i = SPR_SP_C1 to SPR_SP_C6
-		num = i-SPR_SP_C1+1
-		SetSpritePosition(i, w/2 - GetSpriteWidth(i)/2 - 250 + 250*(Mod(num-1,3)), 1080*5 + 250*((num-1)/3))
-	next i
 	
 	//This is the 'single player results screen' setup
 	if spType = MIRRORMODE or spType = CLASSIC and (crab1Deaths <> 0 or crab2Deaths <> 0)
@@ -278,10 +283,7 @@ function CreateMirrorClassic()
 			SyncG()
 		next i
 		
-		CreateTweenText(SPR_LOGO_HORIZ, .8)
-		SetTweenTextSize(SPR_LOGO_HORIZ, 70, 140, TweenOvershoot())
-		PlayTweenText(SPR_LOGO_HORIZ, SPR_LOGO_HORIZ, 0)
-		SetTextVisible(SPR_LOGO_HORIZ, 1)
+		
 		
 		PlaySoundR(chooseS, 100)
 		if GetSpriteExists(coverS) then DeleteSprite(coverS)
@@ -368,11 +370,11 @@ function DoStart()
 	endif
 
 	//Starting a single player game
-	for i = 1 to 6
-		if Button(SPR_SP_C1 + i - 1)
-			crab1Type = i
+	for i = 1 to 24
+		if Button(SPR_SP_C1 + i - 1) and GetSpriteColorRed(SPR_SP_C1 + i - 1) <> 254
+			crab1Type = Mod(i-1, 6)+1
 			crab2Type = crab1Type
-			crab1Alt = 0
+			crab1Alt = (i-1)/6
 			crab2Alt = crab1Alt
 			state = GAME
 			if spType = MIRRORMODE then 	PlayMirrorModeScene()
@@ -430,7 +432,7 @@ function UpdateStartElements()
 	endif
 	if mod(round(startTimer#)+1080, 90) = 0 then PlaySprite(SPR_MENU_BACK, 10, 0, 1, 8)
 	if mod(round(startTimer#)+1080, 140) = 0 then PlaySprite(SPR_STORY_START, 10, 0, 1, 9)
-	if mod(round(startTimer#)+1080, 216) = 0 then PlaySprite(SPR_STATS, 10, 0, 1, 8)
+	if mod(round(startTimer#)+1080, 216) = 0 then PlaySprite(SPR_STATS, 10, 0, 1, 9)
 	if mod(round(startTimer#)+1080, 280) = 0 then PlaySprite(SPR_SETTINGS, 10, 0, 1, 8)
 	
 	//SetSpriteAngle(SPR_TITLE, 90 + 320*sin(startTimer#) + 50*sin(startTimer#*3))
@@ -474,19 +476,7 @@ function UpdateStartElements()
 		endif
 	endif
 	
-	/*
-	if spType = 0
-		for i = 0 to GetTextLength(TXT_WAIT1)
-			SetTextCharAngle(TXT_WAIT1, GetTextLength(TXT_WAIT1)-i, -7+14*sin(9*startTimer# + i*6))	//Code from SnowTunes
-		next i		
-		for i = 0 to GetTextLength(TXT_WAIT2)
-			SetTextCharAngle(TXT_WAIT2, GetTextLength(TXT_WAIT2)-i, 180 - 7+14*sin(9*startTimer# + i*6))	//Code from SnowTunes
-		next i
-		
-	endif
-	*/
-	
-	SetSpriteAngle(SPR_LOGO_HORIZ, -1 + 4*sin(startTimer#*3))
+	//SetSpriteAngle(TXT_SP_LOGO, -1 + 4*sin(startTimer#*3))
 	
 	inc TextJitterTimer#, GetFrameTime()
 	if TextJitterTimer# >= 1.0/TextJitterFPS
@@ -494,7 +484,7 @@ function UpdateStartElements()
 		inc TextJitterTimer#, -TextJitterFPS
 		if TextJitterTimer# < 0 then TextJitterTimer# = 0
 	endif
-	txt = SPR_LOGO_HORIZ
+	txt = TXT_SP_LOGO
 	for i = 0 to GetTextLength(txt)
 		if doJit
 			SetTextCharY(txt, i, -1 * (jitterNum) + Random(0, (jitterNum)*2))
@@ -503,7 +493,7 @@ function UpdateStartElements()
 	next i
 	
 	if spType = MIRRORMODE
-		if GetTextString(SPR_LOGO_HORIZ) <> "LOSER XD"
+		if GetTextString(TXT_SP_LOGO) <> "LOSER XD"
 			for i = 0 to 7
 				SetTextCharColor(TXT_SP_DESC, i, 255, 90+90.0*sin(startTimer#*10), 90+90.0*sin(startTimer#*10), 255)
 			next i
@@ -514,7 +504,7 @@ function UpdateStartElements()
 	endif
 
 	//The looping crab selection text
-	if GetTextString(SPR_LOGO_HORIZ) <> "LOSER XD"
+	if GetTextString(TXT_SP_LOGO) <> "LOSER XD"
 		//For the starting
 		SetTextX(SPR_SP_C1, w+20-startTimer#*1243.62/360)
 	else
@@ -559,29 +549,45 @@ function ToggleStartScreen(screen, swipe)
 	
 	
 	//Making everything invisible first
-	SetSpriteVisible(SPR_LOGO_HORIZ, 0)
+	//The main menu sprites/text in order
+	SetSpriteVisible(SPR_TITLE, 0)
+	
+	SetTextVisible(TXT_SINGLE, 0)
+	SetSpriteVisible(SPR_STORY_START, 0) 
+	SetSpriteVisible(SPR_STARTAI, 0)
+	SetSpriteVisible(SPR_STARTMIRROR, 0)
+	SetSpriteVisible(SPR_CLASSIC, 0)
+	
+	SetTextVisible(TXT_MULTI, 0)
+	SetSpriteVisible(SPR_START1, 0)
+	
+	SetTextVisible(TXT_OTHER, 0)
+	SetSpriteVisible(SPR_JUKEBOX, 0)
+	SetSpriteVisible(SPR_STATS, 0)
+	SetSpriteVisible(SPR_SETTINGS, 0)
+	SetSpriteVisible(SPR_EXIT_GAME, 0)
+	
+	//The mirror/classic sprites
 	SetTextVisible(TXT_HIGHSCORE, 0)
 	SetTextVisible(TXT_SP_DESC, 0)
-	SetSpriteVisible(SPR_START1, 0)
-	SetSpriteVisible(SPR_STARTAI, 0)
-	SetTextVisible(SPR_LOGO_HORIZ, 0)
+	
+	for i = SPR_SP_C1 to SPR_SP_C24
+		SetSpriteVisible(i, 0)
+	next i
+	
+	SetTextVisible(TXT_SP_LOGO, 0)
 	SetSpriteVisible(SPR_MENU_BACK, 0)
-	SetSpriteVisible(SPR_STARTMIRROR, 0)
-	SetTextVisible(SPR_STARTMIRROR, 0)
 	SetTextVisible(SPR_SP_C1, 0) 
-	//SetTextVisible(TXT_ALONE, 0) 
-	SetSpriteVisible(SPR_STORY_START, 0) 
-	SetTextY(SPR_LOGO_HORIZ, 360)
 	SetTextSize(TXT_SP_DESC, 59)
 	SetTextSpacing(TXT_SP_DESC, -17)
 	SetTextY(TXT_SP_DESC, 510)
 	SetSpriteVisible(SPR_LEADERBOARD, 0)
 	SetSpriteY(SPR_LEADERBOARD, 490)
-	SetSpriteVisible(SPR_CLASSIC, 0)
 	SetSpriteY(SPR_MENU_BACK, 740)
 	SetTextString(SPR_SP_C1, "CHOOSE A CRUSTACEAN, YEAH? WHY NOT CHOOSE A CRUSTACEAN, YEAH? WHY NOT CHOOSE A CRUSTACEAN, YEAH?")
-	SetSpriteVisible(SPR_TITLE, 0)
+	SetTextX(SPR_SP_C1, w + 20)
 	
+		
 	for i = SPR_SP_C1 to SPR_SP_C6
 		AddButton(i)
 	next i
@@ -597,135 +603,107 @@ function ToggleStartScreen(screen, swipe)
 		StopMusicOGGSP(loserMusic)
 		PlayMusicOGGSP(titleMusic, 1)
 		
-		SetSpriteVisible(SPR_START1, 1)
 		SetSpriteVisible(SPR_TITLE, 1)
 		
-		for i = SPR_SP_C1 to SPR_SP_C6
+		SetTextVisible(TXT_SINGLE, 1)
+		SetSpriteVisible(SPR_STORY_START, 1)
+		SetSpriteVisible(SPR_STARTAI, 1)
+		SetSpriteVisible(SPR_STARTMIRROR, 1)
+		SetSpriteVisible(SPR_CLASSIC, 1)
+		
+		SetTextVisible(TXT_MULTI, 1)
+		SetSpriteVisible(SPR_START1, 1)
+		
+		SetTextVisible(TXT_OTHER, 1)
+		SetSpriteVisible(SPR_JUKEBOX, 1)
+		SetSpriteVisible(SPR_STATS, 1)
+		SetSpriteVisible(SPR_SETTINGS, 1)
+		SetSpriteVisible(SPR_EXIT_GAME, 1)
+		
+		for i = SPR_SP_C1 to SPR_SP_C24
 			StopTweenSprite(i, i)
 			SetSpriteY(i, 2000)
 		next i
-		
-		
-		SetSpriteVisible(SPR_STARTMIRROR, 1)
-		SetSpriteVisible(SPR_CLASSIC, 1)
-		//SetTextVisible(TXT_ALONE, 1) 
-		if demo = 0 then SetSpriteVisible(SPR_STARTAI, 1)
-		if demo = 0 then SetSpriteVisible(SPR_STORY_START, 1)
-		
-		for i = SPR_SP_C1 to SPR_SP_C6
+	
+		for i = SPR_SP_C1 to SPR_SP_C24
 			RemoveButton(i)
 		next i
-		
-	elseif screen = MIRRORMODE_START
+	endif
+	if screen = MIRRORMODE_START or screen = CLASSICMODE_START
 		//Showing the start of the mirror mode screen
 				
 		StopMusicOGGSP(titleMusic)
-		PlayMusicOGGSP(spMusic, 1)
+		if screen = MIRRORMODE_START
+			PlayMusicOGGSP(spMusic, 1)
+			SetSpriteColor(SPR_BG_START, 255, 150, 190, 255)
+			SetTextString(TXT_SP_LOGO, "MIRROR MODE")
+			SetTextColor(TXT_SP_LOGO, 192, 192, 192, 255)
+			//SetTextString(TXT_SP_DESC, "WARNING: Magic mirror ahead." + chr(10) + "Soul split is likely. Keep" + chr(10) + "both halves safe to survive.")
+			SetTextString(TXT_HIGHSCORE, "High Score: " + str(spHighScore) + chr(10) + "with " + spHighCrab$)
+			if spHighScore = 0 then SetTextString(TXT_HIGHSCORE, "High Score: None yet." + chr(10) + "Go set one!")
+		endif
+		if screen = CLASSICMODE_START
+			PlayMusicOGGSP(retro1M, 1)
+			SetMusicLoopTimesOGG(retro1M, -1, 6.316)
+			SetSpriteColor(SPR_BG_START, 150, 255, 190, 255)
+			SetTextString(TXT_SP_LOGO, "CLASSIC MODE")
+			SetTextColor(TXT_SP_LOGO, 192, 240, 210, 255)
+			//SetTextString(TXT_SP_DESC, "A classic round of Space Crab," + chr(10) + "with all new VS moves!")
+			SetTextString(TXT_HIGHSCORE, "High Score: " + str(spHighScoreClassic) + chr(10) + "with " + spHighCrabClassic$)
+			if spHighScoreClassic = 0 then SetTextString(TXT_HIGHSCORE, "High Score: None yet." + chr(10) + "Go set one!")
+		endif
 		
-		SetSpriteColor(SPR_BG_START, 255, 150, 190, 255)
+		for i = SPR_SP_C1 to SPR_SP_C24
+			SetSpriteVisible(i, 1)
+			PlayTweenSprite(i,  i, (i-SPR_SP_C1)*.03)
+		next i
+		
 		
 		SetSpriteVisible(SPR_MENU_BACK, 1)
-		SetSpriteVisible(SPR_LOGO_HORIZ, 1)
-		SetTextString(SPR_LOGO_HORIZ, "MIRROR MODE")
-		SetTextColor(SPR_LOGO_HORIZ, 192, 192, 192, 255)
-		SetTextVisible(SPR_LOGO_HORIZ, 1)
-		SetTextString(TXT_SP_DESC, "WARNING: Magic mirror ahead." + chr(10) + "Soul split is likely. Keep" + chr(10) + "both halves safe to survive.")
-		SetTextString(TXT_HIGHSCORE, "High Score: " + str(spHighScore) + chr(10) + "with " + spHighCrab$)
-		if spHighScore = 0 then SetTextString(TXT_HIGHSCORE, "High Score: None yet." + chr(10) + "Go set one!")
+		SetTextVisible(TXT_SP_LOGO, 1)
+		
 		SetTextVisible(TXT_HIGHSCORE, 1)
 		SetTextVisible(TXT_SP_DESC, 1)
 		SetTextVisible(SPR_SP_C1, 1) 
 		SetTextX(SPR_SP_C1, w + 20)
-		SetTextVisible(SPR_STARTMIRROR, 1)
 		
-		for i = SPR_SP_C1 to SPR_SP_C6			
-			PlayTweenSprite(i,  i, (i-SPR_SP_C1)*.06)
-		next i
 		
-	elseif screen = MIRRORMODE_LOSE
-		
-		SetSpriteColor(SPR_BG_START, 255, 150, 190, 255)
-		
-		for i = SPR_SP_C1 to SPR_SP_C6
-			num = i-SPR_SP_C1+1
-			SetSpriteY(i, 1080 + 250*((num-1)/3))
-		next i
-		
-		SetTextString(SPR_LOGO_HORIZ, "LOSER XD")
-		IncTextY(SPR_LOGO_HORIZ, -230)
-		SetTextColor(SPR_LOGO_HORIZ, 255, 255, 255, 255)
-		SetTextVisible(TXT_SP_DESC, 1)
-		SetTextString(TXT_SP_DESC, "Final Score: " + str(spScore) + chr(10))
-		if spScore < 20
-			SetTextString(TXT_SP_DESC, GetTextString(TXT_SP_DESC) + "(You can do better...)")
-		elseif spScore < 50
-			SetTextString(TXT_SP_DESC, GetTextString(TXT_SP_DESC) + "Not bad, for a Loser XD.")
-		elseif spScore < 100
-			SetTextString(TXT_SP_DESC, GetTextString(TXT_SP_DESC) + "You're getting good!")
-		elseif spScore < 200
-			SetTextString(TXT_SP_DESC, GetTextString(TXT_SP_DESC) + "Yipee!")
-		else
-			SetTextString(TXT_SP_DESC, GetTextString(TXT_SP_DESC) + "WOW!!!")
-		endif
-		if spScore = spHighScore and spHighScore <> 0
-			SetTextString(TXT_SP_DESC, GetTextString(TXT_SP_DESC) + chr(10) + "New High Score!!")
-			IncSpriteY(SPR_LEADERBOARD, 46)
-			IncSpriteSizeCenteredMult(SPR_LEADERBOARD, 0.85)
-		endif
-		SetTextString(TXT_HIGHSCORE, "High Score: " + str(spHighScore) + chr(10) + "with " + spHighCrab$)
-		if spHighScore = 0 then SetTextString(TXT_HIGHSCORE, "High Score: None set." + chr(10) + "Go set one!")
-		SetTextSize(TXT_SP_DESC, 80)
-		SetTextSpacing(TXT_SP_DESC, -22)
-		SetTextY(TXT_SP_DESC, 290)
-		SetSpriteVisible(SPR_MENU_BACK, 1)
-		SetTextVisible(TXT_HIGHSCORE, 1)
-		SetTextVisible(SPR_SP_C1, 1)
-		SetTextX(SPR_SP_C1, w + 20)
-		SetSpriteVisible(SPR_LEADERBOARD, 1)
-		//SetTextString(SPR_SP_C1, "WANT TO TRY AGAIN? PICK ANOTHER CRAB! WANT TO TRY AGAIN? PICK ANOTHER CRAB!")
-		
-	elseif screen = CLASSICMODE_START
-				
-		SetSpriteColor(SPR_BG_START, 150, 255, 190, 255)
-		
-		StopMusicOGGSP(titleMusic)
-		PlayMusicOGGSP(retro1M, 1)
-		SetMusicLoopTimesOGG(retro1M, -1, 6.316)
-		
-		SetSpriteVisible(SPR_MENU_BACK, 1)
-		SetSpriteVisible(SPR_LOGO_HORIZ, 1)
-		SetTextString(SPR_LOGO_HORIZ, "CLASSIC")
-		SetTextColor(SPR_LOGO_HORIZ, 192, 240, 210, 255)
-		SetTextVisible(SPR_LOGO_HORIZ, 1)
-		SetTextString(TXT_SP_DESC, "A classic round of Space Crab," + chr(10) + "with all new VS moves!")
 		for i = 0 to Len(GetTextString(TXT_SP_DESC))
-			SetTextCharColor(TXT_SP_DESC, i, 255, 255, 255, 255)
-		next i
-		SetTextString(TXT_HIGHSCORE, "High Score: " + str(spHighScoreClassic) + chr(10) + "with " + spHighCrabClassic$)
-		if spHighScoreClassic = 0 then SetTextString(TXT_HIGHSCORE, "High Score: None yet." + chr(10) + "Go set one!")
-		SetTextVisible(TXT_HIGHSCORE, 1)
-		SetTextVisible(TXT_SP_DESC, 1)
-		SetTextVisible(SPR_SP_C1, 1) 
-		SetTextX(SPR_SP_C1, w + 20)
-		IncSpriteY(SPR_MENU_BACK, -40)
-		
-		SetTextVisible(SPR_STARTMIRROR, 1)
-		for i = SPR_SP_C1 to SPR_SP_C6			
-			PlayTweenSprite(i,  i, (i-SPR_SP_C1)*.06)
+			//SetTextCharColor(TXT_SP_DESC, i, 255, 255, 255, 255)
 		next i
 		
-	elseif screen = CLASSICMODE_LOSE
+	endif
+	if screen = MIRRORMODE_LOSE or screen = CLASSICMODE_LOSE
 		
-		SetSpriteColor(SPR_BG_START, 150, 255, 190, 255)
+		if screen = MIRRORMODE_LOSE
+			SetSpriteColor(SPR_BG_START, 255, 150, 190, 255)
+			if spScore = spHighScore and spHighScore <> 0
+				SetTextString(TXT_SP_DESC, GetTextString(TXT_SP_DESC) + chr(10) + "New High Score!!")
+				IncSpriteY(SPR_LEADERBOARD, 46)
+				IncSpriteSizeCenteredMult(SPR_LEADERBOARD, 0.85)
+			endif
+			SetTextString(TXT_HIGHSCORE, "High Score: " + str(spHighScore) + chr(10) + "with " + spHighCrab$)
+			if spHighScore = 0 then SetTextString(TXT_HIGHSCORE, "High Score: None set." + chr(10) + "Go set one!")
 			
-		for i = SPR_SP_C1 to SPR_SP_C6
-			num = i-SPR_SP_C1+1
-			SetSpriteY(i, 1080 + 250*((num-1)/3))
+		elseif screen = CLASSICMODE_LOSE
+			SetSpriteColor(SPR_BG_START, 150, 255, 190, 255)
+			if spScore = spHighScoreClassic and spHighScoreClassic <> 0
+				SetTextString(TXT_SP_DESC, GetTextString(TXT_SP_DESC) + chr(10) + "New High Score!!")
+				IncSpriteY(SPR_LEADERBOARD, 46)
+				IncSpriteSizeCenteredMult(SPR_LEADERBOARD, 0.85)
+			endif
+			SetTextString(TXT_HIGHSCORE, "High Score: " + str(spHighScoreClassic) + chr(10) + "with " + spHighCrabClassic$)
+			if spHighScoreClassic = 0 then SetTextString(TXT_HIGHSCORE, "High Score: None set." + chr(10) + "Go set one!")
+		endif
+		
+		for i = SPR_SP_C1 to SPR_SP_C24
+			SetSpriteVisible(i, 1)
+			PlayTweenSprite(i,  i, 0)
+			UpdateTweenSprite(i, i, 2)
 		next i
 		
-		SetTextString(SPR_LOGO_HORIZ, "LOSER XD")
-		IncTextY(SPR_LOGO_HORIZ, -230)
-		SetTextColor(SPR_LOGO_HORIZ, 255, 255, 255, 255)
+		SetTextString(TXT_SP_LOGO, "LOSER XD")
+		SetTextColor(TXT_SP_LOGO, 255, 255, 255, 255)
 		SetTextVisible(TXT_SP_DESC, 1)
 		SetTextString(TXT_SP_DESC, "Final Score: " + str(spScore) + chr(10))
 		if spScore < 20
@@ -739,23 +717,17 @@ function ToggleStartScreen(screen, swipe)
 		else
 			SetTextString(TXT_SP_DESC, GetTextString(TXT_SP_DESC) + "WOW!!!")
 		endif
-		if spScore = spHighScoreClassic and spHighScoreClassic <> 0
-			SetTextString(TXT_SP_DESC, GetTextString(TXT_SP_DESC) + chr(10) + "New High Score!!")
-			IncSpriteY(SPR_LEADERBOARD, 46)
-			IncSpriteSizeCenteredMult(SPR_LEADERBOARD, 0.85)
-		endif
-		SetTextString(TXT_HIGHSCORE, "High Score: " + str(spHighScoreClassic) + chr(10) + "with " + spHighCrabClassic$)
-		if spHighScoreClassic = 0 then SetTextString(TXT_HIGHSCORE, "High Score: None set." + chr(10) + "Go set one!")
+		
+		
 		SetTextSize(TXT_SP_DESC, 80)
 		SetTextSpacing(TXT_SP_DESC, -22)
 		SetTextY(TXT_SP_DESC, 290)
 		SetSpriteVisible(SPR_MENU_BACK, 1)
 		SetTextVisible(TXT_HIGHSCORE, 1)
 		SetTextVisible(SPR_SP_C1, 1)
-		SetTextX(SPR_SP_C1, w + 20)
 		SetSpriteVisible(SPR_LEADERBOARD, 1)
-		//SetTextString(SPR_SP_C1, "WANT TO TRY AGAIN? PICK ANOTHER CRAB! WANT TO TRY AGAIN? PICK ANOTHER CRAB!")
-		
+		SetTextString(SPR_SP_C1, "WANT TO TRY AGAIN? PICK ANOTHER CRAB! WANT TO TRY AGAIN? PICK ANOTHER CRAB!")
+	
 	endif
 	
 	//The setting of stuff based on other values
@@ -783,9 +755,9 @@ function PlayMirrorModeScene()
 	
 	
 	if storyActive = 0
-		spr = SPR_SP_C1 - 1 + crab1Type
+		spr = SPR_SP_C1 - 1 + crab1Type + crab1Alt*6
 		spr2 = spr + 1000
-		LoadSprite(spr2, "chibicrab" + str(crab1Type) + ".png")
+		LoadSprite(spr2, "chibicrab" + str(crab1Type) + AltStr(crab1Alt) + ".png")
 		MatchSpritePosition(spr2, spr)
 		MatchSpriteSize(spr2, spr)
 	else		
@@ -948,7 +920,6 @@ endfunction
 function ExitStart()
 	
 	DeleteSprite(SPR_TITLE)
-	DeleteSprite(SPR_LOGO_HORIZ)
 	DeleteSprite(SPR_STARTAI)
 	DeleteSprite(SPR_BG_START)
 	DeleteAnimatedSprite(SPR_MENU_BACK)
@@ -961,16 +932,15 @@ function ExitStart()
 	DeleteAnimatedSprite(SPR_STATS)
 	DeleteAnimatedSprite(SPR_START1)
 	DeleteAnimatedSprite(SPR_STARTMIRROR)
-	DeleteText(SPR_LOGO_HORIZ)
+	DeleteText(TXT_SP_LOGO)
 	DeleteText(TXT_HIGHSCORE)
 	DeleteText(TXT_SP_DESC)
 	DeleteText(SPR_SP_C1)
 	DeleteText(TXT_SINGLE)
 	DeleteText(TXT_MULTI)
 	DeleteText(TXT_OTHER)
-	//DeleteText(TXT_ALONE)
 	if GetSpriteExists(coverS) then DeleteSprite(coverS)
-	if GetTweenExists(SPR_LOGO_HORIZ) then DeleteTween(SPR_LOGO_HORIZ)
+	if GetTweenExists(TXT_SP_LOGO) then DeleteTween(TXT_SP_LOGO)
 	
 	for i = 0 to 99
 		twn = SPR_STORY_START+i
@@ -986,7 +956,7 @@ function ExitStart()
 	
 	StopMusicOGGSP(titleMusic)
 	
-	for i = SPR_SP_C1 to SPR_SP_C6
+	for i = SPR_SP_C1 to SPR_SP_C24
 		DeleteSprite(i)
 		DeleteTween(i)
 	next i

@@ -12,7 +12,7 @@ music retro3
 fight 58735
 music retro5
 KC: BOFBa; You're being taken in! 
-BOFB; Enjoy your 30 year prison sentence.
+BOFB; Enjoy your thirty-year prison sentence.
 BUFAa; Enough time to turn you into a loyal and worthy subject!
 CC: BMFKd; Heeheehee! How ill prepared you are...
 music

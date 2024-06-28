@@ -192,6 +192,8 @@ endfunction
 function LoopSettings()
 	stayIn = 1
 	
+	
+	ProcessMultitouch()
 	DoInputs()
 	if inputLeft or inputRight or inputUp or inputDown then MoveSelect()
 	ProcessPopup()

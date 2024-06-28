@@ -1130,13 +1130,15 @@ function DoCharacterSelectController(csc ref as CharacterSelectController)
 				
 				//PingColor(GetSpriteMiddleX(csc.sprCrabs+csc.crabSelected), GetSpriteMiddleY(csc.sprCrabs+csc.crabSelected), 400, 255, 100, 100, 50)
 			// Scroll left
-			elseif (ButtonMultitouchEnabled(csc.sprLeftArrow) or (GetMultitouchPressedTopRight() and csc.player = 2 and dispH = 0) or (GetMultitouchPressedBottomLeft() and csc.player = 1 and dispH = 0)) and csc.crabSelected > 0
+			//elseif (ButtonMultitouchEnabled(csc.sprLeftArrow) or (GetMultitouchPressedTopRight() and csc.player = 2 and dispH = 0) or (GetMultitouchPressedBottomLeft() and csc.player = 1 and dispH = 0)) and csc.crabSelected > 0
+			elseif ButtonMultitouchEnabled(csc.sprLeftArrow) and csc.crabSelected > 0
 				PlaySoundR(arrowS, 100)
 				ChangeCrabs(csc, -1, 1)
 				if csc.player = 1 then crab1Evil = 0
 				if csc.player = 2 then crab2Evil = 0
 			// Scroll right
-			elseif (ButtonMultitouchEnabled(csc.sprRightArrow) or (GetMultitouchPressedTopLeft() and csc.player = 2 and dispH = 0) or (GetMultitouchPressedBottomRight() and csc.player = 1 and dispH = 0)) and ((csc.crabSelected < lastChar and spType <> STORYMODE) or (csc.crabSelected < Min(clearedChapter, finalChapter-1) and spType = STORYMODE))
+			//elseif (ButtonMultitouchEnabled(csc.sprRightArrow) or (GetMultitouchPressedTopLeft() and csc.player = 2 and dispH = 0) or (GetMultitouchPressedBottomRight() and csc.player = 1 and dispH = 0)) and ((csc.crabSelected < lastChar and spType <> STORYMODE) or (csc.crabSelected < Min(clearedChapter, finalChapter-1) and spType = STORYMODE))
+			elseif ButtonMultitouchEnabled(csc.sprRightArrow) and ((csc.crabSelected < lastChar and spType <> STORYMODE) or (csc.crabSelected < Min(clearedChapter, finalChapter-1) and spType = STORYMODE))
 				PlaySoundR(arrowS, 100)
 				ChangeCrabs(csc, 1, 1)
 				if csc.player = 1 then crab1Evil = 0

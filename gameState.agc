@@ -37,6 +37,12 @@ function InitGame()
 	SetSpriteVisible(split, 1)
 	TransitionEnd()
 	
+	if GetDeviceBaseName() = "android"
+		SetFolder("/media/sounds")
+		LoadMusicOGG(exp4S, "exp4.ogg")
+		LoadMusicOGG(exp5S, "exp5.ogg")
+	endif
+	
 	if spType = 0 or spType = STORYMODE or spType = AIBATTLE then PlayOpeningScene()
 	
 	//The pause button
@@ -612,6 +618,8 @@ function EndClassicScene()
 	
 	endStage = 0
 	
+	SetFolder("/media")
+	
 	//Setup for the scene
 	LoadSprite(bgHit1, "envi/bg0.png")
 	SetSpriteSizeSquare(bgHit1, w)
@@ -779,6 +787,10 @@ function ExitGame()
 	paused = 0
 	
 	StopGamePlayMusic()
+	if GetDeviceBaseName() = "android"
+		DeleteMusicOGG(exp4S)
+		DeleteMusicOGG(exp5S)
+	endif
 	
 	//This is called if the end cutscene for the game never plays
 	if GetSpriteExists(expBar1)
@@ -2504,6 +2516,8 @@ function StopGamePlayMusic()
 	if GetMusicPlayingOGGSP(ragMusic) then StopMusicOGGSP(ragMusic)
 	if GetMusicPlayingOGGSP(ssidMusic) then StopMusicOGGSP(ssidMusic)
 	if GetMusicPlayingOGGSP(mcbMusic) then StopMusicOGGSP(mcbMusic)
+	if GetMusicPlayingOGGSP(raveBass1) then StopMusicOGGSP(raveBass1)
+	if GetMusicPlayingOGGSP(raveBass2) then StopMusicOGGSP(raveBass2)
 	
 	for i = dangerAMusic to dangerAJMusic
 		if GetMusicPlayingOGGSP(i) then StopMusicOGGSP(i)

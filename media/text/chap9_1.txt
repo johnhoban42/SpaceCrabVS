@@ -11,7 +11,9 @@ BMFDb; Alright, with the planetary marathon coming up soon, it's time to officia
 BNFFa; The instructions said to start with a warmup of 40 meteor dodges.
 BLFJb; And it looks like... I'm right in time for the forecasted meteor shower!
 BPFB; Let the storm commence!
+music fightJ
 classic 40
+music fightJ
 TP: BKFAi; 40 meteors dodged, all done!
 BNFGa; Next up...
 ??: Hello? Anyone out there?

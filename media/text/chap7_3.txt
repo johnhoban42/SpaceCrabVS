@@ -1,27 +1,30 @@
-bg 5
+bg 2
 music retro4
 ??: Taxi, I gotta get to my show, STAT!
-TX: Of course man, where are-
-NO WAY. You're Rock Lobster, aren't you?!
-RL: Yeah, I am. But I don't have time for you to fanboy at me.
-I've got to get to my show. I'd rather be fashionably early than late, y'know?
+TX: BAFAb; Of course man, where are-
+BDFS; NO WAY. You're Rock Lobster, aren't you?!
+RL: BBFDd; Yeah, I am. But I don't have time for you to fanboy at me.
+BAFDe; I've got to get to my show. I'd rather be fashionably early than late, y'know?
 music
-TX: You got it, sir. The 'Taxi Crab Special' it is!
+TX: BSFO; You got it, sir. The 'Taxi Crab Special' it is!
 music retro5
-RL: Thank yo- wait. Aren't you going to let me in? Why did you lock the doors?
+RL: BWFE; Thank y- wait. Aren't you going to let me in? Why did you lock the doors?
 music retro5
 fight 54325
 music retro6
-TX: Alright, hop in! Let's head to the venue.
-RL: Y-you're deranged!
-Is this how you treat all of your customers?!
-I just wanted to get a Taxi ride, and you start trying to kill me!
-No way, man. Never using public transit again.
+TX: BSFO; Alright, hop in! Let's head to the venue.
+music retro5
+RL: BSFKc; Y-you're deranged!
+BVFVb; Is this how you treat all of your customers?!
+BMFEe; I just wanted to a taxi ride, and you start trying to kill me!
+BSFBd; No way, man. Never using public transit again.
+music
 exit 2
-TX: ...
-Eh. You win some, you lose some.
-Just another day of being a taxi driver!
-Time to clock out for the day and get some rest-
+TX: BAFJ; ...
+music rag
+BKFOe; Eh. You win some, you lose some.
+BSFO; Just another day of being a taxi driver!
+BAFGc; Time to clock out for the day and get some rest-
 music
 ??: Not so fast, Taxi Crab.
-TX: Huh?
+TX: BAFJd; Huh?
