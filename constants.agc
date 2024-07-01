@@ -1102,6 +1102,7 @@ function PlayMusicOGGSPStr(str$, loopYN)
 	if str$ = "loserXD" then id = loserMusic
 	if str$ = "chromecoast" then id = spMusic
 	if str$ = "mcb" then id = mcbMusic
+	if str$ = "ssid" then id = ssidMusic
 	if str$ = "dangerA" then id = dangerAMusic
 	if str$ = "dangerB" then id = dangerBMusic
 	if str$ = "dangerJ" then id = dangerJMusic

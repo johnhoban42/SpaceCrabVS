@@ -916,6 +916,8 @@ function StartEndScreen()
 	state = STORY
 	
 	inc curScene, 1
+	firstTimeEnd = 0
+	if highestScene = 100 and (curChapter-1)*4+curScene = 101 then firstTimeEnd = 1
 	highestScene = Max(highestScene, (curChapter-1)*4+curScene)
 	lineSkipTo = 0
 	
@@ -945,8 +947,6 @@ function StartEndScreen()
 		SetCrabFromChapter(curChapter)
 		if crab1Alt <> 0
 			if altUnlocked[crab1Type] < crab1Alt then UnlockCrab(crab1Type, crab1Alt, 1)
-		else
-			
 		endif
 		//UnlockSong(1, 1)
 	else
@@ -960,7 +960,55 @@ function StartEndScreen()
 		SetTweenTextX(TXT_RESULT2, w*2, w/2, TweenLinear())
 		SetTextX(TXT_RESULT1, -w)
 		SetTextX(TXT_RESULT2, -w)
+				
 	endif
+	
+	overallScene = (curChapter-1)*4+curScene-1
+	
+	if overallScene = 88 then PlayCredits()
+	
+	//The non-crab unlocks
+	if overallScene = 8 then UnlockSong(8, 1)
+	if overallScene = 16 then UnlockSong(9, 1)
+	if overallScene = 23 then UnlockSong(10, 1)
+	if overallScene = 37 and musicBattleUnlock = 0
+		//37, Music Picker
+		Popup(MIDDLE, 25)
+		musicBattleUnlock = 1
+	endif
+	if overallScene = 38 then UnlockSong(11, 1)
+	if overallScene = 44 and hardBattleUnlock = 0
+		//44, Hard Battle Start
+		Popup(MIDDLE, 26)
+		hardBattleUnlock = 1
+	endif
+	if overallScene = 45 then UnlockSong(12, 1)
+	if overallScene = 51 then UnlockSong(13, 1)
+	if overallScene = 60 then UnlockSong(14, 1)
+	if overallScene = 65 then UnlockSong(15, 1)
+	if overallScene = 84 and speedUnlock = 0
+		//84, Fast Battle Start
+		Popup(MIDDLE, 27)
+		speedUnlock = 1
+	endif
+	if overallScene = 87 then UnlockSong(16, 1)
+	if overallScene = 88 then UnlockSong(17, 1)
+	if overallScene = 89 then UnlockSong(18, 1)
+	if overallScene = 91 then UnlockSong(19, 1)
+	if overallScene = 93 then UnlockSong(20, 1)
+	if overallScene = 84 and evilUnlock = 0
+		//95, Evil Switch
+		Popup(MIDDLE, 28)
+		evilUnlock = 1
+	endif
+	if overallScene = 97 then UnlockCrab(1, 3, 1)
+	if overallScene = 98 then UnlockSong(21, 1)
+	if overallScene = 99 and unlockAIHard = 0
+		//99, Hardest AI
+		Popup(MIDDLE, 29)
+		unlockAIHard = 1
+	endif
+	if firstTimeEnd then Popup(MIDDLE, 30)	//100, Fully Unlocked Message
 	
 	SetFolder("/media/ui")
 	
@@ -1123,6 +1171,10 @@ function DoStoryEndScreen()
 	
 	
 endfunction state
+
+function PlayCredits()
+	
+endfunction
 
 function SetCrabFromChapter(chap)
 	crabID = 0
