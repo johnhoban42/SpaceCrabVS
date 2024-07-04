@@ -781,16 +781,18 @@ function ExitGame()
 		endif
 	endif
 	
+	if GetSpriteExists(999) then StopGamePlayMusic() 	//The pause menu curtain
+	if GetDeviceBaseName() = "android"
+		DeleteMusicOGG(exp4S)
+		DeleteMusicOGG(exp5S)
+	endif
+	
 	if GetSpriteExists(999) then DeleteSprite(999)	//The pause menu curtain
 	if GetTextExists(TXT_INTRO1) then DeleteText(TXT_INTRO1)
 	if GetTextExists(TXT_INTRO2) then DeleteText(TXT_INTRO2)
 	paused = 0
 	
-	StopGamePlayMusic()
-	if GetDeviceBaseName() = "android"
-		DeleteMusicOGG(exp4S)
-		DeleteMusicOGG(exp5S)
-	endif
+	
 	
 	//This is called if the end cutscene for the game never plays
 	if GetSpriteExists(expBar1)
@@ -2427,7 +2429,7 @@ endfunction
 function StartGameMusic()
 	
 	if gameSongSet <> 0 and storyActive = 0
-		
+		StopGamePlayMusic()
 		if gameSongSet <= musicUnlocked
 			PlayMusicOGGSP(GetMusicByID(gameSongSet), 1)
 		else
@@ -2516,8 +2518,11 @@ function StopGamePlayMusic()
 	if GetMusicPlayingOGGSP(ragMusic) then StopMusicOGGSP(ragMusic)
 	if GetMusicPlayingOGGSP(ssidMusic) then StopMusicOGGSP(ssidMusic)
 	if GetMusicPlayingOGGSP(mcbMusic) then StopMusicOGGSP(mcbMusic)
+	if GetMusicPlayingOGGSP(loveMusic) then StopMusicOGGSP(loveMusic)
 	if GetMusicPlayingOGGSP(raveBass1) then StopMusicOGGSP(raveBass1)
 	if GetMusicPlayingOGGSP(raveBass2) then StopMusicOGGSP(raveBass2)
+	if GetMusicPlayingOGGSP(characterMusic) then StopMusicOGGSP(characterMusic)
+	if GetMusicPlayingOGGSP(resultsMusic) then StopMusicOGGSP(resultsMusic)
 	
 	for i = dangerAMusic to dangerAJMusic
 		if GetMusicPlayingOGGSP(i) then StopMusicOGGSP(i)

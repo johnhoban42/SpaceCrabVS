@@ -616,7 +616,7 @@ function ShowScene(chap, scene)
 				//1st Crab Target
 				cosType = GetCrabCostumeType(crab1Type, crab1Alt)
 				if cosType = 2 then folderF$ = "speyes/"
-				if cosType <> 2 and crab1Type+crab1Alt*6 = 18 or crab1Type+crab1Alt*6 = 20 then folderF$ = "speyes/"
+				if cosType <> 2 and (crab1Type+crab1Alt*6 = 18 or crab1Type+crab1Alt*6 = 20) then folderF$ = "speyes/"
 				
 				if cosType <> 2 and cosType <> 5
 					if z$ <> ""
@@ -1342,7 +1342,7 @@ function GetCrabCostumeType(cT, cA)
 	elseif (cT = 2 and cA = 2) or (cT = 3 and cA = 0) or (cT = 3 and cA = 2) or (cT = 5 and cA = 3) or (cT = 6 and cA = 3)
 		//Unique sprite type
 		cosType = 2
-	elseif (cT = 1 and cA = 0) or (cT = 6 and cA = 2)
+	elseif (cT = 1 and cA = 0)
 		//Blank costume type
 		cosType = 3
 	elseif (cT = 3 and cA = 1)

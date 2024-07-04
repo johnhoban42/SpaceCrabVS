@@ -742,10 +742,10 @@ function InitCharacterSelect()
 	//The button that will change the song for the next round
 	CreateSpriteExpress(SPR_CS_MUSICPICK, 300, 90, w/2+85, h/2-45, 5)
 	for i = 0 to 41
-		if GetFileExists("musicBanners/banner" + Str(i) + ".png") and (i > 30 or i <= musicUnlocked)
-			img = LoadImage("musicBanners/banner" + Str(i) + ".png")
-			AddSpriteAnimationFrame(SPR_CS_MUSICPICK, img)
-			trashBag.insert(img)
+		if (i > 30 or i <= musicUnlocked)
+			//img = LoadImage("musicBanners/banner" + Str(i) + ".png")
+			AddSpriteAnimationFrame(SPR_CS_MUSICPICK, banner1I+i)
+			//trashBag.insert(img)
 		endif
 	next i
 	SetSpriteFrame(SPR_CS_MUSICPICK, 1)

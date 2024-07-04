@@ -201,27 +201,28 @@ endfunction
 //clearedChapter = 0
 
 if debug
-	curChapter = 2
-	curScene = 3
+	curChapter = 11
+	curScene = 2
 	highestScene = 100
 	appState = START
 	crab1Type = 6
 	crab1Alt = 3
 	
 	spType = AIBATTLE
-	altUnlocked[1] = 2
-	altUnlocked[2] = 2
-	altUnlocked[3] = 2
-	altUnlocked[4] = 0
-	altUnlocked[5] = 2
-	altUnlocked[6] = 0
-	firstStartup = 0
-	speedUnlock = 1
+	altUnlocked[1] = 3
+	altUnlocked[2] = 3
+	altUnlocked[3] = 3
+	altUnlocked[4] = 3
+	altUnlocked[5] = 3
+	altUnlocked[6] = 3
+	firstStartup = 1
+	speedUnlock = 0
 	hardBattleUnlock = 1
 	musicBattleUnlock = 1
 	unlockAIHard = 1
 	musicUnlocked = 7
-	evilUnlock = 1
+	evilUnlock = 0
+	gameSongSet = 0
 else
 	LoadGame()
 	//altUnlocked[1] = 2
@@ -245,6 +246,7 @@ else
 	targetFPS = Max(1, targetFPS)
 	windowSize = Min(3, windowSize)
 	windowSize = Max(1, windowSize)
+	gameSongSet = 0
 	if targetFPS <> 5
 		SetVSync(0)
 		SetSyncRate(fpsChunk[targetFPS], 0)

@@ -472,6 +472,10 @@ global loadedCrabSprites as Integer[0]
 #constant special4s7 231
 #constant special4s8 232
 
+
+#constant banner1I 241
+//This goes on through... the rest of 300, to be safe
+
 #constant crabpingI 400
 
 //Planets images are 401 to 430
@@ -678,8 +682,10 @@ global windowSize = 1
 #constant TXT_SP_LOGO 214
 #constant TXT_HIGHSCORE 215
 #constant SPR_LEADERBOARD 216
-
-#constant TXT_SP_DESC 232
+#constant SPR_HARDGAME 217
+#constant SPR_FASTGAME 218
+#constant SPR_MUSICPICK 219
+#constant SPR_EVIL 220
 
 //Different Crab buttons for the single player mode
 #constant SPR_SP_C1 256
@@ -1211,7 +1217,7 @@ function LoadBaseImages()
 	
 	//#constant fontDesc 2
 	
-	SetFolder("/media/art")
+	SetFolder("/media")
 	
 	//The lives
 	//for i = 1 to 6
@@ -1219,9 +1225,10 @@ function LoadBaseImages()
 		//LoadImage(crab1life1I + (i-1)*3, "crab" + str(i) + "life1.png")
 	//next i
 	
-	for i = 1 to 6
-		//Loading in the chibi crabs
-		//LoadImage(crab1life1I + (i-1)*3, "crab" + str(i) + "life1.png")
+	for i = 0 to 41
+		if GetFileExists("musicBanners/banner" + Str(i) + ".png") and (i > 30 or i <= musicUnlocked)
+			LoadImage(banner1I+i, "musicBanners/banner" + Str(i) + ".png")
+		endif
 	next i
 	
 	//Old way of load lives (all of them)

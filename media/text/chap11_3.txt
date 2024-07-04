@@ -1,44 +1,44 @@
 bg 3
-NC: Ladder Wizard the Third. I've come to talk.
-LW: Hmm?
-Aughh! It's you again!
-music sadsong
-NC: You're disgusting. Not only for restarting the Star Seekers...
-But for spreading it's vile ways to the youth of today!
-My poor cousin has been infected by the poison of your ideologies.
+NC: BF; Ladder Wizard the Third. I've come to talk.
+LW: BF; Hmm?
+BF; Aughh! It's you again!
+music emotion
+NC: BF; You're disgusting. Not only for restarting the Star Seekers...
+BF; But for spreading it's vile ways to the youth of today!
+BF; My poor cousin has been infected by the poison of your ideologies.
 music
-LW: Slow down, slow down! You lost me at the beginning.
-Did you say, 'restart'?
-music sadsong
-NC: Oh, please. You of all crabs should know your family history.
-LW: I, uh, don't though.
-NC: Don't play dumb!
-It was YOUR grandfather, Ladder Wizard the First, who joined the original Star Seekers.
-But he wasn't sastisfied with that, was he?
-A menace to all, he tore down the other crabs, just to climb the corporate ladder.
-Thanks to his underhanded tricks, he earned the uncouth name, 'Ladder Wizard'.
-LW: Wow, THAT's where my name comes from?
-Makes more sense then actual ladders, I suppose.
-NC: Ladder Wizard the First's behaviour spread to the others.
-A true 'crabs in a bucket' situation, the once Star Seekers collapsed quickly.
-But it did not end there.
-That destructive, nasty behaviour spread to nearly every crab.
-Except one - my grandfather, Ninja Crab the 81st.
-LW: EIGHTY FIRST?! How many Ninja Crabs have there been?!
-NC: His willpower and watchful eye slowly healed the galaxy.
+LW: BF; Slow down, slow down! You lost me at the beginning.
+BF; Did you say, 'restart'?
+music emotion
+NC: BF; Oh, please. You of all crabs should know your family history.
+LW: BBFU; I, uh, don't though.
+NC: BF; Don't play dumb!
+BF; It was YOUR grandfather, Ladder Wizard the First, who started the original Star Seekers.
+BF; But he wasn't satisfied with that, was he?
+BF; A menace to all, he tore down all other expedition groups, just to climb the social ladder.
+BF; Thanks to his underhanded tricks, he earned the uncouth name, 'Ladder Wizard'.
+LW: BF; Wow, THAT's where my name comes from?
+BF; Makes more sense then actual ladders, I suppose.
+NC: BF; Ladder Wizard the First's behavior spread to the others.
+BF; A true 'crabs in a bucket' situation, the once Star Seekers collapsed quickly.
+BF; But it did not end there.
+BF; That destructive, nasty behavior spread to nearly every crab.
+BF; Except one - my grandfather, Ninja Crab the 81st.
+LW: BF; EIGHTY FIRST?! How many Ninja Crabs have there been?!
+NC: BF; His willpower and watchful eye slowly healed the galaxy.
 music fightB
-NC: Until YOU showed up, wanting to re-open the wounds your grandfather caused. 
-So fight me, so we can end this generational fued!
-LW: Wait! Stop! I'm not a part of this! I don't know anything about this stuff!
+NC: BF; Until YOU showed up, wanting to re-open the wounds your grandfather caused. 
+BF; So fight me, so we can end this generational feud!
+LW: BF; Wait! Stop! I'm not a part of this! I don't know anything about this stuff!
 music fightB
 fight 63157
 music fightB
-NC: Your words, they are true.
-You fight nothing like your grandfather.
-LW: Yeah, I told you that already.
-The Star Seekers were Space Crab's idea. I never even met my grandpa!
-NC: So the forming and naming of both groups... is coincidental?
-LW: Yeah, ha ha! I guess so.
-NC: I'm still unconvinced.
+NC: BF; Your words, they are true.
+BF; You fighting style nothing like your grandfather's underhanded tactics.
+LW: BKFXa; Yeah, I told you that already.
+BF; The Star Seekers were Space Crab's idea. I never even met my grandpa!
+NC: BF; So the forming and naming of both groups... is coincidental?
+LW: BF; Yeah, ha ha! I guess so.
+NC: BF; I'm still unconvinced.
 exit 2
-Though I feel that I will find my answer soon...
+BF; Though I feel that I will find my answer soon...
