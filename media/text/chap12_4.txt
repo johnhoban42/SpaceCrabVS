@@ -1,31 +1,30 @@
 bg 3
 music retro5
-CA: Chrono Crab! I'm glad you agreed to meet with me on such short notice.
-CC: No notice is too short when I control time itself!
-CA: That's actually the precise reason I came to see you.
-I need 200 cakes baked by today. The only way they'll cook that fast...
-Is if you time warp my ovens to the extreme!
-CC: A fair request. Yet, unfortunatly, you have been ambushed in your efforts!
-#1 Fan Crab already told me about your scheme.
-A feast for the Star Seekers? Preposterous. How can you support such villany?
+CK: BMFAa; Chrono Crab! I'm glad you agreed to meet with me on such short notice.
+CC: BAFKg; No notice is too short when I control time itself!
+CK: BSFTp; That's actually the precise reason I came to see you.
+BUFDa; I need 200 cakes baked by today. The only way they'll cook that fast...
+BOFDd; Is if you time warp my ovens to the extreme!
+CC: BVFOe; A fair request. Yet, unfortunately, you have been ambushed in your efforts!
+BAFKd; #1 Fan Crab already told me about your scheme.
+BVFMa; A feast for the Star Seekers? Preposterous. How can you support such villainy?
 music tomato
-I. Don't. Care.
-I am a professional.
-I fulfill orders for my paying customers, no matter who they are.
-Now help me speed up these ovens, or so help me...
+CK: BUFD; I. Don't. Care.
+BMFDa; I am a professional. I fulfill orders for my paying customers, no matter who they are.
+BAFDd; Now help me speed up these ovens, or so help me...
 music fightAJ
-I will rip your arms off, and use your time powers myself.
-CC: You'll... what?!
+BAFWa; I will rip your arms off, and get the power out of them myself.
+CC: BBFKc; You'll... what?!
 music fightAJ
 fight 64538
 music mcb
-CA: In the end, he decided to help me, all on his own.
-And THAT is how I got your cakes baked so fast!
-SC: Oh. Uhhh, haha, great.
-(How many insane crabs ARE there out here??)
-(Crab Cake ranks a bit above King Crab for me... but below Chrono Crab.)
+CK: BUFTo; In the end, he decided to help me, all on his own.
+BAFOc; And THAT is how I got your cakes baked so fast!
+SC: BBFKj; Oh. Uhhh, haha, great.
+BAFKc; (How many insane crabs ARE there??)
+BDFVa; (This guy's probably worse than King Crab... but not as bad as Chrono Crab...)
 exit 2
-CA: Oh! By the way...
-SC: Yeah?
-CA: When you give this order to Space Crab, tell him I'm a huge fan!
-SC: ...Sure. Will do.
+CK: BMFJb; Oh! By the way...
+SC: BAFV; Yeah?
+CK: BIFO; When you give this order to Space Crab, tell him I'm a huge fan!
+SC: BBFFd; ...Sure. Will do.

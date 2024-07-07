@@ -1,32 +1,30 @@
 bg 2
 music love
-Who should I ask to prom?!
-There are soooo many hunks out there - I love a guy who can dodge a meteor.
-Those kinds of super duper smart guys are TOTALLY my type!
-Especially senpai Crabacus... just thinking of him makes me swoon.
-CB: You don't need to call me senpai anymore, Cranime.
-Remember? I graduated last year.
-CN: S-SENPAI?? What are YOU doing here?
-CB: Well, I had to swing by the school to borrow some textbooks.
-For as big as the Star Seekers are, many of them don't have a proper education...
-What's up with you?
-CN: (This must be fate!!)
-Senpai, I have a request...
-P-please go with me to prom!
-CB: Hmm? There's a prom?
-I don't remember there being one last year...
-CN: Me neither! It must be new!
-But, if this is the first one...
-There's no one I'd rather go with than you!
-CB: Ah, oh geez... I'm flattered.
-But wouldn't you rather go with someone younger? Someone more your type?
-CN: But you ARE my type!! Let me show you my passion through battle!
+CN: BTFN; Who should I ask to prom?!
+BTFNc; There are soooo many hunks out there - I love a guy who can dodge a meteor.
+BAFL; Those kinds of super duper smart guys are TOTALLY my type!
+BAFTn; Especially senpai Crabacus... just thinking of him makes me swoon.
+CB: BBFI; You don't need to call me senpai anymore, Cranime.
+BMFJb; Remember? I graduated last year.
+CN: BHFP; S-SENPAI?? What are YOU doing here?
+CB: BAFGb; Well, I had to swing by the school to borrow some textbooks.
+BBFEd; For as big as the Star Seekers are, many of them don't have a proper education...
+BIFAh; What's up with you?
+CN: BTFNf; (This must be fate!!)
+BHFOh; Senpai, I have a request... P-please go with me to prom!
+CB: BDFFd; Hmm? There's a prom?
+BNFGd; I don't remember there being one last year...
+CN: BMFJa; Me neither! It must be new!
+BVFMd; But, if this is the first one... There's no one I'd rather go with than you!
+CB: BDFIa; Ah, oh geez... I'm flattered.
+BAFI; But wouldn't you rather go with someone younger? Someone more your type?
+CN: BHFOh; But you ARE my type!! Let me show you my passion through battle!
 music retro8
 fight 51359
-music love
-CB: Ugh... too much passion.
-CB: Your youth is too much for me.
-CN: But senpai, you're only one year older than me!
-CB: I have to go. Need to ice my bruises...
+music emotion
+CB: BJFXc; Ugh... too much passion.
+BJFXa; Your youth is too much for me.
+CN: BHFPa; But senpai, you're only one year older than me!
+CB: BJFXb; I have to go. Need to ice my bruises...
 exit 2
-CN: NOOOOOOO!!!
+CN: BJFXi; NOOOOOOO!!!

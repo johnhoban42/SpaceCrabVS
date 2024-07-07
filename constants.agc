@@ -1226,7 +1226,7 @@ function LoadBaseImages()
 	//next i
 	
 	for i = 0 to 41
-		if GetFileExists("musicBanners/banner" + Str(i) + ".png") and (i > 30 or i <= musicUnlocked)
+		if GetFileExists("musicBanners/banner" + Str(i) + ".png")
 			LoadImage(banner1I+i, "musicBanners/banner" + Str(i) + ".png")
 		endif
 	next i

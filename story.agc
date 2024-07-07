@@ -1425,7 +1425,7 @@ function SetCrabFromStringChap(str$, chapNum, crabNum)
 		mType = 1
 		mAlt = 1
 		
-	elseif str$ = "HO" or chapNum = 17	//Holy Crab
+	elseif str$ = "HO" or chapNum = 17 or str$ = "DC"	//Holy Crab/Devil Crab
 		mType = 4
 		mAlt = 3
 		

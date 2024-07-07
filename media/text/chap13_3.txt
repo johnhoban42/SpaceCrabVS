@@ -1,31 +1,32 @@
 bg 1
 music love
-CN: Geez... I acted like a total baka back there.
-I shouldn't waste my chances - it's not like another hunk will show up out of nowhere.
+CN: BBFH; Geez... I acted like a total baka back there.
+BWFRb; I shouldn't waste my chances - it's not like another hunk will show up out of nowhere.
 music
-SB: Bark!
-music sad
-CN: OH MY GAAAHHH!
-You're so... SO...
-Hot! Cute! The guy of my dreams!
-SB: Woof.
-CN: But... I know we can't be together.
-SB: Arf?
-CN: Because... you don't even have 6 legs!!
-I can't be seen with you in public! ESPECIALLY not at prom.
-But, the heart wants what the heart wants.
-OOHHH, why is this so HARD?
-SB: Bark!
-CN: You're going to BREAK my HEART if you don't stop!
-SB: Woof.
-CN: LEAVE ME ALONE!!
+SB: BF; Bark!
+music love
+CN: BAFS; OH MY GAAAHHH!
+BVFS; You're so... SO...
+BKFSa; Hot! Cute! The guy of my dreams!
+SB: BF; Woof.
+music emotion
+CN: BVFEa; But... I know we can't be together.
+SB: BF; Arf?
+CN: BBFTj; Because... you don't even have 6 legs!!
+BAFTj; I can't be seen with you in public! ESPECIALLY not at prom.
+BBFEd; But, the heart wants what the heart wants.
+BAFMd; OOHHH, why is this so HARD?
+SB: BF; Bark!
+CN: BUFEe; You're going to BREAK my HEART if you don't stop!
+SB: BF; Woof.
+CN: BHFTj; LEAVE ME ALONE!!
 music retro3
 fight 5
 music sad
-SB: Arf!
-CN: I think I understand. While we can't be together, our feelings will still persist.
-SB: Woof...
-CN: I'll come back for you!
-Once prom is over, and I work up the courage to speak my heart...
-We'll be together forever!!!
-SB: Bark!
+SB: BF; Arf!
+CN: BBFEa; I think I understand. While we can't be together, our feelings will still persist.
+SB: BF; Woof...
+CN: BAFJd; I'll come back for you!
+BVFH; Once prom is over, and I work up the courage to speak my heart...
+BAFOh; We'll be together forever!!!
+SB: BF; Bark!

@@ -1,38 +1,37 @@
 bg 4
+music tomato
+NC: BAFD; Space Crab. I have questions to resolve with you.
+SC: BAFJa; Oh, you're the one who works under King Crab, right?
+NC: BPFB; My details are to be spared for the moment. This concerns you.
+BAFW; Why did you create the Star Seekers?
+SC: BCFIa; Philosophical, aren't you?
+BMFHa; Hmm... well, I didn't have much of a reason.
+BAFJd; The Star Seekers do what I normally do, just with some company.
+BBFEb; I guess, I was a bit lonely, exploring out on my own.
+music
+NC: BWFKi; Admittedly, your answer is frank.
+BMFE; I too, understand the loneliness that space can bring. However...
 music fightB
-NC: Space Crab. I have questions to resolve with you.
-SC: Oh, you're the one who works under King Crab, right?
-NC: My details are to be spared for the moment.
-This concerns you.
-Why did you create the Star Seekers?
-SC: Philisophical, aren't you?
-Hmm... well, I don't have much of a reason.
-The Star Seekers do what I normally do, just with some more crabs.
-I guess, I was a bit lonely, exporing out on my own.
-music
-Admittedly, your answer is frank.
-I too, understand the lonelyness that space can bring.
-But-
-music tomato
-Words are cheap! Show your intentions through your actions!
-music tomato
+BPFB; Words are cheap! Show your intentions through your actions!
+music fightB
 fight 66447
-music
-NC: Your intentions have been proven.
-Your Star Seekers have no relation to past efforts.
-Moreover, your intentions certainly not are coming from a place of malice.
-My own mission has proven to be fruitless, ending in wasted time and my own embarresment.
+music emotion
+NC: BBFTr; Your intentions have been proven.
+BQFYb; The new Star Seekers have no relation to past efforts.
+BQFYf; Moreover, your intentions certainly are not coming from a place of malice.
+BQFYh; My own mission has proven to be fruitless, ending in wasted time and my own embarrassment.
 exit 1
-SC: Wait!
-NC: ...
-SC: Why not... join... the Star Seekers?
+SC: BSFOh; Wait!
+music
+NC: BBFTr; ...
+SC: BMFFe; Why not... join... the Star Seekers?
 music retro8
-NC: Hmm?
-SC: We've both felt lonliness out in space, right?
-The Star Seekers have helped me feel connected, in a way I couldn't imagine.
-If I can offer you a way to feel that way too, then I need to do it.
-NC: Very well. I accept.
-SC: Aw yeah!
-Doesn't this feel great? We have so many members now!
-I'm getting addicted to this feeling! We NEED more crabs!!
-NC: If this will ease the lonliness of other crabs, then I am on board with this mission.
+NC: BBFF; Hmm?
+SC: BBFEb; We've both felt loneliness out in space, right?
+BAFEc; The Star Seekers have helped me feel connected, in a way I didn't expect.
+BMFEb; If I can offer you a way to feel that too, then I need to do it.
+NC: BBFTn; Very well. I accept.
+SC: BKFOa; Aw yeah!
+BAFO; Doesn't this feel great? We have so many members now!
+BSFKd; I'm getting addicted to this feeling! We NEED more crabs!!
+NC: BMFD; If this will ease the loneliness of other crabs, then I am on board with this mission.

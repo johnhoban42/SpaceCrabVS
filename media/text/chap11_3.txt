@@ -1,44 +1,44 @@
 bg 3
-NC: BF; Ladder Wizard the Third. I've come to talk.
-LW: BF; Hmm?
-BF; Aughh! It's you again!
+NC: BVFB; Ladder Wizard the Third. I've come to talk.
+LW: BAFKi; Hmm?
+BHFP; Aughh! It's you again!
 music emotion
-NC: BF; You're disgusting. Not only for restarting the Star Seekers...
-BF; But for spreading it's vile ways to the youth of today!
-BF; My poor cousin has been infected by the poison of your ideologies.
+NC: BOFB; You're despicable. Not only for restarting the Star Seekers...
+BVFB; But for spreading it's vile ways to the youth of today!
+BMFH; My poor cousin has been infected by the poison of your ideologies.
 music
-LW: BF; Slow down, slow down! You lost me at the beginning.
-BF; Did you say, 'restart'?
+LW: BDFE1a; Slow down, slow down! You lost me at the beginning.
+BNFFd; Did you say, 'restart'?
 music emotion
-NC: BF; Oh, please. You of all crabs should know your family history.
-LW: BBFU; I, uh, don't though.
-NC: BF; Don't play dumb!
-BF; It was YOUR grandfather, Ladder Wizard the First, who started the original Star Seekers.
-BF; But he wasn't satisfied with that, was he?
-BF; A menace to all, he tore down all other expedition groups, just to climb the social ladder.
-BF; Thanks to his underhanded tricks, he earned the uncouth name, 'Ladder Wizard'.
-LW: BF; Wow, THAT's where my name comes from?
-BF; Makes more sense then actual ladders, I suppose.
-NC: BF; Ladder Wizard the First's behavior spread to the others.
-BF; A true 'crabs in a bucket' situation, the once Star Seekers collapsed quickly.
-BF; But it did not end there.
-BF; That destructive, nasty behavior spread to nearly every crab.
-BF; Except one - my grandfather, Ninja Crab the 81st.
-LW: BF; EIGHTY FIRST?! How many Ninja Crabs have there been?!
-NC: BF; His willpower and watchful eye slowly healed the galaxy.
+NC: BUFB; Oh, please. You of all crabs should know your family history.
+LW: BBFU1; I, uh, don't though.
+NC: BOFB; Don't play dumb!
+BPFD; It was YOUR grandfather, Ladder Wizard the First, who started the original Star Seekers.
+BAFB; But he wasn't satisfied with that, was he?
+BOFD; A menace to all, he tore down all other expedition groups, just to climb the social ladder.
+BIFRa; Thanks to his underhanded tricks, he earned the uncouth name, 'Ladder Wizard'.
+LW: BAFJ1a; Wow, THAT's where my name comes from?
+BBFIa; Makes more sense then actual ladders, I suppose.
+NC: BPFD; Ladder Wizard the First's behavior spread to the others.
+BAFD; A true 'crabs in a bucket' situation, the once 'Star Seekers' collapsed quickly.
+BBFRa; But it did not end there.
+BAFD; That destructive, nasty behavior spread to nearly every crab.
+BMFA; Except one - my grandfather, Ninja Crab the 81st.
+LW: BHFP; EIGHTY FIRST?! How many Ninja Crabs have there been?!
+NC: BMFTp; His willpower and watchful eye slowly healed the galaxy.
 music fightB
-NC: BF; Until YOU showed up, wanting to re-open the wounds your grandfather caused. 
-BF; So fight me, so we can end this generational feud!
-LW: BF; Wait! Stop! I'm not a part of this! I don't know anything about this stuff!
+NC: BPFB; Until YOU showed up, wanting to re-open the wounds your grandfather caused. 
+BVFB; So fight me, so we can end this generational feud!
+LW: BHFPa; Wait! Stop! I'm not a part of this! I don't know anything about this stuff!
 music fightB
 fight 63157
 music fightB
-NC: BF; Your words, they are true.
-BF; You fighting style nothing like your grandfather's underhanded tactics.
-LW: BKFXa; Yeah, I told you that already.
-BF; The Star Seekers were Space Crab's idea. I never even met my grandpa!
-NC: BF; So the forming and naming of both groups... is coincidental?
-LW: BF; Yeah, ha ha! I guess so.
-NC: BF; I'm still unconvinced.
+NC: BBFH; Your words, they are true.
+BAFE; Your fighting style is nothing like your grandfather's underhanded tactics.
+LW: BSFMd; Yeah, I told you that already.
+BUFF; The Star Seekers were Space Crab's idea. I never even met my grandpa!
+NC: BAFF; So the forming and naming of both groups... is coincidental?
+LW: BBFAf; Yeah, ha ha! I guess so.
+NC: BBFG; I'm still unconvinced.
 exit 2
-BF; Though I feel that I will find my answer soon...
+BAFD; Though I feel that I will find my answer soon...

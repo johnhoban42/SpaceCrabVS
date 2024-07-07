@@ -1,33 +1,31 @@
 bg 2
 music rag
-CA: ...50 bags of flour, 576 eggs, and 40 pounds of sugar.
-That should be it. The ingredients to be ordered for the 200 cakes.
-AL: Can do. I'll start preparing the shipment right away.
-CA: (Is there any job that Al Legal DOESN'T do?)
-music
-AL: By the way... I'm not one to gossip...
-music retro2
-But have you heard about the drama with the Star Seekers?
-I usually don't divulge in rumors, but this has got me all giddy!
-CA: Now now, I have a job to do! Disctractions will lead to distraction.
-AL: There's so much intrigue, though!
-Space Crab has been gathering members from all over the galaxy.
-I might be one, actually. Not sure.
-Not only that, but Chrono Crab started a rival group!
-CA: I see.
-...
-So, has my shipment been placed?
-AL: Both groups are bolstering their numbers!
-And apparently, to ask someone to join, you do this!
+CK: BDFHa; ...50 bags of flour, 576 eggs, and 40 pounds of sugar.
+BSFJa; That should be it. The ingredients to be ordered for the 200 cakes.
+AL: BUFF; Can do. I'll start preparing the shipment right away.
+CK: BBFIa; (Is there any job that Al Legal DOESN'T do?)
+AL: BMFH; By the way... I'm not one to gossip...
+BVFOc; But have you heard about the drama with the Star Seekers?
+BUFSa; I usually don't partake in rumors, but this has got me all giddy!
+CK: BCFTn; Now now, I have a job to do! Distractions will lead to distraction.
+AL: BVFS; There's so much intrigue, though!
+BIFAh; Space Crab has been gathering members from all over the galaxy.
+BAFKi; I might be one, actually. Not sure.
+BWFAd; Not only that, but Chrono Crab started a rival group!
+CK: BUFJd; I see.
+BUFJ; ...
+BUFFd; So, has my shipment been placed?
+AL: BVFOc; Both groups are bolstering their numbers!
+BOFSb; And apparently, to ask someone to join, you do this!
 music retro2
 fight 53477
 music retro8
-AL: Ahem. My apologies. I got a smidge carried away.
-AL: That being said, are you interested in joining the Star Seekers?
-CA: Well, I can't currently think about frivalities such as joining clubs.
-I have a job to do! I'm not off the clock until these 200 cakes are baked.
-They are an express order for the grand opening of the Star Seekers!
-And the cakes WILL be baked, at any cost!
+AL: BTFNe; Ahem. My apologies. I got a smidge carried away.
+AL: BAFJb; That being said, are you interested in joining the Star Seekers?
+CK: BAFH; Well, I can't currently think about frivalities such as joining clubs.
+BMFTo; I have a job to do! I'm not off the clock until these 200 cakes are baked.
+BUFTp; They are an express order for the grand opening of the Star Seekers!
+BVFOa; And the cakes WILL be baked, at any cost!
 exit 1
-AL: There's going to be a FEAST for the opening of the Star Seekers?!
-I've GOT to tell King Crab about this.
+AL: BBFS; There's going to be a FEAST for the opening of the Star Seekers?!
+BAFOc; I've GOT to tell King Crab about this.

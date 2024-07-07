@@ -2,12 +2,12 @@ bg 4
 music tomato
 CN: Oh gosh, there he is!
 The dreamiest guy I know.
-With his sporty demeaner... caring attitude...
+With his sporty demeanor... caring attitude...
 I want to go to the prom with you... Team Player!!!
 TP: Ah! Oh, it's you, Cranime.
 You're in class 3B, right?
 What did you want to talk about?
-CN: (Oh no! I'm so embarrased now...)
+CN: (Oh no! I'm so embarrassed now...)
 Di-did y-y-you want-t-t-to g-go... 
 TP: Hey, you're a little quiet, speak up!
 CN: (I can't even squeak out a confession.)
@@ -24,13 +24,13 @@ CN: So... is that a yes?!
 TP: Y... y...
 ...you're insane!
 CN: Eh?
-What's with this trend of everyone starting fights with me?
+TP: What's with this trend of everyone starting fights with me?
 I just want to train in peace!
 CN: B-but Team Player-
 TP: No! I won't go with you! Please leave me alone!
 exit 2
 CN: ...
 Teehee! I guess he couldn't handle the full me.
-I don't need him! This episode taught me to be belive in the me who loves myself.
+I don't need him! This episode taught me to believe in the me who loves myself.
 I think.
 Prom, here I come! Cranime is coming in hot!

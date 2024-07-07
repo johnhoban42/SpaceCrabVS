@@ -289,6 +289,36 @@ function InitStart()
 	
 	else
 		
+		SetTextExpress(TXT_SP_LOGO, "MIRROR MODE", 120, fontCrabI, 1, w/2, 60, 5, -36)
+		
+		SetTextExpress(TXT_HIGHSCORE, "", 65, fontDescI, 1, w/2 - 50, GetTextY(TXT_SP_LOGO) + 150, 5, -19)
+		SetTextLineSpacing(TXT_HIGHSCORE, 10)
+		
+		SetSpriteExpress(SPR_MENU_BACK, 140, 140, GetTextX(TXT_HIGHSCORE) - 160/2 - 250, GetTextY(TXT_HIGHSCORE)+20, 5)
+		
+		SetSpriteExpress(SPR_LEADERBOARD, 252, 140, GetTextX(TXT_HIGHSCORE) - 140/2 + 250, GetTextY(TXT_HIGHSCORE)+20, 5)
+		
+		opSize = 130
+		ySet = GetSpriteY(SPR_MENU_BACK) + 215
+		SetSpriteExpress(SPR_HARDGAME, opSize, opSize, 20, ySet, 5)
+		SetSpriteExpress(SPR_FASTGAME, opSize, opSize, GetSpriteX(SPR_HARDGAME)+opSize*1.1, ySet, 5)
+		SetSpriteExpress(SPR_EVIL, 150, 102, GetSpriteX(SPR_FASTGAME)+opSize*1.14, ySet+(opSize-102)/2, 5)
+		SetSpriteExpress(SPR_MUSICPICK, 300, 90, w/2+85, ySet+(opSize-90)/2, 5)
+		
+		SetTextExpress(SPR_SP_C1, GetTextString(SPR_SP_C1), 80, fontCrabI, 1, w + 20, GetSpriteY(SPR_SP_C1)-50, 5, -25)
+		
+		for i = SPR_SP_C1 to SPR_SP_C24
+			num = i-SPR_SP_C1+1
+			crb = i - SPR_SP_C1
+
+			SetSpriteSizeSquare(i, 200)
+			SetSpritePosition(i, 0, 9999)
+			DeleteTween(i)
+			CreateTweenSprite(i, .7)
+			SetTweenSpriteY(i, h + 20, w/2 - GetSpriteWidth(i)/2 + 190*((num-1)/6-1.5), TweenBounce())
+		next i
+		
+		
 	endif
 	
 	//This is the 'single player results screen' setup
