@@ -289,35 +289,35 @@ function InitStart()
 	
 	else
 		
-		SetTextExpress(TXT_SP_LOGO, "MIRROR MODE", 120, fontCrabI, 1, w/2, 60, 5, -36)
+		SetTextExpress(TXT_SP_LOGO, "MIRROR MODE", 120, fontCrabI, 1, w/2, 20, 5, -36)
 		
-		SetTextExpress(TXT_HIGHSCORE, "", 65, fontDescI, 1, w/2 - 50, GetTextY(TXT_SP_LOGO) + 150, 5, -19)
-		SetTextLineSpacing(TXT_HIGHSCORE, 10)
+		SetSpriteExpress(SPR_MENU_BACK, 130, 130, 30, 30, 5)
 		
-		SetSpriteExpress(SPR_MENU_BACK, 140, 140, GetTextX(TXT_HIGHSCORE) - 160/2 - 250, GetTextY(TXT_HIGHSCORE)+20, 5)
-		
-		SetSpriteExpress(SPR_LEADERBOARD, 252, 140, GetTextX(TXT_HIGHSCORE) - 140/2 + 250, GetTextY(TXT_HIGHSCORE)+20, 5)
-		
-		opSize = 130
-		ySet = GetSpriteY(SPR_MENU_BACK) + 215
-		SetSpriteExpress(SPR_HARDGAME, opSize, opSize, 20, ySet, 5)
+		opSize = 115
+		ySet = 210
+		SetSpriteExpress(SPR_HARDGAME, opSize, opSize, 1016, ySet, 5)
 		SetSpriteExpress(SPR_FASTGAME, opSize, opSize, GetSpriteX(SPR_HARDGAME)+opSize*1.1, ySet, 5)
-		SetSpriteExpress(SPR_EVIL, 150, 102, GetSpriteX(SPR_FASTGAME)+opSize*1.14, ySet+(opSize-102)/2, 5)
-		SetSpriteExpress(SPR_MUSICPICK, 300, 90, w/2+85, ySet+(opSize-90)/2, 5)
+		SetSpriteExpress(SPR_MUSICPICK, 240, 72, GetSpriteX(SPR_HARDGAME)+opSize*1.05-120, GetSpriteY(SPR_HARDGAME)+opSize*1.2, 5)
+		SetSpriteExpress(SPR_EVIL, 120, 82, GetSpriteX(SPR_HARDGAME)+opSize*1.05-60, GetSpriteY(SPR_MUSICPICK)+opSize*.9, 5)
 		
-		SetTextExpress(SPR_SP_C1, GetTextString(SPR_SP_C1), 80, fontCrabI, 1, w + 20, GetSpriteY(SPR_SP_C1)-50, 5, -25)
+		SetTextExpress(SPR_SP_C1, GetTextString(SPR_SP_C1), 80, fontCrabI, 1, w + 20, h-80, 5, -25)
+		
+		SetTextExpress(TXT_HIGHSCORE, "", 45, fontDescI, 1, 144, GetSpriteY(SPR_HARDGAME) + opSize*.55, 5, -14)
+		SetTextLineSpacing(TXT_HIGHSCORE, 8)
 		
 		for i = SPR_SP_C1 to SPR_SP_C24
 			num = i-SPR_SP_C1+1
 			crb = i - SPR_SP_C1
 
-			SetSpriteSizeSquare(i, 200)
-			SetSpritePosition(i, 0, 9999)
+			SetSpriteSizeSquare(i, 140)
+			SetSpritePosition(i, w/2 + 120*(Mod(num-1, 6)-3), 9999)
 			DeleteTween(i)
 			CreateTweenSprite(i, .7)
-			SetTweenSpriteY(i, h + 20, w/2 - GetSpriteWidth(i)/2 + 190*((num-1)/6-1.5), TweenBounce())
+			SetTweenSpriteY(i, h + 20, w/2 - GetSpriteWidth(i)/2 + 130*((num-1)/6-1.5) - 265, TweenBounce())
 		next i
 		
+		//Leaderboard doesn't exist for desktop
+		SetSpriteExpress(SPR_LEADERBOARD, 252, 140, 9999, 9999, 5)
 		
 	endif
 	
@@ -328,7 +328,7 @@ function InitStart()
 		if spType = CLASSIC then ToggleStartScreen(CLASSICMODE_LOSE, 0)		
 		
 		SetTextSize(TXT_SP_LOGO, 1)
-		if dispH = 0 then SetTextX(SPR_SP_C1, 9999)
+		SetTextX(SPR_SP_C1, 9999)
 		SetTextString(SPR_SP_C1, "WANT TO TRY AGAIN? PICK ANOTHER CRAB! WANT TO TRY AGAIN? PICK ANOTHER CRAB!")
 		startTimer# = -440
 		
@@ -377,9 +377,12 @@ function SetHighScoreString(mode)
 	if mode = MIRRORMODE_LOSE or mode = CLASSICMODE_LOSE then lastScore$ = "Final Score: " + str(spScore) + chr(10)
 	if spScore = spHighScore and spHighScore <> 0 and mode = MIRRORMODE_LOSE then lastScore$ = "New High Score!!" + chr(10)
 	if spScore = spHighScoreClassic and spHighScoreClassic <> 0 and mode = CLASSICMODE_LOSE then lastScore$ = "New High Score!!" + chr(10)
-		
-	if mode = MIRRORMODE_START or mode = MIRRORMODE_LOSE then SetTextString(TXT_HIGHSCORE, lastScore$ + "High Score: " + str(spHighScore) + chr(10) + "with " + spHighCrab$)
-	if mode = CLASSICMODE_START or mode = CLASSICMODE_LOSE then SetTextString(TXT_HIGHSCORE, lastScore$ + "High Score: " + str(spHighScoreClassic) + chr(10) + "with " + spHighCrabClassic$)
+	
+	exSpace$ = ""
+	if dispH then exSpace$ = chr(10)
+	
+	if mode = MIRRORMODE_START or mode = MIRRORMODE_LOSE then SetTextString(TXT_HIGHSCORE, lastScore$ + "High Score: " + str(spHighScore) + chr(10) + "with "+ exSpace$ + spHighCrab$)
+	if mode = CLASSICMODE_START or mode = CLASSICMODE_LOSE then SetTextString(TXT_HIGHSCORE, lastScore$ + "High Score: " + str(spHighScoreClassic) + chr(10) + "with "+ exSpace$ + spHighCrabClassic$)
 	
 	if (spHighScore = 0 and (mode = MIRRORMODE_START or mode = MIRRORMODE_LOSE)) or (spHighScoreClassic = 0 and (mode = CLASSICMODE_START or mode = CLASSICMODE_LOSE))
 		SetTextString(TXT_HIGHSCORE, lastScore$ + "High Score: 0" + chr(10) + "Go set one!")
@@ -414,6 +417,12 @@ function DoStart()
 		PingCrab(GetPointerX(), GetPointerY(), Random (100, 180))
 	endif
 	
+	//Going to story mode, will eventually bring you to character select
+	if ButtonMultitouchEnabled(SPR_STORY_START) or (GetSpriteVisible(SPR_STORY_START) and inputSelect and selectTarget = 0)
+		spType = STORYMODE
+		state = CHARACTER_SELECT
+		//TransitionStart(Random(1,lastTranType))
+	endif
 	
 	//if ButtonMultitouchEnabled(SPR_START1) and spActive = 0 and dispH = 1
 	if ButtonMultitouchEnabled(SPR_START1) //and dispH = 1
@@ -423,34 +432,11 @@ function DoStart()
 		state = CHARACTER_SELECT
 	endif
 	
-	if p1Ready and p2Ready
-		p1Ready = 0
-		p2Ready = 0
-		spType = 0
-		state = CHARACTER_SELECT
-	endif
-	
-	//Transition into mirror mode
-	if ButtonMultitouchEnabled(SPR_STARTMIRROR)
-		spType = MIRRORMODE
-		ToggleStartScreen(MIRRORMODE_START, 1)
-	endif
-	
-	//Transition into classic
-	if ButtonMultitouchEnabled(SPR_CLASSIC)
-		spType = CLASSIC
-		ToggleStartScreen(CLASSICMODE_START, 1)
-	endif
-	
-	//Transition to main screen
-	if ButtonMultitouchEnabled(SPR_MENU_BACK) and GetSpriteVisible(SPR_MENU_BACK)
-		spType = 0
-		ToggleStartScreen(MAINSCREEN, 1)
-	endif
+
 
 	//Starting a single player game
 	for i = 1 to 24
-		if Button(SPR_SP_C1 + i - 1) and GetSpriteColorRed(SPR_SP_C1 + i - 1) <> 254
+		if ButtonMultitouchEnabled(SPR_SP_C1 + i - 1) and GetSpriteColorRed(SPR_SP_C1 + i - 1) <> 254
 			crab1Type = Mod(i-1, 6)+1
 			crab2Type = crab1Type
 			crab1Alt = (i-1)/6
@@ -465,7 +451,7 @@ function DoStart()
 				if GetMusicPlayingOGGSP(retro1M) then SetMusicLoopTimesOGG(retro1M, -1, -1)
 				TransitionStart(Random(1, lastTranType))
 			endif
-		elseif Button(SPR_SP_C1 + i - 1)
+		elseif ButtonMultitouchEnabled(SPR_SP_C1 + i - 1)
 			Popup(MIDDLE, 0)
 		endif
 	next i
@@ -483,12 +469,7 @@ function DoStart()
 		StartSettings()
 	endif
 	
-	//Going to story mode, will eventually bring you to character select
-	if ButtonMultitouchEnabled(SPR_STORY_START) or ((inputSelect and selectTarget = 0))
-		spType = STORYMODE
-		state = CHARACTER_SELECT
-		//TransitionStart(Random(1,lastTranType))
-	endif
+	
 	
 	//Bringing up the leaderboard
 	if ButtonMultitouchEnabled(SPR_LEADERBOARD)
@@ -522,6 +503,24 @@ function DoStart()
 		if altUnlocked[1] = 3 then SetSpriteFrame(SPR_SP_C1+18, 1+crab1Evil)
 		if altUnlocked[4] = 3 then SetSpriteFrame(SPR_SP_C1+21, 1+crab1Evil)
 		if altUnlocked[6] = 3 then SetSpriteFrame(SPR_SP_C1+23, 1+crab1Evil)
+	endif
+	
+	//Transition into mirror mode
+	if ButtonMultitouchEnabled(SPR_STARTMIRROR)
+		spType = MIRRORMODE
+		ToggleStartScreen(MIRRORMODE_START, 1)
+	endif
+	
+	//Transition into classic
+	if ButtonMultitouchEnabled(SPR_CLASSIC)
+		spType = CLASSIC
+		ToggleStartScreen(CLASSICMODE_START, 1)
+	endif
+	
+	//Transition to main screen
+	if ButtonMultitouchEnabled(SPR_MENU_BACK) or (GetSpriteVisible(SPR_MENU_BACK) and inputExit and selectTarget = 0)
+		spType = 0
+		ToggleStartScreen(MAINSCREEN, 1)
 	endif
 	
 	if ButtonMultitouchEnabled(SPR_EXIT_GAME) then End
@@ -644,13 +643,23 @@ function ToggleStartScreen(screen, swipe)
 		RemoveButton(i)
 	next i
 	
+	TurnOffSelect()
+	TurnOffSelect2()
+	
 	if swipe
 		if GetSpriteExists(coverS) then DeleteSprite(coverS)
 		if GetTweenExists(coverS) then DeleteTween(coverS)
 		CreateSpriteExpress(coverS, h*2, h, -h*2, 0, 1)
 		SetSpriteImage(coverS, bgRainSwipeI)
 		CreateTweenSprite(coverS, 0.6)
-		SetTweenSpriteX(coverS, -h*2, w, TweenLinear())
+		if dispH = 0
+			SetTweenSpriteX(coverS, -h*2, w, TweenLinear())
+		else
+			//SetSpriteAngle(coverS, 90)
+			SetSpriteExpress(coverS, h*5, h, -h*5, 0, 1)
+			SetTweenSpriteX(coverS, -h*5, w, TweenLinear())
+			//SetTweenSpriteY(coverS, -w*2, h, TweenLinear())
+		endif
 		
 		PlayTweenSprite(coverS,coverS, 0)
 		//PlaySoundR(rainbowSweepS, 100)
@@ -873,6 +882,9 @@ function ToggleStartScreen(screen, swipe)
 endfunction
 
 function PlayMirrorModeScene()
+	
+	TurnOffSelect()
+	TurnOffSelect2()
 	
 	if GetSpriteExists(coverS)
 		DeleteSprite(coverS)

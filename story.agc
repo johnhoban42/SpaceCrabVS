@@ -996,7 +996,7 @@ function StartEndScreen()
 	if overallScene = 89 then UnlockSong(18, 1)
 	if overallScene = 91 then UnlockSong(19, 1)
 	if overallScene = 93 then UnlockSong(20, 1)
-	if overallScene = 84 and evilUnlock = 0
+	if overallScene = 95 and evilUnlock = 0
 		//95, Evil Switch
 		Popup(MIDDLE, 28)
 		evilUnlock = 1

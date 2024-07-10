@@ -26,7 +26,7 @@ SetWindowSize( 700, 1400, 0 )
 SetWindowAllowResize( 1 ) // allow the user to resize the window
 
 global demo = 0
-global debug = 1
+global debug = 0
 global onWeb = 0
 
 if debug = 0
@@ -56,7 +56,7 @@ global h = 1600
 SetVirtualResolution(w, h) // doesn't have to match the window
 
 global dispH = 0		//Variable for horizontal display
-if deviceType = 9//DESKTOP
+if deviceType = DESKTOP
 	dispH = 1
 	w = 1280
 	h = 720
@@ -201,8 +201,8 @@ endfunction
 //clearedChapter = 0
 
 if debug
-	curChapter = 13
-	curScene = 3
+	curChapter = 14
+	curScene = 1
 	highestScene = 101
 	appState = START
 	crab1Type = 6
@@ -221,7 +221,7 @@ if debug
 	musicBattleUnlock = 1
 	unlockAIHard = 1
 	musicUnlocked = 7
-	evilUnlock = 0
+	evilUnlock = 1
 	gameSongSet = 0
 else
 	LoadGame()
@@ -637,7 +637,11 @@ function MoveSelect()
 		if settingsActive
 			selectTarget = SPR_VOLUME
 		elseif appState = START
-			selectTarget = SPR_START1//SPR_STORY_START
+			if GetSpriteVisible(SPR_START1)
+				selectTarget = SPR_STORY_START
+			else
+				selectTarget = SPR_SP_C1
+			endif
 		elseif appState = CHARACTER_SELECT
 			selectTarget = SPR_CS_READY_1
 			if GetSpriteVisible(SPR_CS_READY_1) = 0
@@ -789,7 +793,7 @@ function MoveSelect2()
 	if selectTarget2 = 0
 
 		//If you're pressing the arrow key for the first time
-		if appState = START
+		if appState = START and GetSpriteVisible(SPR_START1)
 			selectTarget2 = SPR_START1//SPR_STORY_START
 			//selectTarget2 = SPR_START2
 		elseif appState = CHARACTER_SELECT and spType = 0
@@ -970,7 +974,7 @@ function Popup(area, unlockNum)
 	chibiSize = wid-40
 	CreateSpriteExpress(spr+1, chibiSize, chibiSize, GetSpriteMiddleX(spr)-chibiSize/2, GetSpriteMiddleY(spr)-chibiSize/2, 1)
 	SetSpriteColor(spr, 100, 100, 100, 255)
-				
+	//unlockNum = 30
 	//Setting the focus/contents of the popup
 	if unlockNum = 0
 		//Locked crab
@@ -1016,9 +1020,15 @@ function Popup(area, unlockNum)
 	CreateTextExpress(spr+2, "", 60, fontScoreI, 1, GetSpriteMiddleX(spr), GetSpriteY(spr) + 10, 1)
 	SetTextString(spr+2, "You unlocked" + chr(10) + crab2Str$ + "!" + chr(10)+chr(10)+chr(10)+chr(10)+chr(10) + "Now playable" + chr(10) + "in all modes!")
 	if unlockNum = 0 then SetTextString(spr+2, "That crab is" + chr(10) + "locked!" + chr(10)+chr(10)+chr(10)+chr(10)+chr(10) + "Find them in" + chr(10) + "Story Mode!")
+	//SetTextLineSpacing(spr+2, 5-(dispH-1)*6)
 	spacing = -11
+	if dispH
+		SetTextSize(spr+2, 52)
+		spacing = -9
+	endif
 	SetTextSpacing(spr+2, spacing)
-	SetTextLineSpacing(spr+2, 5-(dispH-1)*6)
+	SetTextLineSpacing(spr+2, 11)
+	
 	
 	if unlockNum = -1 then SetTextString(spr+2, "")
 	if unlockNum = -2 then SetTextString(spr+2, "Space Crab VS" + chr(10) + "uses autosaves." + chr(10)+chr(10)+chr(10)+chr(10)+chr(10) + "Progress is saved" + chr(10) + "when exiting game.")

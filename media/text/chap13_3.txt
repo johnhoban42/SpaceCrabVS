@@ -2,31 +2,29 @@ bg 1
 music love
 CN: BBFH; Geez... I acted like a total baka back there.
 BWFRb; I shouldn't waste my chances - it's not like another hunk will show up out of nowhere.
-music
-SB: BF; Bark!
-music love
+SB: BEFA; Bark!
 CN: BAFS; OH MY GAAAHHH!
 BVFS; You're so... SO...
 BKFSa; Hot! Cute! The guy of my dreams!
-SB: BF; Woof.
+SB: BDFD; Woof.
 music emotion
 CN: BVFEa; But... I know we can't be together.
-SB: BF; Arf?
+SB: BAFAd; Arf?
 CN: BBFTj; Because... you don't even have 6 legs!!
 BAFTj; I can't be seen with you in public! ESPECIALLY not at prom.
 BBFEd; But, the heart wants what the heart wants.
 BAFMd; OOHHH, why is this so HARD?
-SB: BF; Bark!
+SB: BCFBd; Bark!
 CN: BUFEe; You're going to BREAK my HEART if you don't stop!
-SB: BF; Woof.
+SB: BDFDd; Woof.
 CN: BHFTj; LEAVE ME ALONE!!
 music retro3
 fight 5
-music sad
-SB: BF; Arf!
+music emotion
+SB: BEFAd; Arf!
 CN: BBFEa; I think I understand. While we can't be together, our feelings will still persist.
-SB: BF; Woof...
+SB: BHFF; Woof...
 CN: BAFJd; I'll come back for you!
 BVFH; Once prom is over, and I work up the courage to speak my heart...
 BAFOh; We'll be together forever!!!
-SB: BF; Bark!
+SB: BCFBd; Bark!
