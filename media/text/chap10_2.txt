@@ -1,29 +1,31 @@
-bg 2
-RL: Moving on to our next song-
-MC: Hey. Hey! HEY!
-What's the big idea? Why so LOUD?!
-RL: Oh, Mad Crab! Finally come around to my music, eh?
-Ready to admit your LOVE for my sweet melodies~?
-MC: Ready? I'm READY to RIP that guitar out of your claws and SMASH it on the ground!
-Who gave YOU permission to ruin the peace and quiet?
-RL: Wait. Did you not know about the concert?
-MC: Of COURSE I know about the concert, you dolt. That's why-
-RL: A madly in love fan, too ashamed to admit their feelings. How cliche~
-MC: Quit it with the fantasies. You. Me. Fight.
-When I win, you go.
-RL: Hey, all good with me. I won't be losing with my next song.
-Sunset Siesta, here we go!
-I think you'll like this one, Maddy~
+bg 3
+music chill
+RL: BMFDb; Moving on to my next song-
+MC: BAFJ; Hey. Hey! HEY!
+BUFJd; What's the big idea? Why so LOUD?!
+RL: BAFQa; Oh, Mad Crab! Finally come around to my music, eh?
+BCFKh; Ready to admit your LOVE for my sweet melodies~?
+MC: BAFJd; Ready? I'm READY to RIP that guitar out of your claws and SMASH it on the ground!
+BPFJe; Who gave YOU permission to ruin the peace and quiet?
+RL: BSFFd; Wait. Did you not know about the concert?
+MC: BVFJd; Of COURSE I know about the concert, you dolt. That's why-
+RL: BMFKh; A madly in love fan, too ashamed to admit their feelings. How cliche~
+MC: BAFJ; Quit it with the fantasies. You. Me. Fight.
+BMFJd; When I win, you go.
+RL: BAFB; Hey, all good with me. I won't be losing with my next song.
+BMFOa; Sunset Siesta, here we go!
+BCFKh; I think you'll like this one, Maddy~
 music retro5
-vs MC (fight goes here)
+fight 5
 music results
-RL: Hey, a little lover's quarrel never hurt anyone, right?
-MC: Ugh.
-I specifically planned my trip so that I WOULDN'T be here for your nonsense.
-You rockstars think you can make a ruckus wherever and whenever...
-It makes me hopping MAD!
-Just... let me go in peace.
+RL: BAFKh; Hey, a little lover's quarrel never hurt anyone, right?
+MC: BBFOj; Ugh.
+BBFJd; I specifically planned my day so that I WOULDN'T be here for your nonsense.
+BAFOj; You rockstars think you can make a ruckus wherever and whenever...
+BAFJe; It makes me hopping MAD!
+BBFTr; Just... let me go in peace.
+exit 2
 ...
-And send me an MP3 of that song you just played.
-leave MC
-RC: Heh... I can read you like a book, Mad Crab.
+MC: BAFJe; And send me an MP3 of that song you just played.
+exit 2
+RL: BCFOe; Heh... I can read you like a book, Mad Crab.

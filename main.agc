@@ -26,7 +26,7 @@ SetWindowSize( 700, 1400, 0 )
 SetWindowAllowResize( 1 ) // allow the user to resize the window
 
 global demo = 0
-global debug = 1
+global debug = 0
 global onWeb = 0
 
 if debug = 0
@@ -201,27 +201,28 @@ endfunction
 //clearedChapter = 0
 
 if debug
-	curChapter = 3
-	curScene = 3
-	highestScene = 100
+	curChapter = 14
+	curScene = 1
+	highestScene = 101
 	appState = START
 	crab1Type = 6
 	crab1Alt = 3
 	
 	spType = AIBATTLE
-	altUnlocked[1] = 2
-	altUnlocked[2] = 2
-	altUnlocked[3] = 2
-	altUnlocked[4] = 0
-	altUnlocked[5] = 2
-	altUnlocked[6] = 0
+	altUnlocked[1] = 3
+	altUnlocked[2] = 3
+	altUnlocked[3] = 3
+	altUnlocked[4] = 3
+	altUnlocked[5] = 3
+	altUnlocked[6] = 3
 	firstStartup = 1
 	speedUnlock = 1
 	hardBattleUnlock = 1
 	musicBattleUnlock = 1
 	unlockAIHard = 1
-	musicUnlocked = 21
+	musicUnlocked = 7
 	evilUnlock = 1
+	gameSongSet = 0
 else
 	LoadGame()
 	//altUnlocked[1] = 2
@@ -245,6 +246,7 @@ else
 	targetFPS = Max(1, targetFPS)
 	windowSize = Min(3, windowSize)
 	windowSize = Max(1, windowSize)
+	gameSongSet = 0
 	if targetFPS <> 5
 		SetVSync(0)
 		SetSyncRate(fpsChunk[targetFPS], 0)
@@ -295,7 +297,6 @@ do
 		//Print(touch)
 		touch = GetRawNextTouchEvent()
 	endwhile
-	
 	
 	
 	if debug
@@ -636,7 +637,11 @@ function MoveSelect()
 		if settingsActive
 			selectTarget = SPR_VOLUME
 		elseif appState = START
-			selectTarget = SPR_START1//SPR_STORY_START
+			if GetSpriteVisible(SPR_START1)
+				selectTarget = SPR_STORY_START
+			else
+				selectTarget = SPR_SP_C1
+			endif
 		elseif appState = CHARACTER_SELECT
 			selectTarget = SPR_CS_READY_1
 			if GetSpriteVisible(SPR_CS_READY_1) = 0
@@ -788,7 +793,7 @@ function MoveSelect2()
 	if selectTarget2 = 0
 
 		//If you're pressing the arrow key for the first time
-		if appState = START
+		if appState = START and GetSpriteVisible(SPR_START1)
 			selectTarget2 = SPR_START1//SPR_STORY_START
 			//selectTarget2 = SPR_START2
 		elseif appState = CHARACTER_SELECT and spType = 0
@@ -969,7 +974,7 @@ function Popup(area, unlockNum)
 	chibiSize = wid-40
 	CreateSpriteExpress(spr+1, chibiSize, chibiSize, GetSpriteMiddleX(spr)-chibiSize/2, GetSpriteMiddleY(spr)-chibiSize/2, 1)
 	SetSpriteColor(spr, 100, 100, 100, 255)
-	
+	//unlockNum = 30
 	//Setting the focus/contents of the popup
 	if unlockNum = 0
 		//Locked crab
@@ -991,21 +996,63 @@ function Popup(area, unlockNum)
 		img = LoadImageR("art/chibicrab" + str(crab2Type) + AltStr(crab2Alt) + ".png")
 		SetSpriteImage(spr+1, img)
 		trashBag.insert(img)
-	else
+	elseif unlockNum > 30
 		//Newly unlocked song, they are 30+
 		sID = unlockNum-30
+		img = LoadImageR("musicBanners/banner" + str(sID) + ".png")
+		SetSpriteImage(spr+1, img)
+		SetSpriteExpress(spr+1, chibiSize, chibiSize*228/772, GetSpriteMiddleX(spr)-chibiSize/2, GetSpriteMiddleY(spr)-(chibiSize*228/772)/2, 1)
+		trashBag.insert(img)
+	else
+		//The 5 other unlocks
+		img = 0
+		if unlockNum = 25 then img = LoadImageR("art/crab5brWin.png")
+		if unlockNum = 26 then img = LoadImageR("ui/hardSquare.png")
+		if unlockNum = 27 then img = LoadImageR("ui/speedSquare.png")
+		if unlockNum = 28 then img = LoadImageR("ui/evil1Square.png")
+		if unlockNum = 29 then img = LoadImageR("ui/vsAISquare.png")
+		if unlockNum = 30 then img = LoadImageR("art/crab1crWin.png")
+		SetSpriteImage(spr+1, img)
+		trashBag.insert(img)
 	endif
 	
 	//Creating the text message of the popup
 	CreateTextExpress(spr+2, "", 60, fontScoreI, 1, GetSpriteMiddleX(spr), GetSpriteY(spr) + 10, 1)
 	SetTextString(spr+2, "You unlocked" + chr(10) + crab2Str$ + "!" + chr(10)+chr(10)+chr(10)+chr(10)+chr(10) + "Now playable" + chr(10) + "in all modes!")
 	if unlockNum = 0 then SetTextString(spr+2, "That crab is" + chr(10) + "locked!" + chr(10)+chr(10)+chr(10)+chr(10)+chr(10) + "Find them in" + chr(10) + "Story Mode!")
-	spacing = -10
+	//SetTextLineSpacing(spr+2, 5-(dispH-1)*6)
+	spacing = -11
+	if dispH
+		SetTextSize(spr+2, 52)
+		spacing = -9
+	endif
 	SetTextSpacing(spr+2, spacing)
-	SetTextLineSpacing(spr+2, 5-(dispH-1)*6)
+	SetTextLineSpacing(spr+2, 11)
+	
 	
 	if unlockNum = -1 then SetTextString(spr+2, "")
-	if unlockNum = -2 then SetTextString(spr+2, "Space Crab VS" + chr(10) + "uses autosaves." + chr(10)+chr(10)+chr(10)+chr(10)+chr(10) + "When leaving," + chr(10) + "all is saved.")
+	if unlockNum = -2 then SetTextString(spr+2, "Space Crab VS" + chr(10) + "uses autosaves." + chr(10)+chr(10)+chr(10)+chr(10)+chr(10) + "Progress is saved" + chr(10) + "when exiting game.")
+	if unlockNum = 38 then SetTextString(spr+2, "Winds of change" + chr(10) + "are blowing in...")
+	if unlockNum = 39 then SetTextString(spr+2, "Steel yourself" + chr(10) + "and FIGHT!")
+	if unlockNum = 40 then SetTextString(spr+2, "Metallic seas and" + chr(10) + "reflecting tides!")
+	if unlockNum = 41 then SetTextString(spr+2, "A rockin' redo" + chr(10) + "of a classic!")
+	if unlockNum = 42 then SetTextString(spr+2, "Like a sweet," + chr(10) + "sitting in the sun...")
+	if unlockNum = 43 then SetTextString(spr+2, "Not a date, but" + chr(10) + "the next best thing.")
+	if unlockNum = 44 then SetTextString(spr+2, "WHO LET THINGS" + chr(10) + "GET THIS BAD?!")
+	if unlockNum = 45 then SetTextString(spr+2, "Will guided soul" + chr(10) + "searching be enough?")
+	if unlockNum = 46 then SetTextString(spr+2, "Starlight Rivalry-" + chr(10) + "does it ever end?")
+	if unlockNum = 47 then SetTextString(spr+2, "Look to the future" + chr(10) + "with hope, always!")
+	if unlockNum = 48 then SetTextString(spr+2, "Soon-to-be chart" + chr(10) + "topper, all yours!")
+	if unlockNum = 49 then SetTextString(spr+2, "It turns out, he" + chr(10) + "wrote lyrics too!")
+	if unlockNum = 50 then SetTextString(spr+2, "The felt beast lies" + chr(10) + "dormant, waiting...")
+	if unlockNum = 51 then SetTextString(spr+2, "The final song!" + chr(10) + "You got them all!")
+	if unlockNum > 30 then SetTextString(spr+2, GetTextString(spr+2) + chr(10)+chr(10)+chr(10)+chr(10)+chr(10) + "New song" + chr(10) + "unlocked!")
+	if unlockNum = 25 then SetTextString(spr+2, "Song Selection" + chr(10) + "unlocked!" + chr(10)+chr(10)+chr(10)+chr(10)+chr(10) + "You can now pick" + chr(10) + "songs pre-match!")
+	if unlockNum = 26 then SetTextString(spr+2, "Hard Battle" + chr(10) + "unlocked!" + chr(10)+chr(10)+chr(10)+chr(10)+chr(10) + "With this on," + chr(10) + "games start harder!")
+	if unlockNum = 27 then SetTextString(spr+2, "Fast Battle" + chr(10) + "unlocked!" + chr(10)+chr(10)+chr(10)+chr(10)+chr(10) + "With this on," + chr(10) + "games are FAST!")
+	if unlockNum = 28 then SetTextString(spr+2, "Evil Switch" + chr(10) + "unlocked!" + chr(10)+chr(10)+chr(10)+chr(10)+chr(10) + "Four crabs are" + chr(10) + "hidden- find them!")
+	if unlockNum = 29 then SetTextString(spr+2, "Hardest AI" + chr(10) + "unlocked!" + chr(10)+chr(10)+chr(10)+chr(10)+chr(10) + "In AI Battles," + chr(10) + "set crabs HARDER!")
+	if unlockNum = 30 then SetTextString(spr+2, "You finished" + chr(10) + "EVERYTHING!" + chr(10)+chr(10)+chr(10)+chr(10)+chr(10) + "You're officially a" + chr(10) + "LOSER XD no more!")
 	
 	if area = G2 and dispH = 0
 		SetTextAngle(spr+2, 180)
@@ -1020,6 +1067,7 @@ function Popup(area, unlockNum)
 		SetTweenSpriteSizeX(i, 1, GetSpriteWidth(i), TweenOvershoot())
 		SetTweenSpriteSizeY(i, 1, GetSpriteHeight(i), TweenOvershoot())
 		SetTweenSpriteAngle(i, -720-180*(1-area)*(dispH-1), -180*(1-area)*(dispH-1), TweenOvershoot())
+		if unlockNum > 30 and i = spr+1 then SetTweenSpriteAngle(i, -720-180*(1-area)*(dispH-1), -180*(1-area)*(dispH-1)-20, TweenOvershoot())
 		SetTweenSpriteX(i, GetSpriteMiddleX(i), GetSpriteX(i), TweenOvershoot())
 		SetTweenSpriteY(i, GetSpriteMiddleY(i), GetSpriteY(i), TweenOvershoot())
 	next i

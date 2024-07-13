@@ -1,28 +1,28 @@
 bg 1
 music mcb
-CA: A customer, a customer!
-Welcome to Crab Cake's Confectionaries!
-SC: Hello! I placed on order online, is it ready for pickup?
-CA: Hmmm, I don't remember seeing any...
-SC: Really? Nothing under the name Space Crab?
+CK: BAFO; A customer, a customer!
+BMFA; Welcome to Crab Cake's Confectionaries!
+SC: BAFAd; Hello! I placed an order online, is it ready for pickup?
+CK: BBFHa; Hmmm, I don't remember seeing any...
+SC: BVFJd; Really? Nothing under the name Space Crab?
 music
-CA: ...Oh.
-Funny story, really.
+CK: BBFJ; ...Oh.
+BDFIa; Funny story, really.
 music mcb
-I thought it was a prank order.
-THE Space Crab? Ordering at MY humble bakery?!
-Ho! Ha! A real riot! Surely the work of a prankster at large.
-SC: It's not a prank, though.
-I NEED those sweets for the opening of the Star Seekers!
-CA: Well, I can put in the request as a rush. Just this once.
-What was in your original order?
-SC: A- ah- a cake? Uhh...
-I forgot. I KNEW this would happen. That's why I did the online order!
-CA: Oh dear. Why don't we give you the old memory-jogger special?
+BBFKi; I thought it was a prank order.
+BMFJa; THE Space Crab? Ordering at MY humble bakery?!
+BMFOa; Ho! Ha! A real riot! Surely the work of a prankster at large.
+SC: BVFFd; It's not a prank, though.
+BMFEa; I NEED those sweets for the opening of the Star Seekers!
+CK: BUFAh; Well, I can put in the request as a rush. Just this once.
+BSFJa; What was in your original order?
+SC: BCFEa; A- ah- a cake? Uhh...
+BDFDd; I forgot. I KNEW this would happen. That's why I did the online order!
+CK: BWFEb; Oh dear. Why don't we give you the old memory-jogger special?
 music retro2
 fight 56543
 music mcb
-SC: Oh yeah, it wasn't the order I forgot, but the AMOUNT!
-I'll need 200 cakes for the Star Seekers opening ceremony.
-CA: ... (aggresive look of dissapproval)
-Wonderful. Thank you.
+SC: BAFAg; Oh yeah, it wasn't the order I forgot, but the AMOUNT!
+BMFO; I'll need 200 cakes for the Star Seekers opening ceremony.
+CK: BUFUa; ...
+BUFWa; I'll see what I can do.

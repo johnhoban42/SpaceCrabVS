@@ -742,10 +742,10 @@ function InitCharacterSelect()
 	//The button that will change the song for the next round
 	CreateSpriteExpress(SPR_CS_MUSICPICK, 300, 90, w/2+85, h/2-45, 5)
 	for i = 0 to 41
-		if GetFileExists("musicBanners/banner" + Str(i) + ".png") and (i > 30 or i <= musicUnlocked)
-			img = LoadImage("musicBanners/banner" + Str(i) + ".png")
-			AddSpriteAnimationFrame(SPR_CS_MUSICPICK, img)
-			trashBag.insert(img)
+		if (i > 30 or i <= musicUnlocked)
+			//img = LoadImage("musicBanners/banner" + Str(i) + ".png")
+			AddSpriteAnimationFrame(SPR_CS_MUSICPICK, banner1I+i)
+			//trashBag.insert(img)
 		endif
 	next i
 	SetSpriteFrame(SPR_CS_MUSICPICK, 1)
@@ -1130,13 +1130,15 @@ function DoCharacterSelectController(csc ref as CharacterSelectController)
 				
 				//PingColor(GetSpriteMiddleX(csc.sprCrabs+csc.crabSelected), GetSpriteMiddleY(csc.sprCrabs+csc.crabSelected), 400, 255, 100, 100, 50)
 			// Scroll left
-			elseif (ButtonMultitouchEnabled(csc.sprLeftArrow) or (GetMultitouchPressedTopRight() and csc.player = 2 and dispH = 0) or (GetMultitouchPressedBottomLeft() and csc.player = 1 and dispH = 0)) and csc.crabSelected > 0
+			//elseif (ButtonMultitouchEnabled(csc.sprLeftArrow) or (GetMultitouchPressedTopRight() and csc.player = 2 and dispH = 0) or (GetMultitouchPressedBottomLeft() and csc.player = 1 and dispH = 0)) and csc.crabSelected > 0
+			elseif ButtonMultitouchEnabled(csc.sprLeftArrow) and csc.crabSelected > 0
 				PlaySoundR(arrowS, 100)
 				ChangeCrabs(csc, -1, 1)
 				if csc.player = 1 then crab1Evil = 0
 				if csc.player = 2 then crab2Evil = 0
 			// Scroll right
-			elseif (ButtonMultitouchEnabled(csc.sprRightArrow) or (GetMultitouchPressedTopLeft() and csc.player = 2 and dispH = 0) or (GetMultitouchPressedBottomRight() and csc.player = 1 and dispH = 0)) and ((csc.crabSelected < lastChar and spType <> STORYMODE) or (csc.crabSelected < Min(clearedChapter, finalChapter-1) and spType = STORYMODE))
+			//elseif (ButtonMultitouchEnabled(csc.sprRightArrow) or (GetMultitouchPressedTopLeft() and csc.player = 2 and dispH = 0) or (GetMultitouchPressedBottomRight() and csc.player = 1 and dispH = 0)) and ((csc.crabSelected < lastChar and spType <> STORYMODE) or (csc.crabSelected < Min(clearedChapter, finalChapter-1) and spType = STORYMODE))
+			elseif ButtonMultitouchEnabled(csc.sprRightArrow) and ((csc.crabSelected < lastChar and spType <> STORYMODE) or (csc.crabSelected < Min(clearedChapter, finalChapter-1) and spType = STORYMODE))
 				PlaySoundR(arrowS, 100)
 				ChangeCrabs(csc, 1, 1)
 				if csc.player = 1 then crab1Evil = 0

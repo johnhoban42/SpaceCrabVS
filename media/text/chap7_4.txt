@@ -1,31 +1,32 @@
-bg 5
+bg 2
+music chill
 ??: Taxi. I request your services.
-TX: Ah, sure. I was going to call it quits, but if you're going nearby, I can take you.
-NC: I do not care to travel. Rather, I want to inquire about the Taxi you drive.
-TX: Are you with Ned's Vehicle Inspections?
-I already got the car inspected, quit buggin' me about it.
-NC: I have no affiliates... not anymore.
-But you clearly do, based on the contents of your car...
+TX: BAFF; Uh, sure. I was going to call it quits, but if you're going nearby, I can take you.
+NC: BWFB; I do not care to travel. Rather, I want to inquire about the Taxi you drive.
+TX: BDFDd; Are you with Ned's Vehicle Inspections?
+BHFBa; I already got the car inspected, quit buggin' me about it.
+NC: BBFH; I have no affiliates... not anymore.
+BSFDd; But you clearly do, based on the contents of your car...
 music tomato
-THIS. A Star Seekers poster!
-TX: That thing? Some kid left it in here. I don't even know what a Star Seeker is.
-NC: You may not understand your role in this, but I see it clearly-
-The advertiser.
-How many crabs have you driven since this poster was placed?
-TX: I don't really keep track of my clients. I've been busy though- a few hundred, maybe?
-NC: A few HUNDRED?!
-Your reach is as unparalleled as it is dangerous. While you may remain...
-The same can not be said about your Taxi.
-TX: Hey, hands off the car!
-Looks like I need to break it out one more time...
-The Taxi Crab Special!
+BZFDe; THIS. A Star Seekers poster!
+TX: BDFBe; That thing? Some kid left it in here. I don't even know what a Star Seeker is.
+NC: BPFA; You may not understand your role in this, but I see it clearly-
+BVFB; You're the advertiser.
+BOFDd; How many crabs have you driven since this poster was placed?
+TX: BAFGe; I don't really keep track of my clients. I've been busy though- a few hundred, maybe?
+NC: BHFP; A few HUNDRED?!
+BVFB; Your reach is as unparalleled as it is dangerous. While you may remain...
+BPFB; The same can not be said about your Taxi.
+TX: BNFBa; Hey, hands off the car!
+BKFDd; Looks like I need to break it out one more time...
+BSFDb; The Taxi Crab Special!
 music tomato
 fight 62138
 music
-NC: ... (knocked out)
-music retro4
-TX: Whew, that's a relief... looks like he's out good.
-Little guy really got riled up.
-The Star Seekers, huh?
-Maybe I should check it out, after all.
-Gives me a good chance to serve out some 'Taxi Crab Specials', right?
+NC: BJFX; ...
+music rag
+TX: BAFRb; Whew, that's a relief... looks like he's out good.
+BAFJa; Little guy really got riled up.
+BKFGe; The Star Seekers, huh?
+BSFJc; Maybe I should check it out, after all.
+BKFKh; Gives me a good chance to serve out some 'Taxi Crab Specials', right?

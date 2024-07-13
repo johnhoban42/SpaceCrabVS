@@ -1,22 +1,23 @@
-bg 2
-RC: Still, it's a little weird that only two fans showed up.
-The groupies didn't even bother to come?
-...Not even Rave Crab? My fa-
+bg 3
+music chill
+RL: BBFDd; Still, it's a little weird that only two fans showed up.
+BAFEa; The groupies didn't even bother to come?
+BMFEd; ...Not even Rave Crab? My little funny buddy?
 ??: Aaaahhh! Sorry I'm late!
-TC: Really, TRULY, super sorry, sir.
-RL: It's about time, Toppy! Where were you?
-TC: Well, I was practicing my spinning for the Star Seekers, and I guess I lost track of time...
-That's why I got here 58 minutes early instead of the full hour! Again, so sorry!
-RL: You think you're EARLY? I've been playing without a stage this whole time!
-Let's set things up before anyone else sees this embarrassment of a setup.
-And our setup song? Shooting Stars into Dreams, REMix!
-Let's go!
-music ssidREM
-vs TC (fight goes here)
+TC: BBFHj; Really, TRULY, super sorry, sir.
+RL: BAFBa; It's about time, Toppy! Where were you?
+TC: BDFHm; Well, I was practicing my spinning for the Star Seekers, and I guess I lost track of time...
+BVFMd; That's why I got here 58 minutes early instead of the full hour! Again, so sorry!
+RL: BMFBa; You think you're EARLY? I've been playing without a stage this whole time!
+BAFD; Let's set things up before anyone else sees this embarrassment of a setup.
+BIFDb; And our setup song? Shooting Stars into Dreams, REMix!
+BMFDb; Let's go!
+music ssid
+fight 54657
 music retro2
-RL: Through all that chaos, we got the stage ready.
-Nicely done! You must be working on your debilitating clumsiness.
-TC: Haha, thank you... that means a lot, coming from you.
-Since joining the Star Seekers, I've really been working to improve.
-And thanks to that effort, we got the stage set up, just in time for the concert to start!
-RL: Just in time? That's something I've been wanting to ask about...
+RL: BBFRb; Through all that chaos, we got the stage ready.
+BAFAd; Nicely done! Seems like you're getting a better handle on your clumsiness.
+TC: BDFIa; Haha, thank you... that means a lot, coming from you.
+BMFJb; Since joining the Star Seekers, I've really been working to improve.
+BKFO; And thanks to that effort, we got the stage set up, just in time for the concert to start!
+RL: BMFF; Just in time, huh? That's something that's been bothering me...

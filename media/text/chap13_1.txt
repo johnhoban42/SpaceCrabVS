@@ -1,32 +1,34 @@
 bg 1
 music love
-CN: Hey hey! Crabby Cakes!
-CA: Ahh, welcome, Cranime, welcome!
-What can I get for my favorite customer?
-CN: The usual! A box of tasty donuts and sweets!
-Oh! And a parfait, too!
-CA: Well, if you want all that, you'll have to wait a bit.
-I got ANOTHER rush order for ANOTHER 200 cakes!
-CN: EEEHHHH?! Really?!
-CA: I'm working double overtime as it is!
-At least I have help from my plucky assisstant.
-CC: ... (laying on the floor, conked out)
-CN: Wow, this must be a SUPER huge event!
-What's it all for? Tell me! TELL ME!
-CA: Ohhh no. The last time I spilled the beans, I had to get my hands dirty.
-And with dirty hands, one cannot bake a cake!
-CN: :(
-CA: B-but for my favorite customer, maybe we can battle for the info?
-CN: YAY! ^w^
+CN: BAFAd; Hey hey! Crabby Cakes!
+CK: BMFJb; Ahh, welcome, Cranime, welcome!
+BIFAh; What can I get for my favorite customer?
+CN: BWFJb; The usual! A box of tasty donuts and sweets!
+BUFS; Oh! And a parfait, too!
+CK: BSFGb; Well, if you want all that, you'll have to wait a bit.
+BAFI; I got ANOTHER rush order for ANOTHER 200 cakes!
+CN: BHFP; EEEHHHH?! Really?!
+CK: BMFIa; I'm working double overtime as it is!
+BAFGb; At least I have help from my plucky assistant.
+exit 2
+CC: BJFXc; ...
+CN: BIFS; Wow, this must be a SUPER huge event!
+BVFSc; What's it all for? Tell me! TELL ME!
+exit 2
+CK: BCFEa; Ohhh no. The last time I spilled the beans, I had to get my hands dirty.
+BSFDb; And with dirty hands, one cannot bake a cake!
+CN: BBFE; 8(
+CK: BNFH; B-but for my favorite customer, maybe we can battle for the info?
+CN: BKFO; YAY! ^w^
 music mcb
 fight 35467
 music love
-CA: So. The Star Seekers are having their opening ceremony, and-
-CN: A ceremony? You mean, like, a PROM?!
-CA: No. So, I'm making these cakes for-
-CN: A PROM? But I don't even have a date! >_<
-I can't show up with nobody! The other crabs will laugh at me!
-CA: It's really not that kind of event...
-CN: Crabby Cakes, I have to go!
+CK: BUFJb; So. The Star Seekers are having their opening ceremony, and-
+CN: BSFSb; A 'ceremony'? You mean, like, a PROM?!
+CK: BUFJa; No. So, I'm baking these cakes for-
+CN: BIFOh; A PROM? But I don't even have a date! >_<
+BWFKc; I can't show up with nobody! The other crabs will laugh at me!
+CK: BUFH; It's really not that kind of event...
+CN: BOFSa; Crabby Cakes, I have to go!
 exit 2
-My sparkle-love journey starts NOW!
+BVFSd; My sparkle-love journey starts NOW!

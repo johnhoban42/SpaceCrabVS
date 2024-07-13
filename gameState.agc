@@ -37,6 +37,12 @@ function InitGame()
 	SetSpriteVisible(split, 1)
 	TransitionEnd()
 	
+	if GetDeviceBaseName() = "android"
+		SetFolder("/media/sounds")
+		LoadMusicOGG(exp4S, "exp4.ogg")
+		LoadMusicOGG(exp5S, "exp5.ogg")
+	endif
+	
 	if spType = 0 or spType = STORYMODE or spType = AIBATTLE then PlayOpeningScene()
 	
 	//The pause button
@@ -283,6 +289,7 @@ function DoGame()
 		
 		if (ButtonMultitouchEnabled(exitButton) and GetSpriteVisible(exitButton)) or exitG
 			TransitionStart(Random(1,lastTranType))
+			StopGamePlayMusic()
 			SetViewZoom(1)
 			state = CHARACTER_SELECT
 			if (spType = CLASSIC or spType = MIRRORMODE) and storyActive = 0 then state = START
@@ -612,6 +619,8 @@ function EndClassicScene()
 	
 	endStage = 0
 	
+	SetFolder("/media")
+	
 	//Setup for the scene
 	LoadSprite(bgHit1, "envi/bg0.png")
 	SetSpriteSizeSquare(bgHit1, w)
@@ -773,12 +782,18 @@ function ExitGame()
 		endif
 	endif
 	
+	if GetSpriteExists(999) then StopGamePlayMusic() 	//The pause menu curtain
+	if GetDeviceBaseName() = "android"
+		DeleteMusicOGG(exp4S)
+		DeleteMusicOGG(exp5S)
+	endif
+	
 	if GetSpriteExists(999) then DeleteSprite(999)	//The pause menu curtain
 	if GetTextExists(TXT_INTRO1) then DeleteText(TXT_INTRO1)
 	if GetTextExists(TXT_INTRO2) then DeleteText(TXT_INTRO2)
 	paused = 0
 	
-	StopGamePlayMusic()
+	
 	
 	//This is called if the end cutscene for the game never plays
 	if GetSpriteExists(expBar1)
@@ -885,6 +900,8 @@ function PauseGame()
 	if spType = CLASSIC
 		IncSpriteSizeCenteredMult(curtain, GetViewZoom())
 		IncSpriteSizeCenteredMult(curtainB, GetViewZoom())
+		SetSpriteVisible(SPR_CONTROLS, 0)
+		SetSpriteVisible(SPR_SETTINGS, 0)
 	endif
 	
 	SetSpriteVisible(pauseButton, 0)
@@ -986,7 +1003,8 @@ function PauseGame()
 	if spType = CLASSIC
 		SetTextString(pauseTitle2, "SPACE CRAB"+chr(10)+"TRIVIA")
 		SetTextSpacing(pauseTitle2, GetTextSpacing(pauseTitle2) - 5)
-		SetTextSpacing(pauseDesc2, GetTextSpacing(pauseDesc2) + 1)
+		if dispH = 0 then SetTextSpacing(pauseDesc2, GetTextSpacing(pauseDesc2) - 2)
+		//if dispH then SetTextSpacing(pauseDesc2, GetTextSpacing(pauseDesc2))
 		IncTextY(pauseTitle2, 190)
 		IncTextY(pauseDesc2, 100)
 		rand = Random(1, 7)
@@ -1006,6 +1024,12 @@ function PauseGame()
 			SetTextString(pauseDesc2, "Tap and hold on the main menu logo" + chr(10) + "for a fruity suprise!")
 		endif
 		
+		if dispH = 0
+			SetTextAngle(pauseTitle2, 0)
+			SetTextAngle(pauseDesc2, 0)
+			IncTextY(pauseTitle2, -h/2)
+			IncTextY(pauseDesc2, -h/2+100)
+		endif
 		
 		IncTextY(pauseTitle1, -80)
 		IncTextY(pauseDesc1, -145)
@@ -1064,7 +1088,8 @@ function PauseGame()
 	
 	if spType = STORYMODE
 		SetTextFontImage(pauseTitle2, fontDescI)
-		SetTextSpacing(pauseTitle2, -25)
+		SetTextSpacing(pauseTitle2, -29)
+		if dispH then SetTextSpacing(pauseTitle2, -28)
 		
 		SetTextString(pauseTitle2, Str(curChapter) + " - " + chapterTitle[curChapter])
 		SetTextString(pauseDesc2, chapterDesc[curChapter])
@@ -2053,11 +2078,12 @@ function UpdateSPScore(added)
 		//SetTextColor(TXT_SP_DANGER, 255, 255-(gameDifficulty1-1)*240/7.0, 255-(gameDifficulty1-1)*240/7.0, 255)
 		if gameDifficulty1 = difficultyMax
 			SetTextString(TXT_SP_DANGER, "MAX DANGER")
-			if spType = MIRRORMODE
+			if spType = MIRRORMODE and dispH = 0
 				SetTextSize(TXT_SP_DANGER, 58-dispH*10)
 				SetTextY(TXT_SP_DANGER, h/2 - GetTextSize(TXT_SP_DANGER)/2)
 				SetTextX(TXT_SP_DANGER, 622)
 			endif
+			if spType = MIRRORMODE and dispH then SetTextSize(TXT_SP_DANGER, 63-dispH*10)
 		endif
 		
 		if spScore > spHighScore
@@ -2415,7 +2441,7 @@ endfunction
 function StartGameMusic()
 	
 	if gameSongSet <> 0 and storyActive = 0
-		
+		StopGamePlayMusic()
 		if gameSongSet <= musicUnlocked
 			PlayMusicOGGSP(GetMusicByID(gameSongSet), 1)
 		else
@@ -2429,7 +2455,7 @@ function StartGameMusic()
 	if storyActive = 0 and spType <> CHALLENGEMODE
 		if spType = 0 or spType = AIBATTLE
 			rnd = 5
-			while (rnd >= 4 and rnd <= 7) or GetMusicByID(rnd) = oldSong
+			while (rnd >= 4 and rnd <= 7) or GetMusicByID(rnd) = oldSong or rnd = 15
 				rnd = Random(1, musicUnlocked)
 			endwhile
 			PlayMusicOGGSP(GetMusicByID(rnd), 1)
@@ -2504,6 +2530,11 @@ function StopGamePlayMusic()
 	if GetMusicPlayingOGGSP(ragMusic) then StopMusicOGGSP(ragMusic)
 	if GetMusicPlayingOGGSP(ssidMusic) then StopMusicOGGSP(ssidMusic)
 	if GetMusicPlayingOGGSP(mcbMusic) then StopMusicOGGSP(mcbMusic)
+	if GetMusicPlayingOGGSP(loveMusic) then StopMusicOGGSP(loveMusic)
+	if GetMusicPlayingOGGSP(raveBass1) then StopMusicOGGSP(raveBass1)
+	if GetMusicPlayingOGGSP(raveBass2) then StopMusicOGGSP(raveBass2)
+	if GetMusicPlayingOGGSP(characterMusic) then StopMusicOGGSP(characterMusic)
+	if GetMusicPlayingOGGSP(resultsMusic) then StopMusicOGGSP(resultsMusic)
 	
 	for i = dangerAMusic to dangerAJMusic
 		if GetMusicPlayingOGGSP(i) then StopMusicOGGSP(i)

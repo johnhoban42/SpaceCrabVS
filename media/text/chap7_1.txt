@@ -1,30 +1,30 @@
-bg 5
+bg 1
 music retro6
 ??: Taxi! Taxi!
-TX: BAFA; That's me- Taxi Crab. What can I do for ya?
-HC: Take me to the Garra Bonito, please! I'm heading out for vacation.
-TX: Ah, Hawaiian Crab! Excellent choice.
-That's a pretty fancy resort, thinking 'bout it. Treating yourself?
-HC: Oh yes. Work has been a real stress recently.
-Now that I finished my big project, I can take some time off!
-TX: Oh, what's that you do for work?
-HC: Dodge meteors.
-TX: Oh.
-And, uh, the big project?
-HC: A big meteor.
-TX: You know, I was never a fan of meteor dodging, but I've gotten hooked recently.
-Mind doing a bit of overtime, with me?
-HC: Of course not! When it's with another crab, there's no stress at all.
+TX: BSFA; That's me- Taxi Crab. What can I do for ya?
+HC: BAFAg; Take me to the Garra Bonito, please! I'm heading out for vacation.
+TX: BKFJc; Ah, Hawaiian Crab! Excellent choice.
+BAFGd; That's a pretty fancy resort, thinking 'bout it. Treating yourself?
+HC: BSFI; Oh yes. Work has been a real stress recently.
+BIFTu; Now that I finished my big project, I can take some time off!
+TX: BAFJd; Oh, what's that you do for work?
+HC: BBFJa; Dodge meteors.
+TX: BAFU; Oh.
+BAFWa; And, uh, the big project?
+HC: BBFJ; A big meteor.
+TX: BKFA; You know, I was never a fan of meteor dodging, but I've gotten hooked recently.
+BSFJd; Mind doing a bit of overtime, with me?
+HC: BCFAh; Of course not! When it's with another crab, there's no stress at all.
 music retro6
 fight 45646
 music retro1
-TX: Hey, guy. Wake up.
-HC: Huh? Whuh happened?
-TX: We fought and you passed out.
-Got you to your destination, though.
-HC: Wow, the Garra Bonito! Thank you so much!
-That trip felt like it took no time at all. Five Stars!
-I should pass out more often!
+TX: BAFWa; Hey, guy. Wake up.
+HC: BJFX; Huh? Whuh happened?
+TX: BAFG; We fought and you passed out.
+BKFJb; Got you to your destination, though.
+HC: BAFAg; Wow, the Garra Bonito! Thank you so much!
+BAFOc; That trip felt like it took no time at all. Five Stars!
+BMFJb; I should pass out more often!
 exit 2
-TX: Hey, that's a better rating than most of my rides.
-Maybe I should start assaulting my customers more often...
+TX: BKFKi; Hey, that's a better rating than most of my rides.
+BAFGd; Maybe I should start assaulting my customers more often...

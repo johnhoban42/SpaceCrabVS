@@ -269,6 +269,7 @@ global met3CD2# = 0 //400
 #constant mainmenuButton 14
 #constant phantomPauseButton 15
 #constant phantomExitButton 16
+#constant easyButton 17
 
 //Just a sheet for when things need to be covered up
 #constant coverS 11
@@ -339,12 +340,12 @@ global met3CD2# = 0 //400
 
 //Image Indexes
 
-#constant fontSpecialI 1
-#constant fontDescI 2	//Tahoma
-#constant fontDescItalI 4	//Tahoma (Italicized)
-#constant fontCrabI 3	//Somerset Barnyard
-#constant fontScoreI 1001	//SnowTunes UI Font
-#constant fontTitleScreenI 1002	//Corbel (Italicised)
+#constant fontSpecialI 1001
+#constant fontDescI 1002	//Tahoma
+#constant fontDescItalI 1004	//Tahoma (Italicized)
+#constant fontCrabI 1003	//Somerset Barnyard
+#constant fontScoreI 1005	//SnowTunes UI Font
+#constant fontTitleScreenI 1006	//Corbel (Italicised)
 
 #constant starParticleI 11
 
@@ -470,6 +471,10 @@ global loadedCrabSprites as Integer[0]
 #constant special4s6 230
 #constant special4s7 231
 #constant special4s8 232
+
+
+#constant banner1I 241
+//This goes on through... the rest of 300, to be safe
 
 #constant crabpingI 400
 
@@ -598,6 +603,8 @@ global jumpPartI as Integer[6, 4]
 #constant kingSpellS 29
 #constant knightSpellS 30
 
+#constant talk1S 31
+#constant talkBS 32
 
 //Music Indexes
 #constant titleMusic 101
@@ -677,20 +684,21 @@ global windowSize = 1
 #constant TXT_OTHER 213
 
 
-#constant SPR_LOGO_HORIZ 215
-#constant SPR_LEADERBOARD 214
-#constant TXT_ALONE 216
-
-#constant TXT_HIGHSCORE 231
-#constant TXT_SP_DESC 232
-
-#constant SPR_BG_START 299
-
+#constant TXT_SP_LOGO 214
+#constant TXT_HIGHSCORE 215
+#constant SPR_LEADERBOARD 216
+#constant SPR_HARDGAME 217
+#constant SPR_FASTGAME 218
+#constant SPR_MUSICPICK 219
+#constant SPR_EVIL 220
 
 //Different Crab buttons for the single player mode
 #constant SPR_SP_C1 256
 #constant SPR_SP_C6 261
 #constant SPR_SP_C24 279
+
+#constant SPR_BG_START 299
+
 
 //Character select screen sprites - player 1 
 #constant SPR_CS_READY_1 300 
@@ -934,8 +942,6 @@ function LoadBaseSounds()
 		LoadMusicOGG(exp1S, "exp1.ogg")
 		LoadMusicOGG(exp2S, "exp2.ogg")
 		LoadMusicOGG(exp3S, "exp3.ogg")
-		LoadMusicOGG(exp4S, "exp4.ogg")
-		LoadMusicOGG(exp5S, "exp5.ogg")
 		
 		LoadMusicOGG(ufoS, "ufo.ogg")
 		LoadMusicOGG(wizardSpell1S, "wizardSpell1.ogg")
@@ -1056,8 +1062,12 @@ function PlayMusicOGGSP(songID, loopYN)
 		if songID = dangerFMusic then LoadMusicOGG(dangerFMusic, "dangerF.ogg")
 		if songID = dangerAJMusic then LoadMusicOGG(dangerAJMusic, "dangerAJ.ogg")
 		
-		if songID = raveBass1 and crab1Evil = 0 then LoadMusicOGG(raveBass1, "special4"+AltStr(crab1Alt)+".ogg")
-		if songID = raveBass1 and crab1Evil = 1 then LoadMusicOGG(raveBass1, "fire.ogg")
+		if songID = raveBass1 and appState = STORY
+			LoadMusicOGG(raveBass1, "special4.ogg")
+		else
+			if songID = raveBass1 and crab1Evil = 0 then LoadMusicOGG(raveBass1, "special4"+AltStr(crab1Alt)+".ogg")
+			if songID = raveBass1 and crab1Evil = 1 then LoadMusicOGG(raveBass1, "fire.ogg")
+		endif
 		if songID = raveBass2 and crab2Evil = 0 then LoadMusicOGG(raveBass2, "special4"+AltStr(crab2Alt)+".ogg")
 		if songID = raveBass2 and crab2Evil = 1 then LoadMusicOGG(raveBass2, "fire.ogg")
 		if songID = fireMusic then LoadMusicOGG(fireMusic, "fire.ogg")
@@ -1086,7 +1096,7 @@ endfunction
 
 function PlayMusicOGGSPStr(str$, loopYN)
 	id = 0
-	
+
 	if str$ = "title" then id = titleMusic
 	if str$ = "fightA" then id = fightAMusic
 	if str$ = "fightB" then id = fightBMusic
@@ -1102,6 +1112,8 @@ function PlayMusicOGGSPStr(str$, loopYN)
 	if str$ = "results" then id = resultsMusic
 	if str$ = "loserXD" then id = loserMusic
 	if str$ = "chromecoast" then id = spMusic
+	if str$ = "mcb" then id = mcbMusic
+	if str$ = "ssid" then id = ssidMusic
 	if str$ = "dangerA" then id = dangerAMusic
 	if str$ = "dangerB" then id = dangerBMusic
 	if str$ = "dangerJ" then id = dangerJMusic
@@ -1121,7 +1133,7 @@ function PlayMusicOGGSPStr(str$, loopYN)
 	if str$ = "retro8" then id = retro8M
 	
 	if str$ = "" then StopGamePlayMusic()
-	
+
 	if id <> 0 and GetMusicPlayingOGGSP(id) = 0
 		StopGamePlayMusic()
 		PlayMusicOGGSP(id, loopYN)
@@ -1210,7 +1222,7 @@ function LoadBaseImages()
 	
 	//#constant fontDesc 2
 	
-	SetFolder("/media/art")
+	SetFolder("/media")
 	
 	//The lives
 	//for i = 1 to 6
@@ -1218,9 +1230,10 @@ function LoadBaseImages()
 		//LoadImage(crab1life1I + (i-1)*3, "crab" + str(i) + "life1.png")
 	//next i
 	
-	for i = 1 to 6
-		//Loading in the chibi crabs
-		//LoadImage(crab1life1I + (i-1)*3, "crab" + str(i) + "life1.png")
+	for i = 0 to 41
+		if GetFileExists("musicBanners/banner" + Str(i) + ".png")
+			LoadImage(banner1I+i, "musicBanners/banner" + Str(i) + ".png")
+		endif
 	next i
 	
 	//Old way of load lives (all of them)
@@ -1267,17 +1280,6 @@ function LoadBaseImages()
 	LoadImage(attackPartI, "attackParticle.png")
 	LoadImage(attackPartInvertI, "attackParticleInvert.png")
 	
-	/*
-	LoadImage(planetVar1I, "planet1alt1.png")
-	LoadImage(planetVar2I, "planet1alt2.png")
-	LoadImage(planetVar3I, "planet1alt3.png")
-	LoadImage(planetVar4I, "planet1alt4.png")
-	LoadImage(planetVar5I, "planet1alt5.png")
-	LoadImage(planetVar6I, "planet1alt6.png")
-	LoadImage(planetVar7I, "planet1alt7.png")
-	LoadImage(planetVar8I, "planet1alt8.png")
-	*/
-
 	//Setting up the planet image indexes for later
 	//for i = 1 to planetITotalMax
 	//	planetVarI[i] = 400 + i

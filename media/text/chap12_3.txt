@@ -1,32 +1,31 @@
 bg 4
 music mcb
-CA: Al Legal said that the ingredient delivery would be done by a young child...
-My, the youth of today sure set my heart a-flutter! Such wonder in their eyes.
-Oh! Is that the child now? What speedy service!
-FC: Hello sir! I was told these ingredients go to a big pink guy.
-CA: Yes, guilty as charged! I'm ready for my baking supplies.
-FC: Just let me get your signature and you'll be all set!
-What do you need this many eggs for, anyways?
-CA: I'm filling a cake order for the new premiere exploration group, the Star Seekers.
-Or so I'm told that they're the premiere group, anyways.
+CK: BAFJa; Al Legal said that the ingredient delivery would be done by a young child...
+BUFOc; My, the youth of today sure set my heart a-flutter! Such wonder in their eyes.
+BAFJb; Oh! Is that the child now? What speedy service!
+1F: BIFA; Hello sir! I was told these ingredients go to a big pink guy.
+CK: BMFOc; Yes, guilty as charged! I'm ready for my baking supplies.
+1F: BVFAh; Just let me get your signature and you'll be all set!
+BAFJa; What do you need this many eggs for, anyways?
+CK: BIFAg; Oh, I'm filling a cake order for the new premiere exploration group, the Star Seekers.
+BAFGb; Or so I'm told that they're the premiere group, anyways.
 music
-FC: ...
-If that's the case, then I can't let you sign for these ingredients.
+1F: BTFNa; ...
+BWFTr; If that's the case, then I can't let you sign for these ingredients!
 music retro3
-CA: Hmm?
-FC: The Star Seekers are my sworn enemies. I can't bring myself to help them in any way.
-Even if it's something as small as... delivering ingredients for their cakes!
-CA: Don't be silly, son. Just let me sign for the shipment...
-FC: NO! If you want to sign the delivery slip, you'll have to pry it from my claws!
+CK: BUFF; Hmm?
+1F: BTFNg; The Star Seekers are my sworn enemies. I can't help them in any way.
+BSFMd; Even if it's something as small as... delivering ingredients for their cakes!
+CK: BOFIa; Don't be silly, son. Just let me sign for the shipment...
+1F: BVFOh; NO! If you want to sign the delivery slip, you'll have to pry it from my cold, knocked-out claws!
 music retro3
 fight 43284
 music mcb
-FC: ...
-CA: Geez, Star Seeker this, Star Seeker that...
-So many obsessives!
-I'm just trying to bake, for goodness sake.
-But even if I have the ingredients, I still need to bake all of the cakes so quickly.
-...Oh no...
-I won't have to ask HIM for help, will I?
-Of course I will! I am a professional!
-No amount of setbacks will keep me away from the finish line!
+1F: BJFX; ...
+CK: BUFTp; Geez, Star Seeker this, Star Seeker that... So many obsessives!
+BUFDa; I'm just trying to bake, for goodness sake.
+BDFH; But, even though I have these ingredients, I still need to bake all of the cakes so quickly.
+BTFNc; ...Oh no...
+BBFKc; I won't have to ask HIM for help, will I?
+BMFDd; Of course I will! I am a professional!
+BMFOa; No number of setbacks will keep me away from the finish line!

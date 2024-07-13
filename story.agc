@@ -2,8 +2,6 @@
 // Created: 23-06-20
 
 global storyStateInitialized as integer = 0
-global talk1S
-global talkBS
 global trashBag as integer[0]
 
 #constant textSideSpacingX 35
@@ -65,7 +63,7 @@ function InitStory()
 			SetTextSpacing(i, -12)
 		endif
 	next i
-	
+
 	//SetTweenTextAlpha(storyText, 155, 255, TweenSmooth2())
 	
 	SetTextColorAlpha(storyFitter, 0)
@@ -118,16 +116,15 @@ function InitStory()
 	SetTweenSpriteX(SPR_CRAB1_COSTUME, 20, -cSize-200, TweenSmooth2())
 	//Just need to test that these tweens work!
 	
-	
 	SetFolder("/media/sounds")
 	if GetDeviceBaseName() <> "android"
-		talk1S = LoadSoundOGG("talk1.ogg")
-		talkBS = LoadSoundOGG("talkB.ogg")
+		LoadSoundOGG(talk1S, "talk1.ogg")
+		LoadSoundOGG(talkBS, "talkB.ogg")
 	else
-		talk1S = LoadMusicOGG("talk1.ogg")
-		talkBS = LoadMusicOGG("talkB.ogg")
+		LoadMusicOGG(talk1S, "talk1.ogg")
+		LoadMusicOGG(talkBS, "talkB.ogg")
 	endif
-	
+
 	//Loading the text
 	
 	if GetSpriteExists(coverS) then PlayTweenSprite(tweenSprFadeOutFull, coverS, 0)
@@ -194,15 +191,31 @@ function InitResultsRetry()
 	if spType = CHALLENGEMODE then SetSpriteVisible(exitButton, 0)
 	//IncSpriteY(exitButton, 280)
 
+	LoadAnimatedSprite(easyButton, "storydif", 2)
+	SetSpriteSize(easyButton, GetSpriteHeight(exitButton)*1.5, GetSpriteHeight(exitButton))
+	SetSpriteDepth(easyButton, GetSpriteDepth(exitButton))
+	SetSpriteMiddleScreen(easyButton)
+	if dispH = 0
+		IncSpriteY(easyButton, 570)
+		IncSpriteX(easyButton, 210)
+	else
+		IncSpriteY(easyButton, 250)
+		IncSpriteX(easyButton, 450)
+	endif
+	SetSpriteFrame(easyButton, storyEasy+1)
+
 	AddButton(playButton)
 	AddButton(exitButton)
+	AddButton(easyButton)
 	
 	SetTextColorAlpha(storyText, 0)
 	SetSpriteColorAlpha(playButton, 0)
 	SetSpriteColorAlpha(exitButton, 0)
+	SetSpriteColorAlpha(easyButton, 0)
 	PlayTweenText(tweenTxtFadeIn, storyText, 1)
 	PlayTweenSprite(tweenSprFadeIn, playButton, 1)
 	PlayTweenSprite(tweenSprFadeIn, exitButton, 1)
+	PlayTweenSprite(tweenSprFadeIn, easyButton, 1)
 	
 	SetSpriteVisible(split, 0)
 
@@ -251,6 +264,17 @@ function DoStory()
 				SetTextCharAngle(txt, i, -1 * (jitterNum) + Random(0, jitterNum*2))
 			endif
 		next i
+		
+		//Story Easy/Normal
+		if ButtonMultitouchEnabled(easyButton)
+			if storyEasy
+				storyEasy = 0
+				SetSpriteFrame(easyButton, 1)
+			else
+				storyEasy = 1
+				SetSpriteFrame(easyButton, 2)
+			endif
+		endif
 		
 		if ButtonMultitouchEnabled(playButton) or (inputSelect and selectTarget = 0)
 			inc lineSkipTo, -2
@@ -314,6 +338,7 @@ function ExitStory(deleteBG)
 		DeleteText(storyText)
 		DeleteSprite(playButton)
 		DeleteSprite(exitButton)
+		DeleteAnimatedSprite(easyButton)
 		
 		if GetMusicPlayingOGGSP(loserMusic) then StopMusicOGGSP(loserMusic)
 		
@@ -384,7 +409,7 @@ function ShowScene(chap, scene)
 		if GetStringToken(wholeRow$, " ", 1) = "music"
 			loopM = Val(GetStringToken(wholeRow$, " ", 3))
 			if (GetStringToken(wholeRow$, " ", 3)) = "" then loopM = 1
-			PlayMusicOGGSPStr(GetStringToken(wholeRow$, " ", 2), loopM)
+			PlayMusicOGGSPStr(GetStringToken(wholeRow$, " ", 2), 1)
 			wholeRow$ = ReadLine(1)
 			inc lineOverall, 1
 		endif
@@ -430,7 +455,7 @@ function ShowScene(chap, scene)
 			state = GAME
 			spActive = 1
 			spType = MIRRORMODE
-			storyMinScore = Val(GetStringToken(wholeRow$, " ", 2))
+			storyMinScore = Val(GetStringToken(wholeRow$, " ", 2))/(1+storyEasy)
 			lineSkipTo = lineOverall+1
 			if GetSpriteExists(SPR_CRAB1_BODY)
 				PlayMirrorModeScene()
@@ -448,8 +473,11 @@ function ShowScene(chap, scene)
 			state = GAME
 			spActive = 1
 			spType = CLASSIC
-			storyMinScore = Val(GetStringToken(wholeRow$, " ", 2))
+			storyMinScore = Val(GetStringToken(wholeRow$, " ", 2))/(1+storyEasy)
 			lineSkipTo = lineOverall+1
+			Print(lineSkipTo)
+			Sync()
+			
 			TransitionStart(Random(1,lastTranType))
 			exit
 		endif
@@ -588,7 +616,7 @@ function ShowScene(chap, scene)
 				//1st Crab Target
 				cosType = GetCrabCostumeType(crab1Type, crab1Alt)
 				if cosType = 2 then folderF$ = "speyes/"
-				if cosType <> 2 and crab1Type+crab1Alt*6 = 18 or crab1Type+crab1Alt*6 = 20 then folderF$ = "speyes/"
+				if cosType <> 2 and (crab1Type+crab1Alt*6 = 18 or crab1Type+crab1Alt*6 = 20) then folderF$ = "speyes/"
 				
 				if cosType <> 2 and cosType <> 5
 					if z$ <> ""
@@ -607,7 +635,11 @@ function ShowScene(chap, scene)
 					SetSpriteImage(SPR_CRAB1_COSTUME, LoadImageR("costume/costume" + str(crab1Type) + AltStr(crab1Alt) + z$ + hatBonus$ + ".png"))
 				elseif cosType = 2
 					//Unique sprite (WIP)
-					SetSpriteImage(SPR_CRAB1_COSTUME, LoadImageR("blank.png"))
+					if GetFileExists("costume/costume" + str(crab1Type) + AltStr(crab1Alt) + costume$ + ".png")
+						SetSpriteImage(SPR_CRAB1_COSTUME, LoadImageR("costume/costume" + str(crab1Type) + AltStr(crab1Alt) + costume$ + ".png"))
+					else
+						SetSpriteImage(SPR_CRAB1_COSTUME, LoadImageR("blank.png"))
+					endif
 					SetSpriteImage(SPR_CRAB1_BODY, LoadImageR(folderB$ + "body" + str(crab1Type) + AltStr(crab1Alt) + body$ + phoneBonus$ + ".png"))
 					if GetFileExists(folderF$ + "face" + z$ + str(crab1Type+crab1Alt*6) + face$ + ".png")
 						SetSpriteImage(SPR_CRAB1_FACE, LoadImageR(folderF$ + "face" + z$ + str(crab1Type+crab1Alt*6) + face$ + ".png"))
@@ -637,7 +669,7 @@ function ShowScene(chap, scene)
 					trashBag.insert(GetSpriteImageID(i))
 				next i
 					
-			else
+			elseif GetSpriteExists(SPR_CRAB2_BODY)
 				
 				//Finishing the crab transition before loading new images
 				//SPR_CRAB2_COSTUME is the tween
@@ -674,7 +706,11 @@ function ShowScene(chap, scene)
 					SetSpriteImage(SPR_CRAB2_COSTUME, LoadImageR("costume/costume" + str(crab2Type) + AltStr(crab2Alt) + z$ + hatBonus$ + ".png"))
 				elseif cosType = 2
 					//Unique sprite (WIP)
-					SetSpriteImage(SPR_CRAB2_COSTUME, LoadImageR("blank.png"))
+					if GetFileExists("costume/costume" + str(crab2Type) + AltStr(crab2Alt) + costume$ + ".png")
+						SetSpriteImage(SPR_CRAB2_COSTUME, LoadImageR("costume/costume" + str(crab2Type) + AltStr(crab2Alt) + costume$ + ".png"))
+					else
+						SetSpriteImage(SPR_CRAB2_COSTUME, LoadImageR("blank.png"))
+					endif
 					SetSpriteImage(SPR_CRAB2_BODY, LoadImageR(folderB$ + "body" + str(crab2Type) + AltStr(crab2Alt) + body$ + phoneBonus$ + ".png"))
 					if GetFileExists(folderF$ + "face" + z$ + str(crab2Type+crab2Alt*6) + face$ + ".png")
 						SetSpriteImage(SPR_CRAB2_FACE, LoadImageR(folderF$ + "face" + z$ + str(crab2Type+crab2Alt*6) + face$ + ".png"))
@@ -725,135 +761,136 @@ function ShowScene(chap, scene)
 		curChar$ = ""				//The current character at the curPos.
 		lastSpacePos = 1				//Keeping track of where the previous space was, so that the line breaks can happen after the overage width is passed.
 		
-		//Preparing the visuals for the next go-around
-		SetTextString(storyText4, GetTextString(storyText3))
-		SetTextString(storyText3, GetTextString(storyText2))
-		SetTextString(storyText2, GetTextString(storyText))
-		
-		SetSpriteFlip(SPR_TEXT_BOX4, GetSpriteFlippedH(SPR_TEXT_BOX3), 0)
-		SetSpriteFlip(SPR_TEXT_BOX3, GetSpriteFlippedH(SPR_TEXT_BOX2), 0)
-		SetSpriteFlip(SPR_TEXT_BOX2, GetSpriteFlippedH(SPR_TEXT_BOX), 0)
-		SetSpriteFlip(SPR_TEXT_BOX, targetCrab-1, 0)
-		
-		while curPos <> Len(wholeRow$)
-			inc curPos, 1
-			curChar$ = Mid(wholeRow$, curPos, 1)
+		if GetTextExists(storyText4)
+			//Preparing the visuals for the next go-around
+			SetTextString(storyText4, GetTextString(storyText3))
+			SetTextString(storyText3, GetTextString(storyText2))
+			SetTextString(storyText2, GetTextString(storyText))
 			
-			//If the current character is a space, then a linebreak may happen
-			if curChar$ = " "
+			SetSpriteFlip(SPR_TEXT_BOX4, GetSpriteFlippedH(SPR_TEXT_BOX3), 0)
+			SetSpriteFlip(SPR_TEXT_BOX3, GetSpriteFlippedH(SPR_TEXT_BOX2), 0)
+			SetSpriteFlip(SPR_TEXT_BOX2, GetSpriteFlippedH(SPR_TEXT_BOX), 0)
+			SetSpriteFlip(SPR_TEXT_BOX, targetCrab-1, 0)
+			
+			while curPos <> Len(wholeRow$)
+				inc curPos, 1
+				curChar$ = Mid(wholeRow$, curPos, 1)
 				
-				//This checks if the wholeRow, up to the current position, inside of a formatted string, is longer than the textbox width.
-				newLine = 0
-				SetTextString(storyFitter, Mid(wholeRow$, 1, curPos))
-				if (GetTextTotalWidth(storyFitter) > GetSpriteWidth(SPR_TEXT_BOX)-textSideSpacingX*2)
-					newLine = 1
+				//If the current character is a space, then a linebreak may happen
+				if curChar$ = " "
+					
+					//This checks if the wholeRow, up to the current position, inside of a formatted string, is longer than the textbox width.
+					newLine = 0
+					SetTextString(storyFitter, Mid(wholeRow$, 1, curPos))
+					if (GetTextTotalWidth(storyFitter) > GetSpriteWidth(SPR_TEXT_BOX)-textSideSpacingX*2)
+						newLine = 1
+					endif
+					
+					//This takes the current line, up to the word before it went overwidth, and puts it in the display string.
+					//The processing line is then shortened, and the position is reset.
+					if newLine
+						displayString$ = displayString$ + Mid(wholeRow$, 1, lastSpacePos) + chr(10)
+						wholeRow$ = Mid(wholeRow$, lastSpacePos+1, len(wholeRow$)-lastSpacePos)
+						curPos = 0
+					endif
+					
+					//This takes the position of the previous space character, to be used in line splicing.
+					lastSpacePos = curPos
+				endif
+			endwhile
+			displayString$ = displayString$ + wholeRow$  + "        "	//Adding the remainder of the row into the display string.
+			
+			SetTextString(storyText, displayString$)		//Publicly displaying the edited string.
+			
+			//Waiting for the user input before continuing.
+			nextLine = 0
+			showPos = 1
+			lineNum = 0
+			
+			PlaySoundR(fwipS, 40)
+			PlaySoundR(arrowS, 40)
+			for i = SPR_TEXT_BOX to SPR_TEXT_BOX4
+				if boxNum >= i-SPR_TEXT_BOX then PlayTweenSprite(i, i, 0)
+				if boxNum = i-SPR_TEXT_BOX then SetSpriteColorAlpha(i, 255)
+			next i
+			for i = storyText to storyText4			
+				if GetTweenTextExists(i) and boxNum >= i-storyText then PlayTweenText(i, i, 0)
+				if boxNum = i-storyText then SetTextColorAlpha(i, 255)
+			next i
+			
+			//Creating seperate tweens for lines 1 through 4
+			for i = 0 to 3
+				if GetTweenExists(storyFitter + i) then DeleteTween(storyFitter + i)
+				CreateTweenChar(storyFitter + i, .05)
+				SetTweenCharAlpha(storyFitter + i, 0, 255, TweenSmooth1())
+				SetTweenCharY(storyFitter + i, -GetTextSize(storyText) + GetTextSize(storyText)*(i-.7) + i*textLineSpacing, GetTextSize(storyText)*i + i*textLineSpacing, TweenOvershoot())
+			next i
+			
+			//The delay for punctuation
+			delay# = 0
+			for i = 0 to len(displayString$)
+				SetTextCharColorAlpha(storyText, i, 0)
+				
+				if Mid(displayString$, i+1, 1) = chr(10) and lineNum < 3
+					inc lineNum, 1
+				endif
+				PlayTweenChar(storyFitter+lineNum, storyText, i, .02*i + delay#)
+				
+				//Adding delays following punctuation
+				if Mid(displayString$, i+1, 1) = "." then inc delay#, .1
+				if Mid(displayString$, i+1, 1) = "," then inc delay#, .08
+				if Mid(displayString$, i+1, 1) = "?" then inc delay#, .12
+				if Mid(displayString$, i+1, 1) = "!" then inc delay#, .12
+			next i
+			
+			charSounded = 1
+			
+			hurryUp = 0
+			while nextLine = 0
+				DoInputs()
+				
+				if (inputExit or Button(SPR_STORY_EXIT)) and fightDone = 0
+					state = CHARACTER_SELECT
+					spType = STORYMODE
+					TransitionStart(Random(1,lastTranType))
+					nextLine = 1
+					StopGamePlayMusic()
+					exit
 				endif
 				
-				//This takes the current line, up to the word before it went overwidth, and puts it in the display string.
-				//The processing line is then shortened, and the position is reset.
-				if newLine
-					displayString$ = displayString$ + Mid(wholeRow$, 1, lastSpacePos) + chr(10)
-					wholeRow$ = Mid(wholeRow$, lastSpacePos+1, len(wholeRow$)-lastSpacePos)
-					curPos = 0
+				if dispH = 0 and GetSpriteHitTest(SPR_STORY_SKIP, GetPointerX(), GetPointerY()) and GetPointerState() then inputSkip = 1
+				if inputSkip
+					UpdateAllTweens(.2)
+					SetViewOffset(-5 + Random(0, 10), -5 + Random(0, 10))
+				else
+					SetViewOffset(0, 0)
 				endif
 				
-				//This takes the position of the previous space character, to be used in line splicing.
-				lastSpacePos = curPos
-			endif
-		endwhile
-		displayString$ = displayString$ + wholeRow$  + "        "	//Adding the remainder of the row into the display string.
-		
-		SetTextString(storyText, displayString$)		//Publicly displaying the edited string.
-		
-		
-		
-		//Waiting for the user input before continuing.
-		nextLine = 0
-		showPos = 1
-		lineNum = 0
-		
-		PlaySoundR(fwipS, 40)
-		PlaySoundR(arrowS, 40)
-		for i = SPR_TEXT_BOX to SPR_TEXT_BOX4
-			if boxNum >= i-SPR_TEXT_BOX then PlayTweenSprite(i, i, 0)
-			if boxNum = i-SPR_TEXT_BOX then SetSpriteColorAlpha(i, 255)
-		next i
-		for i = storyText to storyText4			
-			if GetTweenTextExists(i) and boxNum >= i-storyText then PlayTweenText(i, i, 0)
-			if boxNum = i-storyText then SetTextColorAlpha(i, 255)
-		next i
-		
-		//Creating seperate tweens for lines 1 through 4
-		for i = 0 to 3
-			if GetTweenExists(storyFitter + i) then DeleteTween(storyFitter + i)
-			CreateTweenChar(storyFitter + i, .05)
-			SetTweenCharAlpha(storyFitter + i, 0, 255, TweenSmooth1())
-			SetTweenCharY(storyFitter + i, -GetTextSize(storyText) + GetTextSize(storyText)*(i-.7) + i*textLineSpacing, GetTextSize(storyText)*i + i*textLineSpacing, TweenOvershoot())
-		next i
-		
-		//The delay for punctuation
-		delay# = 0
-		for i = 0 to len(displayString$)
-			SetTextCharColorAlpha(storyText, i, 0)
+			    //Print(GetSpriteWidth(SPR_TEXT_BOX))
+			    //Print(GetSpriteHeight(SPR_TEXT_BOX))
+				
+				storyInput = 0
+				if GetPointerPressed() or inputSelect or inputSkip then storyInput = 1
+				if GetTextCharColorAlpha(storyText, charSounded) = 255 and GetTextCharColorAlpha(storyText, Len(displayString$)-9) = 0
+					if Mod(charSounded, 2) then PlaySoundR(talk1S, 40/(hurryUp/2+1))
+					inc charSounded, 1
+				endif
+				if storyInput
+					hurryUp = 1
+				endif
+				if hurryUp then UpdateAllTweens(.1)
+				if storyInput and GetTweenCharPlaying(storyFitter, storyText, len(displayString$)) = 0 and GetTweenCharPlaying(storyFitter+1, storyText, len(displayString$)) = 0 and GetTweenCharPlaying(storyFitter+2, storyText, len(displayString$)) = 0 and GetTweenCharPlaying(storyFitter+3, storyText, len(displayString$)) = 0 then nextLine = 1
+				if debug then Print(GetImageMemoryUsage())
+				SyncG()
+			endwhile
 			
-			if Mid(displayString$, i+1, 1) = chr(10) and lineNum < 3
-				inc lineNum, 1
-			endif
-			PlayTweenChar(storyFitter+lineNum, storyText, i, .02*i + delay#)
+			inc boxNum, 1
+			wholeRow$ = ReadLine(1)	//Reading the new line of the text file.
+			inc lineOverall, 1
 			
-			//Adding delays following punctuation
-			if Mid(displayString$, i+1, 1) = "." then inc delay#, .1
-			if Mid(displayString$, i+1, 1) = "," then inc delay#, .08
-			if Mid(displayString$, i+1, 1) = "?" then inc delay#, .12
-			if Mid(displayString$, i+1, 1) = "!" then inc delay#, .12
-		next i
-		
-		charSounded = 1
-		
-		hurryUp = 0
-		while nextLine = 0
-			DoInputs()
-			
-			if (inputExit or ButtonMultitouchEnabled(SPR_STORY_EXIT)) and fightDone = 0
-				state = CHARACTER_SELECT
-				TransitionStart(Random(1,lastTranType))
-				nextLine = 1
-				StopGamePlayMusic()
-				exit
+			if CompareString(wholeRow$, "") = 1
+				state = StartEndScreen()
 			endif
-			
-			if dispH = 0 and GetSpriteHitTest(SPR_STORY_SKIP, GetPointerX(), GetPointerY()) and GetPointerState() then inputSkip = 1
-			if inputSkip
-				UpdateAllTweens(.2)
-				SetViewOffset(-5 + Random(0, 10), -5 + Random(0, 10))
-			else
-				SetViewOffset(0, 0)
-			endif
-			
-		    //Print(GetSpriteWidth(SPR_TEXT_BOX))
-		    //Print(GetSpriteHeight(SPR_TEXT_BOX))
-			
-			storyInput = 0
-			if GetPointerPressed() or inputSelect or inputSkip then storyInput = 1
-			if GetTextCharColorAlpha(storyText, charSounded) = 255 and GetTextCharColorAlpha(storyText, Len(displayString$)-9) = 0
-				if Mod(charSounded, 2) then PlaySoundR(talk1S, 40/(hurryUp/2+1))
-				inc charSounded, 1
-			endif
-			if storyInput
-				hurryUp = 1
-			endif
-			if hurryUp then UpdateAllTweens(.1)
-			if storyInput and GetTweenCharPlaying(storyFitter, storyText, len(displayString$)) = 0 and GetTweenCharPlaying(storyFitter+1, storyText, len(displayString$)) = 0 and GetTweenCharPlaying(storyFitter+2, storyText, len(displayString$)) = 0 and GetTweenCharPlaying(storyFitter+3, storyText, len(displayString$)) = 0 then nextLine = 1
-			if debug then Print(GetImageMemoryUsage())
-			SyncG()
-		endwhile
-		
-		inc boxNum, 1
-		wholeRow$ = ReadLine(1)	//Reading the new line of the text file.
-		inc lineOverall, 1
-		
-		if CompareString(wholeRow$, "") = 1
-			state = StartEndScreen()
 		endif
 		
 	endwhile
@@ -879,6 +916,8 @@ function StartEndScreen()
 	state = STORY
 	
 	inc curScene, 1
+	firstTimeEnd = 0
+	if highestScene = 100 and (curChapter-1)*4+curScene = 101 then firstTimeEnd = 1
 	highestScene = Max(highestScene, (curChapter-1)*4+curScene)
 	lineSkipTo = 0
 	
@@ -908,8 +947,6 @@ function StartEndScreen()
 		SetCrabFromChapter(curChapter)
 		if crab1Alt <> 0
 			if altUnlocked[crab1Type] < crab1Alt then UnlockCrab(crab1Type, crab1Alt, 1)
-		else
-			
 		endif
 		//UnlockSong(1, 1)
 	else
@@ -923,7 +960,55 @@ function StartEndScreen()
 		SetTweenTextX(TXT_RESULT2, w*2, w/2, TweenLinear())
 		SetTextX(TXT_RESULT1, -w)
 		SetTextX(TXT_RESULT2, -w)
+				
 	endif
+	
+	overallScene = (curChapter-1)*4+curScene-1
+	
+	if overallScene = 88 then PlayCredits()
+	
+	//The non-crab unlocks
+	if overallScene = 8 then UnlockSong(8, 1)
+	if overallScene = 16 then UnlockSong(9, 1)
+	if overallScene = 23 then UnlockSong(10, 1)
+	if overallScene = 37 and musicBattleUnlock = 0
+		//37, Music Picker
+		Popup(MIDDLE, 25)
+		musicBattleUnlock = 1
+	endif
+	if overallScene = 38 then UnlockSong(11, 1)
+	if overallScene = 44 and hardBattleUnlock = 0
+		//44, Hard Battle Start
+		Popup(MIDDLE, 26)
+		hardBattleUnlock = 1
+	endif
+	if overallScene = 45 then UnlockSong(12, 1)
+	if overallScene = 51 then UnlockSong(13, 1)
+	if overallScene = 60 then UnlockSong(14, 1)
+	if overallScene = 65 then UnlockSong(15, 1)
+	if overallScene = 84 and speedUnlock = 0
+		//84, Fast Battle Start
+		Popup(MIDDLE, 27)
+		speedUnlock = 1
+	endif
+	if overallScene = 87 then UnlockSong(16, 1)
+	if overallScene = 88 then UnlockSong(17, 1)
+	if overallScene = 89 then UnlockSong(18, 1)
+	if overallScene = 91 then UnlockSong(19, 1)
+	if overallScene = 93 then UnlockSong(20, 1)
+	if overallScene = 95 and evilUnlock = 0
+		//95, Evil Switch
+		Popup(MIDDLE, 28)
+		evilUnlock = 1
+	endif
+	if overallScene = 97 then UnlockCrab(1, 3, 1)
+	if overallScene = 98 then UnlockSong(21, 1)
+	if overallScene = 99 and unlockAIHard = 0
+		//99, Hardest AI
+		Popup(MIDDLE, 29)
+		unlockAIHard = 1
+	endif
+	if firstTimeEnd then Popup(MIDDLE, 30)	//100, Fully Unlocked Message
 	
 	SetFolder("/media/ui")
 	
@@ -1086,6 +1171,10 @@ function DoStoryEndScreen()
 	
 	
 endfunction state
+
+function PlayCredits()
+	
+endfunction
 
 function SetCrabFromChapter(chap)
 	crabID = 0
@@ -1253,7 +1342,7 @@ function GetCrabCostumeType(cT, cA)
 	elseif (cT = 2 and cA = 2) or (cT = 3 and cA = 0) or (cT = 3 and cA = 2) or (cT = 5 and cA = 3) or (cT = 6 and cA = 3)
 		//Unique sprite type
 		cosType = 2
-	elseif (cT = 1 and cA = 0) or (cT = 6 and cA = 2)
+	elseif (cT = 1 and cA = 0)
 		//Blank costume type
 		cosType = 3
 	elseif (cT = 3 and cA = 1)
@@ -1336,7 +1425,7 @@ function SetCrabFromStringChap(str$, chapNum, crabNum)
 		mType = 1
 		mAlt = 1
 		
-	elseif str$ = "HO" or chapNum = 17	//Holy Crab
+	elseif str$ = "HO" or chapNum = 17 or str$ = "DC"	//Holy Crab/Devil Crab
 		mType = 4
 		mAlt = 3
 		

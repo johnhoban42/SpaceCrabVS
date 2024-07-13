@@ -1,36 +1,35 @@
 bg 4
 music tomato
-CN: Oh gosh, there he is!
-The dreamiest guy I know.
-With his sporty demeaner... caring attitude...
-I want to go to the prom with you... Team Player!!!
-TP: Ah! Oh, it's you, Cranime.
-You're in class 3B, right?
-What did you want to talk about?
-CN: (Oh no! I'm so embarrased now...)
-Di-did y-y-you want-t-t-to g-go... 
-TP: Hey, you're a little quiet, speak up!
-CN: (I can't even squeak out a confession.)
-(But I learned my lesson! Show the true me, and don't be afraid!!)
-Ah-hem.
-You! Me! Prom! Yes?!
-TP: Prom? There's a prom?! Of cour-
+CN: BTFNf; Oh gosh, there he is! The dreamiest guy I know...
+BSFTn; With his sporty demeanor... caring attitude...
+BOFOh; I want to go to the prom with you... Team Player!!!
+TP: BAFA; Oh! It's you, Cranime. You're in class 3B, right?
+BBFJa; What did you want to talk about?
+CN: BTFNd; (Oh no! I'm so embarrassed now...)
+BWFMd; Di-did y-y-you want-t-t-to g-go... 
+TP: BAFJb; Hey, you're a little quiet, speak up!
+CN: BQFYb; (I can't even squeak out a confession.)
+BSFOh; (But I learned this episode's moral! Show the true me, and don't be afraid!!)
+music
+BBFTn; Ah-hem.
+BWFV; Y-you! Me! P-prom! Yes?!
+TP: BLFO; Prom? There's a prom?! Of cour-
 music love
-CN: I'll show you I'm serious! I'll show you my feelings!
+CN: BHFOh; I'll show you I'm serious! I'll show you my feelings!
 music love
 fight 54622
 music love
-CN: So... is that a yes?!
-TP: Y... y...
-...you're insane!
-CN: Eh?
-What's with this trend of everyone starting fights with me?
-I just want to train in peace!
-CN: B-but Team Player-
-TP: No! I won't go with you! Please leave me alone!
+CN: BAFKe; So... is that a yes?!
+TP: BJFXa; Y... y...
+BBFOh; ...you're insane!
+CN: BBFKi; Eh?
+TP: BIFKc; What's with this trend of everyone starting fights with me?
+BSFTq; I just want to train in peace!
+CN: BVFKc; B-but Team Player-
+TP: BAFEe; No! I won't go with you! Please leave me alone!
 exit 2
-CN: ...
-Teehee! I guess he couldn't handle the full me.
-I don't need him! This episode taught me to be belive in the me who loves myself.
-I think.
-Prom, here I come! Cranime is coming in hot!
+CN: BTFN; ...
+BUFJb; Teehee! I guess he couldn't handle the full me.
+BAFKa; I don't need him! This episode taught me to believe in the me who loves myself.
+BBFKi; I think.
+BAFO; Prom, here I come! Cranime is coming in hot!

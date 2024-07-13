@@ -1,27 +1,27 @@
-bg 2
-music chill
-RL: BAFA; Sound check, sound check, one, two, one, two...
-...Alright! Sound levels are good!
-*ah-hem*
-HEELLLLOO GALAXY!
+bg 3
+music
+RL: BBFGd; Sound check, sound check, one, two, one, two...
+BLFB; ...Alright! Sound levels are good!
+BBFTm; *ah-hem*
+BKFOa; HEELLLLOO GALAXY!
 ??: ...
-RL: Are you ready for the concert of a lifetime!?
+RL: BMFDb; Are you ready for the concert of a lifetime!?
 ??: ...
-RL: ...anybody?
+RL: BBFEd; ...anybody?
 ??: ...
-...
-Woof!
-RL: All right! We've got ONE lucky listener out here!
-SB: Arf. Arf!
-RL: Not to worry, you four-legged freak of nature. We don't talk in words here.
-We talk... with music!
-First up on tonight's setlist, my hit single, Crustacean Station!
-One, two, three, four!
+??: ...
+??: Woof!
+RL: BAFB; All right! We've got ONE lucky listener out here!
+SB: BCFBe; Arf. Arf!
+RL: BCFAe; Not to worry, you four-legged freak of nature. We don't talk in words here.
+BMFB; We talk... with music!
+BAFDb; First up on tonight's setlist, my hit single, Crustacean Station!
+BMFOa; One, two, three, four!
 music retro4
-vs SB (fight goes here)
+fight 42638
 music retro6
-RL: You put up a good fight, furball!
-SB: Woof woof! *pants*
-Glad to have you in the audience.
-Or ANYONE in the audience.
-Where ARE all my fans, anyways?
+RL: BUFB; You put up a good fight, furball!
+SB: BCFBd; Woof, woof! *pants*
+RL: BCFOe; Glad to have you in the audience.
+BBFDa; Or ANYONE in the audience.
+BAFM; Where ARE all my fans, anyways?

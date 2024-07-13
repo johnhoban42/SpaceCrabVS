@@ -1,25 +1,25 @@
-bg 5
-music fightJ
+bg 1
+music chill
 ??: Taxi, hey! Can you give me a lift?
-TX: That's what I'm here to do. Where are you going?
-TP: Take me to the most intense, dangerous place you can think of.
-TX: ...Really?
-TP: I've got to train to be the best. That starts with toughing out the worst conditions!
-TX: Hmm... I might have a place in mind.
-(He's not going to like how far away it is, though...)
-(Let's break out the new strategy.)
-If you're trying to train, why not use me as your punching bag?
-TP: That's a, uh, weird suggestion.
-I mean, I JUST met you.
-But sure!
+TX: BSFAb; That's what I'm here to do. Where are you going?
+TP: BMFDc; Take me to the most intense, dangerous place you can think of.
+TX: BAFFd; ...Really?
+TP: BVFO; I've got to train to be the best. That starts with toughing out the worst conditions!
+TX: BSFJc; Hmm... I might have a place in mind.
+TX: BAFGd; (He's not going to like how far away it is, though...)
+TX: BAFDc; (Let's break out the new strategy.)
+BSFQa; If you're trying to train, why not use me as your punching bag?
+TP: BAFJd; That's a, uh, weird suggestion.
+BSFGd; I mean, I JUST met you.
+BPFO; But sure!
 music fightA
 fight 49327
 music fightJ
-TP: Whoah, my head's still spinning...
-Is this... a concussion..?
-TX: No, it's your destination! A meteor storm is happening right here, in a few minutes.
-Have fun, sir!
-TP: Uhhuhh... yeah, sure...!
+TP: BJFXc; Whoah, my head's still spinning...
+BJFXb; Is this... a concussion..?
+TX: BDFOc; No, it's your destination! A meteor storm is happening right here, in a few minutes.
+BSFOf; Have fun, sir!
+TP: BBFOj; Uhhough... yeah, sure...
 exit 2
-TX: Yeah, this is a winning strategy.
-Don't say I'm not an innovator!
+TX: BAFKh; Yeah, this is a winning strategy.
+BSFOe; Don't say I'm not an innovator!

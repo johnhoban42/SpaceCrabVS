@@ -1,29 +1,32 @@
-bg 1
-music tomato
-KC: Hmm? Another visitor?
-I hope it's Space Crab! I have oodles of Star Seeker regulations to implement-
-NC: ...
-KC: Oh. It's you.
-Again.
-NC: Your highness, you must reconsider your choice to join the Star Seekers.
-KC: Again with this? What a strange suggestion.
-Imagine if I were to rule over both the crabs AND the Star Seekers!
-Not just contained to both groups, I'll effectively have DOUBLE ruling over select crabs!
+bg 3
+music fightJ
+KC: BMFJd; Hmm? Another visitor?
+BAFAi; I hope it's Space Crab! I have oodles of Star Seeker regulations to implement-
 music
-NC: Change. Your. Mind.
-KC: ...
-Are you, questioning a decision, made by me?
-If you were anyone else, I would have you thrown in jail.
-But, for your many years of servitude, Ninja Crab...
-music retro6
-I'll put you out of your misery before I throw you in prison!
-music retro6
+NC: BBFQa; ...
+KC: BIFWa; Oh. It's you.
+BAFDd; Again.
+music tomato
+NC: BVFNe; Your highness, you must reconsider your choice to join the Star Seekers.
+KC: BAFTp; Again with this? What a strange suggestion.
+BMFKg; Soon, I will rule over all crabs AND the Star Seekers!
+BUFO; Not just contained to one group, I'll effectively have DOUBLE ruling over select crabs!
+music
+NC: BVFDa; Change. Your. Mind.
+KC: BBFD; ...
+BMFBe; Are you questioning a decision, made by ME?
+BOFDd; If you were anyone else, I would have you thrown in jail.
+BAFDa; But, for your many years of servitude, Ninja Crab...
+music retro5
+BVFBa; I'll put you out of your misery before I throw you in prison!
+music retro5
 fight 58263
 music
-KC: ...
-NC: To think that I respected a crab like you.
-One who was once so determined and headstrong...
-Reduced to flipping their ideals at the mere mention of alternatives.
-While abandoning you may leave me directionless...
+KC: BJFX; ...
+music emotion
+NC: BAFB; To think that I respected a crab like you.
+BBFV; One who was once so determined and headstrong...
+BAFH; Reduced to flipping their ideals at the mere mention of alternatives.
+BVFEd; While abandoning you may leave me directionless...
 exit 2
-My own ideals pave this path for me.
+BAFDe; My own ideals pave this path for me.

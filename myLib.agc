@@ -534,7 +534,7 @@ endfunction result
 
 function ButtonMultitouchEnabled(spr)
 	if GetSpriteExists(spr)
-	    if (Button(spr) and (GetPointerPressed() or inputSelect or inputSelect2) and deviceType = DESKTOP) or (GetMulitouchPressedButton(spr) and deviceType = MOBILE)
+	    if GetSpriteVisible(spr) and (Button(spr) and (GetPointerPressed() or inputSelect or inputSelect2) and deviceType = DESKTOP) or (GetMulitouchPressedButton(spr) and deviceType = MOBILE)
 	        returnValue = 1
 	        if GetTextExists(TXT_POPUP)
 	        	if GetTextString(TXT_POPUP) <> "" then ClearPopup1()
@@ -919,7 +919,7 @@ function PingCrab(x, y, size)
 		SetSpriteDepth(spr, 50)
 	endif
 	
-	rnd = Random(0, 4)
+	rnd = Random(0, 2)
 	PlaySoundR(exp1S + rnd, 40/10)
 
 endfunction
@@ -984,9 +984,12 @@ function PingUpdate()
 endfunction
 
 global buttons as Integer[0]
-global tweenButton = 15
-global tweenButtonOld = 16
-//tweenButton lasts until 35
+#constant tweenButtonS  1301
+#constant tweenButtonE	1325
+global tweenButton = tweenButtonS
+global tweenButtonOld
+tweenButtonOld = tweenButtonS+1
+//tweenButton lasts until tweenButtonE
 function ButtonsUpdate()
 	for i = 0 to buttons.length
 		if GetSpriteExists(buttons[i])
@@ -995,7 +998,7 @@ function ButtonsUpdate()
 				
 				//Skips the current tween on an existing sprite, if still playing
 				skip = 0
-				for i = 15 to 35
+				for i = tweenButtonS to tweenButtonE
 					if GetTweenSpritePlaying(i, spr) then skip = 1
 					if spr >= SPR_CS_CRABS_1 then skip = 1
 				next i
@@ -1015,7 +1018,7 @@ function ButtonsUpdate()
 						
 						tweenButtonOld = tweenButton
 						inc tweenButton, 1
-						if tweenButton > 35 then tweenButton = 15
+						if tweenButton > tweenButtonE then tweenButton = tweenButtonS
 						
 						//if appState <> CHARACTER_SELECT then PlaySoundR(buttonSound, 100)
 						PlaySoundR(buttonSound, 100)

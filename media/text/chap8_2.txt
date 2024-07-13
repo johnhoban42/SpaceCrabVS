@@ -1,36 +1,38 @@
 bg 9
 music retro6
-CK: BAFA; Now that I'm checked in, I can really, TRULY, start my vacation.
-BOF; The beach seems like a good first stop. It's close, too!
-BNF; ...Actually, it looks a little crowded.
-BSF; Wait, is it full of... shrimp?
+HC: BAFTn; Now that I'm checked in, I can really, TRULY, start my vacation.
+BOFAh; The beach seems like a good first stop. It's close, too!
+BNFEa; ...Actually, it looks a little crowded.
+BSFDd; Wait, is it full of... shrimp?
 music retro5
-KC: BF; Yes, my minions! Build me a palace of sand!
-BF; No domain shall forget the name King Crab, whether it be space or sea!
-HC: BF; W-wait! I thought this was neutral territory!
-BF; I checked the booking site, the reviews, the-
+KC: BOFKd; Yes, my minions! Build me a palace of sand!
+BKFKg; No domain shall forget the name King Crab, whether it be space or sea!
+HC: BSFKc; W-wait! I thought this was neutral territory!
+BVFGe; I checked the booking site, the reviews, the-
 music retro6
-KC: BF; Hohoho, fear not, feeble citizen!
-BF; I AM here on official business-
-BF; Of taking a vacation.
-BF; While we normally are EONS removed on the social ladder,
-BF; Here, we are simply both vacationers.
-HC: BF; Oh. Alright then.
-KC: BF; Here, why not play some quaint beach funtime games with me?
-BF; My 'fellow vacation partner'?
-HC: BF; Ah! Uh, yes sir! I mean, Your Majesty!
+KC: BUFOe; Hohoho, fear not, feeble citizen!
+BMFA; I AM here on official business-
+BAFTn; Of taking a vacation.
+BAFOa; While we normally are EONS removed on the social ladder...
+BMFKh; Here, we are simply both vacationers.
+HC: BBFJ; Oh. Alright then.
+KC: BAFAi; Here, why not play some quaint beach funtime games with me?
+BUFKh; My 'fellow vacation partner'?
+HC: BTFNa; Ah! Uh, yes sir! I mean, Your Majesty!
 music retro6
 fight 58484
 music retro5
-HC: BF; (Shoot! I should NOT have actually tried!)
-BF; (King Crab is gonna have me executed!!)
+HC: BBFKc; (Shoot! I should NOT have actually tried!)
+BTFNa; (King Crab is gonna have me EXECUTED!!)
 music
-KC: BF; ...
+KC: BBFD; ...
 music fightJ
-BF; Hohoho! What a wonderful spar!
-BF; I must say, Hawaiian Crab, you really know how to make vacation fun!
-BF; If anyone else had tried that hard to win...
-BF; I would have them locked away forever.
-BF; But you make it all, so delightful! Ahhahaha!
-HC: BF; ... (shocked)
-BF; ...Glad to hear it. (Smiling, eyes closed, blushing expression)
+BMFOa; Hohoho! What a wonderful spar!
+BAFO; I must say, Hawaiian Crab, you really know how to make vacation fun!
+BCFGb; If anyone else had tried that hard to win...
+music
+BBFD; I would have them locked away. Forever.
+music fightJ
+BMFO; But you make it all, so delightful! Hohoho!
+HC: BBFKc; ...
+BBFI; ...Glad to hear it.
