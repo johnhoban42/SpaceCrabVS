@@ -1,1 +1,22 @@
 bg 2
+music retro2
+TC: BAFAg; Oh wow! Crabacus, it's you!
+CB: BMFAh; Top Crab! It's been so long- we've gone from classmates to teammates.
+BAFJa; Has school changed much since I graduated? Are you and Cranime and Team Player still classmates?
+TC: BUFJb; Yes sir! Team Player's actually been helping me train up.
+BCFHa; I wonder where he is? I thought he'd be perfect for the Star Seekers...
+BVFAh; That reminds me! I'm nearing the end of my training plan.
+BIFQb; And you're JUST the guy who can help me finish!
+CB: BMFJb; Wonderful! Whatever I can do, let me know.
+TC: BPFDb; Great! First step - spar with me!
+music retro8
+fight 53748
+music rag
+TC: BVFJb; Great match! Now, I need to know - how long were we fighting for?
+CB: BUFGa; According to my calculations, we were going at it for at least 45 crustaceal seconds.
+TC: BKFOd; Yes!! I hit my target!
+BVFJb; Thank you so much! Time to report my results!
+exit 2
+CB: BBFKc; ...
+BIFOa; NOOOO! I've been used as a mathematical measuring device!
+BSFV; When will my calculatory crucifixion end?!

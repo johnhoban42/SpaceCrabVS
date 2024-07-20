@@ -1,1 +1,36 @@
-bg 3
+bg 2
+music mcb
+CB: BNFMd; No more math. No more math. No more ma-
+CK: BHFPa; Woah! Watch where you're going!
+se fruit
+CB: BJFXc; ACK!
+CK: BJFXa; Sacre bleu! You made me drop my cake!
+BUFH; We need one more for the opening ceremony - there might be time to make another.
+BOFDa; You! Addition Crab!
+CB: BBFHa; Actually, its Crabacus...
+CK: BWFDb; Will you take on the role of my sous-chef?
+CB: BVFSb; Yes! Yes. I will! (Finally, something unrelated to math!)
+CK: BAFJd; Thank you, enthusiastic young man.
+BWFTn; First, let our intertwined kinetic movements loosen our muscles before we start baking.
+CB: BAFJa; (Good thing I study vocabulary, otherwise I'd have no shot at understanding him.)
+BPFDb; (Kinetic movements, intertwined - it's a battle he wants!)
+music mcb
+fight 55414
+music fightJ
+CK: BSFJb; Wonderful! Gather the eggs so we can begin.
+CB: BLFDd; On it!
+CK: BOFAd; Firstly, whisk together 3 rows of 6 eggs each. Hold the remainder on the side.
+CB: BVFDa; Alright.
+CK: BMFAi; Then, fill 45% of the mixing bowl with egg mix- the remaining part will be 70% flour, 30% milk.
+CB: BBFWa; ...I see.
+CK: BNFGd; So, since King Crab borrowed 5 eggs from our original 24, how many do we have- 
+CB: BVFV; Uh... say... am I just doing the math part of the baking process?
+CK: BAFJa; Is that not why you were brought on board these Star Seekers?
+BMFJb; After all, you look the part of a mathematician, no?
+CB: BBFWa; ...Sorry, I don't feel I can help as sous-chef anymore.
+BUFRb; I need to talk to the top.
+exit 1
+CK: BAFJa; ...
+CB: BBFWa; 19 eggs. You have 19 eggs if King Crab took 5 of them.
+exit 1
+CK: BAFO; !

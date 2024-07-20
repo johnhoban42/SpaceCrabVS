@@ -895,12 +895,15 @@ function PauseGame()
 	SetFolder("/media/ui")
 	LoadSpriteExpress(SPR_SETTINGS, "settingss1.png", 120, 120, w-135, 15, 3)
 	
-	if dispH then LoadSpriteExpress(SPR_CONTROLS, "controls.png", 217, 120, GetSpriteX(SPR_SETTINGS)-240, 15, 3)
+	if dispH
+		LoadSpriteExpress(SPR_CONTROLS, "controls.png", 217, 120, GetSpriteX(SPR_SETTINGS)-240, 15, 3)
+		AddButton(SPR_CONTROLS)
+	endif
 	
 	if spType = CLASSIC
 		IncSpriteSizeCenteredMult(curtain, GetViewZoom())
 		IncSpriteSizeCenteredMult(curtainB, GetViewZoom())
-		SetSpriteVisible(SPR_CONTROLS, 0)
+		if dispH then SetSpriteVisible(SPR_CONTROLS, 0)
 		SetSpriteVisible(SPR_SETTINGS, 0)
 	endif
 	
@@ -2496,6 +2499,7 @@ function PlayDangerMusic(startNew)
 			if GetMusicPlayingOGGSP(tomatoMusic) then oldSong = tomatoMusic
 			if GetMusicPlayingOGGSP(fightFMusic) then oldSong = fightFMusic
 			if GetMusicPlayingOGGSP(fightAJMusic) then oldSong = fightAJMusic
+			if GetMusicPlayingOGGSP(fightMMusic) then oldSong = fightMMusic
 			
 			if oldSong <> 0 then StopGamePlayMusic()
 			
@@ -2508,6 +2512,7 @@ function PlayDangerMusic(startNew)
 			if oldSong = tomatoMusic then PlayMusicOGGSP(dangerTMusic, 1)
 			if oldSong = fightFMusic then PlayMusicOGGSP(dangerFMusic, 1)
 			if oldSong = fightAJMusic then PlayMusicOGGSP(dangerAJMusic, 1)
+			if oldSong = fightMMusic then PlayMusicOGGSP(dangerMMusic, 1)
 			
 		endif
 		
@@ -2526,6 +2531,7 @@ function StopGamePlayMusic()
 	if GetMusicPlayingOGGSP(emotionMusic) then StopMusicOGGSP(emotionMusic)
 	if GetMusicPlayingOGGSP(fightFMusic) then StopMusicOGGSP(fightFMusic)
 	if GetMusicPlayingOGGSP(fightAJMusic) then StopMusicOGGSP(fightAJMusic)
+	if GetMusicPlayingOGGSP(fightMMusic) then StopMusicOGGSP(fightMMusic)
 	if GetMusicPlayingOGGSP(chillMusic) then StopMusicOGGSP(chillMusic)
 	if GetMusicPlayingOGGSP(ragMusic) then StopMusicOGGSP(ragMusic)
 	if GetMusicPlayingOGGSP(ssidMusic) then StopMusicOGGSP(ssidMusic)
@@ -2536,7 +2542,7 @@ function StopGamePlayMusic()
 	if GetMusicPlayingOGGSP(characterMusic) then StopMusicOGGSP(characterMusic)
 	if GetMusicPlayingOGGSP(resultsMusic) then StopMusicOGGSP(resultsMusic)
 	
-	for i = dangerAMusic to dangerAJMusic
+	for i = dangerAMusic to dangerMMusic
 		if GetMusicPlayingOGGSP(i) then StopMusicOGGSP(i)
 	next i
 	

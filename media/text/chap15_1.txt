@@ -1,1 +1,40 @@
-bg 1
+bg 4
+music retro2
+RC: BF; WOOHOO! Opening ceremony!
+BF; I wonder what exciting adventures are in store for Rave Crab now!
+BF; The never-ending party, I can't believe it's finally here.
+BF; Life will never be bad again!
+music
+??: And like I said... I'm done with numbers. I quit.
+RC: BF; Uh oh. Not great.
+CB: BF; Excuse me, sir. Do you know the quickest way out of here?
+music retro2
+RC: BF; Silly guy, we're in space! Just pick a direction and let the cosmic flow carry you.
+CB: BF; I'm really not in a mood to joke right now.
+RC: BF; No jokes, my friend, only vibes!
+music emotion
+CB: BF; Oh, Space Crab mentioned you. You're the 'vibes guy'.
+BF; Oh, but don't ever change, no!
+BF; As soon as you stop being the fun guy, they'll throw you in the corner and leave you to rot.
+RC: BF; Woah! This harshness is not what I expected when I first saw you...
+music ssid
+BF; But I know a path to get to the bottom of what you're really feeling!
+music ssid
+fight 52329
+music emotion
+RC: BF; Hey now, guy. Open up. What's the reason for all this gloom?
+CB: BF; sigh Well, it all started with math. I'm too good at it.
+BF; I don't even like it that much - crabs just assume that I do!
+BF; When I got asked to join the Star Seekers, I hoped things would be different.
+BF; I just thought, maybe I'll get to do something I like, for a change.
+BF; No, wait, it wasn't just a thought. Ladder Wizard even TOLD me that I'd get to pick my role.
+BF; But I get here, and whoops, I'm accidentally solving everyone's math problems. Again.
+BF; And Space Crab? When I asked him to help, he didn't even try.
+BF; Just told me to do math, or stay as dead weight.
+RC: BF; ...That's heavy, man.
+CB: BF; Maybe it's not so bad. I feel a lot better after talking it through, actually.
+RC: BF; Great! So you'll stick around then?
+CB: BF; Sorry, vibe guy. I don't want to repeat the mistakes of the past.
+exit 2
+RC: BF; ...
+BF; Party time's being put on pause. There's some bad juju that needs investigating.

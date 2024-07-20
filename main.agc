@@ -26,7 +26,7 @@ SetWindowSize( 700, 1400, 0 )
 SetWindowAllowResize( 1 ) // allow the user to resize the window
 
 global demo = 0
-global debug = 0
+global debug = 1
 global onWeb = 0
 
 if debug = 0
@@ -56,7 +56,7 @@ global h = 1600
 SetVirtualResolution(w, h) // doesn't have to match the window
 
 global dispH = 0		//Variable for horizontal display
-if deviceType = DESKTOP
+if deviceType = 9//DESKTOP
 	dispH = 1
 	w = 1280
 	h = 720
@@ -201,7 +201,7 @@ endfunction
 //clearedChapter = 0
 
 if debug
-	curChapter = 14
+	curChapter = 15
 	curScene = 1
 	highestScene = 101
 	appState = START
@@ -220,7 +220,7 @@ if debug
 	hardBattleUnlock = 1
 	musicBattleUnlock = 1
 	unlockAIHard = 1
-	musicUnlocked = 7
+	musicUnlocked = 14
 	evilUnlock = 1
 	gameSongSet = 0
 else

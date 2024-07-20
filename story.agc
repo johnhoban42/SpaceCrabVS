@@ -532,6 +532,7 @@ function ShowScene(chap, scene)
 						PlayTweenSprite(SPR_CRAB2_BODY, SPR_CRAB2_BODY, .1)
 						PlayTweenSprite(SPR_CRAB2_BODY, SPR_CRAB2_FACE, .1)
 						PlayTweenSprite(SPR_CRAB2_BODY, SPR_CRAB2_COSTUME, .1)
+						//SyncG()
 					endif
 					crabRType = crabRefType
 					crabRAlt = crabRefAlt
@@ -644,7 +645,7 @@ function ShowScene(chap, scene)
 					if GetFileExists(folderF$ + "face" + z$ + str(crab1Type+crab1Alt*6) + face$ + ".png")
 						SetSpriteImage(SPR_CRAB1_FACE, LoadImageR(folderF$ + "face" + z$ + str(crab1Type+crab1Alt*6) + face$ + ".png"))
 					else
-						SetSpriteImage(SPR_CRAB2_FACE, LoadImageR("face" + face$ + ".png"))
+						SetSpriteImage(SPR_CRAB1_FACE, LoadImageR("face" + face$ + ".png"))
 					endif
 				elseif cosType = 4
 					//Posed costume
@@ -1391,6 +1392,7 @@ function SetCrabFromStringChap(str$, chapNum, crabNum)
 		
 	elseif str$ = "HC" or chapNum = 8	//Hawaiian Crab
 		mType = 4
+		mAlt = 2
 		mAlt = 2
 		
 	elseif str$ = "TP" or chapNum = 9	//Team Player
