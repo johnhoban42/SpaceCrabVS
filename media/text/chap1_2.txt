@@ -30,7 +30,7 @@ SC: BAFAe; I'm glad you asked! I'm putting together a group- to explore the cosm
 BKFAh; The Star Seekers!
 BAFB; Can I count you in?
 LW: BAFT1; Sounds like an excellent time!
-BIFAd; I can contribute my knowledge of space and it's magical properties - anything you want to know.
+BIFAd; I can lend my knowledge of space and it's magical properties - anything you want to know.
 SC: BAFAd; That's great to hear!!
 BAFDb; If you can think of anyone else, ask them to join too! Thanks a ton, gotta run!
 exit 1

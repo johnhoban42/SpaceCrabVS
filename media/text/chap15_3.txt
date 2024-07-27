@@ -1,1 +1,38 @@
-bg 3
+bg 4
+music fightJ
+RC: BSFTr; More than a hundred crabs... oh geez...
+??: Hey! Watch where you're going!
+RC: BBFJb; Ah! You snapped me out of it. Thanks, Vacation Man!
+HC: BUFE; Unfortunately, I'm not 'Vacation Man' at the moment.
+BDFH; My last one drained my bank past what I'm comfortable with.
+BAFJa; I've been taking up temp work like this to compensate.
+exit 2
+CN: BSFAh; Wow, you must be super rich and popular to get to go on vacation!
+BVFS; Think you'll have room on your trip for a cutie like me?
+exit 2
+HC: BUFRb; No, Cranime. I won't. I can barely afford vacations as is!
+BMFEa; That's why I need this Star Seekers gig in the first place.
+RC: BWFJd; Wanted to zoom in on that detail - you think this is a gig?
+BAFOb; Buddy, you don't get PAID to party like this!
+BMFAh; The Star Seekers are for your enjoyment, positivity, and mental wellbeing.
+HC: BUFWa; I hardly believe that.
+BDFF; Who would leave out so many flyers for something as time-wasting as a party?
+BMFOe; Just because all these idiots are doing labor for free, doesn't mean I'm one of them.
+RC: BBFWa; Dude. I won't lie. Your vibes are harsh.
+BKFO; Time to show you how some positive energy can turn your day around!
+music retro8
+fight 63767
+music retro6
+HC: BAFA; Hey, I feel much better! This brings me back to my vacationing days.
+BDFIa; I've been told I'm a different guy when I'm not near a beach.
+RC: BMFA; I'll say! Glad I could imbue some positivity into the exchange.
+exit 2
+CN: BSFAh; Wow, a real partying spirit! And you can fight, too!
+BVFJb; Have any room for a permanent groupie in your fan club?
+RC: BDFTn; Now's not the time for that, Cranime.
+exit 2
+HC: BBFJ; I wasn't kidding about getting paid, though.
+BAFJa; Think that'll happen? If not, I'll have to dip. My time is pretty valuable.
+RC: BIFJd; You can take that up with the big guy, Space Crab.
+music
+RC: BUFDd; ...Though you'll have to get in line.

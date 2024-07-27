@@ -1,1 +1,46 @@
 bg 4
+music fightAJ
+RC: BUFDa; Hey buddy, we need to have a talk.
+SC: BAFAg; Rave Crab, great to see you! Can you believe how far we've come?
+BVFT; Since we first met, we've practically built an empire!
+RC: BUFEa; Yeah, well, how we got there's got me a bit worried.
+BMFEe; Crabs are feeling dumped, man! Crabacus feels rejected, Hawaiian Crab's about to quit...
+BBFEd; And Ladder Wizard's set up the dominoes for HUNDREDS of crabs to come our way.
+SC: BHFP; HUNDREDS?!
+RC: BMFEe; Yeah, I said the same thing! We need to change course, pronto.
+music
+SC: BAFCd; ...Do we really?
+BSFGb; It's not so bad if we just lose a few crabs, right?
+RC: BBFTr; ...
+music tomato
+RC: BAFOh; You CANNOT be serious?!
+BOFBd; The first rule of any party is to make sure that ALL of your guests are having a blast.
+BAFBa; That's true no matter WHERE you jive!
+SC: BSFIa; Listen, I think you're getting too wrapped up in the party analogies.
+BMFJb; The Star Seekers are all about-
+RC: BUFDe; DON'T give me that! I was THERE when we had the idea!
+BWFTq; I hate to go into this with such negative energy-
+BBFEb; But in the end, all we can do is smile through the tough times, right?
+music tomato
+fight 75436
+music emotion
+SC: BDFH; You know what...
+BMFEb; Maybe we should work something out.
+RC: BBFVa; ...
+SC: BAFA; Let's move past those other crabs for now.
+BOFJb; With someone like you helping me out, I think we can grow the Star Seekers to an incredible size.
+BVFEb; What do you say?
+RC: B0BFVa; I think... I'm done partying.
+B0BFOj; I just... want to go home.
+B0BFEd; Sorry. This just isn't... fun. I guess that's it.
+B0BFTr; I'm out.
+exit 1
+SC: BBFVa; ...
+BBFDe; Well, I don't need you!
+music fightAJ
+BAFDb; So what if I lose a few crabs? They're just a drop in the bucket!
+BSFOe; The biggest group in the galaxy - that high score is mine for the taking!
+BWFTu; I just need to wait for those other recruited crabs to get here.
+BPFKe; Plus, with Ladder Wizard's flyers, there are bound to be even more on the way!
+BVFKd; Who cares what happens when they get here? I'll be the winner! Biggest in the galaxy!
+BUFQa; Chrono Crab doesn't stand a chance. Some 'Starlight Rival' he was!

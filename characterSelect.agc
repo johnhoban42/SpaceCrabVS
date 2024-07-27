@@ -574,6 +574,10 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 		SetSpriteSize(csc.sprTxtBack, w/2, 140)
 		IncSpriteY(csc.sprTxtBack, 40)
 		IncTextY(csc.txtCrabDesc, 34)
+		if dispH = 0
+			SetSpriteSize(csc.sprTxtBack, w, 140)
+			SetSpriteMiddleScreenX(csc.sprTxtBack)
+		endif
 		
 		SetFolder("/media/envi")
 		

@@ -1105,7 +1105,7 @@ function PlayMusicOGGSPStr(str$, loopYN)
 	if str$ = "fightJ" then id = fightJMusic
 	if str$ = "fightD" then id = tutorialMusic
 	if str$ = "fightAJ" then id = fightAJMusic
-	if str$ = "fightM" then id = fightMMusic
+	if str$ = "anger" then id = fightMMusic
 	if str$ = "tomato" then id = tomatoMusic
 	if str$ = "emotion" then id = emotionMusic
 	if str$ = "chill" then id = chillMusic

@@ -56,7 +56,7 @@ global h = 1600
 SetVirtualResolution(w, h) // doesn't have to match the window
 
 global dispH = 0		//Variable for horizontal display
-if deviceType = 9//DESKTOP
+if deviceType = 8//DESKTOP
 	dispH = 1
 	w = 1280
 	h = 720
@@ -201,10 +201,10 @@ endfunction
 //clearedChapter = 0
 
 if debug
-	curChapter = 15
+	curChapter = 16
 	curScene = 1
 	highestScene = 101
-	appState = START
+	appState = STORY
 	crab1Type = 6
 	crab1Alt = 3
 	
