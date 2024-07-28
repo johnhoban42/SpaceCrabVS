@@ -1,1 +1,34 @@
 bg 2
+music retro4
+FC: Salutations, Rock Shrimp.
+RL: It's Rock Lobster.
+FC: Well, you can forgive an old man's poor memory, can't you?
+I have a... music question, if you'll entertain it.
+RL: You know who you're talking to, right? The music guy. Ask away.
+FC: Well, that music that played when I fought Space Crab?
+I quite liked it. 
+Think you can play it again?
+RL: Oh. No-can-do, compadre.
+FC: But why not, Rock Hermit Crab?
+RL: LOBSTER. Rock LOBSTER.
+I can't play it because I didn't make that song.
+I only make the songs with the guitars in them, yeah?
+Crustacean Station, Starlight Rivals, Sunset Siesta... I've got a style. Listen for it next time.
+FC: Well, maybe you have a CD with it, then?
+I've searched the rest of the story mode, and I couldn't find that song anywhere...
+I really am quite desperate.
+RL: Yuck. Asking a rockstar to ignore his music, and play a CD instead?
+You sicken me. But, for the founder of the Star Seekers...
+We'll give it a whirl.
+music fftf
+fight 62537
+music retro7
+FC: I appreciate you humoring me.
+Still, I'm surprised... I always thought you wrote ALL of the Space Crab music.
+RL: You think I can power the whole Galactic Radio by myself?
+I'm flattered, but that just isn't the case.
+Commander Crab's the one who wrote that battle song just now- 'Fight for the Future'.
+Bowling Crab, Train Crab, Ragtime Crab, and Flute Crab also lent their talents to the radio.
+Keep an ear out for them.
+FC: How insightful... the music of Space Crab sure is amazing, isn't it, Rock Lobber?
+RL: It's Rock Lobs- eh, close enough. Rock on, old crab.

@@ -1,1 +1,26 @@
-bg 3
+bg 1
+music rag
+Ah, so you must be Mad Crab.
+MC: Yeah, that's me. Who's asking?
+AL: Al Legal, galactic lawyer.
+Based on what Space Crab said, you're quite a curious case.
+MC: A 'curious case'? What's THAT supposed to mean?!
+AL: Ah, well, just that the things you did for the Star Seekers have interesting legal ramifications.
+MC: Legal ramifications?! I HATE losers who hide behind the law!
+AL: Well, no hiding will be done today.
+Your actions have been in plain sight, with multiple witnesses.
+While you were charged with breaking, entering, and assault...
+MC: Don't try to bust me for that! I'LL BUST YOU!
+music anger
+fight 76438
+music rag
+AL: You didn't. Let me. Finish.
+MC: ...
+AL: While you were charged with breaking and entering, the proper permits for the organization never existed.
+So, that charge is cleared.
+Your assault charges were dropped, as well.
+Actually, King Crab never dropped his case, but he never pays for my services - so let's forget about him.
+Additionally, Space Crab wants to recognize your efforts in, as he puts it, 'totally knocking my senses in'.
+As a result, you've been appointed Commander of the Star Seekers. Congratulations.
+MC: ...
+MC: It's about time.

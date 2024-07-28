@@ -1,1 +1,58 @@
 bg 3
+music retro6
+KN: Steel your weapon and say your prayers!
+CC: Oh, we made it to this part of the story again? Let's do some skipping past the boring parts, yet?
+se special
+Fast forward!
+KN: Ngghh... too... strong... (laying on floor)
+CC: Finally, time for something new. Star Destroyers, get into position!
+IJ: In position with the rope! Ready to extract you whenever you give the signal, boss!
+TP: Also on the rope! I'll pull you out, working that in with my back exercises!
+CC: Excellent! And whereupon is the Fanboy? We need him for lookout!
+music
+...Fanboy?
+TP: I don't see him near the opening! Did he... fall in?
+music dangerC
+CC: Blasted dimension! If it thinks it can take one of my Star Destroyers...
+se special
+REWIND!
+IJ: That's not going to work! Time doesn't flow the same way inside!
+You'll need a score of 100 in there if you want to rescue him!
+CC: Then I'm going in!
+exit 1
+TP: Wait, coach! You need the rope! We can't pull you back out!
+music chromecoast
+mirror 100 
+music dangerC
+1F: Ugh... whuh...?
+IJ: Everyone's out! Boss, close the portal!
+se special
+CC: Fast forward! Fast forward! FAST FORWARD!
+music
+...
+IJ: ...
+TP: Are we... safe?
+music retro8
+IJ: It appears so! Cheers to the hero, Chrono Crab!
+exit 2
+CC: Now, now, please do toot my horn a little louder, now.
+music
+??: A hero? Don't make me laugh.
+music retro6
+CC: Oh, it looks like little old you showed up again.
+KN: You're simply a villain who squandered his chance. Luckily, you won't have another one.
+CC: Really? What's to stop me from trying again, and again, and time and again?
+I am the TIME guy! I've got the time that I need!
+music
+se spell
+??: ALAKAZAM!
+CC: Eh? What's that?
+music retro2
+LW: I just closed your portal for good! Or at least, put a lock on.
+Now, no one gets in without my spell to open it!
+CC: Insolent villain! Who told you to step on my parade?!
+LW: Well, Top Crab did! He told us about what Crabyss Knight was doing, so the Star Seekers are coming to help!
+Including the head honcho himself!
+CC: (Don't tell me... they brought...)
+SC: End of the line, Chrono Crab!
+CC: The Starlight Rival!

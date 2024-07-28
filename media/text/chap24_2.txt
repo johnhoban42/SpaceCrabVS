@@ -1,1 +1,27 @@
-bg 2
+bg 1
+music fightJ
+CH: Wow - the throne room! It's true what they say, it really is bigger in person.
+KC: Joker Crab - get joking. I'm growing impatient of your amazement.
+CH: Oh! Hmmm, let's see...
+Did you hear about the crab who got hit by a meteor?
+He was destroyed!
+Did you hear about the crab who thought he could jump over a special attack?
+He was destroyed!
+Did you hear about the crab who reached max danger in the mirror dimension?
+I'm sure you can guess what happened!
+KC: You're not funny at all!
+Maybe I made a mistake in appointing you my Jester.
+However, I never make mistakes. Hmmm...
+CH: W-wait! Jokes aren't my strong suit, but I'm a natural in physical comedy!
+music magic
+fight 79386
+music retro5
+KC: I've come to a new decision. I want this crab locked in the dungeon.
+CH: Hey now, don't be too hasty...
+KC: My knight! Remove this puppeted freak from my sight.
+KN: Sorry, kid.
+I don't like playing royal guard for this guy...
+But it pays the bills.
+se hit
+CH: ACK! (fallen down)
+KC: I never tire of hearing that beautiful sound.

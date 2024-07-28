@@ -1,1 +1,43 @@
-bg 4
+bg 1
+music fightJ
+KC: Say, it really is quite boring here without comic relief.
+My knight, would you be able to fill the role?
+KN: Well, my son always says I'm too stiff, a little bit humorless...
+So probably not, no.
+music
+se explosion
+!
+What was that? Who dares to trespass?!
+music magic
+CH: You all laughed at me before, but it's my turn to do the laughing now! HA!
+KC: Correction - no one was laughing at you. That's why I locked you away.
+Speaking of, shouldn't you still be down in the dungeon?
+KN: Stay back! This child no longer acts from a place of innocence.
+CH: I'm flattered. Before, you paid no attention to me, and now I'm the dangerous focal point.
+How about we go and take this crab down, my no-longer-felt beasts?
+And King Crab? He's next. After that? We'll rule the universe!
+KN: Never!
+music tomato
+fight 72438
+music dungeon
+KN: Too... strong...
+CH: Ahaha! The rush! The power! 
+KC: Hmm. This is a problem.
+CH: You bet it is! There's no one in ALL OF SPACE who can stop me now!
+music
+exit 1
+CK: Ahem. I'll take it from here.
+CH: Wha- Hey, my beasts!
+Hand them back, pretentious whelk!
+music emotion
+CK: Oh my, away for only three hours, and already picking up so much uncouth vocabulary.
+Chimaera Crab, this isn't you. What happened to my sweet little baker's boy?
+CH: That's not my na- wait, what did you call me?
+CK: Chimaera Crab, I know you have big aspirations. But for now? You're still a little crab.
+Learn the value of hard work, don't take any shortcuts!
+The future will come when it's ready for you.
+CH: Aww... Crab Cake...
+music magic
+Okay! Let's get back to baking! This hard work won't learn the value of itself!
+I've got lots of time to get back to the top, so let's do it properly!
+(Or, I'll just get in touch with Devil Crab again... heh heh!)

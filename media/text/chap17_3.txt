@@ -1,1 +1,31 @@
-bg 3
+bg 2
+music
+RC: ...
+...
+music emotion
+HL: Oh my. The lack of light in this area is quite alarming.
+Young man, can you please light the path forward for me?
+RC: I used to glow.
+Now... not so much.
+HL: If you're unable to light the way for another, how will you light the way for yourself?
+RC: Huh? I don't get it.
+HL: Maybe it will make sense if you shine some light on the situation?
+RC: Hey, I get what you're trying to do. Thanks.
+I just haven't felt like myself since the Star Seeker stuff happened.
+HL: It can take time to recover after an impactful event.
+I'm sure that everyone is working to right their wrongs.
+As for you... can you turn on your lights, just this time? For me?
+RC: ...
+Sure. I'll give it a shot.
+music retro8
+fight 66132
+music retro6
+HL: Congratulations, on taking the first step to moving on.
+Will you be alright, on your journey of healing?
+RC: Maybe, but... I'm still tired.
+HL: My child, the time will come when this will be a distant memory.
+Begin now, and every day will get easier.
+exit 1
+RC: That crab was right. The time to move on, starts... now!
+HL: And no cheating. don't get that clock winding fellow involved.
+RC: Oh. No, don't worry, I won't!

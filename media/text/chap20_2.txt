@@ -1,1 +1,30 @@
-bg 2
+bg 3
+music fightAJ
+Yes. I can sense it, alright.
+There exists a profound evil, whose plan is nearing its climax.
+Do you really think it's prudent to take a vacation?
+HW: Augh! Geez. Don't go sneaking up on people holding up a big sword.
+Why do you care if I take a vacation? I've earned this.
+I had to deal with all that crazy Star Seekers stuff - I need a chance to relax.
+KN: You think you've earned the right to relax? You kids and your 'vacation time'.
+HW: Hey old-timer, they made workers rights for a reason! I'm using what's rightfully mine!
+KN: A job not done is nary a job done at all.
+HW: You crazy old man, you're not making any sense.
+KN: Oh, call me crazy, will you?
+If you can't stand up to my barrage, then what hope do you have to face the evil?
+HW: Your barrage? The evil? Huh?
+music fightJ 
+fight 62328
+music retro6
+KN: Young man, you seem to be very tense. Your lack of skill & talent makes that obvious.
+HW: That hurts. This whole thing hurts. (knocked out)
+KN: Have you considered a career change? You may find a greater purpose in life.
+It happens to the best of us- our spirits are unaligned with our current goals.
+In fact, my mentor used to be a Ninja, before he hung up the throwing star and picked up the sword.
+Maybe YOU need a mentor? Someone manly, strong, and currently standing next to you?
+We will begin your training soon. But for now...
+EVIL AWAITS! No time to waste!
+exit 1
+HW: So he beats me up for using my vacation time, and then he becomes my career advisor??
+HW: Who cares about that evil plot, or whatever...
+With maniacs like HIM running around, I better join those Star Seekers again, for my own safety!

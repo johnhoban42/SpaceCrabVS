@@ -1,1 +1,27 @@
 bg 4
+music emotion
+S8: I've... run out of options...
+It's... all over for me.
+RC: Hey man! Why so much moping? I can feel your vibes from a mile away!
+S8: Who, me? No, I'm doing great.
+Having your song rejected by the biggest names in music across the galaxy...
+Its fiiiine.
+RC: Hey, no need to hide your feelings. Let's talk it out.
+You said it's about a song? Wait, do you write music?! That's awesome!
+S8: Yeah, I do, but it's nothing big. Just a little something I came up with.
+I call it 'Sk8r Zo'-
+music
+No... I call it 'TAKE ME OUT'!
+music skate
+fight 75246
+music skate
+S8: And that's the song, 'TAKE ME OUT'! Hope you enjoyed it.
+RC: Dude, that got me ALL KINDS of pumped up!
+You don't need a label - you have an anthem!
+Don't worry about getting approval from the bigwigs- you've got a fan in me.
+Spread your song, your message- I'm sure others will follow!
+S8: W-wow, that's a lot of enthusiasm...
+I appreciate it! Thanks for the encouragement.
+(I can only draw one conclusion from this...)
+(I was using the wrong name this whole time.)
+(I'll pay a visit to Rock Lobster again tomorrow!)

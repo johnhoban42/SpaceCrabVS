@@ -202,7 +202,7 @@ endfunction
 
 if debug
 	curChapter = 16
-	curScene = 1
+	curScene = 2
 	highestScene = 101
 	appState = STORY
 	crab1Type = 6

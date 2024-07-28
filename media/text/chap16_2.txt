@@ -1,22 +1,22 @@
 bg 3
 music anger
-NC: King Crab, while powerful with his words, lacks precision with his attacks.
-Allow me to put an end to your tantrum.
-MC: And allow MY FIST to punch you into tomorrow!
+NC: BWFA; King Crab, while powerful with his words, lacks precision with his attacks.
+BVFD; Allow me to put an end to your tantrum.
+MC: BZFJe; And allow MY FIST to punch you into tomorrow!
 music anger
 fight 74118
 music anger
-NC: You're despicable, Mad Crab.
-Attempting to tear down a group meant for connecting crabs.
-Do you yearn for a world where all are as hateful as you?
-MC: Oh, whoop-de-doo! Mr. Moral High-ground is here!
-I don't know if you've noticed, hood boy...
-But your little huggy-wuggy group is already kicking crabs to the curb!
-LW: Hey! Crabacus left on his own terms!
-MC: THERE'S ANOTHER ONE?!
-This is worse than I thought. Rave Crab, Crabacus...
-Space Crab is going to GET IT!
-NC: Perhaps, my alliances may have been misguided, once again.
-I can provide assistance, in seeking to make the situation right.
-In times like these, one must look inwards and assess what-
-MC: Just SHUT UP and tell me where Space Crab is! Geez!
+NC: BQFY; You're despicable, Mad Crab.
+BBFE; Attempting to tear down a group meant for connecting crabs...
+BOFD; Do you yearn for a world where all are as hateful as you?
+MC: BSFJa; Oh, whoop-de-doo! Mr. Moral High-ground is here!
+BUFJd; I don't know if you've noticed, hood boy...
+BVFJe; But your little huggy-wuggy group is already kicking crabs to the curb!
+LW: BAFDd; Hey! Crabacus left on his own terms!
+MC: BHFP; THERE'S ANOTHER ONE?!
+BBFOj; This is worse than I thought. Rave Crab, Crabacus...
+BZFJe; Space Crab is going to GET IT!
+NC: BBFH; Perhaps, my alliances may have been misguided, once again.
+BMFA; I can provide assistance, in seeking to make the situation right.
+BVFD; In times like these, one must look inwards and assess what-
+MC: BUFJe; Just SHUT UP and tell me where Space Crab is! Geez!
