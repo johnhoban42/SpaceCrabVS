@@ -201,8 +201,8 @@ endfunction
 //clearedChapter = 0
 
 if debug
-	curChapter = 16
-	curScene = 2
+	curChapter = 17
+	curScene = 1
 	highestScene = 101
 	appState = STORY
 	crab1Type = 6

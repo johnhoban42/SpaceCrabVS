@@ -1343,7 +1343,7 @@ endfunction
 
 function GetCrabCostumeType(cT, cA)
 	cosType = 0
-	if (cT = 2 and cA = 0) or (cT = 4 and cA = 3)
+	if (cT = 2 and cA = 0)
 		//Hat type
 		cosType = 1
 	elseif (cT = 2 and cA = 2) or (cT = 3 and cA = 0) or (cT = 3 and cA = 2) or (cT = 5 and cA = 3) or (cT = 6 and cA = 3)
@@ -1433,7 +1433,7 @@ function SetCrabFromStringChap(str$, chapNum, crabNum)
 		mType = 1
 		mAlt = 1
 		
-	elseif str$ = "HO" or chapNum = 17 or str$ = "DC"	//Holy Crab/Devil Crab
+	elseif str$ = "HL" or chapNum = 17 or str$ = "DC"	//Holy Crab/Devil Crab
 		mType = 4
 		mAlt = 3
 		

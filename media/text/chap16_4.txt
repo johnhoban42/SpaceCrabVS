@@ -1,38 +1,38 @@
 bg 3
 music anger
-MC: That's what started all of this?!?
-Some petty argument between you and Chrono Crab?!
-SC: Well, I mean-
-MC: The crabs you've hurt, the crabs you've left CLUELESS-
-And now, you're saying that MORE are on the way?!
-SC: Yes, but-
-MC: I AM GOING TO FIND EVERY SINGLE ONE OF THOSE CRABS-
-AND TELL THEM TO STAY AWAY FROM YOU!
+MC: BAFJd; THAT'S what started all of this?!?
+BSFJe; Some petty argument between you and Chrono Crab?!
+SC: BDFHa; Well, I mean-
+MC: BOFJa; The crabs you've hurt, the crabs you've left CLUELESS-
+BIFOh; And now, you're saying that MORE are on the way?!
+SC: BSFEd; Yes, but-
+MC: BMFJe; I AM GOING TO FIND EVERY SINGLE ONE OF THOSE CRABS-
+BOFOh; AND TELL THEM TO STAY AWAY FROM YOU!
 music tomato
-SC: (He's not listening - it looks like I'll need to get serious!)
-Mad Crab! If you won't back down - I'll need to knock some sense into you!
+SC: BVFD; (He's not listening - it looks like I'll need to get serious!)
+BPFDa; Mad Crab! If you won't back down - I'll need to knock some sense into you!
 music anger
-MC: Won't back down?! WON'T BACK DOWN!?!
-Don't try to turn this around on me!
-Anyone can see who the villain is in this situation! 
-SC: A VILLIAN!? You think I'm a VILLAIN?
-Just because I discarded a few crabs by the wayside?
-It's all about the size of the group! I'LL GET THE HIGH SCORE!
-Put me on the leaderboard, take Chrono Crab off, I'VE EARNED MY SPOT!
-MC: There it is- the selfish intentions of a deranged crab.
-You've removed all hesitations I have about beating you into a pulp.
-Let's do this.
+MC: BIFJe; Won't back down?! WON'T BACK DOWN!?!
+BMFJd; Don't try to turn this around on me!
+BAFJe; Anyone can see who the villain is in this situation! 
+SC: BMFDe; A VILLIAN!? You think I'm a VILLAIN?
+BAFOe; Just because I discarded a few crabs by the wayside?
+BSFK; It's all about the size of the group! I'LL GET THE HIGH SCORE!
+BVFOh; Put me on the leaderboard, take Chrono Crab off, I'VE EARNED MY SPOT!
+MC: BIFTp; There it is- the selfish intentions of a deranged crab.
+BAFAb; You've removed all hesitations I have about beating you into a pulp.
+BZFA; Let's do this.
 music anger
 fight 82538
 music
-SC: ...
-MC: Don't promise those crabs a dream you can't provide.
-If you do that, then you've STARTED to make up for all the stunts you've pulled.
-RL: Ease up, hey? Don't you think this guy's taken enough of a beating?
-MC: No where CLOSE to enough. But if he's going to take the time to think things through...
-SC: ...
-I'll give him the time.
+SC: BJFXc; ...
+MC: BUFJa; Don't promise those crabs a dream you can't provide.
+BUFJd; If you do that, then you've STARTED to make up for all the stunts you've pulled.
+RL: BMFFe; Ease up, hey? Don't you think this guy's taken enough of a beating?
+MC: BVFJd; No where CLOSE to enough. But if he's going to take the time to think things through...
+SC: BQFYf; ...
+MC: BAFJd; I'll give him the time.
 exit 1
-SC: ...
-...
-Oh man. I screwed up.
+SC: BQFYf; ...
+BQFYe; ...
+BQFYb; Oh man. I screwed up.

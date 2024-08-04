@@ -1,31 +1,31 @@
 bg 2
 music emotion
-NC: Here I stand, directionless and confused.
-Am I doomed to wander the stars, with no partner leading me towards honor?
-While I consider myself an independent, I do find... comfort, in guidance from others.
-Yet, my current efforts have only led me to enable the mistakes of the past.
-!
-What is this otherworldly light??
-Show yourself!
-HL: My child, do not fret over-
+NC: BF; Here I stand, directionless and confused.
+BF; Am I doomed to wander the stars, with no partner leading me towards honor?
+BF; While I consider myself an independent, I do find... comfort, in guidance from others.
+BF; Yet, my current efforts have only led me to enable the mistakes of the past.
+BF; !
+BF; What is this otherworldly light??
+BF; Show yourself!
+HL: BF; My child, do not fret over-
 music dungeon
-NC: No more words from you!
-Despite your glowing appearance, I won't entertain anyone who tries to get the jump on me!
-Leave now or fight for your presence.
-HC: Oh my... how cute.
+NC: BF; No more words from you!
+BF; Despite your glowing appearance, I won't entertain anyone who tries to get the jump on me!
+BF; Leave now or fight for your presence.
+HC: BF; Oh my... how cute.
 music dungeon
 fight 72537
 music emotion
-HL: My word, you really are a rambunctious child...
-NC: ...
-HL: It's no wonder that you put so much stock in the words and guidance of your friends.
-Channeling your boundless energy towards the support of a cause is really quite cute.
-NC: Nghh... not... really...
+HL: BF; My word, you really are a rambunctious child...
+NC: BF; ...
+HL: BF; It's no wonder that you put so much stock in the words and guidance of your friends.
+BF; Channeling your boundless energy towards the support of a cause is really quite cute.
+NC: BF; Nghh... not... really...
 HL: Do not fret. The path you were previously on is not one of self destruction.
-Stay the course, and all will be well. Your Star Seekers are not bound by the fate of your ancestors.
-I sense good in Space Crab's heart. If he can cleanse the unhealthy desires from around it...
-The two of you will live a long, happy life together.
+BF; Stay the course, and all will be well. Your Star Seekers are not bound by the fate of your ancestors.
+BF; I sense good in Space Crab's heart. If he can cleanse the unhealthy desires from around it...
+BF; The two of you will live a long, happy life together.
 exit 1
-NC: ...
-Hmmm. It appears the higher being wants me to... marry Space Crab?
-I worry that the situation has been misconstrued...
+NC: BF; ...
+BF; Hmmm. It appears the higher being wants me to... marry Space Crab?
+BF; I worry that the situation has been... misconstrued...
