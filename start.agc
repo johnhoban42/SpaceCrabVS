@@ -413,7 +413,7 @@ function DoStart()
 	UpdateStartElements()
 	
 	//Multiplayer section
-	if GetPointerPressed() and not Button(SPR_TITLE) and not Button(SPR_SETTINGS) and not Button(SPR_CLASSIC) and not Button(SPR_STORY_START) and not Button(SPR_START1) and not Button(SPR_LEADERBOARD) and not Button(SPR_MENU_BACK) and not Button(SPR_STARTMIRROR) and GetSpriteVisible(SPR_TITLE) = 1
+	if GetPointerPressed() and not Button(SPR_TITLE) and not Button(SPR_STATS) and not Button(SPR_SETTINGS) and not Button(SPR_CLASSIC) and not Button(SPR_STORY_START) and not Button(SPR_START1) and not Button(SPR_LEADERBOARD) and not Button(SPR_MENU_BACK) and not Button(SPR_STARTMIRROR) and GetSpriteVisible(SPR_TITLE) = 1
 		PingCrab(GetPointerX(), GetPointerY(), Random (100, 180))
 	endif
 	
@@ -426,12 +426,14 @@ function DoStart()
 	
 	//if ButtonMultitouchEnabled(SPR_START1) and spActive = 0 and dispH = 1
 	if ButtonMultitouchEnabled(SPR_START1) //and dispH = 1
-		spType = 0
 		storyActive = 0
 		spType = 0
 		state = CHARACTER_SELECT
 	endif
 	
+	if ButtonMultitouchEnabled(SPR_STATS) //and dispH = 1
+		state = STATISTICS
+	endif
 
 
 	//Starting a single player game

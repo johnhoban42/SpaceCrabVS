@@ -1,9 +1,9 @@
 bg 2
 music
-RC: ...
+RC: B1BFE; ...
 ...
 music emotion
-HL: Oh my. The lack of light in this area is quite alarming.
+HL: BF; Oh my. The lack of light in this area is quite alarming.
 Young man, can you please light the path forward for me?
 RC: I used to glow.
 Now... not so much.
