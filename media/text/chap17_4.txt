@@ -1,1 +1,39 @@
 bg 4
+music emotion
+HL: And so, we come to the final crab in need of divination.
+The catalyst for this ripple of turmoil- can one crab really be so cruel?
+SC: I guess that's one way to describe it.
+But I learned my lesson. You don't need to worry about me any more.
+I'm throwing in the towel. No more Star Seekers.
+After all the crabs I hurt, it's the only right thing to do.
+music tomato
+HL: Oh dear. Space Crab has turned towards the darkest path imaginable.
+Laying out negativity, and then sweeping it under the rug...
+If he is to be course corrected, he'll need an awfully big push!
+SC: Wait, what do you mean?
+music tomato
+fight
+music emotion
+HL: You see, Space Crab... if responsibility isn't taken for one's actions, has one truly acted?
+SC: That's a point! I want this Star Seeker stuff to disappear.
+You really aren't making any sense at all.
+HL: If one step isn't far enough, then take another one back.
+Think to those crabs who you gave hope - the hope of a community, a sense of belonging.
+Is that not what you wanted to create?
+SC: I did! We were going to be the best. The biggest.
+HL: And there lies the core. Is being the biggest all you were truly after?
+SC: Of course not! Stop twisting my words.
+HL: There we have it. The truth of Space Crab's desire has blossomed into a beautiful statement.
+My work here is done.
+music
+exit 1
+SC: Holy Crab...
+music retro2
+You're really confusing.
+Though, now I feel...
+Ready?
+Yeah, ready!
+The Star Seekers is something that I want. I know that now.
+Not to settle a rivalry - but to reach my own goals.
+And not just for me. For all the crabs out there who need a place to belong!
+Let's go! The Star Seekers are back in business!!

@@ -1,1 +1,22 @@
 bg 1
+music rag
+SB: My, today is a wonderful day for a walk, isn't it?
+Nothing brings me more joy than stretching my legs out with a stroll among the stars.
+Oh, is that what I think it is? It's a small wooden boy!
+TC: Snip, snip, snip.
+SB: It's such a shame that language prevents us from communicating properly.
+This crab looks quite worried...
+TC: Snip, snip?
+SB: If it's a confidence issue, perhaps he needs a bit of a boost?
+TC: Snip. Snip snip!
+SB: Well, I won't take a loss sitting down! Let's gauge the boy's strength.
+music fightA
+fight 26783
+music rag
+SB: The wooden boy... needs a bit of work.
+(laying down) But, I can plant the idea of strength in his mind. I'll just fake my loss for him.
+TC: Snip! Snip?
+Snip. Snip!
+exit 2
+SB: I hope the best for that boy- may he go on to do wonderful things!
+As for me, I'll continue my galactic stroll. Who knows what I'll see next?

@@ -1,1 +1,40 @@
-bg 2
+bg 4
+music retro3
+SC: Ladder Wizard, this feels weird.
+LW: I don't get that. What's weird about forming & leading the galaxy's biggest known expedition party?
+We're already discovering so much! Didn't you hear?
+King Crab was leading Team Player and Top Crab to go knock away some meteors at the edge of the Milky Way.
+On their family bonding trip, Ninja Crab and Cranime found a new wormhole at the Rings of Chiron.
+And Holy Crab's guidance led Rock Lobster & Crab Cake to find a new treasure hotspot at the Aquarius Stream!
+SC: Oh, WOW. The crabs sure are eager to explore!
+LW: That's what I'm talking about! There's nothing left to worry about.
+SC: But... what comes 'next'?
+LW: Next?
+SC: Yeah, next! We barely got the Star Seekers together in the first place.
+What if I screw things up again?
+LW: You don't need to worry. Just try to live in the now! Things are great 'in the now'!
+SC: ...I have an idea for a spell. Will you help me?
+LW: Depends. What's it about?
+If it involves ladders, I can't really help you much.
+It turns out, the name's not at all related-
+SC: Time.
+LW: ...No. No way. Nuh uh!
+I don't touch that stuff. You know I don't.
+That means you want me to work with... with...
+SC: That's right. I need you and Chrono Crab to make a double helix spell.
+We're going to look into the future.
+LW: Not going to do it! I hate that guy! He almost tried to destroy us all!
+SC: I'm serious about this, Ladder Wizard. I'll show you my conviction... through battle!
+LW: Don't think you'll win! I've grown a ton since our first fight!
+music chromecoast
+fight 81229
+music emotion
+LW: You won... I guess... I have to help.
+SC: I'm not forcing you. But I am asking you, as a fellow Star Seeker.
+And as a friend.
+LW: You seem really serious about this.
+I may not trust him, but you seem to, so... I'll help cast the double helix spell.
+SC: Thanks, Ladder Wizard. I'm glad I can rely on you.
+If I can rely on Chrono Crab... we'll have to see.
+exit 1
+LW: Just... be careful, Space Crab.

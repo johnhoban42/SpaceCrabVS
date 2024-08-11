@@ -727,6 +727,7 @@ function UpdateMeteor1()
 	if deleted > 0
 		meteorActive1.remove(deleted)
 		if nonSpecMet = 1 then inc meteorTotal1, 1	//Only want real meteors to increase the difficulty
+		inc totalMeteors, 1
 		
 		//Updating the difficulty
 		if Mod(meteorTotal1, difficultyBar) = 0 and gameDifficulty1 < difficultyMax
@@ -848,15 +849,12 @@ function SendSpecial1()
 		
 	elseif crab1Type = 2
 		//Ladder Wizard
-		if crab1Alt = 0 or crab1Alt = 2
-			rnd = Random(1, 2)
-			if rnd = 1
-				PlaySoundR(wizardSpell1S, 100)
-			else
-				PlaySoundR(wizardSpell2S, 100)
-			endif
+		if crab1Alt = 0
+			PlaySoundR(wizardSpell1S, 100)
 		elseif crab1Alt = 1
 			PlaySoundR(kingSpellS, 100)
+		elseif crab1Alt = 2	
+			PlaySoundR(wizardSpell2S, 100)
 		else
 			PlaySoundR(knightSpellS, 100)
 		endif

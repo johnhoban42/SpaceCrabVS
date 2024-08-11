@@ -1,1 +1,28 @@
 bg 1
+music retro4
+S8: You, G, you've gotta publish my song!
+It'll fit right along with your other ones!
+RL: My security must be awful if cretins like you can get past it.
+S8: Would I really be that stupid if I was coming to you for help?
+Just imagine what they'll say: 'New hit single- Sk8r Zoea! Backed by Rock Lobster!'
+RL: You have no idea how the music industry works.
+RL: And the name is trash, too. Who even knows what a zoea is?
+CB: Well, a 'Zoea' is a another name for a young crab, so-
+RL: Crabacus! I didn't hire you to validate the crazies.
+Actually, I hired you for security. Why are you backstage with us?
+S8: I think you're going to like my song! I'm not leaving until you hear it.
+RL: You're the worst type of fan, you know that?
+music skate
+fight 64378
+music retro4
+S8: Admit it, you're smitten.
+RL: Well, I've gotta be honest, kid...
+I couldn't hear it over you HURLING METEORS AT ME!
+CB: I thought it sounded fun!
+S8: See, Rock Lobster? You'd be an IDIOT to not sign my song.
+RL: So you sneak in, pretend you're a fan, and then insult me to my face?
+You're nothing but a wannabe. A poser.
+S8: ME? You think I'm a POSER?!
+You've insulted me. I don't even want your dumb publishing deal anymore.
+exit 1
+RL: Good. I wasn't going to give you one.

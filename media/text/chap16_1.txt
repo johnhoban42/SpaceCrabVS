@@ -1,1 +1,41 @@
-bg 1
+bg 3
+music retro2
+MC: BBFU; *grumble, grumble*
+BAFJa; Grr... always blaring on with their happy-go-lucky music...
+BZFJe; ENOUGH WITH ALL THE RACKET!
+music
+BZFJ; ...
+BBFJ; That's better.
+BVFJD; These crabs need to watch their NOISE LEVEL!
+RC: B0BFE; ...
+MC: BZFJe; And here's the culprit, I bet. Keep it DOWN, won't you?
+RC: B0BFEd; Oh... okay. Sure.
+MC: BSFKc; This- this feels wrong.
+BVFJd; Seeing the happiest, go luckiest guy I know, turned into some moping sad sack...
+music anger
+BZFJe; It makes me MAD!
+BOFJd; RAVE CRAB! Who did this to you?!
+RC: B0CFTr; I guess, maybe it was Space Crab.
+B0SFEd; But it wasn't really anyone's fault-
+MC: BMFJd; I'LL be the one to say whose fault it is.
+exit 2
+BZFJ; This group of DELINQUENT CRABS up here better know what's up.
+BAFJe; Hey, CLAWHEADS! Where's Space Crab? I have a bone to pick.
+LW: BSFEa; Delinquents? That's a bit harsh...
+CK: BUFDa; I contain no claws in my head, your recipe must be mistaken!
+KC: BMFTn; Please, please, allow me. *A-hem.*
+BOFBa; If you continue to harass my subjects, then please enjoy your long stay in the Star Seekers dungeon.
+MC: BZFW; Oh, when I'M done with you, the only place YOU'LL be staying is 30 feet underground!
+music anger
+fight 68342
+music anger
+KC: BJFX; ...
+MC: BZFJe; Now, TELL ME WHERE SPACE CRAB IS.
+exit 2
+LW: BSFOj; I-I don't know! I haven't seen him yet.
+BCFCd; It's the opening day of the Star Seekers, he must be busy.
+exit 2
+MC: BOFJd; If YOU'RE not gonna help me, then I'll TEAR this place apart, CRAB by CRAB!
+music
+??: That is something I can not allow you to do.
+MC: BZFJ; Enough with this hiding shtick, Ninja Crab! Get out here and FACE ME.

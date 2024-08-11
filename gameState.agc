@@ -29,6 +29,19 @@ function InitGame()
 	meteorTotal1 = 0
 	meteorTotal2 = 0
 	
+	fightSecondsLocal# = 0
+	
+	inc crabPlayed[crab1Type+crab1Alt*6]
+	if spType = 0 then inc crabPlayed[crab2Type+crab2Alt*6]
+	
+	if GetDeviceBaseName() = "android" and (crab1Type = 2 or crab2Type = 2)
+		SetFolder("/media/sounds")
+		if crab1Alt = 0 or crab2Alt = 0 then LoadMusicOGG(wizardSpell1S, "wizardSpell1.ogg")
+		if crab1Alt = 1 or crab2Alt = 1 then LoadMusicOGG(wizardSpell2S, "wizardSpell2.ogg")
+		if crab1Alt = 2 or crab2Alt = 2 then LoadMusicOGG(kingSpellS, "kingSpell.ogg")
+		if crab1Alt = 3 or crab2Alt = 3 then LoadMusicOGG(knightSpellS, "knightSpell.ogg")
+	endif
+	
 	spScore = 0
 	
 	metSizeX = 58*gameScale#
@@ -82,6 +95,15 @@ function InitGame()
 	if spType = MIRRORMODE and dispH
 		SetTextPosition(TXT_SP_SCORE, w/2 - 120, 40)
 		SetTextPosition(TXT_SP_DANGER, w/2, GetTextY(TXT_SP_SCORE) + GetTextSize(TXT_SP_SCORE))
+	endif
+	
+	//For statistics
+	if spType = MIRRORMODE
+		inc mirrorTotal, 1
+	elseif spType = CLASSIC
+		inc classicTotal, 1
+	else
+		inc fightTotal, 1
 	endif
 	
 	//The special classic mode setup
@@ -140,6 +162,8 @@ function InitGame()
 	//For multiplayer mode, the music is started in a different place
 	//if spActive = 1 then StartGameMusic()
 	
+	SaveGame()
+	
 	SetFolder("/media")
 	
 	gameStateInitialized = 1
@@ -161,6 +185,8 @@ function DoGame()
 	state = GAME
 	
 	if paused = 0
+	
+		fightSecondsLocal# = fightSecondsLocal# + GetFrameTime()
 	
 		//Dispersing the 'SURVIVE!' text after the opening
 		if GetTextExists(TXT_INTRO1)
@@ -355,6 +381,8 @@ function EndGameScene()
 		crabSR# = crab2R# - 22
 		crabSTheta# = crab2Theta#
 	endif
+
+	fightSeconds = Max(fightSeconds, Round(fightSecondsLocal#))
 	
 	endStage = 0
 	
@@ -793,7 +821,12 @@ function ExitGame()
 	if GetTextExists(TXT_INTRO2) then DeleteText(TXT_INTRO2)
 	paused = 0
 	
-	
+	if GetDeviceBaseName() = "android" and (crab1Type = 2 or crab2Type = 2)
+		if GetMusicExistsOGG(wizardSpell1S) then DeleteMusicOGG(wizardSpell1S)
+		if GetMusicExistsOGG(wizardSpell2S) then DeleteMusicOGG(wizardSpell2S)
+		if GetMusicExistsOGG(kingSpellS) then DeleteMusicOGG(kingSpellS)
+		if GetMusicExistsOGG(knightSpellS) then DeleteMusicOGG(knightSpellS)
+	endif
 	
 	//This is called if the end cutscene for the game never plays
 	if GetSpriteExists(expBar1)
@@ -895,12 +928,15 @@ function PauseGame()
 	SetFolder("/media/ui")
 	LoadSpriteExpress(SPR_SETTINGS, "settingss1.png", 120, 120, w-135, 15, 3)
 	
-	if dispH then LoadSpriteExpress(SPR_CONTROLS, "controls.png", 217, 120, GetSpriteX(SPR_SETTINGS)-240, 15, 3)
+	if dispH
+		LoadSpriteExpress(SPR_CONTROLS, "controls.png", 217, 120, GetSpriteX(SPR_SETTINGS)-240, 15, 3)
+		AddButton(SPR_CONTROLS)
+	endif
 	
 	if spType = CLASSIC
 		IncSpriteSizeCenteredMult(curtain, GetViewZoom())
 		IncSpriteSizeCenteredMult(curtainB, GetViewZoom())
-		SetSpriteVisible(SPR_CONTROLS, 0)
+		if dispH then SetSpriteVisible(SPR_CONTROLS, 0)
 		SetSpriteVisible(SPR_SETTINGS, 0)
 	endif
 	
@@ -2496,6 +2532,7 @@ function PlayDangerMusic(startNew)
 			if GetMusicPlayingOGGSP(tomatoMusic) then oldSong = tomatoMusic
 			if GetMusicPlayingOGGSP(fightFMusic) then oldSong = fightFMusic
 			if GetMusicPlayingOGGSP(fightAJMusic) then oldSong = fightAJMusic
+			if GetMusicPlayingOGGSP(fightMMusic) then oldSong = fightMMusic
 			
 			if oldSong <> 0 then StopGamePlayMusic()
 			
@@ -2508,6 +2545,7 @@ function PlayDangerMusic(startNew)
 			if oldSong = tomatoMusic then PlayMusicOGGSP(dangerTMusic, 1)
 			if oldSong = fightFMusic then PlayMusicOGGSP(dangerFMusic, 1)
 			if oldSong = fightAJMusic then PlayMusicOGGSP(dangerAJMusic, 1)
+			if oldSong = fightMMusic then PlayMusicOGGSP(dangerMMusic, 1)
 			
 		endif
 		
@@ -2526,6 +2564,7 @@ function StopGamePlayMusic()
 	if GetMusicPlayingOGGSP(emotionMusic) then StopMusicOGGSP(emotionMusic)
 	if GetMusicPlayingOGGSP(fightFMusic) then StopMusicOGGSP(fightFMusic)
 	if GetMusicPlayingOGGSP(fightAJMusic) then StopMusicOGGSP(fightAJMusic)
+	if GetMusicPlayingOGGSP(fightMMusic) then StopMusicOGGSP(fightMMusic)
 	if GetMusicPlayingOGGSP(chillMusic) then StopMusicOGGSP(chillMusic)
 	if GetMusicPlayingOGGSP(ragMusic) then StopMusicOGGSP(ragMusic)
 	if GetMusicPlayingOGGSP(ssidMusic) then StopMusicOGGSP(ssidMusic)
@@ -2536,7 +2575,7 @@ function StopGamePlayMusic()
 	if GetMusicPlayingOGGSP(characterMusic) then StopMusicOGGSP(characterMusic)
 	if GetMusicPlayingOGGSP(resultsMusic) then StopMusicOGGSP(resultsMusic)
 	
-	for i = dangerAMusic to dangerAJMusic
+	for i = dangerAMusic to dangerMMusic
 		if GetMusicPlayingOGGSP(i) then StopMusicOGGSP(i)
 	next i
 	

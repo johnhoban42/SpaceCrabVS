@@ -1,1 +1,38 @@
 bg 3
+music tomato
+MC: BVFJa; So, this is where you've been hiding...
+BAFU; The so-called 'Leader of the Star Seekers'...
+BPFJe; Come and fight me like a crab!
+SC: BMFA; And why would I need to do that, Mad Crab?
+BAFCb; Jealous, that you aren't a part of the galaxy's premiere group?
+MC: BIFOh; OF COURSE NOT, you PIPSQUEAK!
+BUFJd; Tell me, what does your stupid little group even do?
+SC: BBFJ; ...
+SC: BDFJa; Well, technically-
+MC: BBFJ; Don't even have an answer? Pathetic.
+MC: BSFJd; A 'group' that has no purpose. Hurting crabs that don't deserve it.
+BAFOh; It makes me hopping mad!
+BZFJe; And you're a PERFECT target for my anger!
+music tomato
+fight 73347
+music emotion
+SC: BSFMd; Enough, enough!
+BIFOj; There's only one way out of this.
+BVFJd; Mad Crab, if you're so determined to set things right-
+BMFEb; Why not join the Star Seekers and help things out yourself?
+MC: BBFJ; ...
+MC: BBFHa; You're pathetic. I can't believe I'm wasting my time on a loser like you.
+BMFJd; Are all of your other 'Star Seekers' as stupid as you are?
+BIFJe; They must be, if they think you make a good leader.
+BUFJ; I bet you haven't even told them that you have no plan.
+SC: BBFE; ...
+MC: BWFHa; Just take your merry band of idiots somewhere else, and leave me out of it.
+music
+exit 1
+SC: BBFRb; Whew...
+BIFOj; Thinking about it, I'm glad he's not joining. Too much bad energy!
+BAFTp; But like I said, one or two crabs won't make a difference.
+BOFDb; Once Ladder Wizard's recruits make it here, I'll be the giggest group in the galaxy, no doubt about it.
+BVFDc; Chrono Crab doesn't stand a chance.
+music anger
+MC: BZFJd; WHAT?!?

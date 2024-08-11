@@ -1,1 +1,48 @@
 bg 4
+music chill
+CB: BAFEa; Space Crab. I know you're busy, this being your big day...
+BDFH; But we need to talk.
+SC: BAFA; Hey! Crabacus! I'm glad you made it.
+BMFOc; Enjoy the opening ceremony! I heard that you helped make these cakes possible.
+CB: BDFEb; Yeah, I was helping with that.
+BIFEa; But I want to talk about-
+SC: BLFAg; And Top Crab said that his training is complete, thanks to you.
+TC: BAFO; It's true!
+CB: BVFEe; It is, and I'm glad to hear that, but-
+SC: BAFAf; And Taxi Crab said that your division skills were top notch for-
+music
+CB: BSFOh; NO MORE MATH!!
+music tomato
+BUFDe; I'm DONE being forced into an archetype.
+BAFEa; I thought I would be joining as myself, not just 'some math guy'.
+BMFMd; I'm happy to be a Star Seeker, but I won't join if I'll be miserable the whole time!
+SC: BAFFd; Wait, THAT'S what you're upset about?
+music tomato
+fight 63348
+music emotion
+CB: BBFMd; Ladder Wizard promised me that I could do what I want here.
+BSFTq; I thought that you wanted ME. Not just any schmuck who's a calculator.
+SC: BVFAh; He was right! Whatever gets you to stay, I'm sure it can be done.
+CB: BBFEb; Really? That'd be great. What kind of stuff do you need help with?
+music
+SC: BNFJd; ...
+music retro2
+BMFFb; Well, everyone has a role, y'know?
+BAFGb; Taxi Crab handles transportation, Rave Crab handles the vibes, stuff like that.
+BWFHa; And I figured you'd be doing- ah, well...
+music
+BBFJ; Hmm.
+music retro2
+SC: BDFIa; Well, even if you don't do the math stuff... why not stick around?
+CB: BUFDa; Really. And what would I be doing instead?
+music
+SC: BBFHa; ...
+music dangerA
+BIFI; Look, honestly, the roles don't matter much.
+BAFK; But you should stay, right? Keep the Star Seekers as big as possible!
+CB: BMFDd; So, the truth comes out, huh? You only want me for the numbers.
+music
+BBFH; And like I said... I'm done with numbers. I quit.
+exit 1
+SC: BBFJ; ...
+SC: BBFD; Hmph.

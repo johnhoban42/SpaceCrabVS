@@ -727,6 +727,7 @@ function UpdateMeteor2()
 	if deleted > 0
 		meteorActive2.remove(deleted)
 		inc meteorTotal2, 1
+		if spType = 0 and storyActive = 0 then inc totalMeteors, 1
 		
 		//Updating the difficulty
 		if Mod(meteorTotal2, difficultyBar) = 0 and gameDifficulty2 < difficultyMax
@@ -848,16 +849,13 @@ function SendSpecial2()
 		
 	elseif crab2Type = 2
 		//Ladder Wizard
-		if crab2Alt = 0 or crab2Alt = 2
-			rnd = Random(1, 2)
-			if rnd = 1
-				PlaySoundR(wizardSpell1S, 100)
-			else
-				PlaySoundR(wizardSpell2S, 100)
-			endif
+		if crab2Alt = 0
+			PlaySoundR(wizardSpell1S, 100)
 		elseif crab2Alt = 1
 			PlaySoundR(kingSpellS, 100)
-		else	
+		elseif crab2Alt = 2	
+			PlaySoundR(wizardSpell2S, 100)
+		else
 			PlaySoundR(knightSpellS, 100)
 		endif
 		

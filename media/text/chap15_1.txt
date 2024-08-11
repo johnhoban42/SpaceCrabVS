@@ -1,1 +1,40 @@
-bg 1
+bg 4
+music retro2
+RC: BKFOa; WOOHOO! Opening ceremony!
+BDFAh; I wonder what exciting adventures are in store for Rave Crab now!
+BBFOe; The never-ending party, I can't believe it's finally here.
+BVFOb; Life will never be bad again!
+music
+??: And like I said... I'm done with numbers. I quit.
+RC: BAFKi; Uh oh. Not sounding great.
+CB: BMFEd; Excuse me, sir. Do you know the quickest way out of here?
+music retro2
+RC: BSFO; Silly guy, we're in space! Just pick a direction and let the cosmic flow carry you.
+CB: BBFCd; I'm really not in a mood to joke right now.
+RC: BWFEb; No jokes, my friend, only vibes!
+music emotion
+CB: BAFWa; Oh, Space Crab mentioned you. You're the 'vibes guy'.
+BMFH; Oh, but don't ever change, no!
+BOFDe; As soon as you stop being the fun guy, they'll throw you in the corner and leave you to rot.
+RC: BSFJa; Woah! This harshness is not what I expected when I first saw you...
+music ssid
+BCFAg; But I know a path to get to the bottom of what you're really feeling!
+music ssid
+fight 52329
+music emotion
+RC: BAFEb; Hey now, guy. Open up. What's the reason for all this gloom?
+CB: BBFRb; Well, it all started with math. I'm too good at it.
+BSFV; I don't even like it that much - crabs just assume that I do!
+BWFH; When I got asked to join the Star Seekers, I hoped things would be different.
+BMFVb; I just thought, maybe I'll get to do something I like, for a change.
+BBFDd; No, wait, it wasn't just a thought. Ladder Wizard even TOLD me that I'd get to pick my job.
+BAFDe; But I get here, and whoops, I'm accidentally solving everyone's math problems. Again.
+BBFV; And Space Crab? When I asked him to help, he didn't even try.
+BQFYb; Just told me to do math, or stay as dead weight.
+RC: BBFE; ...That's heavy, man.
+CB: BMFEb; Maybe it's not so bad. I feel a lot better after talking it through, actually.
+RC: BAFAh; Great! So you'll stick around then?
+CB: BBFEe; Sorry, vibe guy. I don't want to repeat the mistakes of the past.
+exit 2
+RC: BBFJ; ...
+BVFDa; Party time's being put on pause. There's some bad juju that needs investigating.

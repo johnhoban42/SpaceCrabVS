@@ -1,1 +1,30 @@
 bg 1
+music fightAJ
+KN: A knight's sense of justice isn't only used for long monologues.
+It's also for sensing disturbances in the universe.
+And there is quite a disturbance occurring.
+A tear in space-time... no... a deliberate rip?!
+You there! Wooden boy!
+TC: What? Who? Oh! You mean me?
+KN: We once battled - remember? You were causing a 'disturbance' on my lawn.
+You were so afraid of me, hahaha!
+TC: Uh, yeah. I guess I was. Haha...
+KN: This is no time for joking. This is a matter of life and death.
+TC: Oh! Sorry.
+KN: I have a mission for you to carry out - let's see if your power is worthy of it!
+music dungeon
+fight 62648
+music retro3
+KN: As to be expected, you were unable to compare to the full might of my strength.
+TC: Aw geez, you were WAY tougher than the last time we fought...
+KN: Well, of course. I was actually trying this time.
+And I must! For this is a matter of life and death.
+Though your power isn't comparable to mine, it is measurable to the finest mercenaries I know.
+Here is your mission.
+Top Crab, you must gather all the crabs you can into the safety of the Star Seekers.
+The strength in numbers will be enough protection for those who are unable to fight for themselves.
+A great evil is emerging... we need to do all we can to prepare.
+Stay safe, Top Crab.
+exit 1
+TC: Wow... he knows my name!
+I won't let you down, sir!

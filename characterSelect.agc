@@ -350,12 +350,12 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 		SetTweenSpriteSizeX(csc.sprCrabs + i, charWid, cSizeW, TweenOvershoot())
 		SetTweenSpriteSizeY(csc.sprCrabs + i, charHei, cSizeH, TweenOvershoot())
 		
-		if Mod(i+1, 6) = 1 then crabDescs[i] = "Speed: {{{}} Turn: {{{}}" + chr(10)
-		if Mod(i+1, 6) = 2 then crabDescs[i] = "Speed: {{}}} Turn: {{{{}" + chr(10)
-		if Mod(i+1, 6) = 3 then crabDescs[i] = "Speed: {{{{{ Turn: {}}}}" + chr(10)
-		if Mod(i+1, 6) = 4 then crabDescs[i] = "Speed: {{{{} Turn: {{}}}" + chr(10)
-		if Mod(i+1, 6) = 5 then crabDescs[i] = "Speed: {{{}} Turn: {{{}}" + chr(10)
-		if Mod(i+1, 6) = 0 then crabDescs[i] = "Speed: {{{}} Turn: {{{{{" + chr(10)
+		if Mod(i+1, 6) = 1 then crabDescs[i] = "Speed: {{{}}  Turn: {{{}}" + chr(10)
+		if Mod(i+1, 6) = 2 then crabDescs[i] = "Speed: {{}}}  Turn: {{{{}" + chr(10)
+		if Mod(i+1, 6) = 3 then crabDescs[i] = "Speed: {{{{{  Turn: {}}}}" + chr(10)
+		if Mod(i+1, 6) = 4 then crabDescs[i] = "Speed: {{{{}  Turn: {{}}}" + chr(10)
+		if Mod(i+1, 6) = 5 then crabDescs[i] = "Speed: {{{}}  Turn: {{{}}" + chr(10)
+		if Mod(i+1, 6) = 0 then crabDescs[i] = "Speed: {{{}}  Turn: {{{{{" + chr(10)
 	
 	next i
 	
@@ -574,6 +574,10 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 		SetSpriteSize(csc.sprTxtBack, w/2, 140)
 		IncSpriteY(csc.sprTxtBack, 40)
 		IncTextY(csc.txtCrabDesc, 34)
+		if dispH = 0
+			SetSpriteSize(csc.sprTxtBack, w, 140)
+			SetSpriteMiddleScreenX(csc.sprTxtBack)
+		endif
 		
 		SetFolder("/media/envi")
 		

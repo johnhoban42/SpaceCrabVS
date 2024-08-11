@@ -11,7 +11,7 @@ BAFJb; What point is there to an expedition if your stories can't be shared?
 BMFOb; The glory of adventuring comes from spreading your exploits.
 BVFOd; I won't live in a world lacking tales of Inianda Jeff bravely exploring the Mirror Dimension!
 exit 1
-CC: BbFIa; Well, your ethics certainly cause me to ponder-
+CC: BBFIa; Well, your ethics certainly cause me to ponder-
 music
 BHFP; Wait, you're going IN?
 music chromecoast

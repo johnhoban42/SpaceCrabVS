@@ -1,1 +1,29 @@
-bg 4
+bg 3
+music rag
+SB: This has possibly been the most eventful walk of my life.
+Typically, I walk the same path, day in and day out.
+How lucky I must be to have had so many encounters!
+Almost like a trip down memory lane... except, I've never met any of those crabs before.
+Nostalgia, deja vu, whatever it's called. How interesting!
+music
+KN: ...
+SB: Oh my, but you don't look like any crab I've seen before.
+Has anyone seen you before?
+I suppose one crab might have, quite some time ago...
+music dungeon
+KN: Snip. (draws sword)
+SB: Woah, easy does it! I don't have a hard shell like you crustaceans!
+music dungeon
+fight 73139
+music
+SB: ... (dead dog pose)
+KN: ...Snip.
+exit 2
+SB: ...Did he buy it?
+music rag
+It looks like my 'playing dead' trick saved my fur once again.
+Unlike the other crabs, he didn't seem to have some sort of goofy agenda.
+That was a serious fight! My walking route may not be as safe as it once was.
+I need some way to protect myself as I explore space.
+Perhaps there exists a collective, who seek the stars together, which I could join? 
+I'll have to ask around.

@@ -1,1 +1,26 @@
-bg 3
+bg 2
+music love
+SB: Is that another crab? My, this walk is turning out to be truly exciting.
+No... this isn't any ordinary crab...
+CR: Snip!
+SB: This is... the most beautiful crab I've ever laid my eyes on.
+While the sight of you makes my heart still, I still feel it beating far out of my chest.
+This must be the beautiful contradiction of love.
+CR: Snip...
+SB: But that look on your face... there must be a complication.
+Alas, love can never be this simple!
+I've heard the stories, but to experience a lover's dilemma... oh, the pain.
+CR: Snip! SNIP!
+SB: Do what you have to do. For love, I'll follow any path I must to win your heart.
+music retro3
+fight 68392
+music sad
+CR: Snip...
+SB: Oh my... it seems our feelings have been communicated through the flow of our fight.
+Do you truly believe that a relationship between us is doomed to fail?
+CR: Snip.
+SB: No. That's my own defeatist mindset, poisoning the well of my soul.
+A time will come, when we can truly be happy together...
+Until then, my love! I must put you out of my mind, for my own sanity.
+exit 1
+CR: Snip...

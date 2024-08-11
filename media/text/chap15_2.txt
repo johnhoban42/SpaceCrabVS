@@ -1,1 +1,39 @@
-bg 2
+bg 4
+music retro2
+RC: BIFAg; Ladder Wizard! My man!
+LW: BKFJ1b; Rave Crab! We finally did it! The Star Seekers are all together!
+RC: BDFI; Well, not ALL...
+LW: BUFGb; Just to think, it all started by asking only a few crabs to join...
+BAFA1; And now here we are! Word of mouth sure is something.
+RC: BWFIa; Let's rewind a bit, back to 'asking a few crabs to join'.
+BCFKh; What was it you told them? What was the sitch?
+LW: BSFA1; Oh, I remember it so clearly!
+BMFAi; 'Space Crab is forming the Star Seekers! Come and join us!'
+RC: BBFJ; ...
+BDFIa; Include anything else in that pitch?
+LW: BWFJ1a; What do you mean? That was all.
+BKFO; It's the Star Seekers! 
+RC: BAFOe; My man, you goofster! You can't send a party invite without the details!
+LW: BUFGa; Well, now that you mention it...
+BMFE1; There's a big thing about all this that I feel like I'm forgetting.
+RC: BAFJb; There we go! This kind of thing always happens.
+BVFJb; And at this point, we know that the best way to remember...
+LW: BPFA1h; Oh yeah, WAY ahead of you!
+music retro8
+fight 47339
+music retro2
+LW: BAFJ1b; It's all coming back! I asked the crabs to join the Star Seekers-
+RC: BVFJd; And what else, bud? Gave 'em some more deets, hopefully?
+LW: BOFA1h; That's the trick! It wasn't what I told them, but HOW many I told!
+BKFO; Besides to the flyers, I was able to tell about one hundred other crabs!
+music
+RC: BHFP; A h-h-HUNDRED?
+music retro8
+BBFTn; A party that size-
+BWFMd; Gah! As awesome as that would be, there's no point if they don't know why they're here.
+LW: BUFOe; Don't worry. I'm sure we can handle it as they come.
+BAFJ1b; Plus, with the flyers I left, we'll get even more crabs! This is just a FRACTION of the total reach!
+BMFOa; Err, how much is a fraction, again? Hey Crabacus, where did you run off to?
+exit 2
+RC: BTFNf; M-more than a h-hundred?
+BSFKc; Oh geez.

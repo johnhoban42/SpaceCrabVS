@@ -163,7 +163,17 @@ function SaveGame()
 	WriteInteger(3, windowSize)
 	WriteInteger(3, evilUnlock)
 	WriteInteger(3, storyEasy)
-	
+	inc totalSecondsPlayed, Round(localSeconds#)
+	WriteInteger(3, totalSecondsPlayed)
+	localSeconds# = 0
+	WriteInteger(3, fightTotal)
+	WriteInteger(3, mirrorTotal)
+	WriteInteger(3, classicTotal)
+	WriteInteger(3, fightSeconds)
+	for i = 1 to 24
+		WriteInteger(3, crabPlayed[i])
+	next i
+	WriteInteger(3, totalMeteors)
 	CloseFile(3)
 endfunction
 
@@ -194,6 +204,15 @@ function LoadGame()
 	windowSize = ReadInteger(3)
 	evilUnlock = ReadInteger(3)
 	storyEasy = ReadInteger(3)
+	totalSecondsPlayed = ReadInteger(3)
+	fightTotal = ReadInteger(3)
+	mirrorTotal = ReadInteger(3)
+	classicTotal = ReadInteger(3)
+	fightSeconds = ReadInteger(3)
+	for i = 1 to 24
+		crabPlayed[i] = ReadInteger(3)
+	next i
+	totalMeteors = ReadInteger(3)
 	CloseFile(3)
 endfunction
 
@@ -201,10 +220,10 @@ endfunction
 //clearedChapter = 0
 
 if debug
-	curChapter = 14
-	curScene = 1
+	curChapter = 17
+	curScene = 2
 	highestScene = 101
-	appState = START
+	appState = STATISTICS
 	crab1Type = 6
 	crab1Alt = 3
 	
@@ -220,7 +239,7 @@ if debug
 	hardBattleUnlock = 1
 	musicBattleUnlock = 1
 	unlockAIHard = 1
-	musicUnlocked = 7
+	musicUnlocked = 14
 	evilUnlock = 1
 	gameSongSet = 0
 else
@@ -309,6 +328,7 @@ do
 		//Print(GetDeviceBaseName())
 		
 		Print(GetImageMemoryUsage())
+		Print(localSeconds#)
 		
 		//Print(GetPointerX())
 		//Print(GetPointerY())
@@ -1039,7 +1059,7 @@ function Popup(area, unlockNum)
 	if unlockNum = 42 then SetTextString(spr+2, "Like a sweet," + chr(10) + "sitting in the sun...")
 	if unlockNum = 43 then SetTextString(spr+2, "Not a date, but" + chr(10) + "the next best thing.")
 	if unlockNum = 44 then SetTextString(spr+2, "WHO LET THINGS" + chr(10) + "GET THIS BAD?!")
-	if unlockNum = 45 then SetTextString(spr+2, "Will guided soul" + chr(10) + "searching be enough?")
+	if unlockNum = 45 then SetTextString(spr+2, "Will soul searching" + chr(10) + "be enough?")
 	if unlockNum = 46 then SetTextString(spr+2, "Starlight Rivalry-" + chr(10) + "does it ever end?")
 	if unlockNum = 47 then SetTextString(spr+2, "Look to the future" + chr(10) + "with hope, always!")
 	if unlockNum = 48 then SetTextString(spr+2, "Soon-to-be chart" + chr(10) + "topper, all yours!")

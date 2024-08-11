@@ -205,6 +205,17 @@ global spHighScoreClassic = 0
 global spHighCrabClassic$ = ""
 #constant spScoreMinSize = 70
 
+//Statistics Variables
+global totalSecondsPlayed = 0
+global localSeconds# = 0
+global fightTotal = 0
+global mirrorTotal = 0
+global classicTotal = 0
+global fightSeconds = 0
+global fightSecondsLocal# = 0
+global crabPlayed as Integer[24]
+global totalMeteors = 0
+
 global p1Ready = 0
 global p2Ready = 0
 
@@ -627,6 +638,7 @@ global jumpPartI as Integer[6, 4]
 #constant ragMusic 117		//Space Crab Rag
 #constant ssidMusic 118  	//Shooting Stars into Dreams - REMix
 #constant mcbMusic 119		//Melted Chocolate Bar
+#constant fightMMusic 120	//Anger Point
 
 #constant dangerAMusic 211
 #constant dangerBMusic 212
@@ -635,10 +647,11 @@ global jumpPartI as Integer[6, 4]
 #constant dangerTMusic 215
 #constant dangerFMusic 216
 #constant dangerAJMusic 217
+#constant dangerMMusic 218
 
-#constant raveBass1 121
-#constant raveBass2 122
-#constant fireMusic 123
+#constant raveBass1 126
+#constant raveBass2 127
+#constant fireMusic 128
 
 #constant retro1M 131
 #constant retro2M 132
@@ -767,6 +780,12 @@ global IMG_CS_CRAB as Integer[NUM_CRABS]
 
 #constant SPR_STORY_EXIT 621
 #constant SPR_STORY_SKIP 622
+
+//Statistics texts
+#constant ST_TITLE 651
+#constant ST_TXT1 652
+#constant ST_TXT2 653
+#constant ST_TXT3 654
 
 //Settings Sprites: 801-900
 
@@ -943,11 +962,12 @@ function LoadBaseSounds()
 		LoadMusicOGG(exp2S, "exp2.ogg")
 		LoadMusicOGG(exp3S, "exp3.ogg")
 		
+		//LoadMusicOGG(wizardSpell1S, "wizardSpell1.ogg")
+		//LoadMusicOGG(wizardSpell2S, "wizardSpell2.ogg")
+		//LoadMusicOGG(kingSpellS, "kingSpell.ogg")
+		//LoadMusicOGG(knightSpellS, "knightSpell.ogg")
+		
 		LoadMusicOGG(ufoS, "ufo.ogg")
-		LoadMusicOGG(wizardSpell1S, "wizardSpell1.ogg")
-		LoadMusicOGG(wizardSpell2S, "wizardSpell2.ogg")
-		LoadMusicOGG(kingSpellS, "kingSpell.ogg")
-		LoadMusicOGG(knightSpellS, "knightSpell.ogg")
 		LoadMusicOGG(ninjaStarS, "ninjaStar.ogg")
 	endif
 			
@@ -1039,6 +1059,10 @@ function PlayMusicOGGSP(songID, loopYN)
 			LoadMusicOGG(fightAJMusic, "fightAJ.ogg")
 			SetMusicLoopTimesOGG(fightAJMusic, 7.2, -1)
 		endif
+		if songID = fightMMusic
+			LoadMusicOGG(fightMMusic, "fightM.ogg")
+			SetMusicLoopTimesOGG(fightMMusic, 3.0, -1)
+		endif
 		if songID = chillMusic
 			LoadMusicOGG(chillMusic, "chill.ogg")
 			SetMusicLoopTimesOGG(chillMusic, 0.967, -1)
@@ -1061,6 +1085,7 @@ function PlayMusicOGGSP(songID, loopYN)
 		if songID = dangerTMusic then LoadMusicOGG(dangerTMusic, "dangerT.ogg")
 		if songID = dangerFMusic then LoadMusicOGG(dangerFMusic, "dangerF.ogg")
 		if songID = dangerAJMusic then LoadMusicOGG(dangerAJMusic, "dangerAJ.ogg")
+		if songID = dangerMMusic then LoadMusicOGG(dangerMMusic, "dangerM.ogg")
 		
 		if songID = raveBass1 and appState = STORY
 			LoadMusicOGG(raveBass1, "special4.ogg")
@@ -1070,6 +1095,14 @@ function PlayMusicOGGSP(songID, loopYN)
 		endif
 		if songID = raveBass2 and crab2Evil = 0 then LoadMusicOGG(raveBass2, "special4"+AltStr(crab2Alt)+".ogg")
 		if songID = raveBass2 and crab2Evil = 1 then LoadMusicOGG(raveBass2, "fire.ogg")
+		
+		rnd = Random(1,2)
+		
+		//if songID = wizardSpell1S and crab1Alt = 1 then LoadMusicOGG(wizardSpell1S, "wizardSpell1.ogg")
+		//LoadMusicOGG(wizardSpell2S, "wizardSpell2.ogg")
+		//LoadMusicOGG(kingSpellS, "kingSpell.ogg")
+		//LoadMusicOGG(knightSpellS, "knightSpell.ogg")
+		
 		if songID = fireMusic then LoadMusicOGG(fireMusic, "fire.ogg")
 		
 		if songID = retro1M then LoadMusicOGG(retro1M, "special4a.ogg")
@@ -1103,6 +1136,7 @@ function PlayMusicOGGSPStr(str$, loopYN)
 	if str$ = "fightJ" then id = fightJMusic
 	if str$ = "fightD" then id = tutorialMusic
 	if str$ = "fightAJ" then id = fightAJMusic
+	if str$ = "anger" then id = fightMMusic
 	if str$ = "tomato" then id = tomatoMusic
 	if str$ = "emotion" then id = emotionMusic
 	if str$ = "chill" then id = chillMusic
@@ -1120,6 +1154,7 @@ function PlayMusicOGGSPStr(str$, loopYN)
 	if str$ = "dangerC" then id = dangerCMusic
 	if str$ = "dangerF" then id = dangerFMusic
 	if str$ = "dangerAJ" then id = dangerAJMusic
+	if str$ = "dangerM" then id = dangerMMusic
 	if str$ = "rave1" then id = raveBass1
 	if str$ = "rave2" then id = raveBass2
 	
@@ -1159,7 +1194,7 @@ function GetMusicByID(id)
 	if id = 11 then song = ssidMusic
 	if id = 12 then song = mcbMusic
 	if id = 13 then song = loveMusic
-	//if id = 14 then song = angerMusic
+	if id = 14 then song = fightMMusic
 	if id = 15 then song = emotionMusic
 	//if id = 16 then song = fightBVocalMusic
 	//if id = 17 then song = creditsMusic

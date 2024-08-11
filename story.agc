@@ -144,10 +144,11 @@ function InitStory()
 	LoadSpriteExpress(SPR_STORY_SKIP, "ui/skip.png", 130, 130, w-130-40, 20, 5)
 	FixSpriteToScreen(SPR_STORY_SKIP, 1)
 	AddButton(SPR_STORY_SKIP)
-	if dispH 
+	if dispH
 		IncSpriteY(SPR_STORY_EXIT, 9999)
 		IncSpriteY(SPR_STORY_SKIP, 9999)
 	endif
+	if mPlatform = ANDROID then IncSpriteY(SPR_STORY_SKIP, 9999)
 	
 	storyStateInitialized = 1
 endfunction
@@ -412,6 +413,7 @@ function ShowScene(chap, scene)
 			PlayMusicOGGSPStr(GetStringToken(wholeRow$, " ", 2), 1)
 			wholeRow$ = ReadLine(1)
 			inc lineOverall, 1
+			//if GetDeviceBaseName() = "android" then SetSpriteVisible(SPR_STORY_SKIP, 0)
 		endif
 		
 		//Playing a sound effect
@@ -427,6 +429,7 @@ function ShowScene(chap, scene)
 				
 		//Starting a VS match
 		if GetStringToken(wholeRow$, " ", 1) = "fight"
+			//if GetDeviceBaseName() = "android" then Sleep(100)
 			state = GAME
 			spActive = 0
 			spType = STORYMODE
@@ -532,6 +535,7 @@ function ShowScene(chap, scene)
 						PlayTweenSprite(SPR_CRAB2_BODY, SPR_CRAB2_BODY, .1)
 						PlayTweenSprite(SPR_CRAB2_BODY, SPR_CRAB2_FACE, .1)
 						PlayTweenSprite(SPR_CRAB2_BODY, SPR_CRAB2_COSTUME, .1)
+						//SyncG()
 					endif
 					crabRType = crabRefType
 					crabRAlt = crabRefAlt
@@ -579,6 +583,12 @@ function ShowScene(chap, scene)
 		
 		if FindString(wholeRow$, ";") <> 0
 			str$ = GetStringToken(wholeRow$, ";", 1)
+			cosAlt$ = ""
+			if Mid(str$, FindString(str$, "B")+1, 1) = "0"
+				//For the alternate costumes
+				cosAlt$ = "0"
+				str$ = "B" + Mid(str$, FindString(str$, "B")+2, -1)
+			endif
 			body$ = Mid(str$, FindString(str$, "B")+1, 1)
 			face$ = Mid(str$, FindString(str$, "F")+1, -1)
 			
@@ -613,6 +623,11 @@ function ShowScene(chap, scene)
 			SetFolder("/media/storysprites")
 			//Make a dump image cache, that is deleted when the story is exited
 			if targetCrab = 1
+				
+				for i = SPR_CRAB1_BODY to SPR_CRAB1_COSTUME
+					DeleteImage(GetSpriteImageID(i))
+				next i
+				
 				//1st Crab Target
 				cosType = GetCrabCostumeType(crab1Type, crab1Alt)
 				if cosType = 2 then folderF$ = "speyes/"
@@ -632,11 +647,11 @@ function ShowScene(chap, scene)
 				endif
 				if cosType = 1
 					//Hat costume
-					SetSpriteImage(SPR_CRAB1_COSTUME, LoadImageR("costume/costume" + str(crab1Type) + AltStr(crab1Alt) + z$ + hatBonus$ + ".png"))
+					SetSpriteImage(SPR_CRAB1_COSTUME, LoadImageR("costume/costume" + cosAlt$ + str(crab1Type) + AltStr(crab1Alt) + z$ + hatBonus$ + ".png"))
 				elseif cosType = 2
 					//Unique sprite (WIP)
 					if GetFileExists("costume/costume" + str(crab1Type) + AltStr(crab1Alt) + costume$ + ".png")
-						SetSpriteImage(SPR_CRAB1_COSTUME, LoadImageR("costume/costume" + str(crab1Type) + AltStr(crab1Alt) + costume$ + ".png"))
+						SetSpriteImage(SPR_CRAB1_COSTUME, LoadImageR("costume/costume" + cosAlt$ + str(crab1Type) + AltStr(crab1Alt) + costume$ + ".png"))
 					else
 						SetSpriteImage(SPR_CRAB1_COSTUME, LoadImageR("blank.png"))
 					endif
@@ -644,17 +659,17 @@ function ShowScene(chap, scene)
 					if GetFileExists(folderF$ + "face" + z$ + str(crab1Type+crab1Alt*6) + face$ + ".png")
 						SetSpriteImage(SPR_CRAB1_FACE, LoadImageR(folderF$ + "face" + z$ + str(crab1Type+crab1Alt*6) + face$ + ".png"))
 					else
-						SetSpriteImage(SPR_CRAB2_FACE, LoadImageR("face" + face$ + ".png"))
+						SetSpriteImage(SPR_CRAB1_FACE, LoadImageR("face" + face$ + ".png"))
 					endif
 				elseif cosType = 4
 					//Posed costume
 					if GetFileExists("costume/costume" + str(crab1Type) + AltStr(crab1Alt) + costume$ + z$ + ".png") = 0 then costume$ = ""
-					SetSpriteImage(SPR_CRAB1_COSTUME, LoadImageR("costume/costume" + str(crab1Type) + AltStr(crab1Alt) + costume$ + z$ + ".png"))
+					SetSpriteImage(SPR_CRAB1_COSTUME, LoadImageR("costume/costume" + cosAlt$ + str(crab1Type) + AltStr(crab1Alt) + costume$ + z$ + ".png"))
 				elseif cosType = 5
 					//Taxi Type, unique body AND costume, normal face
 					SetSpriteImage(SPR_CRAB1_BODY, LoadImageR(folderB$ + "body" + str(crab1Type) + AltStr(crab1Alt) + body$ + ".png"))
 					SetSpriteImage(SPR_CRAB1_FACE, LoadImageR(folderF$ + "face" + face$ + ".png"))
-					SetSpriteImage(SPR_CRAB1_COSTUME, LoadImageR("costume/costume" + str(crab1Type) + AltStr(crab1Alt) + costume$ + ".png"))
+					SetSpriteImage(SPR_CRAB1_COSTUME, LoadImageR("costume/costume" + cosAlt$ + str(crab1Type) + AltStr(crab1Alt) + costume$ + ".png"))
 				else
 					//Blank costume
 					SetSpriteImage(SPR_CRAB1_COSTUME, LoadImageR("blank.png"))
@@ -666,17 +681,21 @@ function ShowScene(chap, scene)
 				endif
 				
 				for i = SPR_CRAB1_BODY to SPR_CRAB1_COSTUME
-					trashBag.insert(GetSpriteImageID(i))
+					//trashBag.insert(GetSpriteImageID(i))
 				next i
 					
 			elseif GetSpriteExists(SPR_CRAB2_BODY)
+				
+				for i = SPR_CRAB2_BODY to SPR_CRAB2_COSTUME
+					DeleteImage(GetSpriteImageID(i))
+				next i
 				
 				//Finishing the crab transition before loading new images
 				//SPR_CRAB2_COSTUME is the tween
 				while GetTweenSpritePlaying(SPR_CRAB2_COSTUME, SPR_CRAB2_BODY)
 					UpdateAllTweens(GetFrameTime())
 					DoInputs()
-					if inputSkip or inputSelect or GetPointerPressed() or (dispH = 0 and GetSpriteHitTest(SPR_STORY_SKIP, GetPointerX(), GetPointerY()) and GetPointerState()) then UpdateAllTweens(.1)
+					if (inputSkip or inputSelect or GetPointerPressed() or (dispH = 0 and GetSpriteHitTest(SPR_STORY_SKIP, GetPointerX(), GetPointerY()) and GetPointerState())) then UpdateAllTweens(.1)
 					Sync()
 				endwhile
 				
@@ -703,11 +722,11 @@ function ShowScene(chap, scene)
 				endif
 				if cosType = 1
 					//Hat costume
-					SetSpriteImage(SPR_CRAB2_COSTUME, LoadImageR("costume/costume" + str(crab2Type) + AltStr(crab2Alt) + z$ + hatBonus$ + ".png"))
+					SetSpriteImage(SPR_CRAB2_COSTUME, LoadImageR("costume/costume" + cosAlt$ + str(crab2Type) + AltStr(crab2Alt) + z$ + hatBonus$ + ".png"))
 				elseif cosType = 2
 					//Unique sprite (WIP)
 					if GetFileExists("costume/costume" + str(crab2Type) + AltStr(crab2Alt) + costume$ + ".png")
-						SetSpriteImage(SPR_CRAB2_COSTUME, LoadImageR("costume/costume" + str(crab2Type) + AltStr(crab2Alt) + costume$ + ".png"))
+						SetSpriteImage(SPR_CRAB2_COSTUME, LoadImageR("costume/costume" + cosAlt$ + str(crab2Type) + AltStr(crab2Alt) + costume$ + ".png"))
 					else
 						SetSpriteImage(SPR_CRAB2_COSTUME, LoadImageR("blank.png"))
 					endif
@@ -720,12 +739,12 @@ function ShowScene(chap, scene)
 				elseif cosType = 4
 					//Posed costume
 					if GetFileExists("costume/costume" + str(crab2Type) + AltStr(crab2Alt) + costume$ + z$ + ".png") = 0 then costume$ = ""
-					SetSpriteImage(SPR_CRAB2_COSTUME, LoadImageR("costume/costume" + str(crab2Type) + AltStr(crab2Alt) + costume$ + z$ + ".png"))
+					SetSpriteImage(SPR_CRAB2_COSTUME, LoadImageR("costume/costume" + cosAlt$ + str(crab2Type) + AltStr(crab2Alt) + costume$ + z$ + ".png"))
 				elseif cosType = 5
 					//Taxi Type, unique body AND costume, normal face
 					SetSpriteImage(SPR_CRAB2_BODY, LoadImageR(folderB$ + "body" + str(crab2Type) + AltStr(crab2Alt) + body$ + ".png"))
 					SetSpriteImage(SPR_CRAB2_FACE, LoadImageR(folderF$ + "face" + face$ + ".png"))
-					SetSpriteImage(SPR_CRAB2_COSTUME, LoadImageR("costume/costume" + str(crab2Type) + AltStr(crab2Alt) + costume$ + ".png"))
+					SetSpriteImage(SPR_CRAB2_COSTUME, LoadImageR("costume/costume" + cosAlt$ + str(crab2Type) + AltStr(crab2Alt) + costume$ + ".png"))
 				else
 					//Blank costume
 					SetSpriteImage(SPR_CRAB2_COSTUME, LoadImageR("blank.png"))
@@ -737,7 +756,7 @@ function ShowScene(chap, scene)
 				endif
 
 				for i = SPR_CRAB2_BODY to SPR_CRAB2_COSTUME
-					trashBag.insert(GetSpriteImageID(i))
+					//trashBag.insert(GetSpriteImageID(i))
 				next i
 				
 			endif
@@ -807,8 +826,13 @@ function ShowScene(chap, scene)
 			showPos = 1
 			lineNum = 0
 			
-			PlaySoundR(fwipS, 40)
-			PlaySoundR(arrowS, 40)
+			if GetDeviceBaseName() <> "android"
+				PlaySoundR(fwipS, 40)
+				PlaySoundR(arrowS, 40)
+			else
+				if GetSoundPlayingR(fwipS) = 0 then PlaySoundR(fwipS, 40)
+				if GetSoundPlayingR(arrowS) = 0 then PlaySoundR(arrowS, 40)
+			endif
 			for i = SPR_TEXT_BOX to SPR_TEXT_BOX4
 				if boxNum >= i-SPR_TEXT_BOX then PlayTweenSprite(i, i, 0)
 				if boxNum = i-SPR_TEXT_BOX then SetSpriteColorAlpha(i, 255)
@@ -858,10 +882,12 @@ function ShowScene(chap, scene)
 					exit
 				endif
 				
-				if dispH = 0 and GetSpriteHitTest(SPR_STORY_SKIP, GetPointerX(), GetPointerY()) and GetPointerState() then inputSkip = 1
+				if GetSpriteVisible(SPR_STORY_SKIP) and GetSpriteHitTest(SPR_STORY_SKIP, GetPointerX(), GetPointerY()) and GetPointerState() then inputSkip = 1
 				if inputSkip
-					UpdateAllTweens(.2)
-					SetViewOffset(-5 + Random(0, 10), -5 + Random(0, 10))
+					//if GetDeviceBaseName() <> "android"
+						UpdateAllTweens(.2)
+						SetViewOffset(-5 + Random(0, 10), -5 + Random(0, 10))
+					//endif
 				else
 					SetViewOffset(0, 0)
 				endif
@@ -870,9 +896,10 @@ function ShowScene(chap, scene)
 			    //Print(GetSpriteHeight(SPR_TEXT_BOX))
 				
 				storyInput = 0
-				if GetPointerPressed() or inputSelect or inputSkip then storyInput = 1
+				if GetPointerPressed() or inputSelect or inputSkip or (mPlatform = ANDROID and GetSpriteHitTest(SPR_STORY_SKIP, GetPointerX(), GetPointerY()) and GetPointerState()) then storyInput = 1
 				if GetTextCharColorAlpha(storyText, charSounded) = 255 and GetTextCharColorAlpha(storyText, Len(displayString$)-9) = 0
-					if Mod(charSounded, 2) then PlaySoundR(talk1S, 40/(hurryUp/2+1))
+					if Mod(charSounded, 1+mPlatform) then PlaySoundR(talk1S, 40/(hurryUp/2+1))
+					//if Mod(charSounded, 2) and GetDeviceBaseName() <> "android" then PlaySoundR(talk1S, 40/(hurryUp/2+1))
 					inc charSounded, 1
 				endif
 				if storyInput
@@ -887,6 +914,8 @@ function ShowScene(chap, scene)
 			inc boxNum, 1
 			wholeRow$ = ReadLine(1)	//Reading the new line of the text file.
 			inc lineOverall, 1
+			
+			//if GetDeviceBaseName() = "android" then SetSpriteVisible(SPR_STORY_SKIP, 1)
 			
 			if CompareString(wholeRow$, "") = 1
 				state = StartEndScreen()
@@ -984,7 +1013,7 @@ function StartEndScreen()
 	endif
 	if overallScene = 45 then UnlockSong(12, 1)
 	if overallScene = 51 then UnlockSong(13, 1)
-	if overallScene = 60 then UnlockSong(14, 1)
+	if overallScene = 61 then UnlockSong(14, 1)
 	if overallScene = 65 then UnlockSong(15, 1)
 	if overallScene = 84 and speedUnlock = 0
 		//84, Fast Battle Start
@@ -1336,7 +1365,7 @@ endfunction
 
 function GetCrabCostumeType(cT, cA)
 	cosType = 0
-	if (cT = 2 and cA = 0) or (cT = 4 and cA = 3)
+	if (cT = 2 and cA = 0)
 		//Hat type
 		cosType = 1
 	elseif (cT = 2 and cA = 2) or (cT = 3 and cA = 0) or (cT = 3 and cA = 2) or (cT = 5 and cA = 3) or (cT = 6 and cA = 3)
@@ -1392,6 +1421,7 @@ function SetCrabFromStringChap(str$, chapNum, crabNum)
 	elseif str$ = "HC" or chapNum = 8	//Hawaiian Crab
 		mType = 4
 		mAlt = 2
+		mAlt = 2
 		
 	elseif str$ = "TP" or chapNum = 9	//Team Player
 		mType = 6
@@ -1425,7 +1455,7 @@ function SetCrabFromStringChap(str$, chapNum, crabNum)
 		mType = 1
 		mAlt = 1
 		
-	elseif str$ = "HO" or chapNum = 17 or str$ = "DC"	//Holy Crab/Devil Crab
+	elseif str$ = "HL" or chapNum = 17 or str$ = "DC"	//Holy Crab/Devil Crab
 		mType = 4
 		mAlt = 3
 		

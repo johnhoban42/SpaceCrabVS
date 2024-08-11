@@ -1,1 +1,36 @@
-bg 3
+bg 1
+music retro2
+1F: Wow! You're the Future Space Crab! It's really you!
+FC: Oh, and you're the fan.
+You know, I really did appreciate your support, over the years...
+1F: Wow, in the future, I was still a fan of Space Crab...
+WAIT! This is a golden opportunity! I have to ask.
+How many more Space Crab games will they make in the future??
+FC: Huh, games...
+It's been so long since the last Space Crab game, I can hardly remember...
+1F: Oh no.
+FC: I think, after Space Crab VS, Rondovo Games gave up on making more.
+I had disappeared, and with their main character gone, they turned to their other series for sequels.
+1F: No!
+FC: They made Race Against a Duck 2, 3, 4... who knows how many more.
+Later, they turned Notebook Jam into a movie, and then made Notebook Jam: The Movie: The Game.
+The fans didn't like that...
+Finally, they spent the rest of their lives trying to make another Space game-
+Which wasn't very long. They were all hit by meteors shortly after the announcement.
+music retro5
+1F: NO!
+You're lying! They HAVE to make another Space Crab!!
+Y-you lying old man! I'll beat the truth out of you if I have to!
+music retro5
+fight 78483
+music retro8
+FC: You really shouldn't be taking my memory so seriously.
+Because Space Crab bested me in battle, the future is now unwritten.
+1F: So... there's a chance that they'll make more Space Crab games?
+FC: I think there's a good chance, #1 Fan.
+1F: Hot Diggity! That's enough of a thread for me to go off.
+Just hearing the POSSIBILITY, that they MIGHT make one- the hype will last me MONTHS!
+exit 2
+FC: Whew... that was close.
+I didn't want to tell him that HE'D be the one developing Space Crab 3.
+I don't think his young heart would be able to take it...

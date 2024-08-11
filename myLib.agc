@@ -3,6 +3,7 @@ function SyncG()
 	PingUpdate()
 	ButtonsUpdate()
 	UpdateAllTweens(GetFrameTime())
+	localSeconds# = localSeconds# + GetFrameTime()
     Sync()
 endfunction
 
@@ -857,7 +858,75 @@ function SetSpriteColorByCycleC(spr, numOf360)
 	DeleteSprite(tmpSpr)
 endfunction
 
-
+function GetTimerString(timeS#)
+	timerS$ = ""
+	hours = 0
+	
+	
+	if timeS# = 0
+		timerS$ = "0:00"
+	else
+		//For all other times besides min
+		
+		//Hours
+		if timeS# >= 3600
+			hours = Trunc(timeS#/3600)
+			timerS$ = timerS$ + str(hours) + ":"
+		else
+			//timerS$ = timerS$ + "0:"
+		endif
+		
+		//Minutes
+		if timeS# >= 60
+			mins = Mod(Trunc(timeS#/60), 60)
+			if mins <= 9 and hours > 0 then timerS$ = timerS$ + "0"
+			timerS$ = timerS$ + str(mins) + ":"
+		else
+			if hours = 0
+				timerS$ = timerS$ + "0:"
+			else
+				timerS$ = timerS$ + "00:"
+			endif
+		endif
+		
+		//Seconds
+		if timeS# >= 1
+			secs = Mod(Trunc(timeS#), 60)
+			if secs < 10
+				timerS$ = timerS$ + "0" + str(secs) //+ "."
+			else
+				timerS$ = timerS$ + str(secs) //+ "."
+			endif
+		else
+			timerS$ = timerS$ + "00" //."
+		endif
+		
+//~		//Milliseconds
+//~		ms = Mod(timeMS#, 1000)
+//~		if ms < 10
+//~			timerS$ = timerS$ + "00" + str(ms)
+//~		elseif ms < 100
+//~			timerS$ = timerS$ + "0" + str(ms)
+//~		else
+//~			timerS$ = timerS$ + str(ms)
+//~		endif
+//~		//Print(timeMS#)
+//~		//Sleep(1000)
+	endif
+	
+//~	//Watches: (#, $, %, &)
+//~	watchFilter = Mod(timeMS#/80, 4)
+//~	if watchFilter = 1
+//~		timerS$ = timerS$ + " #"
+//~	elseif watchFilter = 2
+//~		timerS$ = timerS$ + " $"
+//~	elseif watchFilter = 3
+//~		timerS$ = timerS$ + " %"
+//~	else
+//~		timerS$ = timerS$ + " &"
+//~	endif
+	
+endfunction timerS$
 
 global pingList as Integer[0]
 global pingNum = 701
