@@ -1,34 +1,34 @@
 bg 1
 music retro6
-AL: Things have been... quiet, around here.
-Like every crab suddenly decided that they don't need my services anymore.
-...
-It's peaceful, yet quite boring.
-...
+AL: BF; Things have been... quiet, around here.
+BF; Like every crab suddenly decided that they don't need my services anymore.
+BF; ...
+BF; It's peaceful, yet quite boring.
+BF; ...
 music retro3
-SC: Hey, Al. I hope I don't need an appointment or anything.
-AL: Space Crab!
-Ah- ahem - Space Crab. What can I help you with?
-SC: Al... I messed up.
-The Star Seekers were all together, and I couldn't control myself...
-AL: (Oh, the latest update on the Star Seekers!)
-(I've been behind on the news- what exciting developments have occurred?)
-SC: ...and now everything is falling apart.
-AL: No! Really?
-SC: Yeah. And that's why I came here - for your help.
-I can't do that logistical stuff. That's part of why it ended up like this in the first place.
-So, will you do it?
-AL: (No. Way. I get to play a part in the Star Seekers?!)
-(Don't blow this, Al. Follow protocol.)
-Well, we do have a payment fee for these things.
-I'm pretty sure you already know what it is.
+SC: BBFRb; Hey. Al. I hope I don't need an appointment or anything.
+AL: BAFSa; Space Crab!
+BF; Ah- ahem - Space Crab. What can I help you with?
+SC: BF; Al... I messed up.
+BF; The Star Seekers were all together, and I couldn't control myself...
+AL: BF; (Oh, the latest update on the Star Seekers!)
+BF; (I've been behind on the news- what exciting developments have occurred?)
+SC: BF; ...and now everything is falling apart.
+AL: BF; No! Really?
+SC: BF; Yeah. And that's why I came here - for your help.
+BF; I can't do that logistical stuff. That's part of why it ended up like this in the first place.
+BF; So, will you do it?
+AL: BF; (No way. I get to play a part in the Star Seekers?!)
+BF; (Don't blow this, Al. Follow protocol.)
+BF; Well, we do have a payment fee for these things.
+BF; I'm pretty sure you already know what it is.
 music fightA
 fight 65647
 music retro4
-SC: Shoot... I had to win that one, didn't I?
-AL: N-not at all! In fact, your payment's been processed.
-Al Legal is at your service, ready to help the Star Seekers however I can.
-SC: You seem... a little too eager?
-...
-That's great! Everything is a colossal mess, so your help is greatly appreciated.
-AL: Wait. How big of a mess do you mean?
+SC: BCF; Shoot... I had to win that one, didn't I?
+AL: BF; N-not at all! In fact, your payment's been processed.
+BF; Al Legal is at your service, ready to help the Star Seekers however I can.
+SC: BF; You seem... a little too eager?
+BF; ...
+BF; That's great! Everything is a colossal mess, so your help is greatly appreciated.
+AL: BF; Wait. How big of a mess do you mean?

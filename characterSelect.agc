@@ -1285,7 +1285,7 @@ function DoAISelectController(csc ref as CharacterSelectController)
 			SetSpriteVisible(csc.sprEvil, 0)
 			SetSpriteFrame(csc.sprEvil, 1)
 			crab2Evil = 0
-			if csc.crabSelected = 1 or csc.crabSelected = 19 or csc.crabSelected = 22 or csc.crabSelected = 24 then SetSpriteVisible(csc.sprEvil, 1)
+			if csc.crabSelected = 1 or csc.crabSelected = 19 or csc.crabSelected = 22 or csc.crabSelected = 24 and evilUnlock then SetSpriteVisible(csc.sprEvil, 1)
 			
 			//Making all other crabs darker
 			for k = 0 to NUM_CRABS-1

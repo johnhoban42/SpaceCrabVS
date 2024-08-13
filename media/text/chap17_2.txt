@@ -1,31 +1,31 @@
 bg 2
 music emotion
-NC: BWFE; Here I stand, directionless and confused.
-BF; Am I doomed to wander the stars, with no partner leading me towards honor?
-BF; While I consider myself an independent, I do find... comfort, in guidance from others.
-BF; Yet, my current efforts have only led me to enable the mistakes of the past.
-BF; !
-BF; What is this otherworldly light??
-BF; Show yourself!
-HL: BF; My child, do not fret over-
-music dungeon
-NC: BF; No more words from you!
-BF; Despite your glowing appearance, I won't entertain anyone who tries to get the jump on me!
-BF; Leave now or fight for your presence.
-HC: BIFWv; Oh my... how cute.
+NC: BBFTr; Here I stand, directionless and confused.
+BMFE; Am I doomed to wander the stars, with no partner leading me towards honor?
+BWFE; While I consider myself an independent, I do find... comfort, in guidance from others.
+BBFTr; Yet, my current efforts have only led me to enable the mistakes of the past.
+music
+BWFMa; !
+BVFD; What is this otherworldly presence I sense?? Show yourself!
+HL: BAFOg; My child, do not fret over-
+music fightAJ
+NC: BOFD; No more words from you!
+BWFD; Despite your glowing appearance, I won't entertain anyone who tries to get the jump on me!
+BVFD; Leave now or fight for your presence.
+HL: BIFWv; Oh my... how cute.
 music dungeon
 fight 72537
 music emotion
-HL: BF; My word, you really are a rambunctious child...
-NC: BF; ...
-HL: BF; It's no wonder that you put so much stock in the words and guidance of your friends.
-BF; Channeling your boundless energy towards the support of a cause is really quite cute.
-NC: BF; Nghh... not... really...
-HL: Do not fret. The path you were previously on is not one of self destruction.
-BF; Stay the course, and all will be well. Your Star Seekers are not bound by the fate of your ancestors.
-BF; I sense good in Space Crab's heart. If he can cleanse the unhealthy desires from around it...
-BF; The two of you will live a long, happy life together.
+HL: BUFTp; My word, you really are a rambunctious child...
+NC: BJFXc; ...
+HL: BSFTn; It's no wonder that you put so much stock in the words and guidance of your friends.
+BAFOc; Channeling your boundless energy towards the support of a cause is really quite cute.
+NC: BQFY; Nghh... not... really...
+HL: BMFEb; Do not fret. The path you were previously on is not one of self destruction.
+BIFAb; Stay the course, and all will be well. Your Star Seeking is not bound by the fate of your ancestors.
+BMFTm; I sense good in Space Crab's heart. If he can cleanse the unhealthy desires from around it...
+BAFWw; The two of you will live a long, happy life together.
 exit 1
-NC: BF; ...
-BF; Hmmm. It appears the higher being wants me to... marry Space Crab?
-BF; I worry that the situation has been... misconstrued...
+NC: BBFE; ...
+BNFE; Hmmm. It appears the higher being wants me to... marry Space Crab?
+BBFHa; I worry that the situation has been... misconstrued...

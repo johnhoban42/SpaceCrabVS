@@ -413,7 +413,7 @@ function DoStart()
 	UpdateStartElements()
 	
 	//Multiplayer section
-	if GetPointerPressed() and not Button(SPR_TITLE) and not Button(SPR_STATS) and not Button(SPR_SETTINGS) and not Button(SPR_CLASSIC) and not Button(SPR_STORY_START) and not Button(SPR_START1) and not Button(SPR_LEADERBOARD) and not Button(SPR_MENU_BACK) and not Button(SPR_STARTMIRROR) and GetSpriteVisible(SPR_TITLE) = 1
+	if GetPointerPressed() and not Button(SPR_TITLE) and not Button(SPR_STATS) and not Button(SPR_JUKEBOX) and not Button(SPR_SETTINGS) and not Button(SPR_CLASSIC) and not Button(SPR_STORY_START) and not Button(SPR_START1) and not Button(SPR_LEADERBOARD) and not Button(SPR_MENU_BACK) and not Button(SPR_STARTMIRROR) and GetSpriteVisible(SPR_TITLE) = 1
 		PingCrab(GetPointerX(), GetPointerY(), Random (100, 180))
 	endif
 	

@@ -305,6 +305,7 @@ function LoopSettings()
 	if ButtonMultitouchEnabled(SPRS_EXIT) or inputExit
 		inputSelect = 0
 		PlaySoundR(fwipS, 100)
+		ClearMultiTouch()
 		stayIn = 0
 	endif
 	

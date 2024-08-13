@@ -112,9 +112,19 @@ function DoStatistics()
 	metT$ = "Meteors Dodged: " + Str(totalMeteors)
 	SetTextString(ST_TXT2, timeP$ + chr(10) + battleG$ + chr(10) + mirrorG$ + chr(10) + classG$ + chr(10) + metT$)
 	
-	
-	
+	starNum = 1
+	for i = 1 to Len(GetTextString(ST_TXT1))
+		if GetTextCharColorBlue(ST_TXT1, i) = 0
+			SetTextCharAngle(ST_TXT1, i, 25*cos(300.0*localSeconds# + 360.0*(starNum*3)/7))
+			inc starNum, 1
+		endif
+	next i
+
 	if mod(round(localSeconds#)+1080, 8) = 0 and GetSpritePlaying(SPR_MENU_BACK) = 0 then PlaySprite(SPR_MENU_BACK, 10, 0, 1, 8)
+	
+	if GetPointerPressed() and not Button(SPR_MENU_BACK)
+		PingCrab(GetPointerX(), GetPointerY(), Random (100, 180))
+	endif
 	
 	//Do loop for the mode is here
 	if ButtonMultitouchEnabled(SPR_MENU_BACK) or inputExit

@@ -837,7 +837,7 @@ function SendSpecial2()
 			CreateSprite(meteorSprNum + 10000, meteorTractorI)
 			SetSpriteSize(meteorSprNum + 10000, 1, 1000)
 			SetSpriteColor(meteorSprNum + 10000, 255, 20, 20, 30)
-			if crab1Alt = 3 then SetSpriteColor(meteorSprNum + 10000, 0, 150, 0, 30)
+			if crab2Alt = 3 then SetSpriteColor(meteorSprNum + 10000, 0, 150, 0, 30)
 			SetSpriteDepth(meteorSprNum + 10000, 30)
 			
 			inc meteorSprNum, 1
