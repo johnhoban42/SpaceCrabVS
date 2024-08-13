@@ -246,7 +246,7 @@ function InitResults()
 	winText[11] = "Team Player has secured" + chr(10) + "his solo victory!"
 	winText[12] = "The gavel of justice declares" + chr(10) + "Al Legal the winner!"
 	winText[13] = "Crabacus' win was calculated" + chr(10) + "from the very start!"
-	winText[14] = "Space Barc finally reached that" + chr(10) + "itchy spot behind his ear!"
+	winText[14] = "Space Barc finally reached that" + chr(10) + "itchy spot behind the ear!"
 	winText[15] = "Hawaiian Crab has packed his" + chr(10) + "bags for the winner's circle!"
 	winText[16] = "Rock Lobster's win was as" + chr(10) + "awesome as his hit single!"
 	winText[17] = "Cranime's been renewed for" + chr(10) + "another two seasons! Sugoi!"

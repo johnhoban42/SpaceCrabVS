@@ -205,6 +205,17 @@ global spHighScoreClassic = 0
 global spHighCrabClassic$ = ""
 #constant spScoreMinSize = 70
 
+//Statistics Variables
+global totalSecondsPlayed = 0
+global localSeconds# = 0
+global fightTotal = 0
+global mirrorTotal = 0
+global classicTotal = 0
+global fightSeconds = 0
+global fightSecondsLocal# = 0
+global crabPlayed as Integer[24]
+global totalMeteors = 0
+
 global p1Ready = 0
 global p2Ready = 0
 
@@ -765,6 +776,12 @@ global IMG_CS_CRAB as Integer[NUM_CRABS]
 #constant SPR_STORY_EXIT 621
 #constant SPR_STORY_SKIP 622
 
+//Statistics texts
+#constant ST_TITLE 651
+#constant ST_TXT1 652
+#constant ST_TXT2 653
+#constant ST_TXT3 654
+
 //Settings Sprites: 801-900
 
 global curChapter = 3
@@ -940,11 +957,12 @@ function LoadBaseSounds()
 		LoadMusicOGG(exp2S, "exp2.ogg")
 		LoadMusicOGG(exp3S, "exp3.ogg")
 		
+		//LoadMusicOGG(wizardSpell1S, "wizardSpell1.ogg")
+		//LoadMusicOGG(wizardSpell2S, "wizardSpell2.ogg")
+		//LoadMusicOGG(kingSpellS, "kingSpell.ogg")
+		//LoadMusicOGG(knightSpellS, "knightSpell.ogg")
+		
 		LoadMusicOGG(ufoS, "ufo.ogg")
-		LoadMusicOGG(wizardSpell1S, "wizardSpell1.ogg")
-		LoadMusicOGG(wizardSpell2S, "wizardSpell2.ogg")
-		LoadMusicOGG(kingSpellS, "kingSpell.ogg")
-		LoadMusicOGG(knightSpellS, "knightSpell.ogg")
 		LoadMusicOGG(ninjaStarS, "ninjaStar.ogg")
 	endif
 			
@@ -1072,6 +1090,14 @@ function PlayMusicOGGSP(songID, loopYN)
 		endif
 		if songID = raveBass2 and crab2Evil = 0 then LoadMusicOGG(raveBass2, "special4"+AltStr(crab2Alt)+".ogg")
 		if songID = raveBass2 and crab2Evil = 1 then LoadMusicOGG(raveBass2, "fire.ogg")
+		
+		rnd = Random(1,2)
+		
+		//if songID = wizardSpell1S and crab1Alt = 1 then LoadMusicOGG(wizardSpell1S, "wizardSpell1.ogg")
+		//LoadMusicOGG(wizardSpell2S, "wizardSpell2.ogg")
+		//LoadMusicOGG(kingSpellS, "kingSpell.ogg")
+		//LoadMusicOGG(knightSpellS, "knightSpell.ogg")
+		
 		if songID = fireMusic then LoadMusicOGG(fireMusic, "fire.ogg")
 		
 		if songID = retro1M then LoadMusicOGG(retro1M, "special4a.ogg")

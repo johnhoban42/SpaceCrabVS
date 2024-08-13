@@ -1,25 +1,24 @@
 bg 1
 music emotion
-HL: BF; Oh my.
-BF; I feel a great sense of distress out in the cosmos.
-BF; Crabs in pain, crabs confused-
-BF; And, a lot of crabs injured in battle?
-BF; Odd, how often that's happened recently.
-BF; Among the distress, one prayer stands out-
-BF; 'Please, help everyone get along!'
-BF; Whoever sent this call for help, know that I have heard your plea.
-BF; Though, to do unto others, I must first prove myself a worthy vessel.
-BF; If I can dodge 50 meteors, then may I yet be able to heal those in need.
-BF; Let us begin the self evaluation.
+HL: BAFJd; Oh my.
+BBFTp; I feel a great sense of distress out in the cosmos.
+BNFMd; Crabs in pain, crabs confused-
+BIFCa; And, a lot of crabs injured in battle? Odd, how often that's happened recently.
+BVFJd; Among the distress, one prayer stands out-
+BMFTu; 'Please, help everyone get along!'
+BAFAb; Whoever sent this call for help, know that I have heard your plea.
+BMFTm; Though, to do unto others, I must first prove myself a worthy vessel.
+BBFTs; If I can dodge 50 meteors, then may I yet be able to heal those in need.
+BAFAb; Let us begin the self evaluation.
 music retro8
-classic 50
+classic 1
 music retro2
-HL: BF; Yes, I can feel the power of Holy divination flowing through me!
-BF; And I know that those crabs in need have the power inside them, too.
-BF; They just need a little push.
-BF; Do YOU think we'll be able to help these crabs?
-BF; That's right. I'm talking to YOU.
-TX: BF; Oh! Me? Sorry, I wasn't listening to your little spiel back there.
-BF; We've still got a bit of a drive until your first stop.
-BF; So just kick your feet up and relax back there, yeah?
-HL: BF; Splendid news. I'll do just that.
+HL: BVFWw; Yes, I can feel the power of Holy divination flowing through me!
+BAFWv; And I know that those crabs in need have the power inside them, too.
+BVFTu; They just need a little push.
+BOFA; Do YOU think we'll be able to help these crabs?
+BTFN; That's right. I'm talking to YOU.
+TX: BDFCa; Oh! Me? Sorry, I wasn't listening to your little spiel back there.
+BBFFd; We've still got a bit of a drive until your first stop.
+BSFA; So just kick your feet up and relax back there, yeah?
+HL: BAFTu; Splendid news. I'll do just that.

@@ -144,10 +144,11 @@ function InitStory()
 	LoadSpriteExpress(SPR_STORY_SKIP, "ui/skip.png", 130, 130, w-130-40, 20, 5)
 	FixSpriteToScreen(SPR_STORY_SKIP, 1)
 	AddButton(SPR_STORY_SKIP)
-	if dispH 
+	if dispH
 		IncSpriteY(SPR_STORY_EXIT, 9999)
 		IncSpriteY(SPR_STORY_SKIP, 9999)
 	endif
+	if mPlatform = ANDROID then IncSpriteY(SPR_STORY_SKIP, 9999)
 	
 	storyStateInitialized = 1
 endfunction
@@ -412,6 +413,7 @@ function ShowScene(chap, scene)
 			PlayMusicOGGSPStr(GetStringToken(wholeRow$, " ", 2), 1)
 			wholeRow$ = ReadLine(1)
 			inc lineOverall, 1
+			//if GetDeviceBaseName() = "android" then SetSpriteVisible(SPR_STORY_SKIP, 0)
 		endif
 		
 		//Playing a sound effect
@@ -427,6 +429,7 @@ function ShowScene(chap, scene)
 				
 		//Starting a VS match
 		if GetStringToken(wholeRow$, " ", 1) = "fight"
+			//if GetDeviceBaseName() = "android" then Sleep(100)
 			state = GAME
 			spActive = 0
 			spType = STORYMODE
@@ -620,6 +623,11 @@ function ShowScene(chap, scene)
 			SetFolder("/media/storysprites")
 			//Make a dump image cache, that is deleted when the story is exited
 			if targetCrab = 1
+				
+				for i = SPR_CRAB1_BODY to SPR_CRAB1_COSTUME
+					DeleteImage(GetSpriteImageID(i))
+				next i
+				
 				//1st Crab Target
 				cosType = GetCrabCostumeType(crab1Type, crab1Alt)
 				if cosType = 2 then folderF$ = "speyes/"
@@ -673,17 +681,21 @@ function ShowScene(chap, scene)
 				endif
 				
 				for i = SPR_CRAB1_BODY to SPR_CRAB1_COSTUME
-					trashBag.insert(GetSpriteImageID(i))
+					//trashBag.insert(GetSpriteImageID(i))
 				next i
 					
 			elseif GetSpriteExists(SPR_CRAB2_BODY)
+				
+				for i = SPR_CRAB2_BODY to SPR_CRAB2_COSTUME
+					DeleteImage(GetSpriteImageID(i))
+				next i
 				
 				//Finishing the crab transition before loading new images
 				//SPR_CRAB2_COSTUME is the tween
 				while GetTweenSpritePlaying(SPR_CRAB2_COSTUME, SPR_CRAB2_BODY)
 					UpdateAllTweens(GetFrameTime())
 					DoInputs()
-					if inputSkip or inputSelect or GetPointerPressed() or (dispH = 0 and GetSpriteHitTest(SPR_STORY_SKIP, GetPointerX(), GetPointerY()) and GetPointerState()) then UpdateAllTweens(.1)
+					if (inputSkip or inputSelect or GetPointerPressed() or (dispH = 0 and GetSpriteHitTest(SPR_STORY_SKIP, GetPointerX(), GetPointerY()) and GetPointerState())) then UpdateAllTweens(.1)
 					Sync()
 				endwhile
 				
@@ -744,7 +756,7 @@ function ShowScene(chap, scene)
 				endif
 
 				for i = SPR_CRAB2_BODY to SPR_CRAB2_COSTUME
-					trashBag.insert(GetSpriteImageID(i))
+					//trashBag.insert(GetSpriteImageID(i))
 				next i
 				
 			endif
@@ -814,8 +826,13 @@ function ShowScene(chap, scene)
 			showPos = 1
 			lineNum = 0
 			
-			PlaySoundR(fwipS, 40)
-			PlaySoundR(arrowS, 40)
+			if GetDeviceBaseName() <> "android"
+				PlaySoundR(fwipS, 40)
+				PlaySoundR(arrowS, 40)
+			else
+				if GetSoundPlayingR(fwipS) = 0 then PlaySoundR(fwipS, 40)
+				if GetSoundPlayingR(arrowS) = 0 then PlaySoundR(arrowS, 40)
+			endif
 			for i = SPR_TEXT_BOX to SPR_TEXT_BOX4
 				if boxNum >= i-SPR_TEXT_BOX then PlayTweenSprite(i, i, 0)
 				if boxNum = i-SPR_TEXT_BOX then SetSpriteColorAlpha(i, 255)
@@ -865,10 +882,12 @@ function ShowScene(chap, scene)
 					exit
 				endif
 				
-				if dispH = 0 and GetSpriteHitTest(SPR_STORY_SKIP, GetPointerX(), GetPointerY()) and GetPointerState() then inputSkip = 1
+				if GetSpriteVisible(SPR_STORY_SKIP) and GetSpriteHitTest(SPR_STORY_SKIP, GetPointerX(), GetPointerY()) and GetPointerState() then inputSkip = 1
 				if inputSkip
-					UpdateAllTweens(.2)
-					SetViewOffset(-5 + Random(0, 10), -5 + Random(0, 10))
+					//if GetDeviceBaseName() <> "android"
+						UpdateAllTweens(.2)
+						SetViewOffset(-5 + Random(0, 10), -5 + Random(0, 10))
+					//endif
 				else
 					SetViewOffset(0, 0)
 				endif
@@ -877,9 +896,10 @@ function ShowScene(chap, scene)
 			    //Print(GetSpriteHeight(SPR_TEXT_BOX))
 				
 				storyInput = 0
-				if GetPointerPressed() or inputSelect or inputSkip then storyInput = 1
+				if GetPointerPressed() or inputSelect or inputSkip or (mPlatform = ANDROID and GetSpriteHitTest(SPR_STORY_SKIP, GetPointerX(), GetPointerY()) and GetPointerState()) then storyInput = 1
 				if GetTextCharColorAlpha(storyText, charSounded) = 255 and GetTextCharColorAlpha(storyText, Len(displayString$)-9) = 0
-					if Mod(charSounded, 2) then PlaySoundR(talk1S, 40/(hurryUp/2+1))
+					if Mod(charSounded, 1+mPlatform) then PlaySoundR(talk1S, 40/(hurryUp/2+1))
+					//if Mod(charSounded, 2) and GetDeviceBaseName() <> "android" then PlaySoundR(talk1S, 40/(hurryUp/2+1))
 					inc charSounded, 1
 				endif
 				if storyInput
@@ -894,6 +914,8 @@ function ShowScene(chap, scene)
 			inc boxNum, 1
 			wholeRow$ = ReadLine(1)	//Reading the new line of the text file.
 			inc lineOverall, 1
+			
+			//if GetDeviceBaseName() = "android" then SetSpriteVisible(SPR_STORY_SKIP, 1)
 			
 			if CompareString(wholeRow$, "") = 1
 				state = StartEndScreen()
