@@ -636,6 +636,12 @@ global jumpPartI as Integer[6, 4]
 #constant ssidMusic 118  	//Shooting Stars into Dreams - REMix
 #constant mcbMusic 119		//Melted Chocolate Bar
 #constant fightMMusic 120	//Anger Point
+#constant fightBVocalMusic 121
+#constant creditsMusic 122
+#constant skateMusic 123
+#constant skateVocalMusic 124
+#constant puppetMusic 125
+
 
 #constant dangerAMusic 211
 #constant dangerBMusic 212
@@ -645,6 +651,8 @@ global jumpPartI as Integer[6, 4]
 #constant dangerFMusic 216
 #constant dangerAJMusic 217
 #constant dangerMMusic 218
+#constant dangerSkateMusic 219
+#constant dangerPuppetMusic 220
 
 #constant raveBass1 126
 #constant raveBass2 127
@@ -1072,6 +1080,12 @@ function PlayMusicOGGSP(songID, loopYN)
 			LoadMusicOGG(mcbMusic, "mcb.ogg")
 			SetMusicLoopTimesOGG(mcbMusic, 3.803, -1)
 		endif
+		if songID = skateMusic then LoadMusicOGG(skateMusic, "skate.ogg")
+		if songID = skateVocalMusic then LoadMusicOGG(skateVocalMusic, "skateVocal.ogg")
+		
+		//if id = 16 then song = fightBVocalMusic
+	//if id = 17 then song = creditsMusic
+	//if id = 20 then song = puppetMusic
 		
 		if songID = dangerAMusic then LoadMusicOGG(dangerAMusic, "dangerA.ogg")
 		if songID = dangerBMusic then LoadMusicOGG(dangerBMusic, "dangerB.ogg")
@@ -1081,6 +1095,8 @@ function PlayMusicOGGSP(songID, loopYN)
 		if songID = dangerFMusic then LoadMusicOGG(dangerFMusic, "dangerF.ogg")
 		if songID = dangerAJMusic then LoadMusicOGG(dangerAJMusic, "dangerAJ.ogg")
 		if songID = dangerMMusic then LoadMusicOGG(dangerMMusic, "dangerM.ogg")
+		if songID = dangerSkateMusic then LoadMusicOGG(dangerSkateMusic, "dangerSkate.ogg")
+		//if songID = dangerPuppetMusic then
 		
 		if songID = raveBass1 and appState = STORY
 			LoadMusicOGG(raveBass1, "special4.ogg")
@@ -1143,6 +1159,12 @@ function PlayMusicOGGSPStr(str$, loopYN)
 	if str$ = "chromecoast" then id = spMusic
 	if str$ = "mcb" then id = mcbMusic
 	if str$ = "ssid" then id = ssidMusic
+	if str$ = "fightBVocal" then id = fightBVocalMusic
+	if str$ = "credits" then id = creditsMusic
+	if str$ = "skate" then id = skateMusic
+	if str$ = "skateVocal" then id = skateVocalMusic
+	if str$ = "puppet" then id = puppetMusic
+	
 	if str$ = "dangerA" then id = dangerAMusic
 	if str$ = "dangerB" then id = dangerBMusic
 	if str$ = "dangerJ" then id = dangerJMusic
@@ -1150,6 +1172,8 @@ function PlayMusicOGGSPStr(str$, loopYN)
 	if str$ = "dangerF" then id = dangerFMusic
 	if str$ = "dangerAJ" then id = dangerAJMusic
 	if str$ = "dangerM" then id = dangerMMusic
+	if str$ = "dangerSkate" then id = dangerSkateMusic
+	if str$ = "dangerPuppet" then id = dangerPuppetMusic
 	if str$ = "rave1" then id = raveBass1
 	if str$ = "rave2" then id = raveBass2
 	
@@ -1193,8 +1217,8 @@ function GetMusicByID(id)
 	if id = 15 then song = emotionMusic
 	//if id = 16 then song = fightBVocalMusic
 	//if id = 17 then song = creditsMusic
-	//if id = 18 then song = skateMusic
-	//if id = 19 then song = skateVocalMusic
+	if id = 18 then song = skateMusic
+	if id = 19 then song = skateVocalMusic
 	//if id = 20 then song = puppetMusic
 	if id = 21 then song = fightFMusic
 	

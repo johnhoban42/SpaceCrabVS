@@ -1030,7 +1030,7 @@ function StartEndScreen()
 		Popup(MIDDLE, 28)
 		evilUnlock = 1
 	endif
-	if overallScene = 97 then UnlockCrab(1, 3, 1)
+	if overallScene = 97 and altUnlocked[1] < 3 then UnlockCrab(1, 3, 1)
 	if overallScene = 98 then UnlockSong(21, 1)
 	if overallScene = 99 and unlockAIHard = 0
 		//99, Hardest AI

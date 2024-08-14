@@ -1,29 +1,29 @@
 bg 1
 music rag
-AL: Ladder Wizard. Please, step into my office.
-LW: Al Legal! It's been a while, huh?
-Reconsidered my offer to join the Star Seekers?
-AL: That's actually why I've summoned you today.
-Not about MY joining, but the multitudes of other crabs you've roped into this.
-You see, after asking me, you followed up with an unprecedented number of other crustaceans.
-And I have the eyewitness accounts to prove it.
-LW: Oh, count me as one of the witnesses too! 
-AL: ...of course.
-If you'd like to speed things along, you can also provide the terms you gave these crabs.
-LW: Terms?
-AL: Of course. For new members, we need a contract in place, so that all expectations are aligned.
-LW: You know, Al, this kind of all happened a while ago. The things I said...
-Let's just say that they're 'lost to time'.
-AL: sigh Is there ANY way for you to remember what you told them?
-LW: Well, let's retrace our steps!
-music retro3
+AL: BAFWa; Ladder Wizard. Please, step into my office.
+LW: BVFA1g; Al Legal! It's been a while, huh?
+BUFA1a; Reconsidered my offer to join the Star Seekers?
+AL: BAFJd; That's actually why I've summoned you today.
+BSFCd; Not about MY joining, but the multitudes of other crabs you've roped into this.
+BMFJa; You see, after asking me, you followed up with an unprecedented number of other crustaceans.
+BZFDb; And I have the eyewitness accounts to prove it.
+LW: BMFJ1b; Oh, count me as one of the witnesses too! 
+AL: BBFUa; ...Of course.
+BAFW; If you'd like to speed things along, you can also provide the terms you gave these crabs.
+LW: BBFC1d; Terms?
+AL: BUFA; Of course. For new members, we need a contract in place, so that all expectations are aligned.
+LW: BBFG; You know, Al, this kind of all happened a while ago. The things I said...
+BAFJd; Let's just say that they're 'lost to time'.
+AL: BBFUa; *sigh* Is there ANY way for you to remember what you told them?
+LW: BMFA1; Well, let's retrace my steps!
+music fightA
 fight 67258
 music rag
-LW: It's all coming back...
-AL: Alright, let's hear those terms and conditions!
-That's the funny thing - I told them all something different!
-In lawyer speak, I guess that means they all have different terms, right?
-AL: So, we need... individualized contracts... for ALL of them?!
-LW: Wow, that's a lot! With that much work, you'll have no choice but to stay with the Star Seekers!
-AL: Ugh... I should have just joined when I first had the chance.
-It would have saved me a lot of headache.
+LW: BSFA1; It's all coming back...
+AL: BAFT; Alright, let's hear those terms and conditions!
+LW: BMFOc; That's the funny thing - I told them all something different!
+BUFO; In lawyer speak, I guess that means they all have DIFFERENT terms, right?
+AL: BBFKc; So, we need... individualized contracts... for ALL of them?!
+LW: BUFA1g; Wow, that's a lot! With that much work, you'll have no choice but to stay with the Star Seekers!
+AL: BBFOj; Ugh... I should have just joined when I first had the chance.
+BBFTp; It would have saved me a lot of headache.

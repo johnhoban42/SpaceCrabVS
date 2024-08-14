@@ -896,8 +896,8 @@ function PlayMirrorModeScene()
 	endif
 	
 	if GetMusicPlayingOGGSP(loserMusic) then StopMusicOGGSP(loserMusic)
-	if storyActive = 0 and GetMusicPlayingOGGSP(spMusic) then SetMusicLoopTimesOGG(spMusic, 6.932, -1)
 	if GetMusicPlayingOGGSP(spMusic) = 0 or gameSongSet <> 0 then StartGameMusic()
+	if storyActive = 0 and GetMusicPlayingOGGSP(spMusic) then SetMusicLoopTimesOGG(spMusic, 6.932, -1)
 	
 	CreateSpriteExpress(coverS, w, h, 0, 0, 4)
 	SetSpriteColor(coverS, 255, 255, 255, 100)

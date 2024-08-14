@@ -2527,12 +2527,16 @@ function PlayDangerMusic(startNew)
 			oldSong = 0
 			if GetMusicPlayingOGGSP(fightAMusic) then oldSong = fightAMusic
 			if GetMusicPlayingOGGSP(fightBMusic) then oldSong = fightBMusic
+			if GetMusicPlayingOGGSP(fightBVocalMusic) then oldSong = fightBMusic
 			if GetMusicPlayingOGGSP(fightJMusic) then oldSong = fightJMusic
 			if GetMusicPlayingOGGSP(spMusic) then oldSong = spMusic
 			if GetMusicPlayingOGGSP(tomatoMusic) then oldSong = tomatoMusic
 			if GetMusicPlayingOGGSP(fightFMusic) then oldSong = fightFMusic
 			if GetMusicPlayingOGGSP(fightAJMusic) then oldSong = fightAJMusic
 			if GetMusicPlayingOGGSP(fightMMusic) then oldSong = fightMMusic
+			if GetMusicPlayingOGGSP(skateMusic) then oldSong = skateMusic
+			if GetMusicPlayingOGGSP(skateVocalMusic) then oldSong = skateMusic
+			if GetMusicPlayingOGGSP(puppetMusic) then oldSong = puppetMusic
 			
 			if oldSong <> 0 then StopGamePlayMusic()
 			
@@ -2546,6 +2550,8 @@ function PlayDangerMusic(startNew)
 			if oldSong = fightFMusic then PlayMusicOGGSP(dangerFMusic, 1)
 			if oldSong = fightAJMusic then PlayMusicOGGSP(dangerAJMusic, 1)
 			if oldSong = fightMMusic then PlayMusicOGGSP(dangerMMusic, 1)
+			if oldSong = skateMusic then PlayMusicOGGSP(dangerSkateMusic, 1)
+			if oldSong = puppetMusic then PlayMusicOGGSP(dangerPuppetMusic, 1)
 			
 		endif
 		
@@ -2574,8 +2580,13 @@ function StopGamePlayMusic()
 	if GetMusicPlayingOGGSP(raveBass2) then StopMusicOGGSP(raveBass2)
 	if GetMusicPlayingOGGSP(characterMusic) then StopMusicOGGSP(characterMusic)
 	if GetMusicPlayingOGGSP(resultsMusic) then StopMusicOGGSP(resultsMusic)
-	
-	for i = dangerAMusic to dangerMMusic
+	if GetMusicPlayingOGGSP(fightBVocalMusic) then StopMusicOGGSP(fightBVocalMusic)
+	if GetMusicPlayingOGGSP(creditsMusic) then StopMusicOGGSP(creditsMusic)
+	if GetMusicPlayingOGGSP(skateMusic) then StopMusicOGGSP(skateMusic)
+	if GetMusicPlayingOGGSP(skateVocalMusic) then StopMusicOGGSP(skateVocalMusic)
+	if GetMusicPlayingOGGSP(puppetMusic) then StopMusicOGGSP(puppetMusic)
+		
+	for i = dangerAMusic to dangerPuppetMusic
 		if GetMusicPlayingOGGSP(i) then StopMusicOGGSP(i)
 	next i
 	

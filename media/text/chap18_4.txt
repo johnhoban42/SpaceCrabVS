@@ -1,39 +1,39 @@
 bg 1
-AL: Geez, this many appointments in a row left me really, really tired.
-But just one crab left to meet with.
-The one who got away... Crabacus?!
+AL: BBFTp; Geez, this many appointments in a row left me really, really tired.
+BDFTm; But just one crab left to meet with.
+BHFPa; The one who got away... Crabacus?!
 music retro5
-CB: That's right, it's ME!
-I decided to QUIT the Star Seekers, and I'm NEVER coming back!
-AL: B-but you HAVE to! Space Crab needs you! I'm contractually obligated to get you back!
-CB: Do you think I CARE about your stupid legal documents? Don't make me laugh.
-The law is an outdated tool that cowards throw around, without fully realizing it's awesome power.
-So just GIVE UP! You're powerless against my conviction and my word!
+CB: BUFQa; That's right, it's ME!
+BAFL; I decided to QUIT the Star Seekers, and I'm NEVER coming back!
+AL: BSFKc; B-but you HAVE to! Space Crab needs you! I'm contractually obligated to get you back!
+CB: BUFKh; Do you think I CARE about your stupid legal documents? Don't make me laugh.
+BAFWa; The law is an outdated tool that cowards throw around, without fully realizing it's awesome power.
+BIFKg; So just GIVE UP! You're powerless against my conviction and my word!
 music
-AL: ...
+AL: BBFTr; ...
 music tomato
-Ha ha ha... do you think that words alone are enough to stop me?
-I WIELD words as my weapon of choice!
-CB: No! You can't be serious!
-AL: It's my job to be serious.
-As long as the spark of justice lives within me, I have the power to keep going.
-My passion for doing what's right won't be extinguished by ANYTHING!
+BUFOe; Ha ha ha... do you think that words alone are enough to stop me?
+BMFKd; I WIELD words as my weapon of choice!
+CB: BHFP; No! You can't be serious!
+AL: BAFKh; It's my job to be serious.
+BMFTo; As long as the spark of justice lives within me, I have the power to keep going.
+BVFOh; My passion for doing what's right won't be extinguished by ANYONE!
 music tomato
 fight 72229
 music retro6
-AL: ZZZ... zzz...
-CB: Hello? Is this the office of Al Legal?
-AL: Huh? Wuzzut? Yes. Yes.
-CB: Sorry, did I wake you up?
-You looked like you were sleeping hard. Like you were sleeping... determined?
-AL: (So it was all a dream...)
-Many apologies. Let me pull up your case...
-Space Crab would like to formally apologize for the unwanted responsibilities pushed upon you.
-I've taken the liberty of re-drafting your contract, with constraints placed on expected contributions.
-If you sign, both parties will be in agreement, and we'll be all done here.
-CB: I've got to say, I'm impressed. This is way more thorough than I expected.
-And this 'no-math' clause is exactly what I wanted.
-Thanks for making this so simple & easy! I'm glad there wasn't any drama.
-AL: Yeah, I'm glad, too...
-(Someday, I'll get the dramatic court case of my dreams...)
-(But for now, I'll perform my duty as Al Legal, Attorney at Claw!)
+AL: BBFTr; ZZZ... zzz...
+CB: BIFJb; Hello? Is this the office of Al Legal?
+AL: BAFV; Huh? Wuzzut? Yes. Yes.
+CB: BBFEb; Sorry, did I wake you up?
+BNFFd; You looked like you were sleeping hard. Like you were sleeping... determinedly?
+AL: BBFHa; (So it was all a dream...)
+BAFJd; Many apologies. Let me pull up your case...
+BMFJe; Space Crab would like to formally apologize for the unwanted responsibilities pushed upon you.
+BZFW; I've taken the liberty of re-drafting your contract, with constraints placed on expected contributions.
+BZFJd; If you sign, both parties will be in agreement, and we'll be all done here.
+CB: BUFA; I've got to say, I'm impressed. This is way more thorough than I expected.
+BSFAe; And this 'no-math' clause is exactly what I wanted.
+BAFO; Thanks for making this so simple & easy! I'm glad there wasn't any drama.
+AL: BBFH; Yeah, I'm glad, too...
+BVFD; (Someday, I'll get the dramatic court case of my dreams...)
+BOFQa; (But for now, I'll perform my duty as Al Legal, Attorney at Claw!)
