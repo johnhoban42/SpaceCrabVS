@@ -1043,7 +1043,7 @@ function PauseGame()
 		//if dispH then SetTextSpacing(pauseDesc2, GetTextSpacing(pauseDesc2))
 		IncTextY(pauseTitle2, 190)
 		IncTextY(pauseDesc2, 100)
-		rand = Random(1, 7)
+		rand = Random(1, 10)
 		if rand = 1
 			SetTextString(pauseDesc2, "The initial idea for Space Crab was" + chr(10) + "conceived in 2015, as a game called" + chr(10) + "'Ladder Wizard Wally'. The Ladder" + chr(10) + "Wizard you see in SCVS is the same one!")
 		elseif rand = 2
@@ -1058,6 +1058,12 @@ function PauseGame()
 			SetTextString(pauseDesc2, "Space Crab made an appearance in" + chr(10) + "'Sleep Patrol Alpha' as a playable" + chr(10) + "character! Find every landmark on the" + chr(10) + "first map to unlock him.")
 		elseif rand = 7
 			SetTextString(pauseDesc2, "Tap and hold on the main menu logo" + chr(10) + "for a fruity suprise!")
+		elseif rand = 8
+			SetTextString(pauseDesc2, chr(10) + "HIDDEN STAR ONE" + chr(10) + "Score at least 200 in Mirror Mode" + chr(10) + "for a Statistics star!")
+		elseif rand = 9
+			SetTextString(pauseDesc2, chr(10) + "HIDDEN STAR TWO" + chr(10) + "Score at least 200 in Classic Mode" + chr(10) + "for a Statistics star!")
+		elseif rand = 10
+			SetTextString(pauseDesc2, chr(10) + "HIDDEN STAR THREE" + chr(10) + "Have a battle that lasts over" + chr(10) + "five minutes for a Statistics star!")
 		endif
 		
 		if dispH = 0

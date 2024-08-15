@@ -9,6 +9,10 @@ global statisticsStateInitialized as integer = 0
 //#constant ST_TXT2 
 //#constant ST_TXT3 
 
+global faveCrab = 0
+global faveCrab2 = 0
+global faveCrab3 = 0
+
 // Initialize the story screen
 function InitStatistics()
 	
@@ -55,13 +59,63 @@ function InitStatistics()
 	
 	inc totalSecondsPlayed, Round(localSeconds#)
 	localSeconds# = 0
-		
+	
+	crabPlayed[3] = 34
+	crabPlayed[16] = 66
+	crabPlayed[19] = 10
+	
+	faveCrab = 0
+	quan1 = 0	//Quan = Quantity, times that crab was played
+	faveCrab2 = 0
+	quan2 = 0
+	faveCrab3 = 0
+	quan3 = 0
+	
+	for i = 1 to 24
+		if crabPlayed[i] > quan1
+			quan3 = quan2
+			faveCrab3 = faveCrab2
+			
+			quan2 = quan1
+			faveCrab2 = faveCrab
+			
+			quan1 = crabPlayed[i]
+			faveCrab = i
+		elseif crabPlayed[i] > quan2
+			quan3 = quan2
+			faveCrab3 = faveCrab2
+			
+			quan2 = crabPlayed[i]
+			faveCrab2 = i
+		elseif crabPlayed[i] > quan3			
+			quan3 = crabPlayed[i]
+			faveCrab3 = i
+		endif
+	next i
+	
 	timeP$ = "Time Played: " + GetTimerString(totalSecondsPlayed)
 	battleG$ = "Total Fights: " + Str(fightTotal)
 	mirrorG$ = "Mirror Games: " + Str(mirrorTotal)
 	classG$ = "Classic Games: " + Str(classicTotal)
 	metT$ = "Meteors Dodged: " + Str(totalMeteors)
-	CreateText(ST_TXT2, timeP$ + chr(10) + battleG$ + chr(10) + mirrorG$ + chr(10) + classG$ + chr(10) + metT$)
+	
+	crab1Type = Mod(faveCrab-1, 6)+1
+	crab1Alt = (faveCrab-1)/6
+	SetCrabString(1)
+	if faveCrab2 = 0
+		crabF$ = "Favorite Crab:" + chr(10) + "      " + crab1Str$
+	else
+		crabF$ = "Favorite Crabs:" + chr(10) + "      " + crab1Str$
+		crab1Type = Mod(faveCrab2-1, 6)+1
+		crab1Alt = (faveCrab2-1)/6
+		SetCrabString(1)
+		crabF$ = crabF$ + chr(10) + "      " + crab1Str$
+		crab1Type = Mod(faveCrab3-1, 6)+1
+		crab1Alt = (faveCrab3-1)/6
+		SetCrabString(1)
+		crabF$ = crabF$ + chr(10) + "      " + crab1Str$
+	endif
+	CreateText(ST_TXT2, timeP$ + chr(10) + battleG$ + chr(10) + mirrorG$ + chr(10) + classG$ + chr(10) + metT$ + chr(10) + crabF$)
 		
 	CreateText(ST_TXT3, "Statistics")
 	
@@ -105,12 +159,32 @@ function DoStatistics()
 	endif
 	state = STATISTICS
 	
+	//This is copy pasted code from above; the lazy way, I know
 	timeP$ = "Time Played: " + GetTimerString(totalSecondsPlayed+round(localSeconds#))
 	battleG$ = "Total Fights: " + Str(fightTotal)
 	mirrorG$ = "Mirror Games: " + Str(mirrorTotal)
 	classG$ = "Classic Games: " + Str(classicTotal)
 	metT$ = "Meteors Dodged: " + Str(totalMeteors)
-	SetTextString(ST_TXT2, timeP$ + chr(10) + battleG$ + chr(10) + mirrorG$ + chr(10) + classG$ + chr(10) + metT$)
+	crab1Type = Mod(faveCrab-1, 6)+1
+	crab1Alt = (faveCrab-1)/6
+	SetCrabString(1)
+	if faveCrab2 = 0
+		crabF$ = "Favorite Crab:" + chr(10) + "      " + crab1Str$
+	else
+		crabF$ = "Favorite Crabs:" + chr(10) + "      " + crab1Str$
+		crab1Type = Mod(faveCrab2-1, 6)+1
+		crab1Alt = (faveCrab2-1)/6
+		SetCrabString(1)
+		crabF$ = crabF$ + chr(10) + "      " + crab1Str$
+		crab1Type = Mod(faveCrab3-1, 6)+1
+		crab1Alt = (faveCrab3-1)/6
+		SetCrabString(1)
+		crabF$ = crabF$ + chr(10) + "      " + crab1Str$
+	endif
+	SetTextString(ST_TXT2, timeP$ + chr(10) + battleG$ + chr(10) + mirrorG$ + chr(10) + classG$ + chr(10) + metT$ + chr(10) + crabF$)
+	//SetTextString(ST_TXT2, Mid(GetTextString(ST_TXT2), 1, 13) + SPR_MENU_BACK 
+	
+	
 	
 	starNum = 1
 	for i = 1 to Len(GetTextString(ST_TXT1))

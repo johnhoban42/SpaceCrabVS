@@ -18,7 +18,7 @@ AL: BBFUa; *sigh* Is there ANY way for you to remember what you told them?
 LW: BMFA1; Well, let's retrace my steps!
 music fightA
 fight 67258
-music rag
+music chill
 LW: BSFA1; It's all coming back...
 AL: BAFT; Alright, let's hear those terms and conditions!
 LW: BMFOc; That's the funny thing - I told them all something different!

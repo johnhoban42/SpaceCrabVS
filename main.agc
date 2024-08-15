@@ -220,10 +220,10 @@ endfunction
 //clearedChapter = 0
 
 if debug
-	curChapter = 18
-	curScene = 4
+	curChapter = 2
+	curScene = 1
 	highestScene = 101
-	appState = STORY
+	appState = STATISTICS
 	crab1Type = 6
 	crab1Alt = 3
 	
@@ -239,7 +239,7 @@ if debug
 	hardBattleUnlock = 1
 	musicBattleUnlock = 1
 	unlockAIHard = 1
-	musicUnlocked = 21
+	musicUnlocked = 7
 	evilUnlock = 1
 	gameSongSet = 0
 else
@@ -258,6 +258,7 @@ else
 		targetFPS = 5
 		windowSize = 1
 		musicUnlocked = 7
+		crabPlayed[1] = 1
 	endif
 	//if altUnlocked[1] = 3 or altUnlocked[2] = 3 or altUnlocked[3] = 3 or altUnlocked[4] = 3 or altUnlocked[5] = 3 or altUnlocked[6] = 3 then LoadSelectCrabImages()
 	LoadSelectCrabImages()
@@ -656,6 +657,8 @@ function MoveSelect()
 		//If you're pressing the arrow key for the first time
 		if settingsActive
 			selectTarget = SPR_VOLUME
+		elseif appState = STATISTICS
+			selectTarget = SPR_MENU_BACK
 		elseif appState = START
 			if GetSpriteVisible(SPR_START1)
 				selectTarget = SPR_STORY_START

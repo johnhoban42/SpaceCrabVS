@@ -896,7 +896,8 @@ function ShowScene(chap, scene)
 			    //Print(GetSpriteHeight(SPR_TEXT_BOX))
 				
 				storyInput = 0
-				if GetPointerPressed() or inputSelect or inputSkip or (mPlatform = ANDROID and GetSpriteHitTest(SPR_STORY_SKIP, GetPointerX(), GetPointerY()) and GetPointerState()) then storyInput = 1
+				if GetPointerPressed() or inputSelect or inputSkip then storyInput = 1
+				//if GetPointerPressed() or inputSelect or inputSkip or (mPlatform = ANDROID and GetPointerY() < h/3 and GetPointerState()) then storyInput = 1
 				if GetTextCharColorAlpha(storyText, charSounded) = 255 and GetTextCharColorAlpha(storyText, Len(displayString$)-9) = 0
 					if Mod(charSounded, 1+mPlatform) then PlaySoundR(talk1S, 40/(hurryUp/2+1))
 					//if Mod(charSounded, 2) and GetDeviceBaseName() <> "android" then PlaySoundR(talk1S, 40/(hurryUp/2+1))
@@ -999,7 +1000,7 @@ function StartEndScreen()
 	//The non-crab unlocks
 	if overallScene = 8 then UnlockSong(8, 1)
 	if overallScene = 16 then UnlockSong(9, 1)
-	if overallScene = 23 then UnlockSong(10, 1)
+	if overallScene = 35 then UnlockSong(10, 1)
 	if overallScene = 37 and musicBattleUnlock = 0
 		//37, Music Picker
 		Popup(MIDDLE, 25)

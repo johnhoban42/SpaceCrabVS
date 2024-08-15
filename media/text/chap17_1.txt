@@ -11,7 +11,7 @@ BMFTm; Though, to do unto others, I must first prove myself a worthy vessel.
 BBFTs; If I can dodge 50 meteors, then may I yet be able to heal those in need.
 BAFAb; Let us begin the self evaluation.
 music retro8
-classic 1
+classic 50
 music retro2
 HL: BVFWw; Yes, I can feel the power of Holy divination flowing through me!
 BAFWv; And I know that those crabs in need have the power inside them, too.

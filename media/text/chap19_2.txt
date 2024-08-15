@@ -1,15 +1,15 @@
 bg 2
 music retro6
-SB: There's quite a ruckus happening in this direction...
-RL: SNIP! SNNIIIIIPP!
-SB: How quaint! A crab who plays the guitar.
-I would have figured that their large claws would make it impossible.
-They're nowhere near as dexterous as a dog's paws are.
-RL: Snip, snip, snip, snip!
-SB: Let's see how well you play, mister musician!
+SB: BEFAd; There's quite a ruckus happening in this direction...
+RL: BAFOh; SNIP! SNNIIIIIPP!
+SB: BAFAe; How quaint! A crab who plays the guitar.
+BAFAd; I would have figured that their large claws would make it impossible.
+BDFD; They're nowhere near as dexterous as a dog's paws are.
+RL: BMFDb; Snip, snip, snip, snip!
+SB: BCFBd; Let's see how well you play, mister musician!
 music retro4
 fight 46347
 music retro6
-RL: Snip, snip, snip.
-SB: Quite good, guitar crab! I'm impressed.
-Your lack of musical dexterity didn't hold you back in the slightest.
+RL: BVFOd; Snip, snip, snip.
+SB: BCFBe; Quite good, guitar crab! I'm impressed.
+BDFDa; Your lack of musical dexterity didn't hold you back in the slightest.
