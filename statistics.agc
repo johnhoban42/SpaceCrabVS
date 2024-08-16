@@ -25,7 +25,6 @@ function InitStatistics()
 	if dispH then SetSpriteSizeSquare(ST_TITLE, h*2)
 	SetSpriteMiddleScreen(ST_TITLE)
 	
-	
 	CreateText(ST_TITLE, "Statistics")
 	
 	crabsU = altUnlocked[1]+altUnlocked[2]+altUnlocked[3]+altUnlocked[4]+altUnlocked[5]+altUnlocked[6]
@@ -39,7 +38,7 @@ function InitStatistics()
 	fightTime$ = "Longest Fight: " + GetTimerString(fightSeconds) + " "
 	
 	if highestScene = 101
-		completed$ = Mid(completed$, 1, Len(completed$)-2) + "% {"
+		completed$ = Mid(completed$, 1, Len(completed$)-3) + "% {"
 		storyU$ = storyU$ + "{"
 	endif
 	if crabsU = 18 then crabU$ = crabU$ + "{"
@@ -60,9 +59,9 @@ function InitStatistics()
 	inc totalSecondsPlayed, Round(localSeconds#)
 	localSeconds# = 0
 	
-	crabPlayed[3] = 34
-	crabPlayed[16] = 66
-	crabPlayed[19] = 10
+	//crabPlayed[3] = 34
+	//crabPlayed[18] = 66
+	//crabPlayed[2] = 166
 	
 	faveCrab = 0
 	quan1 = 0	//Quan = Quantity, times that crab was played
@@ -93,9 +92,12 @@ function InitStatistics()
 		endif
 	next i
 	
+	if faveCrab = 0 then faveCrab = 1
+	//totalSecondsPlayed = 1000000
+	
 	timeP$ = "Time Played: " + GetTimerString(totalSecondsPlayed)
 	battleG$ = "Total Fights: " + Str(fightTotal)
-	mirrorG$ = "Mirror Games: " + Str(mirrorTotal)
+	mirrorG$ = "Mirror Matches: " + Str(mirrorTotal)
 	classG$ = "Classic Games: " + Str(classicTotal)
 	metT$ = "Meteors Dodged: " + Str(totalMeteors)
 	
@@ -117,7 +119,10 @@ function InitStatistics()
 	endif
 	CreateText(ST_TXT2, timeP$ + chr(10) + battleG$ + chr(10) + mirrorG$ + chr(10) + classG$ + chr(10) + metT$ + chr(10) + crabF$)
 		
-	CreateText(ST_TXT3, "Statistics")
+	//CreateText(ST_TXT3, "Statistics")
+	SetFolder("/media/art")
+	LoadSprite(ST_TXT2, "crab" + str(Mod(faveCrab-1, 6)+1) + AltStr((faveCrab-1)/6) + "rWin.png")
+	SetSpriteColor(ST_TXT2, 170, 170, 170, 255)
 	
 	SetFolder("/media/ui")
 	LoadAnimatedSprite(SPR_MENU_BACK, "back", 8)
@@ -125,18 +130,22 @@ function InitStatistics()
 	AddButton(SPR_MENU_BACK)
 	
 	if dispH
-		SetTextExpress(ST_TITLE, GetTextString(ST_TITLE), 120, fontSpecialI, 1, w/2, 20, 5, -30)
-		SetTextExpress(ST_TXT1, GetTextString(ST_TXT1), 60, fontDescI, 0, w/9, 125, 5, -17)
+		SetTextExpress(ST_TITLE, GetTextString(ST_TITLE), 120, fontSpecialI, 1, w/2, 10, 5, -30)
+		SetTextExpress(ST_TXT1, GetTextString(ST_TXT1), 60, fontDescI, 0, w/9-50, 125, 5, -17)
 		SetTextExpress(ST_TXT2, GetTextString(ST_TXT2), 60, fontDescI, 0, w*3/5, 125, 5, -17)
-		//SetText
+		SetSpriteExpress(ST_TXT2, h-100, h-100, 0, h - (h-100), 40)
+		SetSpriteMiddleScreenX(ST_TXT2)
 		
-		SetSpriteExpress(SPR_MENU_BACK, 130, 130, 30, h-160, 5)
+		SetSpriteExpress(SPR_MENU_BACK, 130, 130, 60, h-155, 5)
 		
 	else
 		
 		SetTextExpress(ST_TITLE, GetTextString(ST_TITLE), 140, fontSpecialI, 1, w/2, 20, 5, -33)
 		SetTextExpress(ST_TXT1, GetTextString(ST_TXT1), 80, fontDescI, 0, 20, 170, 5, -24)
-		SetTextExpress(ST_TXT2, GetTextString(ST_TXT2), 80, fontDescI, 0, w/5, 800, 5, -24)
+		SetTextExpress(ST_TXT2, GetTextString(ST_TXT2), 80, fontDescI, 0, w/5-10, 800, 5, -24)
+		
+		SetSpriteExpress(ST_TXT2, w-30, w-30, 0, h/2-200, 40)
+		SetSpriteMiddleScreenX(ST_TXT2)
 		
 		SetSpriteExpress(SPR_MENU_BACK, 140, 140, 40, h-180, 5)
 		
@@ -159,10 +168,19 @@ function DoStatistics()
 	endif
 	state = STATISTICS
 	
+	//Making the title letters move slightly
+	for i = 0 to GetTextLength(ST_TITLE)
+		SetTextCharY(ST_TITLE, i, 15*cos(300.0*localSeconds# + 36*i))
+		SetTextX(ST_TITLE, w/2)
+		SetTextCharX(ST_TITLE, i, GetTextCharX(ST_TITLE, i) + 0.3*cos(300.0*localSeconds# + 36*i))
+		
+	next i
+	
+	
 	//This is copy pasted code from above; the lazy way, I know
 	timeP$ = "Time Played: " + GetTimerString(totalSecondsPlayed+round(localSeconds#))
 	battleG$ = "Total Fights: " + Str(fightTotal)
-	mirrorG$ = "Mirror Games: " + Str(mirrorTotal)
+	mirrorG$ = "Mirror Matches: " + Str(mirrorTotal)
 	classG$ = "Classic Games: " + Str(classicTotal)
 	metT$ = "Meteors Dodged: " + Str(totalMeteors)
 	crab1Type = Mod(faveCrab-1, 6)+1
@@ -227,7 +245,8 @@ function ExitStatistics()
 	DeleteText(ST_TITLE)
 	DeleteText(ST_TXT1)
 	DeleteText(ST_TXT2)
-	DeleteText(ST_TXT3)
+	DeleteSprite(ST_TXT2)
+	//DeleteText(ST_TXT3)
 	StopMusicOGGSP(chillMusic)
 
 	statisticsStateInitialized = 0

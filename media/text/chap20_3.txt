@@ -1,29 +1,30 @@
 bg 3
 music retro4
-KN: Tell me, musician - what does being evil mean to you?
-RL: Uhhh, bro, who let you backstage?
-KN: Does a selfish desire become less so, the more you share it with others?
-RL: (calling on phone) Hey, security? There's an old man yapping at me backstage.
-KN: This isn't a concern to be pushing off, musician. Someone near and dear to you is in danger.
-In danger of me finding them.
-RL: Psshh, I haven't talked to my family in years. Let it happen.
-KN: Then perhaps I misunderstood your situation.
-The one you live with, you have no concern if he joins the recently departed?
+KN: B0AFA; Tell me, musician - what does being evil mean to you?
+RL: BUFDd; Uhhh, bro, who let you backstage?
+KN: B0MFG; Does a selfish desire become less so, the more you share it with others?
+se phone
+RL: BGFWa; Hey, security? There's an old man yapping at me backstage.
+KN: B0IFA; This isn't a concern to be pushing off, musician. Someone near and dear to you is in danger.
+BVFD; In danger of me finding them.
+RL: BMFGb; Psshh, I haven't talked to my family in years. Let it happen.
+KN: B0WFC; Then perhaps I misunderstood your situation.
+B0AFA; The one you live with, you have no concern if he joins the recently departed?
 music
-RL: ... (thinking)
+RL: BNFHa; ...
 music retro5
-Hey, you're not thinking of 'taking out' my roommate, are you?!
-KN: That is precisely what I hope to do when I find him.
-RL: No way I'll let you do that! He pays for half the rent!
-You think I make enough dough to live alone? Well, I'm not trying to find out!
+BSFV; Hey, you're not thinking of 'taking out' my roommate, are you?!
+KN: BZFA; That is precisely what I hope to do when I find him.
+RL: BAFOh; No way I'll let you do that! He pays for half the rent!
+BMFMd; You think I make enough dough to live alone? Well, I'm not trying to find out!
 music retro5
 fight 74537
 music fightB
-KN: If you can't defend your roommate in a battle, then you must not care about the fate of his life.
-RL: You're nuts, man!
-I love that dude, but... how do you expect me to fight a guy with a sword?!
-KN: Excuses, excuses...
-Maybe you should write a song about that, you weakling.
+KN: BZFD; If you can't defend your roommate in a battle, then you must not care about the fate of his life.
+RL: BJFXc; You're nuts, man!
+BJFXa; I love that dude, but... how do you expect me to fight a guy with a sword?!
+KN: BVFAa; Excuses, excuses...
+BUFD; Maybe you should write a song about that, you weakling.
 exit 1
-RL: Dang... I could have used some backup from my security.
-That Top Crab better have a good reason for leaving me high and dry like this!
+RL: BAFD; Dang... I could have used some backup from my security.
+BMFDe; That Top Crab better have a good reason for leaving me high and dry like this!

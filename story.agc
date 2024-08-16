@@ -625,7 +625,7 @@ function ShowScene(chap, scene)
 			if targetCrab = 1
 				
 				for i = SPR_CRAB1_BODY to SPR_CRAB1_COSTUME
-					DeleteImage(GetSpriteImageID(i))
+					//DeleteImage(GetSpriteImageID(i))
 				next i
 				
 				//1st Crab Target
@@ -681,13 +681,13 @@ function ShowScene(chap, scene)
 				endif
 				
 				for i = SPR_CRAB1_BODY to SPR_CRAB1_COSTUME
-					//trashBag.insert(GetSpriteImageID(i))
+					trashBag.insert(GetSpriteImageID(i))
 				next i
 					
 			elseif GetSpriteExists(SPR_CRAB2_BODY)
 				
 				for i = SPR_CRAB2_BODY to SPR_CRAB2_COSTUME
-					DeleteImage(GetSpriteImageID(i))
+					//DeleteImage(GetSpriteImageID(i))
 				next i
 				
 				//Finishing the crab transition before loading new images
@@ -756,7 +756,7 @@ function ShowScene(chap, scene)
 				endif
 
 				for i = SPR_CRAB2_BODY to SPR_CRAB2_COSTUME
-					//trashBag.insert(GetSpriteImageID(i))
+					trashBag.insert(GetSpriteImageID(i))
 				next i
 				
 			endif

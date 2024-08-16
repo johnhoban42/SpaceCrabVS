@@ -220,10 +220,10 @@ endfunction
 //clearedChapter = 0
 
 if debug
-	curChapter = 2
+	curChapter = 21
 	curScene = 1
 	highestScene = 101
-	appState = STATISTICS
+	appState = START
 	crab1Type = 6
 	crab1Alt = 3
 	
@@ -239,11 +239,11 @@ if debug
 	hardBattleUnlock = 1
 	musicBattleUnlock = 1
 	unlockAIHard = 1
-	musicUnlocked = 7
+	musicUnlocked = 21
 	evilUnlock = 1
 	gameSongSet = 0
 else
-	LoadGame()
+	//LoadGame()
 	//altUnlocked[1] = 2
 	//altUnlocked[2] = 2
 	//altUnlocked[3] = 1
@@ -258,7 +258,8 @@ else
 		targetFPS = 5
 		windowSize = 1
 		musicUnlocked = 7
-		crabPlayed[1] = 1
+		curChapter = 1
+		curScene = 1
 	endif
 	//if altUnlocked[1] = 3 or altUnlocked[2] = 3 or altUnlocked[3] = 3 or altUnlocked[4] = 3 or altUnlocked[5] = 3 or altUnlocked[6] = 3 then LoadSelectCrabImages()
 	LoadSelectCrabImages()

@@ -1,37 +1,36 @@
 bg 3
 music dungeon
-KN: It's over. There's nowhere left to run.
-The manifestation of evil in the universe has gathered within this one crab...
-TP: Dad? Is that you? What are you doing all the way out here?
-Come to train with the best?
-KN: STAND BACK, son! The villain of this story is-
+KN: B0BFD; It's over. There's nowhere left to run.
+BVFB; The manifestation of evil in the universe has gathered within this one crab...
+TP: BAFA; Dad? Is that you? What are you doing all the way out here?
+BDFCb; Come to train with the best?
+KN: BOFB; STAND BACK, son! The villain of this story is-
 music retro5
-CC: HOHOHO! You're too late, Crab of Knights!
-And I happen to know JUST how late you are! Wanna guess how I know? Wanna guess?
-KN: Steel your resolve and say your prayers!
-CC: Hey, you armored oaf. Don't you think you're jumping the gun?
-Surely, my little scheme to gather the mirror dimension's multiplicative energy is innocence, yes?
-Youwd huwt widdle Chwono Cwab wif youw big, big sword?
-KN: Quit mocking me, childish fool. And that's not how you pronounce sword. 
-1F: Sir, we really aren't trying to do anything wrong. We're all going strong on team Chrono Crab!
-CC: Correct you are! Would an immature, insolent idiot be able to gather a legion of good-natured cronies?
-One being, by observation, your own son?
-KN: Your arrogance is AGGRAVATING! Prepare to meet your fate!
+CC: BMFOa; HOHOHO! You're too late, Crab of Knights!
+BVFKe; And I happen to know JUST how late you are! Wanna guess how I know? Wanna guess?
+KN: BZFB; Steel your resolve and say your prayers!
+CC: BAFKd; Hey, you armored oaf. Don't you think you're jumping the gun?
+BSFOe; Surely, my little scheme to gather the mirror dimension's multiplicative energy is innocence, yes?
+BNFSd; Youwd huwt widdle Chwono Cwab wif youw big, big sword?
+KN: BUFB; Quit mocking me, childish fool. And that's not how you pronounce sword. 
+1F: BSFEb; Sir, we really aren't trying to do anything wrong. We're all going strong on team Chrono Crab!
+CC: BMFO; Correct you are! Would an immature, insolent idiot be able to gather a legion of good-natured cronies?
+BWFKg; One being, by observation, your own son?
+KN: BVFOh; Your arrogance is AGGRAVATING! Prepare to meet your fate!
 music tomato
 fight
-music dungeon
-KN: Any last words, time fiend?
-CC: Oh yeah, time stuff! Many thanks for the idea!
-se special
 music
-CC: ! (His beaten and bruised self is now standing upright & is fine)
-KN: W-what sorcery is this?!
+KN: BZFB; Any last words, time fiend?
+CC: BQFYd; Oh yeah, time stuff! Many thanks for the idea!
+se special
+CC: BZFQ; !
+KN: BSFNa; W-what sorcery is this?!
 music retro5
-CC: You know, just a simple time rewind to back before we battled. Ha ha!
-KN: No... no, NO!
-CC: Any-when-ways.
-You're just in time to witness the emergence of an all powerful being - myself!
-I bet you want to know how things ended up like this, hmmm?
-KN: If I have to, I'll devote the rest of my life to stopping you!
-CC: Ignoring you, why don't we rewind the clock a bit to see how we got here?
-I'm especially good at it, and it makes for such fun!
+CC: BAFO; You know, just a simple time rewind to back before we battled. Ha ha!
+KN: BHFP; No... no, NO!
+CC: BUFRa; Any-when-ways.
+BAFOc; You're just in time to witness the emergence of an all powerful being - myself!
+BMFKe; I bet you want to know how things ended up like this, hmmm?
+KN: BQFY; If I have to, I'll devote the rest of my life to stopping you!
+CC: BWFAa; Ignoring you, why don't we rewind the clock a bit to see how we got here?
+BMFKd; I'm especially good at it, and it makes for such fun!

@@ -136,17 +136,17 @@ function InitGame()
 		IncSpriteSizeCenteredMult(mainmenuButton, 1/zoom#)
 		
 		IncSpriteSizeCenteredMult(pauseButton, 1/zoom#*1.2)
-		LoadSpriteExpress(phantomPauseButton, "pause.png", GetSpriteWidth(pauseButton)*zoom#, GetSpriteHeight(pauseButton)*zoom#, 697-GetSpriteWidth(pauseButton)/2, 200-GetSpriteWidth(pauseButton)/2, 1)
-		SetSpriteColorAlpha(phantomPauseButton, 0)
+		LoadSpriteExpress(phantomPauseButton, "blank.png", GetSpriteWidth(pauseButton)*zoom#, GetSpriteHeight(pauseButton)*zoom#, 697-GetSpriteWidth(pauseButton)/2, 200-GetSpriteWidth(pauseButton)/2, 1)
+		//SetSpriteColorAlpha(phantomPauseButton, 0)
 		AddButton(phantomPauseButton)
 		
 		IncSpriteSizeCenteredMult(playButton, 1/zoom#)
 		SetSpriteShapeCircle(playButton, GetSpriteWidth(playButton)/2, GetSpriteHeight(playButton)/2, GetSpriteWidth(playButton)*zoom#)
 		
 		if dispH = 0 then IncSpriteX(exitButton, -70)
-		LoadSpriteExpress(phantomExitButton, "crabselect.png", GetSpriteWidth(exitButton)*zoom#, GetSpriteHeight(exitButton)*zoom#, 659-GetSpriteWidth(exitButton)/2, 803-GetSpriteWidth(exitButton)/2, 1)
-		SetSpriteColorAlpha(phantomExitButton, 0)
-		SetSpriteVisible(phantomExitButton, 0)
+		LoadSpriteExpress(phantomExitButton, "blank.png", GetSpriteWidth(exitButton)*zoom#, GetSpriteHeight(exitButton)*zoom#, 659-GetSpriteWidth(exitButton)/2, 803-GetSpriteWidth(exitButton)/2, 1)
+		//SetSpriteColorAlpha(phantomExitButton, 0)
+		//SetSpriteVisible(phantomExitButton, 0)
 		AddButton(phantomExitButton)
 		
 		if dispH
