@@ -143,12 +143,12 @@ function InitSoundTest()
 		// position play/pause button
 		SetSpriteExpress(sprSoundControl, 250, 250, w / 2 - 125, h * 5 / 9 - 125, 69)
 		// position the song display
-		SetSpriteExpress(sprSoundDisplay, 750,200, w / 2 - 375, h / 5 - 100, 71)
+		SetSpriteExpress(sprSoundDisplay, 640,160, w / 2 - 320, h / 5 - 80, 71)
 		// create the tweens for moving the song display sprite around when switching songs
-		SetTweenSpriteX(twnSCLeftIn, -750, w / 2 - 375, TweenOvershoot())	
-		SetTweenSpriteX(twnSCLeftOut, w / 2 - 375, w + 750, TweenOvershoot())
-		SetTweenSpriteX(twnSCRightIn, w + 750, w / 2 - 375, TweenOvershoot())
-		SetTweenSpriteX(twnSCRightOut, w / 2 - 375, -750, TweenOvershoot())			
+		SetTweenSpriteX(twnSCLeftIn, -640, w / 2 - 320, TweenOvershoot())	
+		SetTweenSpriteX(twnSCLeftOut, w / 2 - 320, w + 640, TweenOvershoot())
+		SetTweenSpriteX(twnSCRightIn, w + 640, w / 2 - 320, TweenOvershoot())
+		SetTweenSpriteX(twnSCRightOut, w / 2 - 320, -640, TweenOvershoot())			
 	endif
 	
 	// add button animations/functionality to the buttons of our screen
