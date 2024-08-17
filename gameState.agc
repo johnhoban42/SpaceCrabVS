@@ -32,7 +32,34 @@ function InitGame()
 	fightSecondsLocal# = 0
 	
 	inc crabPlayed[crab1Type+crab1Alt*6]
-	if spType = 0 then inc crabPlayed[crab2Type+crab2Alt*6]
+	if crab1evil
+		if crab1Type = 1 and crab1Alt = 0
+			dec crabPlayed[crab1Type+crab1Alt*6]
+			inc crabPlayed[25]
+		elseif crab1Type = 1 and crab1Alt = 3
+			dec crabPlayed[crab1Type+crab1Alt*6]
+			inc crabPlayed[26]
+		elseif crab1Type = 4 and crab1Alt = 3
+			dec crabPlayed[crab1Type+crab1Alt*6]
+			inc crabPlayed[27]
+		endif
+	endif
+	if spType = 0
+		inc crabPlayed[crab2Type+crab2Alt*6]
+		if crab2evil
+			if crab2Type = 1 and crab2Alt = 0
+				dec crabPlayed[crab2Type+crab2Alt*6]
+				inc crabPlayed[25]
+			elseif crab2Type = 1 and crab2Alt = 3
+				dec crabPlayed[crab2Type+crab2Alt*6]
+				inc crabPlayed[26]
+			elseif crab2Type = 4 and crab2Alt = 3
+				dec crabPlayed[crab2Type+crab2Alt*6]
+				inc crabPlayed[27]
+			endif
+		endif
+	endif
+	
 	
 	if GetDeviceBaseName() = "android" and (crab1Type = 2 or crab2Type = 2)
 		SetFolder("/media/sounds")
@@ -789,22 +816,32 @@ function ExitGame()
 	
 	//Updating the scores for the single player game
 	if spType <> 0
+		cNum = crab1Type + crab1Alt*6
+		if crab1Evil and crab1Type = 1 and crab1Alt = 0 then cNum = 25
+		if crab1Evil and crab1Type = 1 and crab1Alt = 3 then cNum = 26
+		if crab1Evil and crab1Type = 4 and crab1Alt = 3 then cNum = 27
+		//High scores are being saved in both a variable and a table, because the variable was made two years ago and we're 12 days from shipping the game lol
 		if spType = MIRRORMODE
 			if spHighScore < spScore
 				spHighScore = spScore
-				spHighCrab$ = crabNames[crab1Type + crab1Alt*6]
-				if crab1Evil and crab1Type = 1 and crab1Alt = 0 then spHighCrab$ = "CRIXEL"
-				if crab1Evil and crab1Type = 1 and crab1Alt = 3 then spHighCrab$ = "BETA CRAB"
-				if crab1Evil and crab1Type = 4 and crab1Alt = 3 then spHighCrab$ = "DEVIL CRAB"
+				spHighCrab$ = crabNames[cNum]
+				//if crab1Evil and crab1Type = 1 and crab1Alt = 0 then spHighCrab$ = "CRIXEL"
+				//if crab1Evil and crab1Type = 1 and crab1Alt = 3 then spHighCrab$ = "BETA CRAB"
+				//if crab1Evil and crab1Type = 4 and crab1Alt = 3 then spHighCrab$ = "DEVIL CRAB"
+				SaveGame()
+			endif
+			if scoreTableMirror[cNum] < spScore
+				scoreTableMirror[cNum] = spScore 
 				SaveGame()
 			endif
 		elseif spType = CLASSIC
 			if spHighScoreClassic < spScore
 				spHighScoreClassic = spScore
-				spHighCrabClassic$ = crabNames[crab1Type + crab1Alt*6]
-				if crab1Evil and crab1Type = 1 and crab1Alt = 0 then spHighCrabClassic$ = "CRIXEL"
-				if crab1Evil and crab1Type = 1 and crab1Alt = 3 then spHighCrabClassic$ = "BETA CRAB"
-				if crab1Evil and crab1Type = 4 and crab1Alt = 3 then spHighCrabClassic$ = "DEVIL CRAB"
+				spHighCrabClassic$ = crabNames[cNum]
+				SaveGame()
+			endif
+			if scoreTableClassic[cNum] < spScore
+				scoreTableClassic[cNum] = spScore 
 				SaveGame()
 			endif
 		endif
@@ -994,7 +1031,7 @@ function PauseGame()
 		crab1ID = 27
 		e1Mod = 3
 	endif
-	SetTextString(pauseTitle1, crabNames[crab1ID])
+	SetTextString(pauseTitle1, Upper(crabNames[crab1ID]))
 	SetTextString(pauseDesc1, crabPause1[crab1Type])
 	if spType = 0 or spType = STORY or spType = AIBATTLE then SetTextString(pauseDesc1, GetTextString(pauseDesc1) + chr(10) + chr(10) + crabPause2[crab1Type+crab1Alt*6+e1Mod])
 	
@@ -1010,7 +1047,7 @@ function PauseGame()
 		endif
 		SetTextY(pauseTitle2, h/2 - (GetTextY(pauseTitle1)-h/2))
 		SetTextY(pauseDesc2, h/2 - (GetTextY(pauseDesc1)-h/2))
-		SetTextString(pauseTitle2, crabNames[crab2ID])
+		SetTextString(pauseTitle2, Upper(crabNames[crab2ID]))
 		SetTextString(pauseDesc2, crabPause1[crab2Type] + chr(10) + chr(10) + crabPause2[crab2Type+crab2Alt*6+e2Mod])
 	endif
 	

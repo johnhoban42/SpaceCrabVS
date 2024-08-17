@@ -213,8 +213,11 @@ global mirrorTotal = 0
 global classicTotal = 0
 global fightSeconds = 0
 global fightSecondsLocal# = 0
-global crabPlayed as Integer[24]
+global crabPlayed as Integer[27]
 global totalMeteors = 0
+global scoreTableMirror as Integer[27]
+global scoreTableClassic as Integer[27]
+
 
 global p1Ready = 0
 global p2Ready = 0

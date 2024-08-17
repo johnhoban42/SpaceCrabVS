@@ -170,10 +170,16 @@ function SaveGame()
 	WriteInteger(3, mirrorTotal)
 	WriteInteger(3, classicTotal)
 	WriteInteger(3, fightSeconds)
-	for i = 1 to 24
+	for i = 1 to 27
 		WriteInteger(3, crabPlayed[i])
 	next i
 	WriteInteger(3, totalMeteors)
+	for i = 1 to 27
+		WriteInteger(3, scoreTableMirror[i])
+	next i
+	for i = 1 to 27
+		WriteInteger(3, scoreTableClassic[i])
+	next i
 	CloseFile(3)
 endfunction
 
@@ -209,10 +215,16 @@ function LoadGame()
 	mirrorTotal = ReadInteger(3)
 	classicTotal = ReadInteger(3)
 	fightSeconds = ReadInteger(3)
-	for i = 1 to 24
+	for i = 1 to 27
 		crabPlayed[i] = ReadInteger(3)
 	next i
 	totalMeteors = ReadInteger(3)
+	for i = 1 to 27
+		scoreTableMirror[i] = ReadInteger(3)
+	next i
+	for i = 1 to 27
+		scoreTableClassic[i] = ReadInteger(3)
+	next i
 	CloseFile(3)
 endfunction
 
@@ -223,7 +235,7 @@ if debug
 	curChapter = 21
 	curScene = 1
 	highestScene = 101
-	appState = START
+	appState = STATISTICS
 	crab1Type = 6
 	crab1Alt = 3
 	

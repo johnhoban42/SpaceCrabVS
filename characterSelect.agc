@@ -9,33 +9,62 @@ global csc2 as CharacterSelectController
 
 global crabNames as string[27] = [
 	"NULL CRAB",
-	"SPACE CRAB",
-	"LADDER WIZARD",
-	"TOP CRAB",
-	"RAVE CRAB",
-	"CHRONO CRAB",
-	"NINJA CRAB",
-	"MAD CRAB", //Row 2
-	"KING CRAB",
-	"TAXI CRAB",
-	"#1 FAN CRAB",
-	"INIANDA JEFF",
-	"TEAM PLAYER",
-	"AL LEGAL", //Row 3
-	"CRABACUS",
-	"SPACE BARC",
-	"HAWAIIAN CRAB",
-	"ROCK LOBSTER",
-	"CRANIME",
-	"FUTURE CRAB", //Row 4
-	"CRABYSS KNIGHT",
-	"SK8R CRAB",
-	"HOLY CRAB",
-	"CRAB CAKE",
-	"CHIMAERA CRAB",
-	"CRIXEL",
-	"BETA CRAB",
-	"DEVIL CRAB"]
+	"Space Crab",
+	"Ladder Wizard",
+	"Top Crab",
+	"Rave Crab",
+	"Chrono Crab",
+	"Ninja Crab",
+	"Mad Crab", //Row 2
+	"King Crab",
+	"Taxi Crab",
+	"#1 Fan Crab",
+	"Inianda Jeff",
+	"Team Player",
+	"Al Legal", //Row 3
+	"Crabacus",
+	"Space Barc",
+	"Hawaiian Crab",
+	"Rock Lobster",
+	"Cranime",
+	"Future Crab", //Row 4
+	"Crabyss Knighy",
+	"Sk8r Crab",
+	"Holy Crab",
+	"Crab Cake",
+	"Chimaera Crab",
+	"Crixel",
+	"Beta Crab",
+	"Devil Crab"]
+
+//~"NULL CRAB",
+//~	"SPACE CRAB",
+//~	"LADDER WIZARD",
+//~	"TOP CRAB",
+//~	"RAVE CRAB",
+//~	"CHRONO CRAB",
+//~	"NINJA CRAB",
+//~	"MAD CRAB", //Row 2
+//~	"KING CRAB",
+//~	"TAXI CRAB",
+//~	"#1 FAN CRAB",
+//~	"INIANDA JEFF",
+//~	"TEAM PLAYER",
+//~	"AL LEGAL", //Row 3
+//~	"CRABACUS",
+//~	"SPACE BARC",
+//~	"HAWAIIAN CRAB",
+//~	"ROCK LOBSTER",
+//~	"CRANIME",
+//~	"FUTURE CRAB", //Row 4
+//~	"CRABYSS KNIGHT",
+//~	"SK8R CRAB",
+//~	"HOLY CRAB",
+//~	"CRAB CAKE",
+//~	"CHIMAERA CRAB",
+//~	"CRIXEL",
+//~	"BETA CRAB",
+//~	"DEVIL CRAB"]
 
 global crabDescs as string[NUM_CRABS]
 
@@ -391,7 +420,7 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 	next i
 	
 	// The offset mumbo-jumbo with f-coefficients is because AGK's text rendering is awful
-	CreateText(csc.txtCrabName, crabNames[csc.crabSelected+1])
+	CreateText(csc.txtCrabName, Upper(crabNames[csc.crabSelected+1]))
 	SetTextSize(csc.txtCrabName, 96)
 	SetTextAngle(csc.txtCrabName, f*180)
 	SetTextFontImage(csc.txtCrabName, fontCrabI)
@@ -841,7 +870,7 @@ function ChangeCrabs(csc ref as CharacterSelectController, dir as integer, start
 		
 		//SECOND: The text & crab animation
 		if spActive = 0
-			SetTextString(csc.txtCrabName, crabNames[csc.crabSelected+1])
+			SetTextString(csc.txtCrabName, Upper(crabNames[csc.crabSelected+1]))
 			SetTextString(csc.txtCrabDesc, crabDescs[csc.crabSelected])
 			
 			space = 12
@@ -1070,7 +1099,7 @@ function DoCharacterSelectController(csc ref as CharacterSelectController)
 					PlaySprite(csc.sprCrabs + csc.crabSelected, 18, 1, 13, 18)
 				else
 					PlaySprite(csc.sprCrabs + csc.crabSelected, 18, 1, 7, 12)
-					SetTextString(csc.txtCrabName, crabNames[csc.crabSelected+1])
+					SetTextString(csc.txtCrabName, (crabNames[csc.crabSelected+1]))
 				endif
 				if csc.player = 1 then PlayVoice(voice1, Mod(csc.crabSelected, 6)+1, (csc.crabSelected)/6, crab1Evil)
 				if csc.player = 2 then PlayVoice(voice2, Mod(csc.crabSelected, 6)+1, (csc.crabSelected)/6, crab2Evil)

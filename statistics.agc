@@ -24,8 +24,10 @@ function InitStatistics()
 	CreateSpriteExpressImage(ST_TITLE, bg4I, w*2, w*2, 0, 0, 1000)
 	if dispH then SetSpriteSizeSquare(ST_TITLE, h*2)
 	SetSpriteMiddleScreen(ST_TITLE)
+	FixSpriteToScreen(ST_TITLE, 1)
 	
 	CreateText(ST_TITLE, "Statistics")
+	FixTextToScreen(ST_TITLE, 1)
 	
 	crabsU = altUnlocked[1]+altUnlocked[2]+altUnlocked[3]+altUnlocked[4]+altUnlocked[5]+altUnlocked[6]
 	completed$ = "Completion: " + Mid(Str(0.1* Trunc((1000.0*(highestScene-1+musicUnlocked-7+crabsU+musicBattleUnlock+hardBattleUnlock+speedUnlock+evilUnlock+unlockAIHard))/(1.0*100+14+18+5))),1,4) + "% "
@@ -59,9 +61,9 @@ function InitStatistics()
 	inc totalSecondsPlayed, Round(localSeconds#)
 	localSeconds# = 0
 	
-	//crabPlayed[3] = 34
-	//crabPlayed[18] = 66
-	//crabPlayed[2] = 166
+	crabPlayed[3] = 34
+	crabPlayed[18] = 66
+	crabPlayed[27] = 166
 	
 	faveCrab = 0
 	quan1 = 0	//Quan = Quantity, times that crab was played
@@ -70,7 +72,7 @@ function InitStatistics()
 	faveCrab3 = 0
 	quan3 = 0
 	
-	for i = 1 to 24
+	for i = 1 to 27
 		if crabPlayed[i] > quan1
 			quan3 = quan2
 			faveCrab3 = faveCrab2
@@ -95,39 +97,51 @@ function InitStatistics()
 	if faveCrab = 0 then faveCrab = 1
 	//totalSecondsPlayed = 1000000
 	
+	//SetViewOffset(700, 0)
+	
 	timeP$ = "Time Played: " + GetTimerString(totalSecondsPlayed)
 	battleG$ = "Total Fights: " + Str(fightTotal)
 	mirrorG$ = "Mirror Matches: " + Str(mirrorTotal)
 	classG$ = "Classic Games: " + Str(classicTotal)
 	metT$ = "Meteors Dodged: " + Str(totalMeteors)
 	
-	crab1Type = Mod(faveCrab-1, 6)+1
-	crab1Alt = (faveCrab-1)/6
-	SetCrabString(1)
+	//crab1Type = Mod(faveCrab-1, 6)+1
+	//crab1Alt = (faveCrab-1)/6
+	//if faveCrab > 24 then crab1Type = faveCrab
+	//GetCrabSt
+	//SetCrabString(1)
+	
 	if faveCrab2 = 0
-		crabF$ = "Favorite Crab:" + chr(10) + "      " + crab1Str$
+		crabF$ = "Favorite Crab:" + chr(10) + "      " + crabNames[faveCrab]
 	else
-		crabF$ = "Favorite Crabs:" + chr(10) + "      " + crab1Str$
-		crab1Type = Mod(faveCrab2-1, 6)+1
-		crab1Alt = (faveCrab2-1)/6
-		SetCrabString(1)
-		crabF$ = crabF$ + chr(10) + "      " + crab1Str$
-		crab1Type = Mod(faveCrab3-1, 6)+1
-		crab1Alt = (faveCrab3-1)/6
-		SetCrabString(1)
-		crabF$ = crabF$ + chr(10) + "      " + crab1Str$
+		crabF$ = "Favorite Crabs:" + chr(10) + "      " + crabNames[faveCrab] + "      " + crabNames[faveCrab2] + "      " + crabNames[faveCrab3]
+		//crab1Type = Mod(faveCrab2-1, 6)+1
+		//crab1Alt = (faveCrab2-1)/6
+		//SetCrabString(1)
+		//crabF$ = crabF$ + chr(10) + "      " + crab1Str$
+		//crab1Type = Mod(faveCrab3-1, 6)+1
+		//crab1Alt = (faveCrab3-1)/6
+		//SetCrabString(1)
+		//crabF$ = crabF$ + chr(10) + "      " + crab1Str$
 	endif
 	CreateText(ST_TXT2, timeP$ + chr(10) + battleG$ + chr(10) + mirrorG$ + chr(10) + classG$ + chr(10) + metT$ + chr(10) + crabF$)
 		
 	//CreateText(ST_TXT3, "Statistics")
 	SetFolder("/media/art")
-	LoadSprite(ST_TXT2, "crab" + str(Mod(faveCrab-1, 6)+1) + AltStr((faveCrab-1)/6) + "rWin.png")
+	evil$ = ""
+	if faveCrab > 24 then evil$ = "2"
+	tempCrab = faveCrab
+	if faveCrab = 25 then tempCrab = 1
+	if faveCrab = 26 then tempCrab = 19
+	if faveCrab = 27 then tempCrab = 22
+	LoadSprite(ST_TXT2, "crab" + str(Mod(tempCrab-1, 6)+1) + AltStr((tempCrab-1)/6) + evil$ + "rWin.png")
 	SetSpriteColor(ST_TXT2, 170, 170, 170, 255)
 	
 	SetFolder("/media/ui")
 	LoadAnimatedSprite(SPR_MENU_BACK, "back", 8)
 	SetSpriteFrame(SPR_MENU_BACK, 8)
 	AddButton(SPR_MENU_BACK)
+	FixSpriteToScreen(SPR_MENU_BACK, 1)
 	
 	if dispH
 		SetTextExpress(ST_TITLE, GetTextString(ST_TITLE), 120, fontSpecialI, 1, w/2, 10, 5, -30)
@@ -183,24 +197,12 @@ function DoStatistics()
 	mirrorG$ = "Mirror Matches: " + Str(mirrorTotal)
 	classG$ = "Classic Games: " + Str(classicTotal)
 	metT$ = "Meteors Dodged: " + Str(totalMeteors)
-	crab1Type = Mod(faveCrab-1, 6)+1
-	crab1Alt = (faveCrab-1)/6
-	SetCrabString(1)
 	if faveCrab2 = 0
-		crabF$ = "Favorite Crab:" + chr(10) + "      " + crab1Str$
+		crabF$ = "Favorite Crab:" + chr(10) + "      " + crabNames[faveCrab]
 	else
-		crabF$ = "Favorite Crabs:" + chr(10) + "      " + crab1Str$
-		crab1Type = Mod(faveCrab2-1, 6)+1
-		crab1Alt = (faveCrab2-1)/6
-		SetCrabString(1)
-		crabF$ = crabF$ + chr(10) + "      " + crab1Str$
-		crab1Type = Mod(faveCrab3-1, 6)+1
-		crab1Alt = (faveCrab3-1)/6
-		SetCrabString(1)
-		crabF$ = crabF$ + chr(10) + "      " + crab1Str$
+		crabF$ = "Favorite Crabs:" + chr(10) + "      " + crabNames[faveCrab] + chr(10) + "      " + crabNames[faveCrab2] + chr(10) + "      " + crabNames[faveCrab3]
 	endif
 	SetTextString(ST_TXT2, timeP$ + chr(10) + battleG$ + chr(10) + mirrorG$ + chr(10) + classG$ + chr(10) + metT$ + chr(10) + crabF$)
-	//SetTextString(ST_TXT2, Mid(GetTextString(ST_TXT2), 1, 13) + SPR_MENU_BACK 
 	
 	
 	
