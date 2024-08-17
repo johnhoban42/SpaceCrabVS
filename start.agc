@@ -465,6 +465,11 @@ function DoStart()
 		state = CHARACTER_SELECT
 	endif
 	
+	//Going to the jukebox screen
+	if ButtonMultitouchEnabled(SPR_JUKEBOX)
+		state = SOUNDTEST
+	endif
+	
 	//Going to the settings screen
 	if ButtonMultitouchEnabled(SPR_SETTINGS)
 		ClearMultiTouch()
