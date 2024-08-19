@@ -28,7 +28,7 @@ global crabNames as string[27] = [
 	"Rock Lobster",
 	"Cranime",
 	"Future Crab", //Row 4
-	"Crabyss Knighy",
+	"Crabyss Knight",
 	"Sk8r Crab",
 	"Holy Crab",
 	"Crab Cake",

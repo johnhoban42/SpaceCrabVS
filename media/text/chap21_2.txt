@@ -1,36 +1,36 @@
 bg 3
 music rag
-CC: What a refreshing ride! That Taxi Crab sure knows how to chauffeur a posse.
-1F: Maybe it was nice in the front seat...
-Team Player, did you really have to wear your helmet the whole time? It made things kind of tight.
-TP: I could say the same to you, Mr. Foam Fingers in my face!
-IJ: Aaaand here! This should be the spot.
-CC: Splendid work, Jeffery. Truly, the boast of the business.
-1F: Uh, sir? There's nothing here. Just empty space...
-TP: Yeah, coach. It's not even like, interesting space. There's nothing!
-CC: Precisely. Did you really believe that the mirror dimension was a 24/7 buffet?
-It's more akin to a one-hour buffet... open every three weeks!
-Not to worry - we will simply outwait the timer, and the dimension will be ours for the taking!
-Yes, WAITING is the only solution to this issue.
-IJ: ...
-1F: ...
-TP: ...
-CC: Oh, so because I'M the timely one, I'm expected to do the job?
-Time doesn't just grow on trees, illiterates.
-I need to charge my powers up in battle, just like all of you.
-TP: ARGH! First we have that boring taxi ride, and now we have to sit around here for weeks...
-Coach, I can't keep waiting around! I need a training plan, stat!
-CC: Message received. You - the player. Here's your warmup routine - battle me and charge us up!
-TP: You got it coach! I won't hold back!
+CC: BKFTo; What a refreshing ride! That Taxi Crab sure knows how to chauffeur a posse.
+1F: BBFUa; Maybe it was nice in the front seat...
+BCFRb; Team Player, did you really have to wear your helmet the whole time? It made things kind of tight.
+TP: BVFBa; I could say the same to you, Mr. Foam Fingers in my face!
+IJ: BSFOc; Aaaand here! This should be the spot.
+CC: BAFOg; Splendid work, Jeffery. Truly, the boast of the business.
+1F: BWFHa; Uh, sir? There's nothing here. Just empty space...
+TP: BBFEe; Yeah, coach. It's not even like, interesting space. There's nothing!
+CC: BUFOe; Precisely. Did you really believe that the mirror dimension was a 24/7 buffet?
+BDFKh; It's more akin to a one-hour buffet... open every three weeks!
+BJFXe; Not to worry - we will simply outwait the timer, and the dimension will be ours for the taking!
+BJFXa; Yes, WAITING is the only solution to this issue.
+IJ: BBFU; ...
+1F: BBFF; ...
+TP: BBFUa; ...
+CC: BUFDd; Oh, so because I'M the timely one, I'm expected to do the job?
+BSFTp; Time doesn't just grow on trees, illiterates.
+BWFOj; I need to charge my powers up in battle, just like all of you.
+TP: BIFBa; ARGH! First we have that boring taxi ride, and now we have to sit around here for weeks...
+BVFMd; Coach, I can't keep waiting around! I need a training plan, stat!
+CC: BAFTp; Message received. You - the Player. Here's your warmup routine - battle me and charge us up!
+TP: BPFDe; You got it coach! I won't hold back!
 music fightJ
 fight 73527
-music dungeon
-TP: Thanks, coach! You really made me work up a sweat!
-CC: How pleasant, Player of Teams. I got precisely what I desired, as well.
+music fightAJ
+TP: BVFIa; Thanks, coach! You really made me work up a sweat!
+CC: BMFDb; How pleasant, Player of Teams. I got precisely what I desired, as well.
 se special
-CC: Enough power to activate... FAST FORWARD!
-IJ: By the jones, I see it! A little tear, getting bigger and bigger!
-1F: Whoa! What's that inside there? It kind of looks like... us?
-music
+CC: BZFQ; Enough power to activate... FAST FORWARD!
+IJ: BVFSb; By the jones, I see it! A little tear, getting bigger and bigger!
+1F: BHFPa; Whoa! What's that inside there? It kind of looks like... us?
+exit 2
 ??: It's over- there's nowhere left to run!
-CC: Already back, aren't we, Mr. Knight?
+CC: BUFAa; Already back, aren't we, Mr. Knight?

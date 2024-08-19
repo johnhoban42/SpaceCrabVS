@@ -169,7 +169,7 @@ endfunction
 
 function Hover(sprite) 
 	if GetSpriteExists(sprite) = 0 then exitfunction 0	//Added in to make sure bad buttons aren't targeted
-	returnValue = GetSpriteHitTest(sprite, GetPointerX(), GetPointerY())
+	returnValue = GetSpriteHitTest(sprite, GetPointerX()+GetViewOffsetX(), GetPointerY()+GetViewOffsetY())
 endfunction returnValue
 
 function Button(sprite) 
@@ -984,7 +984,7 @@ function PingCrab(x, y, size)
 		CreateSprite(spr, crabpingI)
 		SetSpriteSizeSquare(spr, size)
 		SetSpriteAngle(spr, Random(1, 360))
-		SetSpritePosition(spr, x - GetSpriteWidth(spr)/2, y - GetSpriteHeight(spr)/2)
+		SetSpritePosition(spr, x - GetSpriteWidth(spr)/2 + GetViewOffsetX(), y - GetSpriteHeight(spr)/2 + GetViewOffsetY())
 		SetSpriteDepth(spr, 50)
 	endif
 	

@@ -13,6 +13,8 @@ global faveCrab = 0
 global faveCrab2 = 0
 global faveCrab3 = 0
 
+global statsState = 2
+
 // Initialize the story screen
 function InitStatistics()
 	
@@ -61,7 +63,7 @@ function InitStatistics()
 	inc totalSecondsPlayed, Round(localSeconds#)
 	localSeconds# = 0
 	
-	crabPlayed[3] = 34
+	crabPlayed[20] = 34
 	crabPlayed[18] = 66
 	crabPlayed[27] = 166
 	
@@ -97,7 +99,8 @@ function InitStatistics()
 	if faveCrab = 0 then faveCrab = 1
 	//totalSecondsPlayed = 1000000
 	
-	//SetViewOffset(700, 0)
+	if statsState = 1 then SetViewOffset(0, 0)
+	if statsState = 2 then SetViewOffset(w, 0)
 	
 	timeP$ = "Time Played: " + GetTimerString(totalSecondsPlayed)
 	battleG$ = "Total Fights: " + Str(fightTotal)
@@ -137,11 +140,41 @@ function InitStatistics()
 	LoadSprite(ST_TXT2, "crab" + str(Mod(tempCrab-1, 6)+1) + AltStr((tempCrab-1)/6) + evil$ + "rWin.png")
 	SetSpriteColor(ST_TXT2, 170, 170, 170, 255)
 	
+	LoadSprite(ST_TXT5, "crab" + str(Mod(tempCrab-1, 6)+1) + AltStr((tempCrab-1)/6) + evil$ + "rLose.png")
+	SetSpriteColor(ST_TXT5, 170, 170, 170, 255)
+	
 	SetFolder("/media/ui")
-	LoadAnimatedSprite(SPR_MENU_BACK, "back", 8)
-	SetSpriteFrame(SPR_MENU_BACK, 8)
-	AddButton(SPR_MENU_BACK)
-	FixSpriteToScreen(SPR_MENU_BACK, 1)
+	LoadAnimatedSprite(ST_BACK1, "back", 8)
+	SetSpriteFrame(ST_BACK1, 8)
+	AddButton(ST_BACK1)
+	//FixSpriteToScreen(ST_BACK1, 1)
+	
+	CreateSpriteExistingAnimation(ST_BACK2, ST_BACK1)
+	
+	LoadSprite(ST_SWITCH1, "switch.png")
+	AddButton(ST_SWITCH1)
+	LoadSprite(ST_SWITCH2, "switch.png")
+	AddButton(ST_SWITCH2)
+	
+	crabList$ = "Highest Scores" + chr(10) + chr(10)
+	mirrorList$ = "Mirror" + chr(10) + chr(10)
+	classicList$ = "Classic" + chr(10) + chr(10)
+	scoreTableClassic[14] = 170
+	scoreTableMirror[17] = 211
+	for i = 1 to 27
+		exM$ = ""
+		exC$ = ""
+		if scoreTableMirror[i] >= 200 then exM$ = "{ "
+		if scoreTableClassic[i] >= 150 then exC$ = "{ "
+		crabList$ = crabList$ + crabNames[i] + chr(10)
+		mirrorList$ = mirrorList$ + exM$ + Str(scoreTableMirror[i]) + chr(10)
+		classicList$ = classicList$ + exC$ + Str(scoreTableClassic[i]) + chr(10)
+	next i
+	
+	CreateText(ST_TXT3, crabList$)
+	CreateText(ST_TXT4, mirrorList$)
+	CreateText(ST_TXT5, classicList$)
+	
 	
 	if dispH
 		SetTextExpress(ST_TITLE, GetTextString(ST_TITLE), 120, fontSpecialI, 1, w/2, 10, 5, -30)
@@ -150,7 +183,14 @@ function InitStatistics()
 		SetSpriteExpress(ST_TXT2, h-100, h-100, 0, h - (h-100), 40)
 		SetSpriteMiddleScreenX(ST_TXT2)
 		
-		SetSpriteExpress(SPR_MENU_BACK, 130, 130, 60, h-155, 5)
+		SetSpriteExpress(ST_BACK1, 130, 130, 60, h-155, 5)
+		SetSpriteExpress(ST_SWITCH1, 130, 130, w-130-60, h-155, 5)
+		
+		SetSpriteExpress(ST_BACK2, 130, 130, w + 60, 55, 5)
+		SetSpriteExpress(ST_SWITCH2, 130, 130, w + w-130-60, 55, 5)
+		SetSpriteExpress(ST_TXT5, h-100, h-100, 0, h - (h-100), 40)
+		SetSpriteMiddleScreenX(ST_TXT5)
+		IncSpriteX(ST_TXT5, w)
 		
 	else
 		
@@ -161,9 +201,38 @@ function InitStatistics()
 		SetSpriteExpress(ST_TXT2, w-30, w-30, 0, h/2-200, 40)
 		SetSpriteMiddleScreenX(ST_TXT2)
 		
-		SetSpriteExpress(SPR_MENU_BACK, 140, 140, 40, h-180, 5)
+		//Commented ones are their old positions, at the bottom of the screen
+		//SetSpriteExpress(ST_BACK1, 140, 140, 40, h-180, 5)
+		//SetSpriteExpress(ST_SWITCH1, 140, 140, w-140-40, h-180, 5)
+		SetSpriteExpress(ST_BACK1, 140, 140, 10, 40, 5)
+		SetSpriteExpress(ST_SWITCH1, 140, 140, w-140-10, 40, 5)
+		
+		SetSpriteExpress(ST_BACK2, 140, 140, w + 10, 40, 5)
+		SetSpriteExpress(ST_SWITCH2, 140, 140, w + w-140-10, 40, 5)
+		
+		
+		SetTextExpress(ST_TXT3, GetTextString(ST_TXT3), 60, fontDescI, 2, w + 420, 210, 5, -15)
+		SetTextLineSpacing(ST_TXT3, -14)
+		SetTextExpress(ST_TXT4, GetTextString(ST_TXT4), 60, fontDescI, 2, GetTextX(ST_TXT3) + 180, GetTextY(ST_TXT3), 5, -16)
+		SetTextLineSpacing(ST_TXT4, -14)
+		SetTextExpress(ST_TXT5, GetTextString(ST_TXT5), 60, fontDescI, 2, GetTextX(ST_TXT3) + 180*2, GetTextY(ST_TXT3), 5, -16)
+		SetTextLineSpacing(ST_TXT5, -14)
+		
+		SetSpriteExpress(ST_TXT5, w-30, w-30, 0, h/2-200, 40)
+		SetSpriteMiddleScreenX(ST_TXT5)
+		IncSpriteX(ST_TXT5, w)
 		
 	endif
+	
+	for i = 0 to 15
+		SetTextCharColor(ST_TXT3, i, 74, 244, 131, 255)
+	next i
+	for i = 1 to Len(GetTextString(ST_TXT4))
+		if (Mid(GetTextString(ST_TXT4), i, 1)) = "{" then SetTextCharColorBlue(ST_TXT4, i-1, 0)
+	next i
+	for i = 1 to Len(GetTextString(ST_TXT5))
+		if (Mid(GetTextString(ST_TXT5), i, 1)) = "{" then SetTextCharColorBlue(ST_TXT5, i-1, 0)
+	next i
 	
 	PlayMusicOGGSP(chillMusic, 1)
 	
@@ -205,6 +274,9 @@ function DoStatistics()
 	SetTextString(ST_TXT2, timeP$ + chr(10) + battleG$ + chr(10) + mirrorG$ + chr(10) + classG$ + chr(10) + metT$ + chr(10) + crabF$)
 	
 	
+	if GetPointerPressed() and not Button(ST_BACK1) and not Button(ST_BACK2) and not Button(ST_SWITCH1) and not Button(ST_SWITCH2) 
+		PingCrab(GetPointerX(), GetPointerY(), Random (100, 180))
+	endif
 	
 	starNum = 1
 	for i = 1 to Len(GetTextString(ST_TXT1))
@@ -214,14 +286,21 @@ function DoStatistics()
 		endif
 	next i
 
-	if mod(round(localSeconds#)+1080, 8) = 0 and GetSpritePlaying(SPR_MENU_BACK) = 0 then PlaySprite(SPR_MENU_BACK, 10, 0, 1, 8)
+	if mod(round(localSeconds#)+1080, 8) = 0 and GetSpritePlaying(ST_BACK1) = 0 then PlaySprite(ST_BACK1, 10, 0, 1, 8)
+	if mod(round(localSeconds#)+1080, 8) = 0 and GetSpritePlaying(ST_BACK2) = 0 then PlaySprite(ST_BACK2, 10, 0, 1, 8)
 	
-	if GetPointerPressed() and not Button(SPR_MENU_BACK)
-		PingCrab(GetPointerX(), GetPointerY(), Random (100, 180))
+	if ButtonMultitouchEnabled(ST_SWITCH1) or ButtonMultitouchEnabled(ST_SWITCH2)
+		statsState = Mod(statsState, 2)+1
 	endif
+	if Abs(GetViewOffsetX()-(w*(statsState-1))) <> 2 then GlideViewOffset(w*(statsState-1), 0, 5, 3)
+	
+	Print(statsState)
+	
+	
+	
 	
 	//Do loop for the mode is here
-	if ButtonMultitouchEnabled(SPR_MENU_BACK) or inputExit
+	if ButtonMultitouchEnabled(ST_BACK1) or ButtonMultitouchEnabled(ST_BACK2) or inputExit
 		TransitionStart(lastTranType)
 		state = START
 	endif
@@ -243,13 +322,21 @@ function ExitStatistics()
 	//Deletion of the assets/setting variables correctly to leave is here
 
 	DeleteSprite(ST_TITLE)
-	DeleteSprite(SPR_MENU_BACK)
+	DeleteSprite(ST_BACK2)
+	DeleteAnimatedSprite(ST_BACK1)
+	DeleteSprite(ST_SWITCH1)
+	DeleteSprite(ST_SWITCH2)
 	DeleteText(ST_TITLE)
 	DeleteText(ST_TXT1)
 	DeleteText(ST_TXT2)
 	DeleteSprite(ST_TXT2)
-	//DeleteText(ST_TXT3)
+	DeleteText(ST_TXT3)
+	DeleteText(ST_TXT4)
+	DeleteText(ST_TXT5)
+	DeleteSprite(ST_TXT5)
 	StopMusicOGGSP(chillMusic)
+
+	SetViewOffset(0, 0)
 
 	statisticsStateInitialized = 0
 endfunction

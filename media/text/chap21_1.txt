@@ -1,34 +1,35 @@
 bg 1
 music
-CC: BF; *a-hem*
-BF; Star Destroyers, let us roll call!
+CC: BBFTp; *a-hem*
+BMFOa; Star Destroyers, let us roll call!
 music rag
-TP: BF; Here!
-1F: BF; Present and ready for duty, sir!
-IJ: BF; I may be HERE, yes. But shouldn't we be aiming for the BEYOND here?
-CC: BF; No time for that drivel now, Jeffery.
-BF; We have to set our sights on the beyond here!
-1F: BF; Yeah! The beyond here!!
-BF; Where is that? Is it far?
-CC: BF; Well, Crab of Fans, our sight is set on the most destructive force in existence.
-BF; The Mirror Dimension! Anything entering it is split in two, yes.
-BF; No effort, yet double the strength? Temptation, incarnate!
-TP: BF; Wow, now that's some power right there!
-BF; Where's the training spot?
-CC: BF; Myself and our intrepid explorer have been discussing this exact topic.
-BF; And we're in agreement! We have no idea where to start.
-IJ: BF; That may be true, but I think I have an idea of where to start!
-CC: BF; Well then, you whelk, let us start the search process. Precisely now!
+TP: BKFB; Here!
+1F: BVFDb; Present and ready for duty, sir!
+IJ: BWFTp; I may be HERE, yes. But shouldn't we be aiming for the BEYOND here?
+CC: BUFOe; No time for that drivel now, Jeffery.
+BOFQ; We have to set our sights on the beyond here!
+1F: BKFOa; Yeah! The beyond here!!
+BSFS; Where is that? Is it far?
+CC: BAFKh; Well, Crab of Fans, our sight is set on the most destructive force in existence.
+BMFDb; The Mirror Dimension! Anything entering it is split in two, yes.
+BSFKd; No effort, yet double the strength? Temptation, incarnate!
+TP: BAFJa; Wow, now that's some power right there!
+BVFDb; Where's the training spot?
+CC: BWFJd; Myself and our intrepid explorer have been discussing this exact topic.
+BAFKg; And we're in agreement! We have no idea where to start.
+IJ: BNFGb; That may be true, but I think I have an idea of where to start!
+CC: BPFDa; Well then, you whelk, let us start the search process. Precisely now!
 music retro8
 fight 64478
 music retro4
-CC: BF; Surely, you spotted the marked-spot X as you were pathetically hurtling through space, right Jeffery?
-IJ: BF; Oh, I got it, alright. Stand back - my explorers intuition is speaking to me.
-BF; First, we go... north! Then, a little bit... west! Then, a few steps... north! Then-
-CC: BF; Spit it out already, crab!
-1F: BF; (Sir, are you sure he knows what he's doing?)
-CC: BF; (Now, now, one must be patient with these idiotic types.)
-IJ: BF; ...north, again. And for our last step - 
-BF; We hop in a Taxi and go to THESE coordinates!
-CC: BF; Truly inspirational. Excelling work. Will someone please give Taxi Crab a call?
-TP: BF; Already on it, coach!
+CC: BOFDa; Surely, you spotted the spot as you were pathetically hurtling through space, Jeffery?
+IJ: BMFAa; Oh, I got it, alright. Stand back - my explorers intuition is speaking to me.
+BOFTp; First, we go... north! Then, a little bit... west! Then, a few steps... north! Then-
+CC: BVFDd; Spit it out already, crab!
+1F: BBFFd; (Sir, are you sure he knows what he's doing?)
+CC: BUFTn; (Now, now, one must be patient with these idiotic types.)
+IJ: BSFTo; ...north, again. And for our last step - 
+BOFQb; We hop in a Taxi and go to THESE coordinates!
+CC: BBFUa; Truly inspirational. Excelling work. Will someone please give Taxi Crab a call?
+se phone
+TP: BEFA; Already on it, coach!

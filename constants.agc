@@ -796,7 +796,15 @@ global IMG_CS_CRAB as Integer[NUM_CRABS]
 #constant ST_TITLE 651
 #constant ST_TXT1 652
 #constant ST_TXT2 653
-#constant ST_TXT3 654
+
+#constant ST_BACK1 655
+#constant ST_BACK2 656
+#constant ST_SWITCH1 657
+#constant ST_SWITCH2 658
+
+#constant ST_TXT3 659
+#constant ST_TXT4 660
+#constant ST_TXT5 661
 
 //Settings Sprites: 801-900
 

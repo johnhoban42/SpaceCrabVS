@@ -233,9 +233,9 @@ endfunction
 
 if debug
 	curChapter = 21
-	curScene = 1
+	curScene = 4
 	highestScene = 101
-	appState = STATISTICS
+	appState = START
 	crab1Type = 6
 	crab1Alt = 3
 	
@@ -460,6 +460,7 @@ function TransitionStart(tranType)
 			//SetParticlesMax (i, 200)
 			SetParticlesMax (i, -1)
 			SetParticlesDepth(i, 1)
+			FixParticlesToScreen(i, 1)
 		next i
 		SetParticlesSize(12, 180)
 		//SetParticlesMax (12, 250)

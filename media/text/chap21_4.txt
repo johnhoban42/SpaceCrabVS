@@ -1,40 +1,44 @@
 bg 4
-music retro6
-SC: It's over, Chrono Crab! Crabyss Knight told me everything.
-CC: That 'knight' in shining armor, who can barely finish a sentence without breaking into monologue?
-SC: Yeah, him. He said that you're trying to harness the evil powers of space, for no reason besides greed!
-CC: And what of it, rival? Afraid that you'll lose our eternal battle?
-SC: I don't CARE about the rivalry anymore! Just don't destroy the universe!
+music retro5
+SC: BF; It's over, Chrono Crab! Crabyss Knight told me everything.
+CC: BF; That 'knight' in shining armor, who can barely finish a sentence without breaking into monologue?
+SC: BF; Yeah, him. He said that you're trying to harness the evil powers of space, for no reason besides greed!
+CC: BF; And what of it, rival? Afraid that you'll lose our eternal battle?
+SC: BF; I don't CARE about the rivalry anymore! Just don't destroy the universe!
 music
-CC: You- you WHAT?!
+CC: BF; You- you WHAT?!
 music tomato
-Don't care about the rivalry? For what other purpose are we to do this?!
-SC: Listen. I finally found something to fight for, besides myself.
-The partners I've made along the way - they trust me to guide them to a brighter future.
-You're not going to take that away with your stupid schemes!
-CC: Listen here! If you want to stop me, then you WILL take the mantle of my Rival!
-My terms and conditions are the conditions to be termed!
-SC: Then I guess there's no other choice! Fight me head on, Starlight Rival!
+BF; Don't care about the rivalry? For what other purpose are we to do this?!
+SC:BF;  Listen. I finally found something to fight for, besides myself.
+BF; The partners I've made along the way - they trust me to guide them to a brighter future.
+BF; You're not going to take that away with your stupid schemes!
+CC: BF; Listen here! If you want to stop me, then you WILL take the mantle of my Rival!
+BF; My terms and conditions are the conditions to be termed!
+SC: BF; Then... I guess there's no other choice! Fight me head on, Starlight Rival!
+CC: BF; With pleasure!
 music fightB
 fight 92328
 music fightA
-CC: This is the full might of your Star Seekers?
-A crab, his spell boy, and a rickety old suit of armor?
-HA! How small! Only three of you! HA!
-SC: Not even close, Chrono Crab.
-We've got a whole legion working together - we're back and better than ever!
-1F: (Hey, boss, he isn't lying.)
-(I don't think you can take on ALL of the Star Seekers.)
-CC: (Excellent fact verification. Not to worry, I will make sure that the Star Destroyers prosper!)
-1F: (Wait, why are we called that, again?)
+CC: BF; This is the full might of your Star Seekers?
+BF; A crab, his spell boy, and a rickety old suit of armor?
+BF; HA! How small! Only three of you! HA!
+SC: BF; Not even close, Chrono Crab.
+BF; We've got a whole legion working together - we're back and better than ever!
+1F: BF; (Hey, boss, he isn't lying.)
+BF; (I don't think you can take on ALL of the Star Seekers.)
+CC: BF; (Excellent fact verification. Not to worry, I will make sure that the Star Destroyers prosper!)
+1F: BF; (Wait, why are we called that, again?)
 exit 2
-CC: Crab of Space! Based on your information, we may be unbalanced in numbers.
-Favoring myself, of course. But I have a solution!
-Allow me, and my accomplices, to join your ranks!
-SC: You'll - what? Huh? 
-CC: This way, our rivalry will no longer be reliant on numbers! Only our fighting strength and passion prevail.
-SC: Uh, yeah, I guess that makes sense? Will you stop trying to take over the galaxy?
-CC: Of course, you whelk. If it doesn't help me to defeat my Starlight Rival, what use is there in doing?
-SC: I... can buy that for now. Maybe. Well, welcome to the Star Seekers.
-CC: My pleasure!
-(Until we VS again, my Starlight Rival!)
+CC: BF; (There must be a way to best him... SOMEHOW...)
+!
+BF; Crab of Space! Based on your information, we may be unbalanced in numbers.
+BF; Favoring myself, of course. But I have a solution!
+BF; Allow me, and my accomplices, to join your ranks!
+SC: BF; You'll - what? Huh? 
+CC: BF; This way, our rivalry will no longer be reliant on numbers! Only our fighting strength and passion prevail.
+SC: BF; Uh, yeah, I guess that makes sense? Will you stop trying to take over the galaxy?
+CC: BF; Of course, you whelk. If it doesn't help me to defeat my Starlight Rival, what use is there in doing?
+SC: BF; I... can buy that for now. Maybe. Well, welcome to the Star Seekers.
+CC: BF; My pleasure!
+BF; (And as we lie in waiting, the final piece of my dominance is set to bloom shortly...)
+BF; (My pleasure, indeed!)

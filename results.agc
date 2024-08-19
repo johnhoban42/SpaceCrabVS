@@ -257,7 +257,7 @@ function InitResults()
 	winText[22] = "Cake slices for everyone at" + chr(10) + "Crab Cake's victory party!"
 	winText[23] = "The wrath of the transformer!" + chr(10) + "Chimera Crab is victorious!"
 	winText[24] = "Crixel took his bit of the lead" + chr(10) + "and crushed the competition!"
-	winText[25] = "Beta Crab is as cheerful as ever" + chr(10) + "ever about this win."
+	winText[25] = "Beta Crab is as cheerful as" + chr(10) + "ever about this win."
 	winText[26] = "Devil Crab escaped the underworld" + chr(10) + "and is coming straight for YOU!"
 	
 	loseText[0] = "Space Crab's orbital ordnance was" + chr(10) + "overpowered by a mightier opponent..."
