@@ -1094,7 +1094,11 @@ function PauseGame()
 		elseif rand = 6
 			SetTextString(pauseDesc2, "Space Crab made an appearance in" + chr(10) + "'Sleep Patrol Alpha' as a playable" + chr(10) + "character! Find every landmark on the" + chr(10) + "first map to unlock him.")
 		elseif rand = 7
-			SetTextString(pauseDesc2, "Tap and hold on the main menu logo" + chr(10) + "for a fruity suprise!")
+			if GetRawJoystickConnected(1)
+				SetTextString(pauseDesc2, "Click and hold both sticks" + chr(10) + "on the main menu logo" + chr(10) + "for a fruity suprise!")
+			else
+				SetTextString(pauseDesc2, "Tap and hold on the main menu logo" + chr(10) + "for a fruity suprise!")
+			endif
 		elseif rand = 8
 			SetTextString(pauseDesc2, chr(10) + "HIDDEN STAR ONE" + chr(10) + "Score at least 200 in Mirror Mode" + chr(10) + "for a Statistics star!")
 		elseif rand = 9

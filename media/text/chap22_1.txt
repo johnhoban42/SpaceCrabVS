@@ -1,49 +1,49 @@
 bg 4
-SC: So this is it then, huh?
-AL: That's right, Space Crab. Your last appointment.
-After this, all paperwork will be filed, and then...
-The Star Seekers will be complete. Every crab, contractually on board.
-Now bringing in the final crab - your Number One Fan Crab.
+SC: BAFCd; So this is it then, huh?
+AL: BAFJ; That's right, Space Crab. Your last appointment.
+BWFHa; After this, all paperwork will be filed, and then...
+BIFAb; The Star Seekers will be complete. Every crab, contractually on board.
+BMFH; Now bringing in the final crab - your Number One Fan Crab.
 exit 2
-Thanks, Al. I'm ready when he is.
-1F: ...
-SC: ...
-Hey, listen-
+SC: BF; Thanks, Al. I'm ready when he is.
+1F: BF; ...
+SC: BF; ...
+BF; Hey, listen-
 music emotion
-1F: Maaan, this is awkward.
-I was kind of, really, super obsessed with you for a while.
-And MAYBE, that made me overreact a bit when the whole Star Seekers thing started.
-SC: Listen, about that-
-1F: I felt like you didn't want me in the group! A real 'never meet your heroes' case, huh?
-SC: I didn't even know you back then. If I had-
-1F: So that's why I turned to Chrono Crab. He made me feel so accepted!
-Being on the team, one that was so anti-YOU, it was empowering.
-But him, Jeff, Team Player - they helped me see the light.
+1F: BF; Maaan, this is awkward.
+BF; I was kind of, really, super obsessed with you for a while.
+BF; And MAYBE, that made me overreact a bit when the whole Star Seekers thing started.
+SC: BF; Listen, about that-
+1F: BF; I felt like you didn't want me in the group! A real 'never meet your heroes' case, huh?
+SC: BF; I didn't even know you back then. If I had-
+1F: BF; So that's why I turned to Chrono Crab. He made me feel so accepted!
+BF; Being on the team, one that was so anti-YOU, it was empowering.
+BF; But him, Jeff, Team Player - they helped me see the light.
 music
-I'm no longer YOUR number one fan...
+BF; I'm no longer YOUR number one fan...
 music dangerC
-Now, Chrono Crab is NUMBER ONE in my eyes!!
-SC: WHAT?!
-I'm way cooler than him! Don't you remember all that stuff from Space Crab 2?
-1F: Were YOU the one who rescued me from the Mirror Dimension? I don't think so.
-Face it. To me, you've been off screen this whole time. Chrono Crab is my true idol.
-And I'll carry on the Star Destroyers in his name. I'll carry on the rivalry!
-SC: Don't call me lame yet! I'll show you a FRACTION of the cool skills I've picked up from the Star Seekers!
+BF; Now, Chrono Crab is NUMBER ONE in my eyes!!
+SC: BHFP; WHAT?!
+BF; I'm way cooler than him! Don't you remember all that stuff from Space Crab 2?
+1F: BF; Were YOU the one who rescued me from the Mirror Dimension? I don't think so.
+BF; Face it. To me, you've been off screen this whole time. Chrono Crab is my true idol.
+BF; And I'll carry on the Star Destroyers in his name. I'll carry on the rivalry!
+SC: BF; Don't call me lame yet! I'll show you a FRACTION of the cool skills I've picked up from the Star Seekers!
 music fightA
 fight 78474
 music retro6
-1F: I gotta be honest, Space Crab...
-Yeah. That was really cool.
-To be beaten up by my childhood idol... wow!
-SC: (Childhood? Space Crab 2 wasn't THAT long ago...)
-(Was it?)
-1F: All right. I'll be your fan again!
-I'm not sure who will end up being my Number One, but I'll join the Star Seekers to keep an eye out!
-See you soon. I'm excited for what comes next!
+1F: BF; I gotta be honest, Space Crab...
+BF; Yeah. That was really cool.
+BF; To be beaten up by my childhood idol... wow!
+SC: BBFHa; (Childhood? Space Crab 2 wasn't THAT long ago...)
+BFVa; (Was it?)
+1F: BF; All right. I'll be your fan again!
+BF; I'm not sure who will end up being my Number One, but I'll join the Star Seekers to keep an eye out!
+BF; See you soon. I'm excited for what comes next!
 exit 2
-SC: Wow...
-Now that #1 Fan Crab is onboard, EVERY crab I've met is in.
-So that means, the Star Seekers are fully formed!
+SC: BF; Wow...
+BF; Now that #1 Fan Crab is onboard, EVERY crab I've met is in.
+BF; So that means, the Star Seekers are fully formed!
 music
-...
-Now what?
+BF; ...
+BF; Now what?

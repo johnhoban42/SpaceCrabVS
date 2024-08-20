@@ -75,8 +75,8 @@ function InitSoundTest()
 
 	// create the play/pause button
 	CreateSprite(sprSoundControl, 0)
-	AddSpriteAnimationFrame(sprSoundControl, playI)
-	AddSpriteAnimationFrame(sprSoundControl, pauseI)
+	//AddSpriteAnimationFrame(sprSoundControl, playI)
+	//AddSpriteAnimationFrame(sprSoundControl, pauseI)
 	// create the music display sprite with each frame tied to one of the songs in our list
 	CreateSprite(sprSoundDisplay, 0)
 	for i = 0 to 41

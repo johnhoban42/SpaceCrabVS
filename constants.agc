@@ -549,9 +549,6 @@ global jumpPartI as Integer[6, 4]
 
 #constant mAlt2aI 490
 
-#constant playI 501
-#constant pauseI 502
-
 //#constant planetVar1I 51
 //#constant planetVar2I 52
 //#constant planetVar3I 53
@@ -669,7 +666,7 @@ global jumpPartI as Integer[6, 4]
 #constant retro3M 133
 #constant retro4M 134
 #constant retro5M 135
-#constant retro6M 136 // Sky Tides
+#constant retro6M 136
 #constant retro7M 137
 #constant retro8M 138
 #constant retro9M 139
@@ -680,8 +677,6 @@ global jumpPartI as Integer[6, 4]
 #constant voice2 162
 
 global oldSong = 0
-global currentTitleMusic = titleMusic
-global currentCharacterMusic = characterMusic
 
 //Volume for music and sound effects & other settings
 global volumeM = 100
@@ -797,14 +792,16 @@ global IMG_CS_CRAB as Integer[NUM_CRABS]
 #constant ST_TXT1 652
 #constant ST_TXT2 653
 
-#constant ST_BACK1 655
-#constant ST_BACK2 656
-#constant ST_SWITCH1 657
-#constant ST_SWITCH2 658
+#constant ST_BACK1 654
+#constant ST_SWITCH1 655
 
-#constant ST_TXT3 659
-#constant ST_TXT4 660
-#constant ST_TXT5 661
+#constant ST_TXT3 656
+#constant ST_TXT4 657
+#constant ST_TXT5 658
+
+#constant ST_TXT6 659
+#constant ST_TXT7 660
+#constant ST_TXT8 661
 
 //Settings Sprites: 801-900
 
@@ -1385,8 +1382,6 @@ function LoadBaseImages()
 	LoadImage(logoI, "vslogo.png")
 	LoadImage(logoDemoI, "titleDemo.png")
 	LoadImage(logoFruitI, "titleFruit.png")
-	LoadImage(playI, "play.png")
-	LoadImage(pauseI, "pause.png")
 	
 	SetFolder("/media")
 	

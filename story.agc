@@ -24,8 +24,8 @@ function InitStory()
 		if dispH
 			LoadSpriteExpress(i, "dBox_D.png", w-80 - cSize*2, 190, 0, 0, 15-(i-SPR_TEXT_BOX))
 		else
-			//TODO - make the image dBox_M
-			LoadSpriteExpress(i, "dBox_M.png", w-80, 280, 0, 0, 15-(i-SPR_TEXT_BOX))
+			//LoadSpriteExpress(i, "dBox_M.png", w-80, 280, 0, 0, 15-(i-SPR_TEXT_BOX))
+			LoadSpriteExpress(i, "dBox_M.png", w-80, 290, 0, 0, 15-(i-SPR_TEXT_BOX))
 		endif
 			
 		//SetSpriteSize(i, GetSpriteWidth(i), GetSpriteHeight(i) + 30)	//Originally for the bottom one
@@ -460,6 +460,7 @@ function ShowScene(chap, scene)
 			spType = MIRRORMODE
 			storyMinScore = Val(GetStringToken(wholeRow$, " ", 2))/(1+storyEasy)
 			lineSkipTo = lineOverall+1
+			SetViewOffset(0, 0)
 			if GetSpriteExists(SPR_CRAB1_BODY)
 				PlayMirrorModeScene()
 				Sleep(1000)

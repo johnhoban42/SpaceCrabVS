@@ -232,10 +232,10 @@ endfunction
 //clearedChapter = 0
 
 if debug
-	curChapter = 21
-	curScene = 4
+	curChapter = 22
+	curScene = 1
 	highestScene = 101
-	appState = START
+	appState = STORY
 	crab1Type = 6
 	crab1Alt = 3
 	
@@ -649,6 +649,7 @@ function CreateSelectButtons()
 		CreateTweenSprite(spr, .16)
 		SetSpriteAngle(spr, 90 * (i-1))
 		SetSpriteColor(spr, 255, 255, 255, 255)
+		FixSpriteToScreen(spr, 1)
 	next i
 	if GetRawJoystickConnected(2)
 		for i = 1 to 4
@@ -672,13 +673,15 @@ function MoveSelect()
 		if settingsActive
 			selectTarget = SPR_VOLUME
 		elseif appState = STATISTICS
-			selectTarget = SPR_MENU_BACK
+			selectTarget = ST_SWITCH1
 		elseif appState = START
 			if GetSpriteVisible(SPR_START1)
 				selectTarget = SPR_STORY_START
 			else
 				selectTarget = SPR_SP_C1
 			endif
+		elseif appState = SOUNDTEST
+			selectTarget = sprSoundControl
 		elseif appState = CHARACTER_SELECT
 			selectTarget = SPR_CS_READY_1
 			if GetSpriteVisible(SPR_CS_READY_1) = 0
