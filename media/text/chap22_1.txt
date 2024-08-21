@@ -5,45 +5,45 @@ BWFHa; After this, all paperwork will be filed, and then...
 BIFAb; The Star Seekers will be complete. Every crab, contractually on board.
 BMFH; Now bringing in the final crab - your Number One Fan Crab.
 exit 2
-SC: BF; Thanks, Al. I'm ready when he is.
-1F: BF; ...
-SC: BF; ...
-BF; Hey, listen-
+SC: BMFJa; Thanks, Al. I'm ready when he is.
+1F: BBFU; ...
+SC: BBFE; ...
+BAFEa; Hey, listen-
 music emotion
-1F: BF; Maaan, this is awkward.
-BF; I was kind of, really, super obsessed with you for a while.
-BF; And MAYBE, that made me overreact a bit when the whole Star Seekers thing started.
-SC: BF; Listen, about that-
-1F: BF; I felt like you didn't want me in the group! A real 'never meet your heroes' case, huh?
-SC: BF; I didn't even know you back then. If I had-
-1F: BF; So that's why I turned to Chrono Crab. He made me feel so accepted!
-BF; Being on the team, one that was so anti-YOU, it was empowering.
-BF; But him, Jeff, Team Player - they helped me see the light.
+1F: BIFIa; Maaan, this is awkward.
+BBFI; I was kind of, really, super obsessed with you for a while.
+BSFEb; And MAYBE, that made me overreact a bit when the whole Star Seekers thing started.
+SC: BBFH; Listen, about that-
+1F: BAFV; I felt like you didn't want me in the group! A real 'never meet your heroes' case, huh?
+SC: BMFFd; I didn't even know you back then. If I had-
+1F: BVFTq; So that's why I turned to Chrono Crab. He made me feel so accepted!
+BBFTn; Being on the team, one that was so anti-YOU, it was empowering.
+BVFDb; But him, Jeff, Team Player - they helped me see the light.
 music
-BF; I'm no longer YOUR number one fan...
+BWFEb; I'm no longer YOUR number one fan...
 music dangerC
-BF; Now, Chrono Crab is NUMBER ONE in my eyes!!
+BIFQa; Now, Chrono Crab is NUMBER ONE in my eyes!!
 SC: BHFP; WHAT?!
-BF; I'm way cooler than him! Don't you remember all that stuff from Space Crab 2?
-1F: BF; Were YOU the one who rescued me from the Mirror Dimension? I don't think so.
-BF; Face it. To me, you've been off screen this whole time. Chrono Crab is my true idol.
-BF; And I'll carry on the Star Destroyers in his name. I'll carry on the rivalry!
-SC: BF; Don't call me lame yet! I'll show you a FRACTION of the cool skills I've picked up from the Star Seekers!
+BUFDe; I'm way cooler than him! Don't you remember all that stuff from Space Crab 2?
+1F: BMFB; Were YOU the one who rescued me from the Mirror Dimension? I don't think so.
+BIFKh; Face it. To me, you've been off screen this whole time. Chrono Crab is my true idol.
+BKFL; And I'll carry on the Star Destroyers in his name. I'll carry on the rivalry!
+SC: BVFDe; Don't call me lame yet! I'll show you a FRACTION of the cool skills I've picked up from the Star Seekers!
 music fightA
 fight 78474
-music retro6
-1F: BF; I gotta be honest, Space Crab...
-BF; Yeah. That was really cool.
-BF; To be beaten up by my childhood idol... wow!
-SC: BBFHa; (Childhood? Space Crab 2 wasn't THAT long ago...)
-BFVa; (Was it?)
-1F: BF; All right. I'll be your fan again!
-BF; I'm not sure who will end up being my Number One, but I'll join the Star Seekers to keep an eye out!
-BF; See you soon. I'm excited for what comes next!
+music retro2
+1F: BAFU; I gotta be honest, Space Crab...
+BMFAd; Yeah. That was really cool.
+BKFSa; To be beaten up by my childhood idol... wow!
+SC: BDFHa; (Childhood? Space Crab 2 wasn't THAT long ago...)
+BBFKc; (Was it?)
+1F: BAFA; All right. I'll be your fan again!
+BMFGb; I'm not sure who will end up being my Number One, but I'll join the Star Seekers to keep an eye out!
+BKFO; See you soon. I'm excited for what comes next!
 exit 2
-SC: BF; Wow...
-BF; Now that #1 Fan Crab is onboard, EVERY crab I've met is in.
-BF; So that means, the Star Seekers are fully formed!
+SC: BBFAb; Wow...
+BAFJb; Now that #1 Fan Crab is onboard, EVERY crab I've met is in.
+BVFOd; So that means, the Star Seekers are fully formed!
 music
-BF; ...
-BF; Now what?
+...
+BAFJ; Now what?

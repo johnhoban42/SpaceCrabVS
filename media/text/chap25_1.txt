@@ -1,8 +1,8 @@
 bg 1
 music
-FC: ...
-...?
-I still... exist?
+FC: BZFV;...
+BZFV;...?
+BBFV; I still... exist?
 music emotion
 SB: My word. You are quite the anomaly, Future Crab.
 FC: Space Bark! You can... talk?

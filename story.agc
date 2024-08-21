@@ -965,6 +965,7 @@ function StartEndScreen()
 	next i
 	if curScene = 5	//This is set to one higher than 4, because the scene will increment before calling this scene
 		SetTextString(TXT_RESULT1, crab1Str$)
+		if curChapter = 22 then SetTextString(TXT_RESULT1, "SPACE CRAB VS")
 		SetTextString(TXT_RESULT2, "STORY")
 		SetTextString(TXT_RESULT3, "CLEAR!")
 		
@@ -1205,7 +1206,58 @@ endfunction state
 
 function PlayCredits()
 	
-endfunction
+	state = STORY
+	
+	if GetMusicPlayingOGGSP(creditsMusic) = 0
+		SetMusic
+	endif
+	
+	startTimer# = 0
+	
+	//Load in the text from a text file
+	credS$ = ""
+	credT = CreateText("")
+	
+	for i = 1 to CountStringTokens(credS$, "~") step 2
+		//Format the POSITION TITLES in here to move wavy, like the stats
+		//Maybe mark them a different color, so they can be recognized in the while loop
+	next i
+	
+	credit
+	
+	endDone = 0
+	while (endDone = 0)
+		
+		ProcessMultitouch()
+		DoInputs()
+		ProcessPopup()
+		
+		
+		startTimer# = startTimer# + GetFrameTime()
+		
+		
+		if startTimer# >= 9
+			if GetPointerPressed or InputSelect then endDone = 1
+		endif
+		
+		
+		SyncG()		
+	endwhile
+	
+	StopGamePlayMusic()
+	if GetMusicPlayingOGGSP(resultsMusic) then StopMusicOGGSP(resultsMusic)
+	
+	TransitionStart(Random(1, lastTranType))
+	for i = TXT_RESULT1 to TXT_RESULT3
+		if GetTextExists(i) then DeleteText(i)
+		if GetTweenTextExists(i) then DeleteTween(i)
+	next i
+	DeleteSprite(playButton)
+	DeleteSprite(exitButton)
+	
+	state = CHARACTER_SELECT
+	
+endfunction state
 
 function SetCrabFromChapter(chap)
 	crabID = 0
@@ -1370,7 +1422,7 @@ function GetCrabCostumeType(cT, cA)
 	if (cT = 2 and cA = 0)
 		//Hat type
 		cosType = 1
-	elseif (cT = 2 and cA = 2) or (cT = 3 and cA = 0) or (cT = 3 and cA = 2) or (cT = 5 and cA = 3) or (cT = 6 and cA = 3)
+	elseif (cT = 2 and cA = 2) or (cT = 3 and cA = 0) or (cT = 3 and cA = 2) or (cT = 5 and cA = 3) or (cT = 6 and cA = 3) or (cT = 1 and cA = 3)
 		//Unique sprite type
 		cosType = 2
 	elseif (cT = 1 and cA = 0)

@@ -139,10 +139,10 @@ function InitStatistics()
 	if faveCrab = 26 then tempCrab = 19
 	if faveCrab = 27 then tempCrab = 22
 	LoadSprite(ST_TXT2, "crab" + str(Mod(tempCrab-1, 6)+1) + AltStr((tempCrab-1)/6) + evil$ + "rWin.png")
-	SetSpriteColor(ST_TXT2, 170, 170, 170, 255)
+	SetSpriteColor(ST_TXT2, 165, 165, 165, 255)
 	
 	LoadSprite(ST_TXT5, "crab" + str(Mod(tempCrab-1, 6)+1) + AltStr((tempCrab-1)/6) + evil$ + "rLose.png")
-	SetSpriteColor(ST_TXT5, 170, 170, 170, 255)
+	SetSpriteColor(ST_TXT5, 165, 165, 165, 255)
 	
 	SetFolder("/media/ui")
 	LoadAnimatedSprite(ST_BACK1, "back", 8)
@@ -216,8 +216,8 @@ function InitStatistics()
 		
 		//SetSpriteExpress(ST_BACK1, 130, 130, 60, h-155, 5)
 		//SetSpriteExpress(ST_SWITCH1, 130, 130, w-130-60, h-155, 5)
-		SetSpriteExpress(ST_BACK1, 80, 80, 60, 20, 5)
-		SetSpriteExpress(ST_SWITCH1, 80, 80, 180, 20, 5)
+		SetSpriteExpress(ST_BACK1, 90, 90, 60, 20, 5)
+		SetSpriteExpress(ST_SWITCH1, 90, 90, 180, 20, 5)
 		
 		SetTextExpress(ST_TXT3, GetTextString(ST_TXT3), 50, fontDescI, 2, 310 + w, 120, 5, -14)
 		SetTextLineSpacing(ST_TXT3, -14)

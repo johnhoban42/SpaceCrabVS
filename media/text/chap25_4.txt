@@ -1,29 +1,28 @@
 bg 4
 music retro1
-FC: Being in the past is quite tiring.
-I've done more talking in the past day than I've done in the past 30 years!
-Still, there's one more crab I need to talk to.
-Space Crab.
-SC: Space Crab.
-You know, we have to do it, one more time. Finish things off right.
-FC: A battle? Is that what you're getting at?
-Well, in that case, why not get things started?
-SC: Hold on. I have to warn you- I'm going all out for this one.
-FC: Oh, please. I'm you. I can take it.
-Being here in the past, seeing so many familiar faces-
-I feel as fit to fight as I did in the old days! Bring it!
+FC: BF; Being in the past is quite tiring.
+BF; I've done more talking in the last day than I've done in the past 30 years!
+BF; Still, there's one more crab I need to talk to.
+BF; Space Crab.
+SC: BF; Space Crab.
+BF; You know, we have to do it, one more time. Finish things off right.
+FC: BF; A battle? Is that what you're getting at? Well, in that case, why not get things started?
+SC: BF; Hold on. I have to warn you- I'm going all out for this one.
+FC: BF; Oh, please. I'm you. I can take it.
+BF; Being here in the past, seeing so many familiar faces-
+BF; I feel as fit to fight as I did in the old days! Bring it!
 music fftf
 fight A1319
-music dreamsdie
-FC: Well, past me - it looks like you have some training to do.
-SC: No biggie, I've got time. Speaking of...
-How much time do YOU have left?
-FC: Don't worry about me. I'm sticking around - my future wasn't much fun anyways.
-I'm eager to see how your future turns out.
-And YOUR future, too. Yeah, YOU, the one reading our words.
-Go outside and fight anyone you meet! That's the moral we're imparting.
-SC: NO! No it isn't. Though, I do want to thank you for playing until the very end!
-I wasn't sure how many of you would make it this far. So happy to see you here!
-And I know the developers are happy, too. They all put tons of love into making the game.
-See you in the next Space Crab! Whenever that is.
-Until then, we'll all be here. Seeking stars, and ready to battle!
+music credits
+FC: BF; Well, past me - it looks like you have some training to do.
+SC: BF; No biggie, I've got time. Speaking of...
+BF; How much time do YOU have left?
+FC: BF; Don't worry about me. I'm sticking around - my future wasn't much fun anyways.
+BF; I'm eager to see how your future turns out.
+BF; And YOUR future, too. Yeah, YOU, the one reading our words.
+BF; Go outside and fight anyone you meet! That's the moral we're imparting.
+SC: BF; NO! No it isn't. Though, I do want to thank you for playing until the very end!
+BF; I wasn't sure how many of you would make it this far. So happy to see you here!
+BF; And I know the developers are happy, too. They all put tons of love into making the game.
+BF; See you in the next Space Crab! Whenever that is.
+BF; Until then, we'll all be here. Seeking stars, and ready to battle!

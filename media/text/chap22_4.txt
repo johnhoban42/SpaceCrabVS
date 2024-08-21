@@ -1,104 +1,107 @@
 bg 4
-music retro6
-SC: Ladder Wizard! You've got the portal spell ready?
-LW: Ready to cast at your go-ahead!
-SC: Chrono Crab! Have enough time power to reach into the future?
-CC: You must doubt me! I'm overflowing with enthusiasm and capability!
-SC: Ninja Crab! Do you- wait, what are you DOING here?
-NJ: A warning, Space Crab.
-Time is dangerous - altering history has consequences we can't imagine.
-CC: Don't listen to him, Crab of Space - with this spell, time will be yours to malleate!
-SC: Ninja Crab...
-I have to do this. For the sake of the Star Seekers. For the sake of all of us.
-NJ ...very well.
-SC: Ladder Wizard! Chrono Crab! Let it RIP!
-exit 1
-se spell
-LW: Casting!
-se special
-CC: Time-ing!
-exit 2
+music retro5
+SC: BPFB; Ladder Wizard! You've got the portal spell ready?
+LW: BWFD1b; Ready to cast at your go-ahead!
+SC: BOFDd; Chrono Crab! Have enough time power to reach into the future?
+CC: BDFQ; You must doubt me! I'm overflowing with enthusiasm and capability!
+SC: BPFDc; Ninja Crab! Do you-
+SC: BHFPa; Wait, what are you DOING here?
+NC: BVFB; A warning, Space Crab.
+BAFNe; Time is dangerous - altering history has consequences we can't imagine.
+CC: BSFKd; Don't listen to him, Crab of Space - with this spell, time will be yours to malleate!
+SC: BBFV; Ninja Crab...
+BVFEb; I have to do this. For the sake of the Star Seekers. For the sake of all of us.
+NC: BBFTq; ...Very well.
 music
+SC: BAFOh; Ladder Wizard! Chrono Crab! Let it RIP!
+se wizardSpell2
+exit 1
+LW: BWFD1e; Casting!
+se special
+CC: BZFKg; Time-ing!
 se explosion
-CRAB-SPLOSION
-LW: cough, cough
-CC: How exhilarating! Truly tumultuous!
-NC: Is everyone all right!?
-SC: It looks like it. But where's the portal?
-NC: No portal... but it looks like we have a visitor.
-FC: ...
-SC: Who... are you?
-music dungeon
-FC: I am... Space Crab.
-SC: That's impossible! Unless...!
-CC: My my, you must be my Starlight Rival... from the FUTURE!
-FC: Starlight Rival? I haven't heard that in a long time.
-Long ago, I started an expedition team. I think they were called... the Star Seers.
-LW: Wow, Space Crab, you started ANOTHER team after the Star Seekers?
-FC: Star Seekers- that's what it was. My memory is hazy - this was all so long ago.
-SC: Long ago? What happened?? I need to know!
-FC: You remind me of me- I used to that fierce energy. That all changed, though.
-I had just formed the Star Seekers. But my fear got the better of me.
-I asked my two great friends- Ladder Wally and Chronos Crab, to help me see the future.
-But a figment of my future life visited, instead- he warned me that the Star Seekers would crumble.
-I didn't believe him, of course. So I challenged him to a battle - big mistake.
-My future self beat me so badly. I lost control of myself, everyone fled. 
-Every Star Seeker, who I worked so hard to build trust with- became scared of me, and disappeared.
-Since then, I've lived a life of isolation. I'll end my life like I started it. Alone.
-SC: NO! That can't be my fate! I REFUSE!!
-FC: Your fate? What do you mean? Say, you kind of look like-
-music retro6
-!
-So, it was YOU who started all of this!
-You ruined our lives! Doomed us to push everyone away!
-SC: N-no I didn't!? Did I?
-FC: And now I finally get my chance for revenge, a one-on-one pummeling.
-Two lonely souls, finally getting a chance for fleeting connection- even if it's with ourselves!
-SC: Not so fast! I'm not alone anymore.
-The crabs I've met- I won't forget their stories, like you have.
-I'll fight for the connections, I'll fight for the Star Seekers, I'll-
+exit 2
+*CRAB-SPLOSION*
+LW: BSFMd; *cough, cough*
+CC: BJFXd; How exhilarating! Truly tumultuous!
+NC: BVFB; Is everyone all right!?
+SC: BQFYc; It looks like it. But where's the portal?
+NC: BBFKc; No portal... but it looks like we have a visitor.
+FC: BZFV; ...
+SC: BSFJd; Who... are you?
+music fightAJ
+FC: BAFFd; I am... Space Crab.
+SC: BWFEa; That's impossible! Unless...!
+CC: BSFSc; My my, you must be my Starlight Rival... from the FUTURE!
+FC: BBFVa; Starlight Rival? I haven't heard that in a long time.
+BMFGd; Reminds me of back then... I started an expedition team. I think they were called... the Star Seers.
+LW: BAFJ1b; Wow, Space Crab, you started ANOTHER team after the Star Seekers?
+FC: BAFJd; Star Seekers- that's what it was. My memory is hazy - this was all so long ago.
+SC: BVFDd; Long ago? What happened?? I need to know!
+FC: BWFEb; You remind me of myself- I used to have that fierce energy. That all changed, though.
+BBFE; I had just formed the Star Seekers. But my fear for the future got the better of me.
+BMFEa; I asked my two great friends- Ladder Wally and Chronos Crab, to help me see the future.
+BNFEa; But a figment of my future life visited, instead- he warned me that the Star Seekers would crumble.
+BDFEb; I didn't believe him, of course. So I challenged him to a battle - big mistake.
+BUFH; My future self beat me so badly. I lost control of myself, obsessed with the future, and everyone fled. 
+BBFV; Every Star Seeker, who I worked so hard to build trust with- became scared of me, and disappeared.
+BBFH; Since then, I've lived a life of isolation. I'll end my life like I started it. Alone.
+music
+SC: BIFMd; NO! That can't be my fate! I REFUSE!!
+FC: BMFJd; Your fate? What do you mean? Say, you kind of look like-
+music fightB
+BAFDe; !
+BOFBa; So, it was YOU who started all of this!
+BMFDd; You ruined our lives! Doomed us to push everyone away, because of your future obsession!
+SC: BSFKc; N-no I didn't!? Did I?
+FC: BVFD; And now I finally get my chance for revenge, a one-on-one pummeling.
+BVFDe; Two lonely souls, finally given a chance for fleeting connection- even if it's with ourselves!
+SC: BPFDa; Not so fast! I'm not alone anymore.
+BMFD; The crabs I've met- I won't forget their stories, like you have.
+music
+BAFDb; I'll fight for the connections, I'll fight for the Star Seekers, I'll-
 music fftf
-I'LL FIGHT FOR THE FUTURE!
+BVFOh; I'LL FIGHT FOR THE FUTURE!
 music fftf
 fight 91219
 music fightB
-SC: I'll keep fighting! Whatever it takes to change my fate!
-FC: Stop- cough -you've bested me.
-How strange, that the events that transpired here, contradict my memory.
-Were you truly strong enough to change the future?
-Time will tell.
+SC: BPFOh; I'll keep on fighting! Whatever it takes to change my fate!
+FC: BQFYi; Stop- *cough* -you've bested me.
+BQFY; How strange, that the events that transpired here, contradict my memory.
+BQFYa; Were you truly strong enough to change the future?
+BQFYd; Time will tell.
 music
-fade 2
-SC: !
-SC: What!? Where did he go?!
-NJ: Your timeline has altered. This 'Future Crab' is no longer of this reality.
-How he eventually materializes- that's up to you, Space Crab.
-music dreamsdie
-SC: ...
-Then I guess all we can really do is move forward, then. Mistakes and all.
-I won't be able to see my future and live to experience it, too. That's clear to me now.
-All we can do is work towards our dreams, and do what we can to keep them alive!
-NC: Well put. Onwards to our legacy!
-LW: You said it. I'll be around for the journey, too!
-KC: And of course, I'll be the one leading said journey. OHOHO!
-CK: We'll be needing some sweets for the trip, no? Allow me to contribute.
-HW: Wait, how long is this trip again? I'll check that I have the vacation time...
-TX: Hold on! My taxi can't fit all of you! Don't travel too far.
-TP: No worries, dude! We'll just jog there, it'll make for a good warmup.
-CB: C'mon, Team Player, you know me- I'm not the athletic type.
-RC: Play some party music, that'll get everyone in the mood to move!
-SB: Woof!
-MC: Are you all NUTS?! I'm NOT walking the whole time. 
-KN: Some discipline would do you well, boy. You're walking.
-AL: Also, I checked your contract. We have no obligation to provide transportation.
-TC: I'm looking forward to the journey. Let's put our skills to the test!
-IJ: Well put, Woody! Let's set our sights on adventure.
-RL: Hey, can someone help me carry my gear? We gotta have some tunes for the road.
-HL: Find the inner strength to carry your own necessities. Wimp.
-FC: Wow, this is way more crabs than the Star Destroyers. It'll take a long to get everyone's stuff packed...
-CR: Heeeyy, maybe that kawaii clock looking guy can speed things up for us! ^_^
-CC: No can do, eyedoll. Casting that spell knocked me clean out of juice!
-We've got a long time to wait before we make another play THAT big.
-SC: Good thing that we've got all the time we need!
-The story of the Star Seekers - and the rest of our lives...
-It starts now!
+exit 2
+SC: BHFPa; !
+SC: BAFEe; What!? Where did he go?!
+NC: BIFC; Your timeline has altered. That 'Future Crab' is no longer of this reality.
+BWFA; How he eventually materializes- that's up to you, Space Crab.
+SC: BBFVa; ...
+music credits
+BMFDd; Then I guess all we can really do is move forward, then. Mistakes and all.
+BDFH; I won't be able to see my future and live to experience it, too. That's clear to me now.
+BVFDb; All we can do is work towards our dreams, and do what we can to keep them alive!
+NC: BAFO; Well put. Onwards to our legacy!
+LW: BVFJ1b; You said it. I'll be around for the journey, too!
+KC: BMFOa; And of course, I'll be the one leading said journey. OHOHO!
+CK: BUFJb; We'll be needing some sweets for the trip, no? Allow me to contribute.
+HC: BBFKi; Wait, how long is this trip again? I'll check that I have the vacation time...
+TX: BDFKc; Hold on! My taxi can't fit all of you! Don't make the trip too long.
+TP: BKFO; No worries, dude! We'll just jog there, it'll make for a good warmup.
+CB: BDFI; C'mon, Team Player, you know me- I'm not the athletic type.
+RC: BKFAh; Play some party music, that'll get everyone in the mood to move!
+SB: BCFBd; Woof!
+MC: BVFJe; Are you all NUTS?! I'm NOT walking the whole time.
+KN: BUFAe; Some discipline would do you well, boy. You're walking.
+AL: BZFWa; Also, I checked your contract. We have no obligation to provide transportation.
+TC: BAFAg; I'm looking forward to the journey. Let's put our skills to the test!
+IJ: BNFDb; Well put, Woody! Let's set our sights on adventure.
+RL: BMFA; Hey, can someone help me carry my gear? We gotta have some tunes for the road.
+HL: BAFTn; Find the inner strength to carry your own necessities. Wimp.
+1F: BSFS; Wow, this is way more crabs than the Star Destroyers. It'll take a long time to get everything packed...
+CN: BWFSd; Heeeyy, maybe that kawaii clock looking guy can speed things up for us! ^_^
+CC: BAFL; No can do, eyedoll. Casting that spell knocked me clean out of juice!
+BMFKh; We've got a long time to wait before we make another play THAT big.
+SC: BIFAa; Good thing that we've got all the time we need!
+BVFT; The story of the Star Seekers - and the rest of our lives...
+BOFO; It starts NOW!

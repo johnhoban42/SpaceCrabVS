@@ -1035,6 +1035,7 @@ function PlayMusicOGGSP(songID, loopYN)
 			SetMusicLoopTimesOGG(fightAMusic, 28.235, -1)
 		endif
 		if songID = fightBMusic then LoadMusicOGG(fightBMusic, "fightB.ogg")
+		if songID = fightBVocalMusic then LoadMusicOGG(fightBVocalMusic, "retro9.ogg")
 		if songID = fightJMusic
 			LoadMusicOGG(fightJMusic, "fightJ.ogg")
 			SetMusicLoopTimesOGG(fightJMusic, 6.0, -1)
@@ -1095,6 +1096,7 @@ function PlayMusicOGGSP(songID, loopYN)
 		endif
 		if songID = skateMusic then LoadMusicOGG(skateMusic, "skate.ogg")
 		if songID = skateVocalMusic then LoadMusicOGG(skateVocalMusic, "skateVocal.ogg")
+		if songID = creditsMusic then LoadMusicOGG(creditsMusic, "credits.ogg")
 		
 		//if id = 16 then song = fightBVocalMusic
 	//if id = 17 then song = creditsMusic
@@ -1177,6 +1179,7 @@ function PlayMusicOGGSPStr(str$, loopYN)
 	if str$ = "skate" then id = skateMusic
 	if str$ = "skateVocal" then id = skateVocalMusic
 	if str$ = "puppet" then id = puppetMusic
+	if str$ = "fftf" then id = fightFMusic
 	
 	if str$ = "dangerA" then id = dangerAMusic
 	if str$ = "dangerB" then id = dangerBMusic
@@ -1185,6 +1188,7 @@ function PlayMusicOGGSPStr(str$, loopYN)
 	if str$ = "dangerF" then id = dangerFMusic
 	if str$ = "dangerAJ" then id = dangerAJMusic
 	if str$ = "dangerM" then id = dangerMMusic
+	if str$ = "dangerT" then id = dangerTMusic
 	if str$ = "dangerSkate" then id = dangerSkateMusic
 	if str$ = "dangerPuppet" then id = dangerPuppetMusic
 	if str$ = "rave1" then id = raveBass1

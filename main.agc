@@ -56,7 +56,7 @@ global h = 1600
 SetVirtualResolution(w, h) // doesn't have to match the window
 
 global dispH = 0		//Variable for horizontal display
-if deviceType = 9//DESKTOP
+if deviceType = DESKTOP
 	dispH = 1
 	w = 1280
 	h = 720
@@ -180,6 +180,8 @@ function SaveGame()
 	for i = 1 to 27
 		WriteInteger(3, scoreTableClassic[i])
 	next i
+	WriteInteger(3, titleIndex)
+	WriteInteger(3, characterSelectIndex)
 	CloseFile(3)
 endfunction
 
@@ -225,6 +227,8 @@ function LoadGame()
 	for i = 1 to 27
 		scoreTableClassic[i] = ReadInteger(3)
 	next i
+	titleIndex = ReadInteger(3)
+	characterSelectIndex = ReadInteger(3)
 	CloseFile(3)
 endfunction
 
@@ -233,9 +237,9 @@ endfunction
 
 if debug
 	curChapter = 22
-	curScene = 1
+	curScene = 4
 	highestScene = 101
-	appState = STORY
+	appState = START
 	crab1Type = 6
 	crab1Alt = 3
 	
@@ -342,7 +346,7 @@ do
 		//Print(GetDeviceBaseName())
 		
 		Print(GetImageMemoryUsage())
-		Print(localSeconds#)
+		//Print(localSeconds#)
 		
 		//Print(GetPointerX())
 		//Print(GetPointerY())

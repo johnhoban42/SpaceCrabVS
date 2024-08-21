@@ -1,53 +1,53 @@
-bg 4
-music dungeon
-SC: BF; Chrono Crab. I was looking for you.
-CC: BF; Ah, my Starlight Rival! You caught me at a primary time.
-BF; I was just talking with that Space Barc fellow.
-BF; It turns out, I can't understand a thing coming out of that beast's mouth!
-SC: BF; Chrono Crab, I need your help... with a spell.
-CC: BFKd; ...Do go on.
-SC: BF; The Star Seekers- I need to see what comes next.
-BF; If I'm going to make a mistake, I have to avoid it! I can't hurt everyone again...
+bg 3
+music fightAJ
+SC: BAFDd; Chrono Crab. I was looking for you.
+CC: BUFKg; Ah, my Starlight Rival! You caught me at a primary time.
+BIFGb; I was just talking with that Space Barc fellow.
+BNFOa; It turns out, I can't understand a thing coming out of that beast's mouth!
+SC: BCFH; Chrono Crab, I need your help... with a spell.
+CC: BVFKd; ...Do go on.
+SC: BWFEd; It's the Star Seekers- I need to know what comes next.
+BMFV; If I'm going to make a mistake, I have to avoid it! I can't hurt everyone again...
 CC: BAFTp; Well, Crab of Space, I can't help you with that. I can only manipulate the time around us.
 BNFQa; Unless you'd like me to bring us ALL into... the future?
-SC: BF; Nope! Not that. We're keeping this small.
-BF; Just a portal into the future - to confirm that things will be alright.
-CC: BF; I don't do portals, whelk. I do time.
-BF; In fact, I have my own time business to get back to.
+SC: BSFI; Nope! Not that. We're keeping this small.
+BAFJd; Just a portal into the future - to confirm that things will be alright.
+CC: BMFDd; I don't do portals, whelk. I do time.
+BUFTp; In fact, I have my own time business to get back to.
 exit 2
-What if you casted a double helix spell with Ladder Wizard? 
-CC: BF; My, how interesting. How possible. How likely, even.
-But you should know, I won't aid for free...
+SC: BOFDa; What if you casted a double helix spell with Ladder Wizard? 
+CC: BUFKh; My, how interesting. How possible. How likely, even.
+BAFOe; But you should know, I won't aid for free...
 SC: BVFMd; Please! Whatever you I can do for you, I'll do it! It's better than the mental tourture I'm facing now!
 music
 CC: BSFKe; (Those are the magic words I needed to hear.)
 music tomato
 BMFOa; Well, you heard it here first! Lawyer boy, are you writing this down?
 AL: BZFDe; Drafting it as we speak.
-CC: The rematch between Starlight Rivals! Win, and I'll help with your spell!
-Lose... and I take control of the Star Seekers, for all of time!
-BF; With that power at my disposal, I'll take over the BF; galaxy, and plant my spot...
-BF; AS THE SUPERIOR STARLIGHT RIVAL!!
-SC: BF; Hold on, I never agreed to-
-BVFOh; THE TIME IS NOW!!
+CC: BMFOa; The rematch between Starlight Rivals! Win, and I'll help with your spell!
+BPFKd; Lose... and I take control of the Star Seekers, for all of time!
+BVFB; With that power at my disposal, I'll take over the galaxy, and plant my spot...
+BAFL; AS THE ETERNALLY SUPERIOR STARLIGHT RIVAL!!
+SC: BSFKc; Hold on, I never agreed to-
+CC: BVFOh; THE TIME IS NOW!!
 music tomato
 fight 63259
-music dangerM
-CC: BF; You think you won that one, did you?
-SC: BF; I did! You saw, fair and square!
-CC: BF; ALL is fair and square in Starlight Rivalries!
-BF; You haven't even seen my true ability yet-
+music dangerT
+CC: BQFY; You think you won that one, did you?
+SC: BVFDe; H-huh? I did! You saw, fair and square!
+CC: BQFYa; ALL is fair and square in Starlight Rivalries!
+BQFYd; You haven't even seen my true ability yet-
 se special
 BZFKd; REWIND! TO THE START OF THE BATTLE!!
-SC: BF; WHAT?!
-music fightBvocal
+SC: BHFP; WHAT?!
+music fightBVocal
 fight 81419
 music
-SC: BF; Huff... huff... is it... over?
-CC: BF; Huff... this time... it appears so...
-SC: BF; Not going to... start over again?
-CC: BF; You've shown... and proved... your prose... this time...
-BF; Besides... if I rewind again...
-BF; I won't have the power to aid your double helix spell.
-SC: BF; ...Thank you, Chrono Crab.
-BF; I'll go get Ladder Wizard. Let's see the future.
+SC: BQFYG; Huff... huff... is it... over?
+CC: BQFYf; Huff... this time... it appears so...
+SC: Not going to... start over again?
+CC: BQFYb; You've shown... and proved... your prose... this time...
+BQFY; Besides... if I rewind again...
+BQFYa; I won't have the power to aid your double helix spell.
+SC: BQFYd; ...Thanks, Chrono Crab.
+BVFDb; I'll go get Ladder Wizard. Let's see the future.
