@@ -1,29 +1,29 @@
 bg 2
 music puppet
-CK: BF; Puppet Crab! I need another bag of sugar, we received an order for fresh pizzelles!
+CK: BMFOa; Puppet Crab! I need another bag of sugar, we received an order for fresh pizzelles!
+CH: BBFVa; Yes, sir...
 exit 2
-CH: BF; Yes, sir...
-CH: BF; (That's not actually my name- I'm Chimaera Crab, and don't forget it!)
-CH: BF; (While I may be a lowly baker's assistant, for now...)
-BF; (Some day my felt companions will awaken, and bring forth a reign of destruction!!)
+CH: BVFDb; (That's not actually my name- I'm Chimaera Crab, and don't forget it!)
+CH: BSFHa; (While I may be a lowly baker's assistant, for now...)
+BPFKd; (Some day my felt companions will awaken, and bring forth a reign of destruction!!)
 exit 1
-CK: BF; Puppet Crab! Don't dawdle!
+CK: BUFTp; Puppet Crab! Don't dawdle!
 exit 2
-CH: BF; (...but for now, I help bake sweets.)
-CK: BF; Now that we have the ingredients, let our fight create the perfect baking environment!
+CH: BBFI; (...but for now, I help bake sweets.)
+CK: BMFJb; Now that we have the ingredients, let our fight create the perfect baking environment!
 music magic
 fight 62585
 music fightJ
-KC: BF; Well well, what a pleasant discovery that I've stumbled upon. 
-CH: BF; Wow! K-King Crab, HERE?? I'm in the presence of Royalty...
-CK: BF; (I don't know about that... he's just here to pick up his order.)
-KC: BF; You! Boy with the puppets! You're destined for grand things, I can tell.
-BF; That's why I want YOU to have a spot on my royal court...
-CH: BF; (I must be dreaming! A golden ticket, dropped right in my lap!)
-KC: BF; As the royal JESTER! Hohoho!
-CK: BF; Puppet Crab, surely you won't take this insulting offer?
-BF; There are no shortcuts to the top, you know.
-CH: BF; Are you crazy? This is exactly what I've been hoping for!
-BF; It's way closer to my goals than what I'm doing here.
-BF; King Crab, I'm in! You've got a new jester!
-BF; (This is my chance to skip right to the top! World domination is coming into reach!)
+KC: BMFKh; Well well, what a pleasant discovery that I've stumbled upon.
+CH: BAFSa; Wow! K-King Crab, HERE?? I'm in the presence of Royalty...
+CK: BBFF; (I don't know about that... he's just here to pick up his order.)
+KC: BOFB; You! Boy with the puppets! You're destined for grand things, I can tell.
+BAFOe; That's why I want YOU to have a spot on my royal court...
+CH: BAFSb; (I must be dreaming! A golden ticket, dropped right in my lap!)
+KC: BMFOa; As the royal JESTER! Hohoho!
+CK: BUFDa; Puppet Crab, surely you won't take this insulting offer?
+BAFJd; There are no shortcuts to the top, you know.
+CH: BSFA; Are you crazy? This is exactly what I've been hoping for!
+BAFAe; It's way closer to my goals than what I'm doing here.
+BMFAh; King Crab, I'm in! You've got a new jester!
+BPFKd; (This is my chance to skip right to the top! World domination is coming into reach!)

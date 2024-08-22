@@ -208,10 +208,10 @@ function InitStart()
 	SetSpriteVisible(SPR_LEADERBOARD, 0)
 
 	SetFolder("/media")
+	mImg = LoadImage("art/mystery.png")
 	for i = SPR_SP_C1 to SPR_SP_C24
 		num = i-SPR_SP_C1+1
 		crb = i - SPR_SP_C1
-		mImg = LoadImage("art/mystery.png")
 		if altUnlocked[Mod(crb, 6)+1] < (crb)/6
 			CreateSprite(i, mImg)
 			SetSpriteColor(i, 254, 254, 254, 255)
@@ -238,6 +238,7 @@ function InitStart()
 		SetSpriteVisible(i, 0)
 		AddButton(i)
 	next i
+	trashBag.insert(mImg)
 
 	CreateText(SPR_SP_C1, "CHOOSE A CRUSTACEAN, YEAH? WHY NOT CHOOSE A CRUSTACEAN, YEAH? WHY NOT CHOOSE A CRUSTACEAN, YEAH?")
 	SetTextVisible(SPR_SP_C1, 0)
@@ -364,7 +365,13 @@ function InitStart()
 		gameSongSet = 0
 	endif
 	
-	if spType = 0 or spType = STORYMODE or spType = AIBATTLE then PlayMusicOGGSP(titleMusic, 1)
+	if spType = 0 or spType = STORYMODE or spType = AIBATTLE
+		if titleIndex = 1 
+			PlayMusicOGGSP(titleMusic, 1)
+		else
+			PlayMusicOGGSP(GetMusicByID(titleIndex), 1)
+		endif
+	endif
 	spScore = 0
 	
 	startStateInitialized = 1
@@ -735,7 +742,11 @@ function ToggleStartScreen(screen, swipe)
 		StopMusicOGGSP(spMusic)
 		StopMusicOGGSP(retro1M)
 		StopMusicOGGSP(loserMusic)
-		PlayMusicOGGSP(titleMusic, 1)
+		if titleIndex = 1
+			PlayMusicOGGSP(titleMusic, 1)
+		else
+			PlayMusicOGGSP(GetMusicByID(titleIndex), 1)
+		endif
 		
 		SetSpriteVisible(SPR_TITLE, 1)
 		
@@ -768,6 +779,7 @@ function ToggleStartScreen(screen, swipe)
 		//Showing the start of the mirror mode screen
 				
 		StopMusicOGGSP(titleMusic)
+		StopMusicOGGSP(GetMusicByID(titleIndex))
 		if screen = MIRRORMODE_START
 			PlayMusicOGGSP(spMusic, 1)
 			SetSpriteColor(SPR_BG_START, 255, 150, 190, 255)
@@ -1093,8 +1105,8 @@ function ExitStart()
 	DeleteAnimatedSprite(SPR_STARTMIRROR)
 	DeleteAnimatedSprite(SPR_HARDGAME)
 	DeleteAnimatedSprite(SPR_FASTGAME)
-	DeleteSprite(SPR_MUSICPICK)
-	DeleteAnimatedSprite(SPR_EVIL)	
+	DeleteAnimatedSprite(SPR_EVIL)
+	DeleteSprite(SPR_MUSICPICK)	
 	DeleteText(TXT_SP_LOGO)
 	DeleteText(TXT_HIGHSCORE)
 	DeleteText(SPR_SP_C1)
@@ -1117,6 +1129,7 @@ function ExitStart()
 	endif
 	
 	StopMusicOGGSP(titleMusic)
+	StopMusicOGGSP(GetMusicByID(titleIndex))
 	
 	for i = SPR_SP_C1 to SPR_SP_C24
 		DeleteSprite(i)

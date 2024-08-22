@@ -851,6 +851,9 @@ global gameSongSet = 1
 #constant tweenOffP2 3
 #constant tweenOnP2 4
 
+#constant soundTweenFI 929
+#constant soundTweenFO 930
+
 //global tweenButton = 5
 //tweenButton lasts until 25
 
@@ -1100,6 +1103,7 @@ function PlayMusicOGGSP(songID, loopYN)
 		if songID = skateVocalMusic then LoadMusicOGG(skateVocalMusic, "skateVocal.ogg")
 		if songID = creditsMusic then LoadMusicOGG(creditsMusic, "credits.ogg")
 		if songID = creditsVocalMusic then LoadMusicOGG(creditsVocalMusic, "creditsVocal.ogg")
+		if songID = puppetMusic then LoadMusicOGG(puppetMusic, "puppet.ogg")
 		
 		//if id = 16 then song = fightBVocalMusic
 	//if id = 17 then song = creditsMusic

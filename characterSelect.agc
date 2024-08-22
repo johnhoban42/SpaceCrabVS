@@ -799,7 +799,7 @@ function InitCharacterSelect()
 	if spType = STORYMODE or hardBattleUnlock = 0 then IncSpriteY(SPR_CS_HARDGAME, 9999)
 	if spType = STORYMODE or musicBattleUnlock = 0 then IncSpriteY(SPR_CS_MUSICPICK, 9999)
 	
-	PlayMusicOGGSP(characterMusic, 1)
+	PlayMusicOGGSP(GetMusicByID(characterSelectIndex), 1)
 	PlayMusicOGGSP(fireMusic, 1)
 	SetMusicVolumeOGG(fireMusic, 20*volumeM/100)
 	
@@ -1231,7 +1231,7 @@ function DoCharacterSelectController(csc ref as CharacterSelectController)
 	endif
 		
 	//Slowly lighting the backgrounds
-	SetSpriteColorAlpha(csc.sprBG, 205+abs(50*cos(90*csc.player + 80*GetMusicPositionOGG(characterMusic))))
+	SetSpriteColorAlpha(csc.sprBG, 205+abs(50*cos(90*csc.player + 80*GetMusicPositionOGG(GetMusicByID(characterSelectIndex)))))
 	IncSpriteAngle(csc.sprBGB, 1.8*fpsr#)
 	if spActive then IncSpriteAngle(SPR_CS_BG_2, -0.8*fpsr#)
 	//IncSpriteAngle(csc.sprBGB, 6*fpsr#)
@@ -1362,8 +1362,8 @@ function DoAISelectController(csc ref as CharacterSelectController)
 	//Print(GetSpriteFrameCount(csc.sprCrabs + csc.crabSelected-1))
 	
 	//Fun recoloring of the difficulty number, only animating
-	if spAIDiff = 9 then SetSpriteColorByCycleC(csc.sprTxtBack, 720.0*GetMusicPositionOGG(characterMusic)/(11-spAIDiff))
-	if spAIDiff > 9 then SetSpriteColorByCycleA(csc.sprTxtBack, 720.0*GetMusicPositionOGG(characterMusic)/(11-spAIDiff))
+	if spAIDiff = 9 then SetSpriteColorByCycleC(csc.sprTxtBack, 720.0*GetMusicPositionOGG(GetMusicByID(characterSelectIndex))/(11-spAIDiff))
+	if spAIDiff > 9 then SetSpriteColorByCycleA(csc.sprTxtBack, 720.0*GetMusicPositionOGG(GetMusicByID(characterSelectIndex))/(11-spAIDiff))
 	//SetTextColor(TXT_SP_DANGER, 255, 160 - 10*(gameDifficulty1) + (0.0+10*gameDifficulty1)*sin(gameTimer#*(5+gameDifficulty1)), 160 - 10*(gameDifficulty1) + (0.0+10*gameDifficulty1)*sin(gameTimer#*(5+gameDifficulty1)), 255)
 	//Like above line: let's make this RED at higher difficulties
 	
@@ -1382,7 +1382,7 @@ function DoAISelectController(csc ref as CharacterSelectController)
 	endif
 		
 	//Slowly lighting the backgrounds
-	SetSpriteColorAlpha(csc.sprBG, 205+abs(50*cos(90*csc.player + 80*GetMusicPositionOGG(characterMusic))))
+	SetSpriteColorAlpha(csc.sprBG, 205+abs(50*cos(90*csc.player + 80*GetMusicPositionOGG(GetMusicByID(characterSelectIndex)))))
 	IncSpriteAngle(csc.sprBGB, 1.8*fpsr#)
 	if spActive then IncSpriteAngle(SPR_CS_BG_2, -0.8*fpsr#)
 	//IncSpriteAngle(csc.sprBGB, 6*fpsr#)
@@ -1452,8 +1452,8 @@ function DoCharacterSelect()
 	else
 		txt = csc1.txtReady
 		for i = 0 to GetTextLength(txt)
-			SetTextCharY(txt, GetTextLength(txt)-i, 58.0 - 8.0*abs(8*cos(GetMusicPositionOGG(characterMusic)*200+i*10 )))	//Code from SnowTunes
-			if dispH then SetTextCharY(txt, GetTextLength(txt)-i, 28.0 - 5.0*abs(8*cos(GetMusicPositionOGG(characterMusic)*200+i*10 )))	//Code from SnowTunes
+			SetTextCharY(txt, GetTextLength(txt)-i, 58.0 - 8.0*abs(8*cos(GetMusicPositionOGG(GetMusicByID(characterSelectIndex))*200+i*10 )))	//Code from SnowTunes
+			if dispH then SetTextCharY(txt, GetTextLength(txt)-i, 28.0 - 5.0*abs(8*cos(GetMusicPositionOGG(GetMusicByID(characterSelectIndex))*200+i*10 )))	//Code from SnowTunes
 		next i		
 	endif
 	
@@ -1472,8 +1472,8 @@ function DoCharacterSelect()
 		else
 			txt = csc2.txtReady
 			for i = 0 to GetTextLength(txt)
-				SetTextCharY(txt, GetTextLength(txt)-i, -140.0 + 8.0*abs(8*cos(GetMusicPositionOGG(characterMusic)*200+i*10 )))	//Code from SnowTunes
-				if dispH then SetTextCharY(txt, GetTextLength(txt)-i, 28.0 - 5.0*abs(8*cos(GetMusicPositionOGG(characterMusic)*200+i*10 )))	//Code from SnowTunes
+				SetTextCharY(txt, GetTextLength(txt)-i, -140.0 + 8.0*abs(8*cos(GetMusicPositionOGG(GetMusicByID(characterSelectIndex))*200+i*10 )))	//Code from SnowTunes
+				if dispH then SetTextCharY(txt, GetTextLength(txt)-i, 28.0 - 5.0*abs(8*cos(GetMusicPositionOGG(GetMusicByID(characterSelectIndex))*200+i*10 )))	//Code from SnowTunes
 			next i
 		endif
 	endif
@@ -1610,7 +1610,7 @@ function ExitCharacterSelect()
 	DeleteSprite(SPR_CS_HARDGAME)
 	DeleteSprite(SPR_CS_MUSICPICK)
 	
-	if GetMusicPlayingOGGSP(characterMusic) then StopMusicOGGSP(characterMusic)
+	if GetMusicPlayingOGGSP(GetMusicByID(characterSelectIndex)) then StopMusicOGGSP(GetMusicByID(characterSelectIndex))
 	if GetMusicPlayingOGGSP(fireMusic) then StopMusicOGGSP(fireMusic)
 	
 	characterSelectStateInitialized = 0

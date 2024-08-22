@@ -56,7 +56,7 @@ global h = 1600
 SetVirtualResolution(w, h) // doesn't have to match the window
 
 global dispH = 0		//Variable for horizontal display
-if deviceType = DESKTOP
+if deviceType = 9//DESKTOP
 	dispH = 1
 	w = 1280
 	h = 720
@@ -1088,7 +1088,7 @@ function Popup(area, unlockNum)
 	if unlockNum = 47 then SetTextString(spr+2, "Look to the future" + chr(10) + "with hope, always!")
 	if unlockNum = 48 then SetTextString(spr+2, "Soon-to-be chart" + chr(10) + "topper, all yours!")
 	if unlockNum = 49 then SetTextString(spr+2, "It turns out, he" + chr(10) + "wrote lyrics too!")
-	if unlockNum = 50 then SetTextString(spr+2, "The felt beast lies" + chr(10) + "dormant, waiting...")
+	if unlockNum = 50 then SetTextString(spr+2, "The felt beasts lie" + chr(10) + "dormant, waiting...")
 	if unlockNum = 51 then SetTextString(spr+2, "The final song!" + chr(10) + "You got them all!")
 	if unlockNum > 30 then SetTextString(spr+2, GetTextString(spr+2) + chr(10)+chr(10)+chr(10)+chr(10)+chr(10) + "New song" + chr(10) + "unlocked!")
 	if unlockNum = 25 then SetTextString(spr+2, "Song Selection" + chr(10) + "unlocked!" + chr(10)+chr(10)+chr(10)+chr(10)+chr(10) + "You can now pick" + chr(10) + "songs pre-match!")
