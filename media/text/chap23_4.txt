@@ -1,27 +1,29 @@
-bg 4
+bg 3
 music emotion
-S8: I've... run out of options...
-It's... all over for me.
-RC: Hey man! Why so much moping? I can feel your vibes from a mile away!
-S8: Who, me? No, I'm doing great.
-Having your song rejected by the biggest names in music across the galaxy...
-Its fiiiine.
-RC: Hey, no need to hide your feelings. Let's talk it out.
-You said it's about a song? Wait, do you write music?! That's awesome!
-S8: Yeah, I do, but it's nothing big. Just a little something I came up with.
-I call it 'Sk8r Zo'-
+S8: BBFKc; I've... run out of options...
+BVFTr; It's... all over for me.
+RC: BSFEb; Hey man! Why so much moping? I can feel your vibes from a mile away!
+S8: BMFI; Who, me? No, I'm doing great.
+BAFGd; Having your song rejected by the biggest names in music across the galaxy...
+BBFOg; Its fiiiine.
+RC: BWFAa; Hey, no need to hide your feelings. Let's talk it out.
+BAFAd; You said it's about a song? Wait, do you write music?! That's awesome! 
+S8: BDFEb; Yeah, I do, but it's nothing big. This is just a little something I came up with.
+BBFJa; I call it 'Sk8r Zo'-
 music
-No... I call it 'TAKE ME OUT'!
-music skate
+BVFOd; No... I call it 'TAKE ME OUT'!
+BMFQa; With some all new words I thought up on the way here!
+music skateVocal
 fight 75246
 music skate
-S8: And that's the song, 'TAKE ME OUT'! Hope you enjoyed it.
-RC: Dude, that got me ALL KINDS of pumped up!
-You don't need a label - you have an anthem!
-Don't worry about getting approval from the bigwigs- you've got a fan in me.
-Spread your song, your message- I'm sure others will follow!
-S8: W-wow, that's a lot of enthusiasm...
-I appreciate it! Thanks for the encouragement.
-(I can only draw one conclusion from this...)
-(I was using the wrong name this whole time.)
-(I'll pay a visit to Rock Lobster again tomorrow!)
+S8: BMFOd; And that's the song, 'TAKE ME OUT'! Hope you enjoyed it.
+RC: BAFS; Dude, that got me ALL KINDS of pumped up!
+BKFSa; You don't need a label - you have an anthem!
+BPFJb; Don't worry about getting approval from the bigwigs- you've got a fan in me.
+BAFAd; Spread your song, your message- I'm sure others will follow!
+S8: BBFJa; W-wow, that's a lot of enthusiasm...
+BAFO; I appreciate it! Thanks for the encouragement.
+exit 2
+BMFTn; (I feel like I've learned something important from all this...)
+BUFOe; (I was using the wrong name this whole time!)
+BAFOc; (I'll pay a visit to Rock Lobster again tomorrow.)

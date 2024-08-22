@@ -236,8 +236,8 @@ endfunction
 //clearedChapter = 0
 
 if debug
-	curChapter = 22
-	curScene = 4
+	curChapter = 24
+	curScene = 1
 	highestScene = 101
 	appState = START
 	crab1Type = 6
@@ -255,7 +255,7 @@ if debug
 	hardBattleUnlock = 1
 	musicBattleUnlock = 1
 	unlockAIHard = 1
-	musicUnlocked = 21
+	musicUnlocked = 7
 	evilUnlock = 1
 	gameSongSet = 0
 else

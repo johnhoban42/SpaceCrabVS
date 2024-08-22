@@ -32,11 +32,11 @@ function InitStatistics()
 	FixTextToScreen(ST_TITLE, 1)
 	
 	crabsU = altUnlocked[1]+altUnlocked[2]+altUnlocked[3]+altUnlocked[4]+altUnlocked[5]+altUnlocked[6]
-	completed$ = "Completion: " + Mid(Str(0.1* Trunc((1000.0*(highestScene-1+musicUnlocked-7+crabsU+musicBattleUnlock+hardBattleUnlock+speedUnlock+evilUnlock+unlockAIHard))/(1.0*100+14+18+5))),1,4) + "% "
+	completed$ = "Completion: " + Mid(Str(0.1* Trunc((1000.0*(highestScene-1+musicUnlocked-7+crabsU+musicBattleUnlock+hardBattleUnlock+speedUnlock+evilUnlock+unlockAIHard))/(1.0*100+musicUnlockEnd-7+18+5))),1,4) + "% "
 	if dispH then completed$ = chr(10) + completed$
 	crabU$ = "Crabs Unlocked: " + Str(6+crabsU) + "/?? "
 	if altUnlocked[5] >= 3 then crabU$ = "Crabs Unlocked: " + Str(6+crabsU) + "/24 "
-	songU$ = "Songs Unlocked: " + Str(musicUnlocked) + "/21 "
+	songU$ = "Songs Unlocked: " + Str(musicUnlocked) + "/22 "
 	storyU$ = "Story Finished: " + Str(highestScene-1) + "% "
 	mirrS$ = "Best Mirror Score: " + Str(spHighScore) + " "
 	classS$ = "Best Classic Score: " + Str(spHighScoreClassic) + " "
@@ -47,7 +47,7 @@ function InitStatistics()
 		storyU$ = storyU$ + "{"
 	endif
 	if crabsU = 18 then crabU$ = crabU$ + "{"
-	if musicUnlocked = 21 then songU$ = songU$ + "{"
+	if musicUnlocked = musicUnlockEnd then songU$ = songU$ + "{"
 	if spHighScore >= 200 then mirrS$ = mirrS$ + "{"
 	if spHighScoreClassic >= 150 then classS$ = classS$ + "{"
 	if fightSeconds >= 300 then fightTime$ = fightTime$ + "{"

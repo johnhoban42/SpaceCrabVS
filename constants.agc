@@ -644,6 +644,7 @@ global jumpPartI as Integer[6, 4]
 #constant skateMusic 123
 #constant skateVocalMusic 124
 #constant puppetMusic 125
+#constant creditsVocalMusic 126
 
 
 #constant dangerAMusic 211
@@ -825,6 +826,7 @@ global musicBattleUnlock = 0
 global evilUnlock = 0
 global unlockAIHard = 0
 global musicUnlocked = 7 	//Not finalized yet, but this will increment for every song unlockes
+#constant musicUnlockEnd = 22
 
 global gameIsFast = 0
 global gameIsHard = 0
@@ -1097,6 +1099,7 @@ function PlayMusicOGGSP(songID, loopYN)
 		if songID = skateMusic then LoadMusicOGG(skateMusic, "skate.ogg")
 		if songID = skateVocalMusic then LoadMusicOGG(skateVocalMusic, "skateVocal.ogg")
 		if songID = creditsMusic then LoadMusicOGG(creditsMusic, "credits.ogg")
+		if songID = creditsVocalMusic then LoadMusicOGG(creditsVocalMusic, "creditsVocal.ogg")
 		
 		//if id = 16 then song = fightBVocalMusic
 	//if id = 17 then song = creditsMusic
@@ -1176,6 +1179,7 @@ function PlayMusicOGGSPStr(str$, loopYN)
 	if str$ = "ssid" then id = ssidMusic
 	if str$ = "fightBVocal" then id = fightBVocalMusic
 	if str$ = "credits" then id = creditsMusic
+	if str$ = "creditsVocal" then id = creditsVocalMusic
 	if str$ = "skate" then id = skateMusic
 	if str$ = "skateVocal" then id = skateVocalMusic
 	if str$ = "puppet" then id = puppetMusic
@@ -1233,11 +1237,12 @@ function GetMusicByID(id)
 	if id = 14 then song = fightMMusic
 	if id = 15 then song = emotionMusic
 	//if id = 16 then song = fightBVocalMusic
-	//if id = 17 then song = creditsMusic
+	if id = 17 then song = creditsMusic
 	if id = 18 then song = skateMusic
 	if id = 19 then song = skateVocalMusic
 	//if id = 20 then song = puppetMusic
 	if id = 21 then song = fightFMusic
+	if id = 22 then song = creditsVocalMusic
 	
 	if id = 31 then song = retro1M
 	if id = 32 then song = retro2M

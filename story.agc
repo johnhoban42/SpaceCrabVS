@@ -1040,7 +1040,10 @@ function StartEndScreen()
 		Popup(MIDDLE, 29)
 		unlockAIHard = 1
 	endif
-	if firstTimeEnd then Popup(MIDDLE, 30)	//100, Fully Unlocked Message
+	if firstTimeEnd
+		Popup(MIDDLE, 30)	//100, Fully Unlocked Message
+		musicUnlocked = musicUnlockEnd
+	endif
 	
 	SetFolder("/media/ui")
 	
@@ -1209,7 +1212,7 @@ function PlayCredits()
 	state = STORY
 	
 	if GetMusicPlayingOGGSP(creditsMusic) = 0
-		SetMusic
+		//SetMusic
 	endif
 	
 	startTimer# = 0
@@ -1223,7 +1226,7 @@ function PlayCredits()
 		//Maybe mark them a different color, so they can be recognized in the while loop
 	next i
 	
-	credit
+	//credit
 	
 	endDone = 0
 	while (endDone = 0)
@@ -1237,7 +1240,7 @@ function PlayCredits()
 		
 		
 		if startTimer# >= 9
-			if GetPointerPressed or InputSelect then endDone = 1
+			if GetPointerPressed() or InputSelect then endDone = 1
 		endif
 		
 		

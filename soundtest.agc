@@ -24,40 +24,41 @@ global soundPlaying = 0
 #constant twnSCRightOut 6963
 
 // list of sound IDs to play
-global soundList as integer [33] = [ 
-0,
-1,
-2,
-3,
-4,
-5,
-6,
-7,
-8,
-9,
-10,
-11,
-12,
-13,
-14,
-15,
-16,
-17,
-18,
-19,
-20,
-21,
-31,
-32,
-33,
-34,
-35,
-36,
-37,
-38,
-39,
-40,
-41 ]
+//EDIT: Now using frames as the soundID, and the FrameToSongID function
+//~global soundList as integer [33] = [ 
+//~1,
+//~2,
+//~3,
+//~4,
+//~5,
+//~6,
+//~7,
+//~8,
+//~9,
+//~10,
+//~11,
+//~12,
+//~13,
+//~14,
+//~15,
+//~16,
+//~17,
+//~18,
+//~19,
+//~20,
+//~21,
+//~22,
+//~31,
+//~32,
+//~33,
+//~34,
+//~35,
+//~36,
+//~37,
+//~38,
+//~39,
+//~40,
+//~41 ]
 
 // current index of the sound player, modified by pressing the left or right buttons
 global soundIndex = 0
@@ -81,8 +82,8 @@ function InitSoundTest()
 	//AddSpriteAnimationFrame(sprSoundControl, pauseI)
 	// create the music display sprite with each frame tied to one of the songs in our list
 	CreateSprite(sprSoundDisplay, 0)
-	for i = 0 to 41
-		if GetFileExists("musicBanners/banner" + Str(i) + ".png")
+	for i = 1 to 41
+		if (i > 30 or i <= musicUnlocked)
 			AddSpriteAnimationFrame(sprSoundDisplay, banner1I+i)
 		endif
 	next i
@@ -133,49 +134,55 @@ function InitSoundTest()
 		// create and position the jukebox base
 		LoadSpriteExpress(sprSoundBase, "jukeboxdesktoptest.png", w, h, 0, 0, 70)
 		// create & position the simple buttons
-		SetSpriteExpress(sprSoundBack, 160, 160, w / 2 - 80, h * 4 / 5 - 80, 69)
-		SetSpriteExpress(sprSoundSelectLeft, 160, 160, w / 7 - 80, h / 4 - 80, 69)
-		SetSpriteExpress(sprSoundSelectRight, 160, 160, w * 6 / 7 - 80, h / 4 - 80, 69)
+		bSize = 160
+		SetSpriteExpress(sprSoundBack, bSize, bSize, w/2 - bSize/2, h*4/5 - bSize/2, 69)
+		SetSpriteExpress(sprSoundSelectLeft, bSize, bSize, w/7 - bSize/2, h/4 - bSize/2, 69)
+		SetSpriteExpress(sprSoundSelectRight, bSize, bSize, w*6/7 - bSize/2, h/4 - bSize/2, 69)
 		
-		SetSpriteExpress(sprSoundTitle, 160, 160, w / 7 - 80, h * 2 / 3 - 80, 69)
-		SetSpriteExpress(sprSoundCharacter, 160, 160, w * 6 / 7 - 80, h * 2 / 3 - 80, 69)
+		SetSpriteExpress(sprSoundTitle, bSize, bSize, w/7 - bSize/2, h*2/3 - bSize/2, 69)
+		SetSpriteExpress(sprSoundCharacter, bSize, bSize, w*6/7 - bSize/2, h*2/3 - bSize/2, 69)
 		// position play/pause button
-		SetSpriteExpress(sprSoundControl, 160, 160, w / 2 - 80, h / 2 - 80, 69)
+		SetSpriteExpress(sprSoundControl, bSize, bSize, w/2 - bSize/2, h/2 - bSize/2-40, 69)
 		// position the song display
-		SetSpriteExpress(sprSoundDisplay, 640, 160, w / 2 - 320, h / 4 - 80, 71)
-		// create the tweens for moving the song display sprite around when switching songs
-		SetTweenSpriteX(twnSCLeftIn, -640, w / 2 - 320, TweenOvershoot())	
-		SetTweenSpriteX(twnSCLeftOut, w / 2 - 320, w + 640, TweenOvershoot())
-		SetTweenSpriteX(twnSCRightIn, w + 640, w / 2 - 320, TweenOvershoot())
-		SetTweenSpriteX(twnSCRightOut, w / 2 - 320, -640, TweenOvershoot())	
+		SetSpriteExpress(sprSoundDisplay, 640, bSize, w/2 - 320, h/4 - bSize/2-40, 71)
+		
 		// create the current title music display sprite with each frame tied to one of the songs in our list
-		SetSpriteExpress(sprSoundTitleCurrent, 320, 80, w / 7 - 160, h * 7 / 8 - 40, 69)
-		SetSpriteExpress(sprSoundCharacterCurrent, 320, 80, w * 6 / 7 - 160, h * 7 / 8 - 40, 69)
+		SetSpriteExpress(sprSoundTitleCurrent, 320, 80, w/7 - 160, h*7/8 - 40, 69)
+		SetSpriteExpress(sprSoundCharacterCurrent, 320, 80, w*6/7 - 160, h*7/8 - 40, 69)
 		
 		
 	else
 		// create and position the jukebox base
 		LoadSpriteExpress(sprSoundBase, "ui/jukeboxmobiletest.png", w, h, 0, 0, 70)
 		// create & position the simple buttons
-		SetSpriteExpress(sprSoundBack, 250, 250, w / 2 - 125, h * 8 / 9 - 125, 69)
-		SetSpriteExpress(sprSoundSelectLeft, 250, 250, w / 4 - 125, h * 3 / 8 - 125, 69)
-		SetSpriteExpress(sprSoundSelectRight, 250, 250, w * 3 / 4 - 125, h * 3 / 8 - 125, 69)
+		bSize = 250
+		SetSpriteExpress(sprSoundBack, bSize, bSize, w/2 - bSize/2, h*8/9 - bSize/2, 69)
+		SetSpriteExpress(sprSoundSelectLeft, bSize, bSize, w / 4 - bSize/2, h*3/8 - bSize/2, 69)
+		SetSpriteExpress(sprSoundSelectRight, bSize, bSize, w*3/4 - bSize/2, h*3/8 - bSize/2, 69)
 		
-		SetSpriteExpress(sprSoundTitle, 250, 250, w / 4 - 125, h * 5 / 7 - 125, 69)
-		SetSpriteExpress(sprSoundCharacter, 250, 250, w * 3 / 4 - 125, h * 5 / 7 - 125, 69)
+		SetSpriteExpress(sprSoundTitle, bSize, bSize, w/4 - bSize/2, h*5/7 - bSize/2, 69)
+		SetSpriteExpress(sprSoundCharacter, bSize, bSize, w*3/4 - bSize/2, h * 5 / 7 - bSize/2, 69)
 		// position play/pause button
-		SetSpriteExpress(sprSoundControl, 250, 250, w / 2 - 125, h * 5 / 9 - 125, 69)
+		SetSpriteExpress(sprSoundControl, bSize, bSize, w/2 - bSize/2, h*5/9 - bSize/2, 69)
 		// position the song display
-		SetSpriteExpress(sprSoundDisplay, 640,160, w / 2 - 320, h / 5 - 80, 71)
-		// create the tweens for moving the song display sprite around when switching songs
-		SetTweenSpriteX(twnSCLeftIn, -640, w / 2 - 320, TweenOvershoot())	
-		SetTweenSpriteX(twnSCLeftOut, w / 2 - 320, w + 640, TweenOvershoot())
-		SetTweenSpriteX(twnSCRightIn, w + 640, w / 2 - 320, TweenOvershoot())
-		SetTweenSpriteX(twnSCRightOut, w / 2 - 320, -640, TweenOvershoot())			
+		SetSpriteExpress(sprSoundDisplay, 640,160, w/2 - 320, h/5 - 80, 71)
 		
 		SetSpriteVisible(sprSoundTitleCurrent, 0)
 		SetSpriteVisible(sprSoundCharacterCurrent, 0)
 	endif
+	
+	// create the tweens for moving the song display sprite around when switching songs
+	bannerWid = GetSpriteWidth(sprSoundDisplay)
+	bannerMidX = w/2 - bannerWid/2
+	//SetTweenSpriteX(twnSCLeftOut, bannerMidX, w, TweenOvershoot())
+	//SetTweenSpriteX(twnSCLeftIn, -bannerWid, bannerMidX, TweenOvershoot())	
+	//SetTweenSpriteX(twnSCRightOut, bannerMidX, -bannerWid, TweenOvershoot())	
+	//SetTweenSpriteX(twnSCRightIn, w, bannerMidX, TweenOvershoot())
+	
+	SetTweenSpriteX(twnSCLeftOut, bannerMidX, bannerMidX+bannerWid*1.5, TweenOvershoot())
+	SetTweenSpriteX(twnSCLeftIn, bannerMidX-bannerWid*1.5, bannerMidX, TweenOvershoot())	
+	SetTweenSpriteX(twnSCRightOut, bannerMidX, bannerMidX-bannerWid*1.5, TweenOvershoot())	
+	SetTweenSpriteX(twnSCRightIn, bannerMidX+bannerWid*1.5, bannerMidX, TweenOvershoot())
 	
 	// add button animations/functionality to the buttons of our screen
 	
@@ -204,7 +211,7 @@ function DoSoundTest()
 		TransitionStart(lastTranType)
 		if soundPlaying = 1
 			soundPlaying = 0
-			StopMusicOGGSP(GetMusicByID(soundList[soundIndex]))			
+			StopMusicOGGSP(GetMusicByID(FrameToSongID(soundIndex)))		
 			SetSpriteFrame(sprSoundControl, 1)
 		endif
 	// play/pause button
@@ -212,12 +219,12 @@ function DoSoundTest()
 		// start playing song
 		if soundPlaying = 0
 			soundPlaying = 1
-			PlayMusicOGGSP(GetMusicByID(soundList[soundIndex]), 1)
+			PlayMusicOGGSP(GetMusicByID(FrameToSongID(soundIndex)), 1)
 			SetSpriteFrame(sprSoundControl, 2)
 		// stop playing song
 		else
 			soundPlaying = 0
-			StopMusicOGGSP(GetMusicByID(soundList[soundIndex]))
+			StopMusicOGGSP(GetMusicByID(FrameToSongID(soundIndex)))
 			SetSpriteFrame(sprSoundControl, 1)
 		endif
 	// song scroll left or right
@@ -225,7 +232,7 @@ function DoSoundTest()
 		// stop current music
 		if soundPlaying = 1
 			soundPlaying = 0
-			StopMusicOGG(GetMusicByID(soundList[soundIndex]))
+			StopMusicOGG(GetMusicByID(FrameToSongID(soundIndex)))
 			SetSpriteFrame(sprSoundControl, 1)
 		endif
 		UpdateAllTweens(jukeboxTweenTime*2)
@@ -235,10 +242,10 @@ function DoSoundTest()
 			soundIndex = soundIndex - 1
 			// handle wrap around
 			if soundIndex = -1
-				soundIndex = soundList.length - 1
+				soundIndex = GetSpriteFrameCount(sprSoundDisplay)-1
 			// jump indices to skip locked songs
-			elseif soundList[soundIndex] < 31 and soundList[soundIndex] > musicUnlocked
-				soundIndex = musicUnlocked
+			//elseif soundList[soundIndex] < 31 and soundList[soundIndex] > musicUnlocked
+				//soundIndex = musicUnlocked
 			endif
 			// animate old banner frame out and new banner frame in
 			PlayTweenSprite(twnSCLeftOut, sprSoundDisplay, 0)
@@ -248,11 +255,11 @@ function DoSoundTest()
 			// increment sound index
 			soundIndex = soundIndex + 1
 			// handle wrap around
-			if soundIndex = soundList.length
+			if soundIndex = GetSpriteFrameCount(sprSoundDisplay)
 				soundIndex = 0
 			// jump indices to skip locked songs
-			elseif soundList[soundIndex] < 31 and soundList[soundIndex] > musicUnlocked
-				soundIndex = soundList.length - 11
+			//elseif soundList[soundIndex] < 31 and soundList[soundIndex] > musicUnlocked
+				//soundIndex = soundList.length - 11
 			endif
 			// animate old banner frame out and new banner frame in
 			PlayTweenSprite(twnSCRightOut, sprSoundDisplay, 0)
@@ -260,11 +267,11 @@ function DoSoundTest()
 		endif
 	// set title music
 	elseif ButtonMultiTouchEnabled(sprSoundTitle)
-		currentTitleMusic = GetMusicByID(soundList[soundIndex])
+		currentTitleMusic = GetMusicByID(FrameToSongID(soundIndex))
 		titleIndex = soundIndex
 		SetSpriteFrame(sprSoundTitleCurrent, titleIndex + 1)
 	elseif ButtonMultiTouchEnabled(sprSoundCharacter)
-		currentCharacterMusic = GetMusicByID(soundList[soundIndex])
+		currentCharacterMusic = GetMusicByID(FrameToSongID(soundIndex))
 		characterSelectIndex = soundIndex
 		SetSpriteFrame(sprSoundCharacterCurrent, characterSelectIndex + 1)		
 	endif
@@ -310,6 +317,19 @@ function ExitSoundTest()
 
 	soundtestStateInitialized = 0
 endfunction
+
+function FrameToSongID(frameN)
+	
+	returnSong = retro9M
+	
+	if gameSongSet <= musicUnlocked
+		returnSong = frameN
+	else
+		//The retro songs
+		returnSong = frameN-musicUnlocked+30
+	endif
+	
+endfunction returnSong
 
 // NOTES:
 // "state" is checked at the end of every Do-screen iteration

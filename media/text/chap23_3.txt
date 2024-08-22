@@ -1,26 +1,26 @@
 bg 1
 music fightJ
-S8: Space renowned legal man, Al Legal-
-I'm giving YOU permission to publish my song!
-AL: Sir, you can't just walk into an active meeting.
-1F: We're in the middle of getting the Space Crab documentary approved!
-Don't blow this for us!
-S8: Documentaries come out all the time! Al Legal has the ultimate opportunity-
-Publishing the soon-to-be #1 punk song in the galaxy, 'Sk8r Zoea'!
-AL: You thought you'd be able to waltz into my office and demand a contract?
-S8: Yes! And I still think that, even now. I'll show you my conviction!
+S8: BWFAa; Space renowned legal man, Al Legal-
+BOFB; I'm giving YOU permission to publish my song!
+AL: BAFWa; Sir, you can't just barge into an active meeting.
+1F: BAFJd; We're in the middle of getting the Space Crab documentary approved!
+BMFDd; Don't blow this for me!
+S8: BUFGb; Documentaries come out all the time! Al Legal has the ultimate opportunity-
+BVFKh; Publishing the soon-to-be #1 punk song in the galaxy, 'Sk8r Zoea'!
+AL: BBFUa; You thought you'd be able to waltz into my office and demand a contract?
+S8: BAFQb; Yes! And I still think that, even now. I'll show you my conviction!
 music skate
 fight 71479
 music fightJ
-AL: Alright. I've heard the song.
-But... I'm going to be saying no to this pitch.
-S8: I knew it; it's the name, right?
-If 'Sk8r Zoea' doesn't work, I have another name I can use.
-AL: The name is hardly the issue.
-It's more an issue of your blatant unprofessionalism.
-S8: Oh, I get it. There's no place for rebels in the mainstream, is that it?
-Then FINE! I'll start my OWN record label!
+AL: BAFJ; Alright. I've heard the song.
+BMFDa; But... I'm going to be saying no to this pitch.
+S8: BDFEb; I knew it- it's the name, right?
+BSFIa; If 'Sk8r Zoea' doesn't work, I have another name I can use.
+AL: BBFUa; The name is hardly the issue.
+BAFWa; It's more an issue of your blatant unprofessionalism.
+S8: BUFDe; Oh, I get it. There's no place for rebels in the mainstream, is that it?
+BAFOh; Then FINE! I'll start my OWN record label!
 exit 1
-1F: ...Y'know, Al, I thought of a cool name for the documentary.
-'Far Flung Dreams - The Coolest Crab's Quest for Galactic Cooperation'!
-AL: #1 Fan Crab... I think you could do with a dash of professionalism, too.
+1F: BAFKi; ...Y'know, Al, I thought of a cool name for the documentary.
+BKFSa; 'Far Flung Dreams - The Coolest Crab's Quest for Galactic Cooperation'!
+AL: BBFH; #1 Fan Crab... I think you could do with a touch of professionalism, too.

@@ -1,31 +1,29 @@
 bg 2
 music rag
-S8: Yo, taxi! I need a lift to Al Legal's pad.
-We're taking this song right to the top.
-TX: I can take you, if you're fine with ride-share.
-S8: Nuh-uh! Do you have any idea how precious my cargo is? This song could change everything!
-TX: Pal, there aren't that many choices for transport around here.
-Hop in, or you're walkin'.
-se door
-S8: Hmph.
-CN: Woooow, you're a real subeko shonen!
-Is it hard to skate with such stubby legs?
-S8: You know, the law says my legs are too short to skate.
-But I don't listen to the law. I'm too cool.
-CN: Oh, and you're an aku gaki, too. I like that.
-Mind if I... sit a little closer?
-TX: Yo, 'rebel'. Mind putting on your seat belt?
-S8: (Dude, you're harshing my vibe back here! I'm trying to score!)
-TX: I'm not putting my foot on the gas until your seatbelt is on.
-S8: I get it. I'll just prove that I'm a bad enough dude to not need one!
+S8: BAFAa; Yo, taxi! I need a lift to Al Legal's pad.
+BVFOd; We're taking this song right to the top.
+TX: BSFJ; I can take you, if you're fine with ride-share.
+S8: BSFDa; Nuh-uh! Do you have any idea how precious my cargo is? This song could change everything!
+TX: BSFCe; Pal, there aren't that many choices for transport around here.
+BKFJd; Hop in, or you're walkin'.
+S8: BBFD; Hmph.
+CN: BSFSd; Woooow, you're a real subeko shonen!
+BIFJb; Is it hard to skate with such stubby legs?
+S8: BDFTn; You know, the law says my legs are too short to skate.
+BAFOe; But I don't listen to the law. I'm too cool.
+CN: BAFAa; Oh, and you're an aku gaki, too. I like that.
+BMFTn; Mind if I... sit a little closer?
+TX: BDFWa; Yo, 'rebel'. Mind putting on your seat belt?
+S8: BDFM; (Dude, you're harshing my vibe back here! I'm trying to score!)
+TX: BQFUa; I'm not putting my foot on the gas until your seatbelt is on.
+S8: BVFB; I get it. I'll just prove that I'm a bad enough dude to not need one!
 music skate
 fight 72437
 music rag
-TX: Get out.
-S8: Hey, wait! I won that battle! You should be giving me a ride!
-TX: I'm not driving someone who won't wear a seat belt.
-Besides, you've got wheels, right? Drive yourself.
+TX: BIFWa; Get out.
+S8: BBFKc; Hey, wait! I won that battle! You should be giving me a ride!
+TX: BKFDd; I'm not driving anyone who won't wear a seat belt.
+BSFDe; Besides, you've got wheels, right? Drive yourself.
 exit 2
-S8: How lame!
-Don't they know that I'll be a rock star one day?
-Taxi Crab's got a diss track coming his way. Eventually.
+S8: BUFDd; How lame! Don't they know that I'll be a rock star one day?
+BAFGe; Taxi Crab's got a diss track coming his way. Eventually.
