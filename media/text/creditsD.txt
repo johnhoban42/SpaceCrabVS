@@ -1,6 +1,12 @@
+Space Crab VS
+~Staff Roll~
+
+
+
 ~Directors~
 Commander Jersey
 Misbradventures
+
 
 ~Programming~
 Andy Rears
@@ -8,18 +14,22 @@ John Hoban
 Nick Mercadante
 Kyle Weekley
 
+
 ~Art~
 Brad Kizar
 
+
 ~Story~
 Andy Rears
+
 
 ~Writing Feedback~
 Yash Balaji
 Brad Kizar
 
+
 ~Music~
-    Brad Kizar
+	Brad Kizar	
 Starlight Rivals
 Shooting Stars Into Dreams REMix - Guitar
 Don't Let Your Dreams Die
@@ -27,7 +37,7 @@ Take Me Out
 Amalgam
 Crustacean Station
 Sunset Siesta
-    Andy Rears
+	Andy Rears	
 Twelve Legged Tango
 Choose a Crustacean
 Winner and Loser XD
@@ -46,20 +56,22 @@ Rotation Station
 Ring Magic
 Planetarium
 Cosmic Corner Store
-    John Hoban
+	John Hoban	
 The Final Remoulade
 Aquarius Stream
 Takeoff
-    Steven Eliya
+	Steven Eliya	
 Space Crab Rag
-    AJ Brown
+	AJ Brown	
 Back to My Hunch
 To Battle
-    Morgan Ulrich
+	Morgan Ulrich	
 Marigold Tomato - Flute
-    Anna Antal
+	Anna Antal	
 Starlight Rivals - Vocals
-
+	The Whole Team	
+Don't Let Your Dreams Die - Vocal Mix
+	
 
 ~Testing~
 Adam Speiti
@@ -67,9 +79,15 @@ Brian Scibozy
 Collin Cassarini
 Yash Balaji
 
+
+
+
+
 ~Special Thanks~
 You, the player!
-We hope you enjoyed
-your time so far,
-and may you win
-the many battles ahead!
+We hope you enjoyed your time so far,
+and may you win the many battles ahead!
+
+
+~Press to play more Space Crab VS!~
+_

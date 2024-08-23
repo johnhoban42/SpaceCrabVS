@@ -2632,6 +2632,7 @@ function StopGamePlayMusic()
 	if GetMusicPlayingOGGSP(skateMusic) then StopMusicOGGSP(skateMusic)
 	if GetMusicPlayingOGGSP(skateVocalMusic) then StopMusicOGGSP(skateVocalMusic)
 	if GetMusicPlayingOGGSP(puppetMusic) then StopMusicOGGSP(puppetMusic)
+	if GetMusicPlayingOGGSP(titleMusic) then StopMusicOGGSP(titleMusic)
 		
 	for i = dangerAMusic to dangerPuppetMusic
 		if GetMusicPlayingOGGSP(i) then StopMusicOGGSP(i)

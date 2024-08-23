@@ -591,6 +591,10 @@ function InitCharacterSelectController(csc ref as CharacterSelectController)
 	
 	
 	if spActive = 1
+		SetFolder("/media/ui")
+		LoadSpriteExpress(SPR_CREDITS, "credits.png", 30+GetSpriteWidth(csc.sprRightArrow), 30+GetSpriteHeight(csc.sprRightArrow), -15+GetSpriteX(csc.sprRightArrow), -15+GetSpriteY(csc.sprRightArrow), GetSpriteDepth(csc.sprRightArrow))
+		SetSpriteVisible(SPR_CREDITS, 0)
+		
 		//Creating the story mode exclusive stuff
 		CreateTextExpress(TXT_CS_CRAB_STATS_2, "Chapter " + str(curChapter), 96, fontDescItalI, 0, 40, 100, 10)
 		CreateTextExpress(TXT_CS_CRAB_NAME_2, chapterTitle[curChapter], 90, fontDescI, 2, w-40, 190, 10)
@@ -823,6 +827,7 @@ function ChangeCrabs(csc ref as CharacterSelectController, dir as integer, start
 		
 	//This goes on the outside so it can be used for the glide loop
 	glideMax = 24/fpsr#
+	
 		
 	// Start the glide
 	if csc.glideFrame = 0 or startCycle = 1
@@ -831,6 +836,7 @@ function ChangeCrabs(csc ref as CharacterSelectController, dir as integer, start
 		SetSpriteVisible(csc.sprLeftArrow, 0)
 		SetSpriteVisible(csc.sprRightArrow, 0)
 		SetSpriteVisible(csc.sprReady, 0)
+		if GetSpriteExists(SPR_CREDITS) then SetSpriteVisible(SPR_CREDITS, 0)
 		if spType <> STORYMODE then SetSpriteVisible(csc.sprEvil, 0)
 		
 		//The change of the crab is done up here to make the glide work
@@ -986,11 +992,15 @@ function SetArrowVisibility(csc ref as CharacterSelectController)
 		if csc.CrabSelected <> 0
 			SetSpriteVisible(csc.sprLeftArrow, 1)
 		endif
+		SetSpriteVisible(SPR_CREDITS, 0)
 		if csc.CrabSelected <> Min(clearedChapter, finalChapter-1)
 			SetSpriteVisible(csc.sprRightArrow, 1)
+		elseif csc.CrabSelected = 24 and highestScene = 101
+			SetSpriteVisible(SPR_CREDITS, 1)
 		endif
 		//SetSpriteVisible(csc.sprReady, 1)
 		SetSpriteVisible(csc.sprEvil, 1)
+		
 	else
 		if csc.CrabSelected <> 0
 			SetSpriteVisible(csc.sprLeftArrow, 1)
@@ -1478,6 +1488,8 @@ function DoCharacterSelect()
 		endif
 	endif
 	
+	
+	
 	//Spinning the circular buttons
 	IncSpriteAngle(SPR_MENU_BACK, 1*fpsr#)
 	IncSpriteAngle(SPR_CS_FASTGAME, 1.2*fpsr#)
@@ -1536,6 +1548,13 @@ function DoCharacterSelect()
 		SetAIDifficulty(spAIDiff, 11 - spAIDiff, 4-(spAIDiff/3), 11- spAIDiff, spAIDiff)
 		state = GAME
 		TransitionStart(Random(1,lastTranType))
+	endif
+	
+	if ButtonMultitouchEnabled(SPR_CREDITS)
+		TransitionStart(lastTranType)
+		SetSpriteVisible(split, 0)
+		state = PlayCredits(2)
+		TransitionEnd()
 	endif
 	
 	// If we are leaving the state, exit appropriately
@@ -1603,7 +1622,7 @@ function ExitCharacterSelect()
 		DeleteText(TXT_SCENE)
 		
 	endif
-	
+	if GetSpriteExists(SPR_CREDITS) then DeleteSprite(SPR_CREDITS)
 	DeleteSprite(SPR_MENU_BACK)
 	
 	DeleteSprite(SPR_CS_FASTGAME)

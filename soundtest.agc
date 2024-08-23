@@ -76,6 +76,10 @@ global stVol = 100
 // Initialize the sound test screen
 function InitSoundTest()
 	
+	CreateSpriteExpressImage(ST_TITLE, bg3I, w*2, w*2, 0, 0, 1000)
+	if dispH then SetSpriteSizeSquare(ST_TITLE, h*2)
+	SetSpriteMiddleScreen(ST_TITLE)
+	
 	//Creation of the sprites/anything else needed goes here
 
 	// create the music display sprite with each frame tied to one of the songs in our list
@@ -344,6 +348,7 @@ function ExitSoundTest()
 	DeleteAnimatedSprite(sprSoundSelectLeft)
 	DeleteSprite(sprSoundTitle)
 	DeleteSprite(sprSoundTitleCurrent)
+	DeleteSprite(ST_TITLE)
 	
 	DeleteSprite(sprSoundCharacter)
 	DeleteSprite(sprSoundCharacterCurrent)

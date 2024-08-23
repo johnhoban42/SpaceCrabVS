@@ -478,8 +478,10 @@ function DoStart()
 	
 	//Going to the settings screen
 	if ButtonMultitouchEnabled(SPR_SETTINGS)
-		ClearMultiTouch()
-		StartSettings()
+		TransitionStart(1)
+		state = PlayCredits(1)
+		//ClearMultiTouch()
+		//StartSettings()
 	endif
 	
 	

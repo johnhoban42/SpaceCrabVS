@@ -98,7 +98,7 @@ TC: BAFAg; I'm looking forward to the journey. Let's put our skills to the test!
 IJ: BNFDb; Well put, Woody! Let's set our sights on adventure.
 RL: BMFA; Hey, can someone help me carry my gear? We gotta have some tunes for the road.
 HL: BAFTn; Find the inner strength to carry your own necessities. Wimp.
-1F: BSFS; Wow, this is way more crabs than the Star Destroyers. It'll take a long time to get everything packed...
+1F: BSFS; Wow, this is way more crabs than the Star Destroyers. It'll take a while to pack everything...
 CN: BWFSd; Heeeyy, maybe that kawaii clock looking guy can speed things up for us! ^_^
 CC: BAFL; No can do, eyedoll. Casting that spell knocked me clean out of juice!
 BMFKh; We've got a long time to wait before we make another play THAT big.

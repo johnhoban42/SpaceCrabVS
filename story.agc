@@ -284,12 +284,12 @@ function DoStory()
 			else
 				SetupChallenge()
 				state = GAME
-				TransitionStart(Random(1,lastTranType))
+				if GetParticlesMaxReached(11) then TransitionStart(Random(1,lastTranType))
 			endif
 			
 		elseif ButtonMultitouchEnabled(exitButton)
 			state = CHARACTER_SELECT
-			TransitionStart(Random(1,lastTranType))
+			if GetParticlesMaxReached(11) then TransitionStart(Random(1,lastTranType))
 			
 		endif
 		
@@ -997,8 +997,6 @@ function StartEndScreen()
 	
 	overallScene = (curChapter-1)*4+curScene-1
 	
-	if overallScene = 88 then PlayCredits()
-	
 	//The non-crab unlocks
 	if overallScene = 8 then UnlockSong(8, 1)
 	if overallScene = 16 then UnlockSong(9, 1)
@@ -1118,6 +1116,14 @@ function DoStoryEndScreen()
 		PlayTweenSprite(tweenSprFadeIn, playButton, 1)
 	endif
 	
+	overallScene = (curChapter-1)*4+curScene-1
+	Print(overallScene)
+	Sync()
+	Sleep(1000)
+	credTag = 0
+	if overallScene = 88 then credTag = 1
+	if overallScene = 100 then credTag = 2
+	
 	endDone = 0
 	while (endDone = 0)
 		
@@ -1192,8 +1198,7 @@ function DoStoryEndScreen()
 		SyncG()		
 	endwhile
 	
-	StopGamePlayMusic()
-	if GetMusicPlayingOGGSP(resultsMusic) then StopMusicOGGSP(resultsMusic)
+	
 	
 	TransitionStart(Random(1, lastTranType))
 	for i = TXT_RESULT1 to TXT_RESULT3
@@ -1203,52 +1208,107 @@ function DoStoryEndScreen()
 	DeleteSprite(playButton)
 	DeleteSprite(exitButton)
 	
+	if credTag <> 0 then state = PlayCredits(credTag)
 	
+	StopGamePlayMusic()
+	if GetMusicPlayingOGGSP(resultsMusic) then StopMusicOGGSP(resultsMusic)
 	
 endfunction state
 
-function PlayCredits()
+function PlayCredits(credVer)
+	
+	TransitionEnd()
 	
 	state = STORY
 	
-	if GetMusicPlayingOGGSP(creditsMusic) = 0
-		//SetMusic
+	CreateSpriteExpressImage(ST_TITLE, bg4I, w*2, w*2, 0, 0, 2)
+	if dispH then SetSpriteSizeSquare(ST_TITLE, h*2)
+	SetSpriteMiddleScreen(ST_TITLE)
+	
+	//Looks complicated, but it isn't - Plays inst. if credVer is 1, vocal version if credVer is 2
+	if GetMusicPlayingOGGSP(creditsMusic) = 0 and GetMusicPlayingOGGSP(creditsVocalMusic) = 0
+		StopGamePlayMusic()
+		PlayMusicOGGSP(creditsMusic + (credVer-1)*(creditsVocalMusic-creditsMusic), 1)
 	endif
 	
 	startTimer# = 0
 	
-	//Load in the text from a text file
 	credS$ = ""
-	credT = CreateText("")
 	
-	for i = 1 to CountStringTokens(credS$, "~") step 2
-		//Format the POSITION TITLES in here to move wavy, like the stats
-		//Maybe mark them a different color, so they can be recognized in the while loop
+	SetFolder("/media/text")
+	if dispH then credFile = OpenToRead("creditsD.txt")
+	if dispH = 0 then credFile = OpenToRead("creditsM.txt")
+	
+	//Load in the text from a text file
+	nLine$ = ReadLine(credFile)
+	while (nLine$ <> "_")
+		credS$ = credS$ + nLine$ + chr(10)
+		nLine$ = ReadLine(credFile)
+	endwhile
+	
+	credT = CreateText(credS$)
+	//SetTextExpress(credT, credS$, 
+	
+	for i = 2 to CountStringTokens(credS$, "~") step 2
+		for j = 0 to Len(GetStringToken(credS$, "~", i))+1
+			SetTextCharColorRed(credT, FindString(credS$, GetStringToken(credS$, "~", i))+j-2, 80)
+		next j
 	next i
 	
+	for i = 3 to CountStringTokens(credS$, chr(9)) step 2
+		for j = 0 to Len(GetStringToken(credS$, chr(9), i))+1
+			SetTextCharColorBlue(credT, FindString(credS$, GetStringToken(credS$, chr(9), i))+j-2, 110)
+			SetTextCharColorGreen(credT, FindString(credS$, GetStringToken(credS$, chr(9), i))+j-2, 110)
+			SetTextCharAngle(credT, FindString(credS$, GetStringToken(credS$, chr(9), i))+j-2, 30)
+		next j
+	next i
+	
+	//SetPrintColor(0,0,0,255)
+	//Sync()
+	//Sleep(10000)
+	
+	if dispH then SetTextExpress(credT, credS$, 72, fontDescI, 1, w/2, h+50, 1, -21)
+	if dispH = 0 then SetTextExpress(credT, credS$, 65, fontDescI, 1, w/2, h+50, 1, -18)
 	//credit
 	
 	endDone = 0
 	while (endDone = 0)
 		
-		ProcessMultitouch()
-		DoInputs()
-		ProcessPopup()
 		
-		
+		localSeconds# = localSeconds# + GetFrameTime()
 		startTimer# = startTimer# + GetFrameTime()
 		
+		SetTextY(credT, GetTextY(credT) - GetFrameTime()*100.0)
+		if GetPointerState() or GetRawKeyState(32) then SetTextY(credT, GetTextY(credT) - GetFrameTime()*1000.0)
 		
-		if startTimer# >= 9
+		Print(GetTextY(credT))
+		
+		if GetTextY(credT) < -6000 and dispH
+			SetTextY(credT, -5999)
+			DoInputs()
+			if GetPointerPressed() or InputSelect then endDone = 1
+		endif
+		if GetTextY(credT) < -5700 and dispH = 0
+			SetTextY(credT, -5699)
 			if GetPointerPressed() or InputSelect then endDone = 1
 		endif
 		
+		curLine = 0
+		for i = 1 to Len(credS$)
+			lineCount = 0
+			if Mid(credS$, i, 1) = chr(10) then inc curLine, 1
+			if GetTextCharColorRed(credT, i) = 80
+				SetTextCharY(credT, i, GetTextSize(credT)*curLine + 9*cos(300.0*startTimer# + 36*i))
+				SetTextX(credT, w/2)
+				SetTextCharX(credT, i, GetTextCharX(credT, i) + 0.25*cos(300.0*startTimer# + 36*i))
+			endif
+				
+		next i
 		
-		SyncG()		
+		Sync()		
 	endwhile
 	
-	StopGamePlayMusic()
-	if GetMusicPlayingOGGSP(resultsMusic) then StopMusicOGGSP(resultsMusic)
+	StopMusicOGGSP(creditsMusic + (credVer-1)*(creditsVocalMusic-creditsMusic))
 	
 	TransitionStart(Random(1, lastTranType))
 	for i = TXT_RESULT1 to TXT_RESULT3
@@ -1257,8 +1317,12 @@ function PlayCredits()
 	next i
 	DeleteSprite(playButton)
 	DeleteSprite(exitButton)
+	DeleteSprite(ST_TITLE)
+	DeleteText(credT)
 	
+	//TransitionStart(lastTranType)
 	state = CHARACTER_SELECT
+	if credVer = 2 then state = START
 	
 endfunction state
 

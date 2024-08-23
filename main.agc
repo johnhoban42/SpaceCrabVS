@@ -56,7 +56,7 @@ global h = 1600
 SetVirtualResolution(w, h) // doesn't have to match the window
 
 global dispH = 0		//Variable for horizontal display
-if deviceType = 9//DESKTOP
+if deviceType = 8//DESKTOP
 	dispH = 1
 	w = 1280
 	h = 720
@@ -72,7 +72,7 @@ SetAntialiasMode(1)
 // set display properties
 SetVirtualResolution(w, h)
 SetOrientationAllowed(1, 0, 0, 0) // allow both portrait and landscape on mobile devices
-SetSyncRate( 120, 0 ) // 30fps instead of 60 to save battery	//LOL
+SetSyncRate(120, 0) // 30fps instead of 60 to save battery	//LOL
 SetScissor(0, 0, 0, 0) // use the maximum available screen space, no black borders
 UseNewDefaultFonts( 1 )
 

@@ -644,7 +644,7 @@ global jumpPartI as Integer[6, 4]
 #constant skateMusic 123
 #constant skateVocalMusic 124
 #constant puppetMusic 125
-#constant creditsVocalMusic 126
+#constant creditsVocalMusic 129
 
 
 #constant dangerAMusic 211
@@ -743,6 +743,7 @@ global windowSize = 1
 #constant SPR_SCENE4 324 
 #constant TXT_SCENE 325
 
+#constant SPR_CREDITS 398
 #constant SPR_MENU_BACK 399
  
 //Character select screen sprites - player 2
@@ -1102,7 +1103,7 @@ function PlayMusicOGGSP(songID, loopYN)
 		if songID = skateMusic then LoadMusicOGG(skateMusic, "skate.ogg")
 		if songID = skateVocalMusic then LoadMusicOGG(skateVocalMusic, "skateVocal.ogg")
 		if songID = creditsMusic then LoadMusicOGG(creditsMusic, "credits.ogg")
-		if songID = creditsVocalMusic then LoadMusicOGG(creditsVocalMusic, "creditsVocal.ogg")
+		if songID = creditsVocalMusic then LoadMusicOGG(creditsVocalMusic, "retro9.ogg")
 		if songID = puppetMusic then LoadMusicOGG(puppetMusic, "puppet.ogg")
 		
 		//if id = 16 then song = fightBVocalMusic

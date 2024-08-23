@@ -13,7 +13,7 @@ BF; Being here in the past, seeing so many familiar faces-
 BF; I feel as fit to fight as I did in the old days! Bring it!
 music fftf
 fight A1319
-music credits
+music creditsVocal
 FC: BF; Well, past me - it looks like you have some training to do.
 SC: BF; No biggie, I've got time. Speaking of...
 BF; How much time do YOU have left?
