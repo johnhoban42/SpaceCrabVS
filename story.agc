@@ -463,7 +463,6 @@ function ShowScene(chap, scene)
 			SetViewOffset(0, 0)
 			if GetSpriteExists(SPR_CRAB1_BODY)
 				PlayMirrorModeScene()
-				Sleep(1000)
 			else
 				TransitionStart(Random(1,lastTranType))
 			endif
@@ -1117,9 +1116,6 @@ function DoStoryEndScreen()
 	endif
 	
 	overallScene = (curChapter-1)*4+curScene-1
-	Print(overallScene)
-	Sync()
-	Sleep(1000)
 	credTag = 0
 	if overallScene = 88 then credTag = 1
 	if overallScene = 100 then credTag = 2
@@ -1247,7 +1243,6 @@ function PlayCredits(credVer)
 	endwhile
 	
 	credT = CreateText(credS$)
-	//SetTextExpress(credT, credS$, 
 	
 	for i = 2 to CountStringTokens(credS$, "~") step 2
 		for j = 0 to Len(GetStringToken(credS$, "~", i))+1
@@ -1269,7 +1264,6 @@ function PlayCredits(credVer)
 	
 	if dispH then SetTextExpress(credT, credS$, 72, fontDescI, 1, w/2, h+50, 1, -21)
 	if dispH = 0 then SetTextExpress(credT, credS$, 65, fontDescI, 1, w/2, h+50, 1, -18)
-	//credit
 	
 	endDone = 0
 	while (endDone = 0)
@@ -1281,7 +1275,7 @@ function PlayCredits(credVer)
 		SetTextY(credT, GetTextY(credT) - GetFrameTime()*100.0)
 		if GetPointerState() or GetRawKeyState(32) then SetTextY(credT, GetTextY(credT) - GetFrameTime()*1000.0)
 		
-		Print(GetTextY(credT))
+		if debug then Print(GetTextY(credT))
 		
 		if GetTextY(credT) < -6000 and dispH
 			SetTextY(credT, -5999)

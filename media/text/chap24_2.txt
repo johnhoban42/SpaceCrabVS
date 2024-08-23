@@ -1,27 +1,27 @@
 bg 1
-music chill
-CH: BF; Wow - the throne room! It's true what they say, it really is bigger in person.
-KC: BF; Joker Crab - get joking. I'm growing impatient of your amazement.
-CH: BF; Oh! Hmmm, let's see...
-BF; Did you hear about the crab who got hit by a meteor?
-BF; He was destroyed!
-BF; Did you hear about the crab who thought he could jump over a special attack?
-BF; He was destroyed!
-BF; Did you hear about the crab who reached max danger in the mirror dimension?
-BF; I'm sure you can guess what happened!
-KC: BF; You're not funny at all!
-BF; Maybe I made a mistake in appointing you my Jester.
-BF; However, I never make mistakes. Hmmm...
-CH: BF; W-wait! Jokes aren't my strong suit, but I'm a natural in physical comedy!
+music fightJ
+CH: BIFS; Wow - the throne room! It's true what they say, it really is bigger in person.
+KC: BIFDa; Joker Crab - get joking. I'm growing impatient of your amazement.
+CH: BMFF; Oh! Hmmm, let's see...
+BAFAd; Did you hear about the crab who got hit by a meteor?
+BSFOc; He was destroyed!
+BAFCb; Did you hear about the crab who thought he could jump over a special attack?
+BSFOc; He was destroyed!
+BWFJb; Did you hear about the crab who reached max danger in the mirror dimension?
+BSFOc; I'm sure you can guess what happened!
+KC: BOFBa; You're not funny at all!
+BUFDe; Perhaps I made a mistake in appointing you my Jester.
+BMFH; However, I never make mistakes. Hmmm...
+CH: BMFI; W-wait! Jokes aren't my strong suit, but I'm a natural in physical comedy!
 music puppet
 fight 79386
 music retro5
-KC: BF; I've come to a new decision. I want this crab locked in the dungeon.
-CH: BF; Hey now, don't be too hasty...
-KC: BF; My knight! Remove this puppeted freak from my sight.
-KN: BF; Sorry, kid.
-BF; I don't like playing royal guard for this guy...
-BF; But it pays the bills.
+KC: BUFD; I've come to a new decision. I want this crab locked in the dungeon.
+CH: BSFEb; Hey now, don't be too hasty...
+KC: BMFOa; My knight! Remove this puppeted freak from my sight.
+KN: BAFE; Sorry, kid.
+BUFHa; I don't like playing royal guard for this guy...
+BZFU; But it pays the bills.
 se crack
-CH: BF; ACK! (fallen down)
-KC: BF; I never tire of hearing that beautiful sound.
+CH: BJFXi; ACK!
+KC: BUFKg; I never tire of hearing that beautiful sound.
