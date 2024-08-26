@@ -1,37 +1,38 @@
 bg 3
 music emotion
-CH: Wha... where am I?
-Is this King Crab's prison?
-Geez, I was so close to the top... only to fall right to the bottom.
-HC: Do not worry, my child. Things can still become much worse for you.
-CH: W-wow! An actual angel!
-If you came to me, then you must be here to bust me out!
-HC: Well, my ability to impact the physical world is fairly limited. 
-The most I personally can do is provide guidance in the form of encouragement and smiles.
-CH: Well, if you can't get me out, then is there anyone like you who can?
-HC: Not exactly. Nearly everyone in the astral plane has limited-
-CH: NEARLY! You said it yourself! So there's someone who can help! 
+CH: BF; Wha... where am I?
+BF; Is this King Crab's prison?
+BF; Geez, I was so close to the top... only to fall right to the bottom.
+HC: BF; Do not worry, my child. Things can still become much worse for you.
+CH: BF; W-wow! An actual angel!
+BF; If you came to me, then you must be here to bust me out!
+HC: BF; Well, my ability to impact the physical world is fairly limited. 
+BF; The most I personally can do is provide guidance in the form of encouragement and smiles.
+CH: BF; Well, if you can't get me out, then is there anyone like you who can?
+HC: BF; Not exactly. Nearly everyone in the astral plane has limited-
+CH: BF; NEARLY! You said it yourself! So there's someone who can help! 
 exit 2
 music
 ??: Looks like it's finally time for me to enter the picture. 
-HC: Be careful who you bargain with, child...
-music dungeon
-DC: So, you're tryin' to stir some trouble?
-CH: Yes, exactly! With my felt monsters, I'll take over the galaxy!
-Someday.
-DC: I appreciate the attitude, but puppets aren't exactly evil, kid.
-How about I give you some REAL power?
-Here. Take it out for a test drive.
+HC: BF; Be careful who you bargain with, child...
+music fightAJ
+DC: BF; So, you're tryin' to stir some trouble?
+CH: BF; Yes, exactly! With my felt monsters, I'll take over the galaxy!
+BF; Someday.
+DC: BF; I appreciate the attitude, but puppets aren't exactly evil, kid.
+BF; How about I give you some REAL power?
+CH: BF; Woah!
+DC: BF; Here. Take it out for a test drive.
 music magic
 fight 51319
 music magic 
-DC: So, will you agree to use this ultimate power, for nothing but destruction and villainy?
-CH: Uh, YEAH. Of course!
-This power... it's how I've always felt on the inside, but couldn't use it!
-But wait- what's in this for you?
-DC: Your first deal with me is on the house, just 'cause I like you.
-I know you'll be back for more, soon enough.
-CH: ...eh, that's fair.
+DC: BF; So, will you agree to use this ultimate power, for nothing but destruction and villainy?
+CH: BF; Uh, YEAH. Of course!
+BF; This power... it's how I've always felt on the inside, but couldn't use it!
+BF; But wait- what's in this for you?
+DC: BF; Your first deal with me is on the house, just 'cause I like you.
+BF; Besides, I know you'll be back for more, soon enough.
+CH: BF; ...eh, that's fair.
 exit 2
-Time to break out of this cage, and show the galaxy my true power!
-Starting with that sloth, King Crab.
+BF; Time to break out of this cage, and show the galaxy my true power!
+BF; Starting with that sloth, King Crab.

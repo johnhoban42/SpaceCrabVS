@@ -13,7 +13,7 @@ CH: BBFI; (...but for now, I help bake sweets.)
 CK: BMFJb; Now that we have the ingredients, let our fight create the perfect baking environment!
 music magic
 fight 62585
-music fightJ
+music chill
 KC: BMFKh; Well well, what a pleasant discovery that I've stumbled upon.
 CH: BAFSa; Wow! K-King Crab, HERE?? I'm in the presence of Royalty...
 CK: BBFF; (I don't know about that... he's just here to pick up his order.)
