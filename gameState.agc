@@ -31,31 +31,33 @@ function InitGame()
 	
 	fightSecondsLocal# = 0
 	
-	inc crabPlayed[crab1Type+crab1Alt*6]
-	if crab1evil
-		if crab1Type = 1 and crab1Alt = 0
-			dec crabPlayed[crab1Type+crab1Alt*6]
-			inc crabPlayed[25]
-		elseif crab1Type = 1 and crab1Alt = 3
-			dec crabPlayed[crab1Type+crab1Alt*6]
-			inc crabPlayed[26]
-		elseif crab1Type = 4 and crab1Alt = 3
-			dec crabPlayed[crab1Type+crab1Alt*6]
-			inc crabPlayed[27]
-		endif
-	endif
-	if spType = 0
-		inc crabPlayed[crab2Type+crab2Alt*6]
-		if crab2evil
-			if crab2Type = 1 and crab2Alt = 0
-				dec crabPlayed[crab2Type+crab2Alt*6]
+	if storyActive = 0
+		inc crabPlayed[crab1Type+crab1Alt*6]
+		if crab1evil
+			if crab1Type = 1 and crab1Alt = 0
+				dec crabPlayed[crab1Type+crab1Alt*6]
 				inc crabPlayed[25]
-			elseif crab2Type = 1 and crab2Alt = 3
-				dec crabPlayed[crab2Type+crab2Alt*6]
+			elseif crab1Type = 1 and crab1Alt = 3
+				dec crabPlayed[crab1Type+crab1Alt*6]
 				inc crabPlayed[26]
-			elseif crab2Type = 4 and crab2Alt = 3
-				dec crabPlayed[crab2Type+crab2Alt*6]
+			elseif crab1Type = 4 and crab1Alt = 3
+				dec crabPlayed[crab1Type+crab1Alt*6]
 				inc crabPlayed[27]
+			endif
+		endif
+		if spType = 0
+			inc crabPlayed[crab2Type+crab2Alt*6]
+			if crab2evil
+				if crab2Type = 1 and crab2Alt = 0
+					dec crabPlayed[crab2Type+crab2Alt*6]
+					inc crabPlayed[25]
+				elseif crab2Type = 1 and crab2Alt = 3
+					dec crabPlayed[crab2Type+crab2Alt*6]
+					inc crabPlayed[26]
+				elseif crab2Type = 4 and crab2Alt = 3
+					dec crabPlayed[crab2Type+crab2Alt*6]
+					inc crabPlayed[27]
+				endif
 			endif
 		endif
 	endif

@@ -120,8 +120,8 @@ function InitSoundTest()
 	AddButton(sprSoundSelectRight)
 	SetSpriteAngle(sprSoundSelectLeft, 180)
 	
-	LoadSprite(sprSoundTitle, "mainmenu.png")
-	LoadSprite(sprSoundCharacter, "crabselect.png")
+	LoadSprite(sprSoundTitle, "jukeboxtitleset.png")
+	LoadSprite(sprSoundCharacter, "jukeboxcharset.png")
 	
 	CreateSprite(sprSoundTitleCurrent, 0)
 	CreateSprite(sprSoundCharacterCurrent, 0)
@@ -154,8 +154,8 @@ function InitSoundTest()
 		SetSpriteExpress(sprSoundSelectLeft, bSize, bSize, w/7 - bSize/2, h/4 - bSize/2, 69)
 		SetSpriteExpress(sprSoundSelectRight, bSize, bSize, w*6/7 - bSize/2, h/4 - bSize/2, 69)
 		
-		SetSpriteExpress(sprSoundTitle, bSize, bSize, w/6 - bSize/2, h*2/3 - bSize/2, 69)
-		SetSpriteExpress(sprSoundCharacter, bSize, bSize, w*5/6 - bSize/2, h*2/3 - bSize/2, 69)
+		SetSpriteExpress(sprSoundTitle, bSize, bSize, w/6 - bSize/2 -30, h*2/3 - bSize/2, 69)
+		SetSpriteExpress(sprSoundCharacter, bSize, bSize, w*5/6 - bSize/2 +30, h*2/3 - bSize/2, 69)
 		// position play/pause button
 		SetSpriteExpress(sprSoundControl, bSize, bSize, w/2 - bSize/2, h/2 - bSize/2-40, 69)
 		// position the song display

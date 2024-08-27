@@ -446,6 +446,13 @@ function ShowScene(chap, scene)
 			st$ = Mid(GetStringToken(ReadLine(2), " ", curScene), 1, 2)
 			SetCrabFromStringChap(st$, 0, 2)
 			CloseFile(2)
+			crab1Evil = 0
+			crab2Evil = 0
+			if chap = 24 and scene = 3
+				crab1Evil = 1
+				crab2Evil = 1
+			endif
+			if chap = 24 and scene = 4 then crab1Evil = 1
 			lineSkipTo = lineOverall+1
 			TransitionStart(Random(1,lastTranType))
 			//Need to mute music cues, leaving the game
@@ -637,12 +644,20 @@ function ShowScene(chap, scene)
 					if z$ <> ""
 						SetSpriteImage(SPR_CRAB1_BODY, LoadImageR(folderB$ + "body" + body$ + str(crab1Type+crab1Alt*6) + ".png"))
 					else
-						SetSpriteImage(SPR_CRAB1_BODY, LoadImageR(folderB$ + "body" + body$ + phoneBonus$ + ".png"))
+						if curChapter = 24 and cosAlt$ = "0"
+							//This is the Chimaera Crab ONLY case
+							SetSpriteImage(SPR_CRAB1_BODY, LoadImageR(folderB$ + "body" + str(crab1Type) + AltStr(crab1Alt) + body$ + ".png"))
+						else
+							SetSpriteImage(SPR_CRAB1_BODY, LoadImageR(folderB$ + "body" + body$ + phoneBonus$ + ".png"))
+						endif
 					endif
 					if folderF$ = "speyes/"
 						SetSpriteImage(SPR_CRAB1_FACE, LoadImageR("speyes/face" + str(crab1Type+crab1Alt*6) + face$ + ".png"))
 					else
 						SetSpriteImage(SPR_CRAB1_FACE, LoadImageR(folderF$ + "face" + face$ + ".png"))
+						
+							Print(folderF$ + "face" + face$ + ".png")
+							Sync()
 					endif
 				endif
 				if cosType = 1

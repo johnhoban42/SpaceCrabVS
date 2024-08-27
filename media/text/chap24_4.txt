@@ -1,43 +1,43 @@
 bg 1
 music fightJ
-KC: Say, it really is quite boring here without comic relief.
-My knight, would you be able to fill the role?
-KN: Well, my son always says I'm too stiff, a little bit humorless...
-So probably not, no.
+KC: BBFUa; Hmm, it really is quite boring here without comic relief.
+BMFWa; My knight, would you be able to fill the role?
+KN: BDFF; Well, my son always says I'm too stiff, a little bit humorless...
+BAFa; So probably not, no.
 music
 se explosion
-!
-What was that? Who dares to trespass?!
-music magic
-CH: You all laughed at me before, but it's my turn to do the laughing now! HA!
-KC: Correction - no one was laughing at you. That's why I locked you away.
-Speaking of, shouldn't you still be down in the dungeon?
-KN: Stay back! This child no longer acts from a place of innocence.
-CH: I'm flattered. Before, you paid no attention to me, and now I'm the dangerous focal point.
-How about we go and take this crab down, my no-longer-felt beasts?
-And King Crab? He's next. After that? We'll rule the universe!
-KN: Never!
+KC: BAFKc; !
+KN: BZFD; What was that? Who dares to trespass?!
+music puppet
+CH: B0AFDb; You all laughed at me before, but it's my turn to do the laughing now! HA!
+KC: BAFDa; Correction - no one was laughing at you. That's why I locked you away.
+BVFDe; Speaking of, shouldn't you still be down in the dungeon?
+KN: BSFD; Stay back! This child no longer acts from a place of innocence.
+CH: B0MFB; I'm flattered. Before, you paid no attention to me, and now I'm the dangerous focal point.
+B0WFAa; How about we go and take this crab down, my no-longer-felt beasts?
+B0VFB; And King Crab? He's next. After that? We'll rule the universe!
+KN: BZFB; Never!
 music tomato
-fight 72438
-music dungeon
-KN: Too... strong...
-CH: Ahaha! The rush! The power! 
-KC: Hmm. This is a problem.
-CH: You bet it is! There's no one in ALL OF SPACE who can stop me now!
+fight 72238
+music fightAJ
+KN: BQFY; Too... strong...
+CH: BAFKe; Ahaha! The rush! The power! 
+KC: BMFFd; Hmm. This is a problem.
+CH: BAFKd; You bet it is! There's no one in ALL OF SPACE who can stop me now!
 music
 exit 1
-CK: Ahem. I'll take it from here.
-CH: Wha- Hey, my beasts!
-Hand them back, pretentious whelk!
+CK: BUFDa; Ahem. I'll take it from here.
+SC: BAFKj; Wha- Hey, my felt beasts! You took them!
+BAFBa; Hand them back, pretentious whelk!
 music emotion
-CK: Oh my, away for only three hours, and already picking up so much uncouth vocabulary.
-Chimaera Crab, this isn't you. What happened to my sweet little baker's boy?
-CH: That's not my na- wait, what did you call me?
-CK: Chimaera Crab, I know you have big aspirations. But for now? You're still a little crab.
-Learn the value of hard work, don't take any shortcuts!
-The future will come when it's ready for you.
-CH: Aww... Crab Cake...
-music magic
-Okay! Let's get back to baking! This hard work won't learn the value of itself!
-I've got lots of time to get back to the top, so let's do it properly!
-(Or, I'll just get in touch with Devil Crab again... heh heh!)
+CK: BBFOj; Oh my, away for a few hours, and already picking up so much uncouth vocabulary.
+BMFEa; Chimaera Crab, this isn't you. What happened to my sweet little baker's boy?
+CH: BVFJd; That's not my na- wait, what did you call me?
+CK: BSFEb; Chimaera Crab, I know you have big aspirations. But for now? You're still a little crab.
+BUFO; Learn the value of hard work, don't take any shortcuts!
+BAFAa; The future will come when it's ready for you.
+CH: BBFEb; Aww... Crab Cake...
+music puppet
+BVFA; Okay! Let's get back to baking! This hard work won't learn the value of itself!
+BMFJb; I've got lots of time to get back to the top, so let's do it properly!
+BSFKd; (Or, I'll just get in touch with Devil Crab again... heh heh!)

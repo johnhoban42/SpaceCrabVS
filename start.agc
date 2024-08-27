@@ -171,7 +171,7 @@ function InitStart()
 		SetSpriteExpress(SPR_SETTINGS, smallBW*0.8, smallBL*0.8, centerR+smallBW*(-0.4+.85), GetTextY(TXT_OTHER)+80, sDepth)
 		
 		//Settings Button
-		SetSpriteExpress(SPR_EXIT_GAME, 110, 110, w - 140, 30, sDepth)
+		SetSpriteExpress(SPR_EXIT_GAME, 164, 110, w - 200, 30, sDepth)
 	
 	endif
 

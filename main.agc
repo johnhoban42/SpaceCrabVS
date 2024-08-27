@@ -56,7 +56,7 @@ global h = 1600
 SetVirtualResolution(w, h) // doesn't have to match the window
 
 global dispH = 0		//Variable for horizontal display
-if deviceType = DESKTOP
+if deviceType = 9//DESKTOP
 	dispH = 1
 	w = 1280
 	h = 720
@@ -236,8 +236,8 @@ endfunction
 //clearedChapter = 0
 
 if debug
-	curChapter = 24
-	curScene = 2
+	curChapter = 25
+	curScene = 4
 	highestScene = 101
 	appState = START
 	crab1Type = 6
@@ -255,7 +255,7 @@ if debug
 	hardBattleUnlock = 1
 	musicBattleUnlock = 1
 	unlockAIHard = 1
-	musicUnlocked = 7
+	musicUnlocked = 22
 	evilUnlock = 1
 	gameSongSet = 0
 else
@@ -1032,6 +1032,9 @@ function Popup(area, unlockNum)
 		//P2: Keyboard, Controller, Touchscreen
 	elseif unlockNum = -2
 		//Autosave message, very beginning of game
+		img = LoadImageR("ui/autosave.png")
+		SetSpriteImage(spr+1, img)
+		trashBag.insert(img)
 	elseif unlockNum <= 24
 		//Newly unlocked crab
 		crab2Type = Mod(unlockNum-1, 6)+1
