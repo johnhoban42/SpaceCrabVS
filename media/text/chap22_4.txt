@@ -50,7 +50,7 @@ music
 SC: BIFMd; NO! That can't be my fate! I REFUSE!!
 FC: BMFJd; Your fate? What do you mean? Say, you kind of look like-
 music fightB
-BAFDe; !
+BAFDd; !
 BOFBa; So, it was YOU who started all of this!
 BMFDd; You ruined our lives! Doomed us to push everyone away, because of your future obsession!
 SC: BSFKc; N-no I didn't!? Did I?
@@ -59,11 +59,11 @@ BVFDe; Two lonely souls, finally given a chance for fleeting connection- even if
 SC: BPFDa; Not so fast! I'm not alone anymore.
 BMFD; The crabs I've met- I won't forget their stories, like you have.
 music
-BAFDb; I'll fight for the connections, I'll fight for the Star Seekers, I'll-
+BAFDb; I'll fight for the connections I've made, I'll fight for the Star Seekers, I'll-
 music fftf
 BVFOh; I'LL FIGHT FOR THE FUTURE!
 music fftf
-fight 91219
+fight 91319
 music fightB
 SC: BPFOh; I'll keep on fighting! Whatever it takes to change my fate!
 FC: BQFYi; Stop- *cough* -you've bested me.
@@ -71,6 +71,7 @@ BQFY; How strange, that the events that transpired here, contradict my memory.
 BQFYa; Were you truly strong enough to change the future?
 BQFYd; Time will tell.
 music
+se special
 exit 2
 SC: BHFPa; !
 SC: BAFEe; What!? Where did he go?!

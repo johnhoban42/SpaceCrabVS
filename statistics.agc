@@ -183,7 +183,7 @@ function InitStatistics()
 		mirrorList$ = mirrorList$ + exM$ + Str(scoreTableMirror[i]) + chr(10)
 		classicList$ = classicList$ + exC$ + Str(scoreTableClassic[i]) + chr(10)
 
-		if i = 14
+		if i = 14 and dispH
 			crabList$ = crabList$ + "|"	//The | is invisible, just used to split the string up internally
 			mirrorList$ = mirrorList$ + "|"
 			classicList$ = classicList$ + "|"
@@ -217,7 +217,7 @@ function InitStatistics()
 		//SetSpriteExpress(ST_BACK1, 130, 130, 60, h-155, 5)
 		//SetSpriteExpress(ST_SWITCH1, 130, 130, w-130-60, h-155, 5)
 		SetSpriteExpress(ST_BACK1, 90, 90, 60, 20, 5)
-		SetSpriteExpress(ST_SWITCH1, 90, 90, 180, 20, 5)
+		SetSpriteExpress(ST_SWITCH1, 100, 100, 175, 15, 5)
 		
 		SetTextExpress(ST_TXT3, GetTextString(ST_TXT3), 50, fontDescI, 2, 310 + w, 120, 5, -14)
 		SetTextLineSpacing(ST_TXT3, -14)
@@ -250,7 +250,7 @@ function InitStatistics()
 		//SetSpriteExpress(ST_BACK1, 140, 140, 40, h-180, 5)
 		//SetSpriteExpress(ST_SWITCH1, 140, 140, w-140-40, h-180, 5)
 		SetSpriteExpress(ST_BACK1, 140, 140, 10, 20, 5)
-		SetSpriteExpress(ST_SWITCH1, 140, 140, w-140-10, 20, 5)
+		SetSpriteExpress(ST_SWITCH1, 150, 150, w-140-15, 15, 5)
 		
 		
 		SetTextExpress(ST_TXT3, GetTextString(ST_TXT3), 60, fontDescI, 2, w + 420, 210, 5, -15)
@@ -354,14 +354,13 @@ function DoStatistics()
 	
 	//Animating the back button
 	if mod(round(localSeconds#)+1080, 8) = 0 and GetSpritePlaying(ST_BACK1) = 0 then PlaySprite(ST_BACK1, 10, 0, 1, 8)
+	IncSpriteAngle(ST_SWITCH1, 0.8*fpsr#)
 	
 	if ButtonMultitouchEnabled(ST_SWITCH1)
 		statsState = Mod(statsState, 2)+1
 	endif
 	if Abs(GetViewOffsetX()-(w*(statsState-1))) <> 2 then GlideViewOffset(w*(statsState-1), 0, 5, 3)
-	
-	Print(statsState)
-	
+		
 	
 	
 	

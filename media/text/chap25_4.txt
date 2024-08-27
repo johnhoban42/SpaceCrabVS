@@ -1,28 +1,29 @@
 bg 4
 music retro1
-FC: BF; Being in the past is quite tiring.
-BF; I've done more talking in the last day than I've done in the past 30 years!
-BF; Still, there's one more crab I need to talk to.
-BF; Space Crab.
-SC: BF; Space Crab.
-BF; You know, we have to do it, one more time. Finish things off right.
-FC: BF; A battle? Is that what you're getting at? Well, in that case, why not get things started?
-SC: BF; Hold on. I have to warn you- I'm going all out for this one.
-FC: BF; Oh, please. I'm you. I can take it.
-BF; Being here in the past, seeing so many familiar faces-
-BF; I feel as fit to fight as I did in the old days! Bring it!
+FC: BBFAb; Being in the past is quite tiring.
+BMFJb; I've done more talking in the last day than I've done in the past 30 years!
+BWFJe; Still, there's one more crab I need to talk to.
+BVFAe; Space Crab.
+SC: BVFAe; Space Crab.
+BMFQa; You know, we have to do it, one more time. Finish things off right.
+FC: BPFB; A battle? Is that what you're getting at? Well, in that case, why not get things started?
+SC: BSFEb; Hold on. I have to warn you- I'm going all out for this one.
+FC: BMFDb; Oh, please. I'm you. I can take it.
+BWFGa; Being here in the past, seeing so many familiar faces-
+BPFB; I feel as fit to fight as I did in the old days! Bring it!
 music fftf
 fight A1319
 music creditsVocal
-FC: BF; Well, past me - it looks like you have some training to do.
-SC: BF; No biggie, I've got time. Speaking of...
-BF; How much time do YOU have left?
-FC: BF; Don't worry about me. I'm sticking around - my future wasn't much fun anyways.
-BF; I'm eager to see how your future turns out.
-BF; And YOUR future, too. Yeah, YOU, the one reading our words.
-BF; Go outside and fight anyone you meet! That's the moral we're imparting.
-SC: BF; NO! No it isn't. Though, I do want to thank you for playing until the very end!
-BF; I wasn't sure how many of you would make it this far. So happy to see you here!
-BF; And I know the developers are happy, too. They all put tons of love into making the game.
-BF; See you in the next Space Crab! Whenever that is.
-BF; Until then, we'll all be here. Seeking stars, and ready to battle!
+FC: BAFAe; Well, past me - it looks like you have some training to do.
+SC: BDFI; No biggie, I've got time. Speaking of...
+BWFJe; How much time do YOU have left?
+FC: BMFAa; Don't worry about me. I'm sticking around - my future wasn't much fun anyways.
+BVFA; I'm eager to see how your future turns out.
+BAFJf; And YOUR future, too. Yeah, YOU, the one reading our words.
+BPFDb; Go outside and fight anyone you meet! That's the moral we're imparting.
+SC: BSFKc; NO! No it isn't.
+BMFJf; Though, I do want to thank you for playing until the very end!
+BKFO; I wasn't sure how many of you would make it this far. So happy to see you here!
+BAFTu; And I know the developers are happy, too. They all put tons of love into making the game.
+BKFJf; See you in the next Space Crab! Whenever that is.
+BVFOd; Until then, we'll all be here. Seeking stars, and ready to battle!

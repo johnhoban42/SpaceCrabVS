@@ -1494,6 +1494,8 @@ function DoCharacterSelect()
 	IncSpriteAngle(SPR_MENU_BACK, 1*fpsr#)
 	IncSpriteAngle(SPR_CS_FASTGAME, 1.2*fpsr#)
 	IncSpriteAngle(SPR_CS_HARDGAME, -1.2*fpsr#)
+	if GetSpriteExists(SPR_CREDITS) then IncSpriteAngle(SPR_CREDITS, 0.8*fpsr#)
+	
 	
 	if ButtonMultitouchEnabled(SPR_CS_FASTGAME)
 		gameIsFast = Mod(gameIsFast+1, 2)
@@ -1551,6 +1553,7 @@ function DoCharacterSelect()
 	endif
 	
 	if ButtonMultitouchEnabled(SPR_CREDITS)
+		if GetMusicPlayingOGGSP(fireMusic) then StopMusicOGGSP(fireMusic)
 		TransitionStart(lastTranType)
 		SetSpriteVisible(split, 0)
 		state = PlayCredits(2)

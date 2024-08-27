@@ -4,35 +4,35 @@ FC: BZFV;...
 BZFV;...?
 BBFV; I still... exist?
 music emotion
-SB: My word. You are quite the anomaly, Future Crab.
-FC: Space Bark! You can... talk?
-SB: Well, it seems that in our many years apart from each other, you've picked up the doglish language.
-What a treat it is to finally talk with you.
-FC: I would love to have a simple chat, but...
-My existence here is perplexing.
-Is this reality, or the hallucination of a lonely old man?
-SB: Hmm, well, how do I put it...
-I 'may' have an answer. But is it worth destroying the timestream if I happen to be wrong?
-A leaf in the wind, detached from the tree of time- what implications does it carry?
-FC: It turns out, you're actually quite the chatterbox.
-It may have been a while, but I do remember the best way to cut to the chase with these things.
-A battle.
+SB: BAFA; My word. You are quite the anomaly, Future Crab.
+FC: BAFJa; Space Bark! You can... talk?
+SB: BCFBe; Well, it seems that in our many years apart from each other, you've picked up the doglish language.
+BEFAe; What a treat it is to finally talk with you.
+FC: BMFJd; I would love to have a simple chat, but...
+BAFFd; My existence here is perplexing.
+BBFH; Is this reality, or the hallucination of a lonely old man?
+SB: BBFBa; Hmm, well, how do I put it...
+BDFDb; I 'may' have an answer. But is it worth destroying the timestream if I happen to be wrong?
+BHFFa; A leaf in the wind, detached from the tree of time- what implications does it carry?
+FC: BDFJ; It turns out, you're actually quite the chatterbox.
+BWFDa; It may have been a while, but I do remember the best way to cut to the chase with these things.
+BPFB; A battle.
 music fightA
 fight 63839
 music retro6
-SB: I suppose no harm can come from talking, can it?
-My hypothesis is that you must have some unfinished business.
-FC: What are these, ghost rules?
-I have to fulfill some kind of condition, to move onto the afterlife?
-One where I... cease to exist?
-SB: I wouldn't worry about that, Future Crab. The future has already been altered!
-Think of you being here, with your current personality, sense of self, and memories...
-As a sort of... bonus.
-Plus, when you finish your business, I'm sure the other crabs will take you on in battle, anytime!
-FC: So what, I simply exist here, along with my past self, and my old friends?
-What's the catch?
-SB: As long as there are players willing to play, the game will go on.
-After that, who knows?
-FC: Well, in that case, for the 'rest of the game', I'll make the most of my time.
-Starting with our simple chat. I've always wondered, how do you walk using only four legs?
-SB: It's tough, but I manage it, somehow. It all started when I was a young pup...
+SB: BEFA; I suppose no harm can come from talking, can it?
+BAFAd; My hypothesis is that you must have some unfinished business.
+FC: BUFDa; What are these, ghost rules?
+BAFJd; I have to fulfill some kind of condition, to move onto the afterlife?
+BZFV; One where I... cease to exist?
+SB: BEFAe; I wouldn't worry about that, Future Crab. The future has already been altered!
+BCFBc; Think of you being here, with your current personality, sense of self, and memories...
+BBFBb; As a sort of... bonus.
+BDFDa; Plus, when you finish your business, I'm sure the other crabs will take you on in battle, anytime!
+FC: BMFFa; So what, I simply exist here, along with my past self, and my old friends?
+BWFJe; What's the catch?
+SB: BAFAd; As long as there are players willing to play, the game will go on.
+BAFAg; After that, who knows?
+FC: BVFDb; Well, in that case, for the 'rest of the game', I'll make the most of my time.
+BAFA; Starting with our simple chat. I've always wondered, how do you walk using only four legs?
+SB: BEFAa; It's tough, but I manage it, somehow. It all started when I was a young pup...
