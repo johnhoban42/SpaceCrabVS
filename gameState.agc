@@ -1502,7 +1502,13 @@ function ShowSpecialAnimation(crabType, crabAlt, playerNum, fast)
 		else
 			//Front Sprites
 			SetSpriteDepth(i, 1)
-			SetSpriteImage(i, crab1attack1I - 1 + playerNum)
+			if GetImageExists(crab1attack1I - 1 + playerNum)
+				SetSpriteImage(i, crab1attack1I - 1 + playerNum)
+			else
+				SetSpriteImage(i, 0)
+			endif
+			
+			
 		endif
 		
 		if i >= specialSprFront2 then SetSpriteAngle(i, 180)

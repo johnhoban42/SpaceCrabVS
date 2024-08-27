@@ -149,6 +149,7 @@ function InitStory()
 		IncSpriteY(SPR_STORY_SKIP, 9999)
 	endif
 	if mPlatform = ANDROID then IncSpriteY(SPR_STORY_SKIP, 9999)
+	if mPlatform = APPLE then IncSpriteY(SPR_STORY_SKIP, 9999)
 	
 	storyStateInitialized = 1
 endfunction

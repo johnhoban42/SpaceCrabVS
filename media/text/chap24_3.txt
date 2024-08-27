@@ -1,7 +1,7 @@
 bg 3
 music emotion
-CH: BRFNf; Wha... where am I?
-BQFY; Is this King Crab's prison?
+CH: BQFY; Wha... where am I?
+Is this King Crab's prison?
 BQFYb; Geez, I was so close to the top... only to fall right to the bottom.
 HL: BSFTn; Do not worry, my child. Things can still become much worse for you.
 CH: BAFS; W-wow! An actual angel!

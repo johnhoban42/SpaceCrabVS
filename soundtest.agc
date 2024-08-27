@@ -366,6 +366,8 @@ function ExitSoundTest()
 	DeleteTween(twnSCRightOut)
 	DeleteTween(soundTweenFI)
 	DeleteTween(soundTweenFO)
+	
+	EmptyTrashBag()
 
 	soundtestStateInitialized = 0
 endfunction

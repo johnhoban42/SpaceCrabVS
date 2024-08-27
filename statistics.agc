@@ -403,6 +403,8 @@ function ExitStatistics()
 	StopMusicOGGSP(chillMusic)
 
 	SetViewOffset(0, 0)
+	
+	EmptyTrashBag()
 
 	statisticsStateInitialized = 0
 endfunction

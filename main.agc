@@ -57,7 +57,7 @@ global h = 1600
 SetVirtualResolution(w, h) // doesn't have to match the window
 
 global dispH = 0		//Variable for horizontal display
-if deviceType = 9//DESKTOP
+if deviceType = DESKTOP
 	dispH = 1
 	w = 1280
 	h = 720
@@ -242,7 +242,7 @@ if debug
 	curChapter = 25
 	curScene = 4
 	highestScene = 101
-	appState = SOUNDTEST
+	appState = START
 	crab1Type = 6
 	crab1Alt = 3
 	
@@ -660,8 +660,8 @@ function ShowLeaderBoard(num)
 			boardM$ = "grp.scvs.mirrormode"
 			boardC$ = "grp.scvs.classic"
 		else
-			boardM$ = ""
-			boardC$ = ""
+			boardM$ = "grp.scvs.mirrormode"
+			boardC$ = "grp.scvs.classic"
 		endif
 	elseif mPlatform = ANDROID
 		if demo
@@ -906,7 +906,7 @@ function MoveSelect2()
 	if selectTarget2 = 0
 
 		//If you're pressing the arrow key for the first time
-		if appState = START and GetSpriteVisible(SPR_START1)
+		if appState = START
 			selectTarget2 = SPR_START1//SPR_STORY_START
 			//selectTarget2 = SPR_START2
 		elseif appState = CHARACTER_SELECT and spType = 0
@@ -1097,8 +1097,28 @@ function Popup(area, unlockNum)
 		PlaySoundR(fruitS, 100)
 	elseif unlockNum = -1
 		//Controls
+		if area = G1
 		//P1: Keyboard, Controller, Touchscreen
+			if dispH = 0
+				img = LoadImage("ui/controlsmobile.png")
+			elseif GetRawJoystickConnected(1)
+				img = LoadImage("ui/controlscontroller.png")
+			else
+				img = LoadImage("ui/controlsp1.png")
+			endif
+		else //area = G2
 		//P2: Keyboard, Controller, Touchscreen
+			if dispH = 0
+				img = LoadImage("ui/controlsmobile.png")
+			elseif GetRawJoystickConnected(2)
+				img = LoadImage("ui/controlscontroller.png")
+			else
+				img = LoadImage("ui/controlsp2.png")
+			endif
+		endif
+		SetSpriteImage(spr+1, img)
+		trashBag.insert(img)
+		
 	elseif unlockNum = -2
 		//Autosave message, very beginning of game
 		img = LoadImageR("ui/autosave.png")
@@ -1151,7 +1171,7 @@ function Popup(area, unlockNum)
 	SetTextLineSpacing(spr+2, 11)
 	
 	
-	if unlockNum = -1 then SetTextString(spr+2, "")
+	if unlockNum = -1 then SetTextString(spr+2, "Game Controls")
 	if unlockNum = -2 then SetTextString(spr+2, "Space Crab VS" + chr(10) + "uses autosaves." + chr(10)+chr(10)+chr(10)+chr(10)+chr(10) + "Progress is saved" + chr(10) + "when exiting game.")
 	if unlockNum = -3 then SetTextString(spr+2, "Cheat mode on!" + chr(10) + "All is unlocked." + chr(10)+chr(10)+chr(10)+chr(10)+ "Game won't save." + chr(10) + "Close game to" + chr(10) + "turn off.")
 	if unlockNum = 38 then SetTextString(spr+2, "Winds of change" + chr(10) + "are blowing in...")

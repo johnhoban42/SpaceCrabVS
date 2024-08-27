@@ -57,8 +57,9 @@ function InitStart()
 	CreateTextExpress(TXT_MULTI, "Local Two Player", 84, fontTitleScreenI, 0, 40, 60, sDepth)
 	
 	//P1 Start Button
-	LoadAnimatedSprite(SPR_START1, "ready", 22)
-	PlaySprite(SPR_START1, 10, 1, 7, 14)
+	//LoadAnimatedSprite(SPR_START1, "ready", 22)
+	LoadAnimatedSprite(SPR_START1, "localmatch", 8)
+	PlaySprite(SPR_START1, 10, 1, 1, 8)
 	AddButton(SPR_START1)
 	SetSpriteDepth(SPR_START1, 75)
 	
@@ -1138,6 +1139,8 @@ function ExitStart()
 		DeleteSprite(i)
 		DeleteTween(i)
 	next i
+	
+	EmptyTrashBag()
 		
 	startTimer# = 0
 	p1Ready = 0
