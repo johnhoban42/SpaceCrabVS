@@ -1553,6 +1553,7 @@ function DoCharacterSelect()
 	endif
 	
 	if ButtonMultitouchEnabled(SPR_CREDITS)
+		if GetMusicPlayingOGGSP(fireMusic) then StopMusicOGGSP(fireMusic)
 		TransitionStart(lastTranType)
 		SetSpriteVisible(split, 0)
 		state = PlayCredits(2)

@@ -485,8 +485,6 @@ function ShowScene(chap, scene)
 			spType = CLASSIC
 			storyMinScore = Val(GetStringToken(wholeRow$, " ", 2))/(1+storyEasy)
 			lineSkipTo = lineOverall+1
-			Print(lineSkipTo)
-			Sync()
 			
 			TransitionStart(Random(1,lastTranType))
 			exit
@@ -655,9 +653,6 @@ function ShowScene(chap, scene)
 						SetSpriteImage(SPR_CRAB1_FACE, LoadImageR("speyes/face" + str(crab1Type+crab1Alt*6) + face$ + ".png"))
 					else
 						SetSpriteImage(SPR_CRAB1_FACE, LoadImageR(folderF$ + "face" + face$ + ".png"))
-						
-							Print(folderF$ + "face" + face$ + ".png")
-							Sync()
 					endif
 				endif
 				if cosType = 1

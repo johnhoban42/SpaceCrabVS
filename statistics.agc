@@ -360,9 +360,7 @@ function DoStatistics()
 		statsState = Mod(statsState, 2)+1
 	endif
 	if Abs(GetViewOffsetX()-(w*(statsState-1))) <> 2 then GlideViewOffset(w*(statsState-1), 0, 5, 3)
-	
-	Print(statsState)
-	
+		
 	
 	
 	

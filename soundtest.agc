@@ -76,9 +76,9 @@ global stVol = 100
 // Initialize the sound test screen
 function InitSoundTest()
 	
-	CreateSpriteExpressImage(ST_TITLE, bg3I, w*2, w*2, 0, 0, 1000)
-	if dispH then SetSpriteSizeSquare(ST_TITLE, h*2)
-	SetSpriteMiddleScreen(ST_TITLE)
+	//CreateSpriteExpressImage(ST_TITLE, bg3I, w*2, w*2, 0, 0, 1000)
+	//if dispH then SetSpriteSizeSquare(ST_TITLE, h*2)
+	//SetSpriteMiddleScreen(ST_TITLE)
 	
 	//Creation of the sprites/anything else needed goes here
 
@@ -147,46 +147,50 @@ function InitSoundTest()
 	if dispH
 		// create and position the jukebox base
 		LoadSpriteExpress(sprSoundBase, "jukeboxdesktoptest.png", w, h, 0, 0, 70)
-		SetSpriteColorAlpha(sprSoundBase, 130)
+		//SetSpriteColorAlpha(sprSoundBase, 130)
 		// create & position the simple buttons
 		bSize = 160
-		SetSpriteExpress(sprSoundBack, bSize, bSize, w/2 - bSize/2, h*4/5 - bSize/2, 69)
-		SetSpriteExpress(sprSoundSelectLeft, bSize, bSize, w/7 - bSize/2, h/4 - bSize/2, 69)
-		SetSpriteExpress(sprSoundSelectRight, bSize, bSize, w*6/7 - bSize/2, h/4 - bSize/2, 69)
+		SetSpriteExpress(sprSoundBack, bSize, bSize, w/2 - bSize/2, h*4/5 - bSize/2 + 30, 69)
+		SetSpriteExpress(sprSoundSelectLeft, bSize, bSize, w/7 - bSize/2 + 20, h/4 - bSize/2 + 20, 69)
+		SetSpriteExpress(sprSoundSelectRight, bSize, bSize, w*6/7 - bSize/2 - 20, h/4 - bSize/2 + 20, 69)
 		
-		SetSpriteExpress(sprSoundTitle, bSize, bSize, w/6 - bSize/2 -30, h*2/3 - bSize/2, 69)
-		SetSpriteExpress(sprSoundCharacter, bSize, bSize, w*5/6 - bSize/2 +30, h*2/3 - bSize/2, 69)
+		SetSpriteExpress(sprSoundTitle, bSize, bSize, w/8 - bSize/2 - 45, h*2/3 - bSize/2, 69)
+		SetSpriteExpress(sprSoundCharacter, bSize, bSize, w*7/8 - bSize/2 + 45, h*2/3 - bSize/2, 69)
 		// position play/pause button
-		SetSpriteExpress(sprSoundControl, bSize, bSize, w/2 - bSize/2, h/2 - bSize/2-40, 69)
+		SetSpriteExpress(sprSoundControl, bSize, bSize, w/2 - bSize/2, h/2 - bSize/2+20, 69)
+		
 		// position the song display
-		SetSpriteExpress(sprSoundDisplay, bSize*7/2, bSize, w/2 - bSize*7/4, h/4 - bSize/2-40, 71)
+		banMult# = 183
+		SetSpriteExpress(sprSoundDisplay, banMult#*7/2, banMult#, w/2 - banMult#*7/4, h/4 - banMult#/2+20, 71)
 		
 		// create the current title music display sprite with each frame tied to one of the songs in our list
-		SetSpriteExpress(sprSoundTitleCurrent, bSize*7/4, bSize/2, GetSpriteMiddleX(sprSoundTitle) - bSize*7/8, h*7/8 - 40, 69)
-		SetSpriteExpress(sprSoundCharacterCurrent, bSize*7/4, bSize/2, GetSpriteMiddleX(sprSoundCharacter) - bSize*7/8, h*7/8 - 40, 69)
+		miniS# = 1.35
+		SetSpriteExpress(sprSoundTitleCurrent, miniS#*bSize*7/4, miniS#*bSize/2, GetSpriteMiddleX(sprSoundTitle) - miniS#*bSize*7/8 + 114, h*7/8 - 66, 69)
+		SetSpriteExpress(sprSoundCharacterCurrent, miniS#*bSize*7/4, miniS#*bSize/2, GetSpriteMiddleX(sprSoundCharacter) - miniS#*bSize*7/8 - 114, h*7/8 - 66, 69)
 		
 		
 	else
 		// create and position the jukebox base
 		LoadSpriteExpress(sprSoundBase, "jukeboxmobiletest.png", w, h, 0, 0, 70)
-		SetSpriteColorAlpha(sprSoundBase, 130)
+		//SetSpriteColorAlpha(sprSoundBase, 130)
 		// create & position the simple buttons
-		bSize = 220
+		bSize = 188
 		SetSpriteExpress(sprSoundBack, bSize, bSize, w/2 - bSize/2, h*8/9 - bSize/2+35, 69)
-		SetSpriteExpress(sprSoundSelectLeft, bSize, bSize, w / 4 - bSize/2, h*3/8 - bSize/2-50, 69)
-		SetSpriteExpress(sprSoundSelectRight, bSize, bSize, w*3/4 - bSize/2, h*3/8 - bSize/2-50, 69)
+		SetSpriteExpress(sprSoundSelectLeft, bSize, bSize, w / 4 - bSize/2, h*3/8 - bSize/2-80, 69)
+		SetSpriteExpress(sprSoundSelectRight, bSize, bSize, w*3/4 - bSize/2, h*3/8 - bSize/2-80, 69)
 		
-		miniS# = 1.5
-		SetSpriteExpress(sprSoundTitle, bSize, bSize, w/4 - bSize/2, h*5/7 - bSize/2-25, 69)
-		SetSpriteExpress(sprSoundCharacter, bSize, bSize, w*3/4 - bSize/2, h * 5 / 7 - bSize/2-25, 69)
+		
+		SetSpriteExpress(sprSoundTitle, bSize, bSize, w/4 - bSize/2 - 50, h*5/7 - bSize/2-25, 69)
+		SetSpriteExpress(sprSoundCharacter, bSize, bSize, w*3/4 - bSize/2 + 50, h * 5 / 7 - bSize/2-25, 69)
 		// position play/pause button
-		SetSpriteExpress(sprSoundControl, bSize, bSize, w/2 - bSize/2, h*5/9 - bSize/2, 69)
+		SetSpriteExpress(sprSoundControl, bSize*1.1, bSize*1.1, w/2 - bSize*1.1/2, h*5/9 - bSize*1.1/2 - 40, 69)
 		// position the song display
-		SetSpriteExpress(sprSoundDisplay, 1.2*160*7/2,1.2*160, w/2 - 1.2*160*7/4, h/5 - 110, 71)
+		banMult# = 1.24
+		SetSpriteExpress(sprSoundDisplay, banMult#*160*7/2, banMult#*160, w/2 - banMult#*160*7/4, h/5 - 140, 71)
 		
-		
-		SetSpriteExpress(sprSoundTitleCurrent, miniS#*bSize*7/8, miniS#*bSize/4, GetSpriteMiddleX(sprSoundTitle) - miniS#*bSize*7/16, GetSpriteY(sprSoundTitle) + bSize + 20, 69)
-		SetSpriteExpress(sprSoundCharacterCurrent, miniS#*bSize*7/8, miniS#*bSize/4, GetSpriteMiddleX(sprSoundCharacter) - miniS#*bSize*7/16, GetSpriteY(sprSoundCharacter) + bSize + 20, 69)
+		miniS# = 2.05
+		SetSpriteExpress(sprSoundTitleCurrent, miniS#*bSize*7/8, miniS#*bSize/4, GetSpriteMiddleX(sprSoundTitle) - miniS#*bSize*7/16 + 66, GetSpriteY(sprSoundTitle) + bSize + 15, 69)
+		SetSpriteExpress(sprSoundCharacterCurrent, miniS#*bSize*7/8, miniS#*bSize/4, GetSpriteMiddleX(sprSoundCharacter) - miniS#*bSize*7/16 - 74, GetSpriteY(sprSoundCharacter) + bSize + 15, 69)
 	endif
 	
 	// create the tweens for moving the song display sprite around when switching songs
@@ -220,6 +224,9 @@ function DoSoundTest()
 		TransitionEnd()
 	endif
 	state = SOUNDTEST
+	
+	IncSpriteAngle(sprSoundTitle, 0.5*fpsr#)
+	IncSpriteAngle(sprSoundCharacter, 0.6*fpsr#)
 	
 	//Do loop for the mode is here
 	//check which button the player hit
@@ -348,7 +355,7 @@ function ExitSoundTest()
 	DeleteAnimatedSprite(sprSoundSelectLeft)
 	DeleteSprite(sprSoundTitle)
 	DeleteSprite(sprSoundTitleCurrent)
-	DeleteSprite(ST_TITLE)
+	//DeleteSprite(ST_TITLE)
 	
 	DeleteSprite(sprSoundCharacter)
 	DeleteSprite(sprSoundCharacterCurrent)

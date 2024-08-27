@@ -170,9 +170,10 @@ function InitStart()
 		//Settings Button
 		SetSpriteExpress(SPR_SETTINGS, smallBW*0.8, smallBL*0.8, centerR+smallBW*(-0.4+.85), GetTextY(TXT_OTHER)+80, sDepth)
 		
-		//Settings Button
+		//Exit Game Button
 		SetSpriteExpress(SPR_EXIT_GAME, 164, 110, w - 200, 30, sDepth)
-	
+		if GetDeviceBaseName() = "html5" then SetSpriteX(SPR_EXIT_GAME, 9999)
+		
 	endif
 
 	//Creating the tweens for the main menu pieces

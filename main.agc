@@ -28,6 +28,7 @@ SetWindowAllowResize( 1 ) // allow the user to resize the window
 global demo = 0
 global debug = 1
 global onWeb = 0
+global unlockCheat = 0
 
 if debug = 0
 	if GetGameCenterExists() = 1 // This checks to see if Game Center/Game Services exist on the device
@@ -138,51 +139,53 @@ SetTweenTextAlpha(tweenTxtFadeOut, 255, 0, TweenEaseIn1())
 //SetMusicSystemVolumeOGG(volumeM)
 
 function SaveGame()
-	SetFolder("/media")
-	OpenToWrite(3, "save.txt")
-	
-	WriteInteger(3, spHighScore)
-	WriteString(3, spHighCrab$)
-	WriteInteger(3, spHighScoreClassic)
-	WriteString(3, spHighCrabClassic$)
-	WriteInteger(3, curChapter)
-	WriteInteger(3, highestScene)
-	WriteInteger(3, clearedChapter)
-	for i = 1 to 6
-		WriteInteger(3, altUnlocked[i])
-	next i
-	WriteInteger(3, firstStartup)
-	WriteInteger(3, speedUnlock)
-	WriteInteger(3, hardBattleUnlock)
-	WriteInteger(3, musicBattleUnlock)
-	WriteInteger(3, unlockAIHard)
-	WriteInteger(3, musicUnlocked)
-	WriteInteger(3, volumeM)
-	WriteInteger(3, volumeSE)
-	WriteInteger(3, targetFPS)
-	WriteInteger(3, windowSize)
-	WriteInteger(3, evilUnlock)
-	WriteInteger(3, storyEasy)
-	inc totalSecondsPlayed, Round(localSeconds#)
-	WriteInteger(3, totalSecondsPlayed)
-	localSeconds# = 0
-	WriteInteger(3, fightTotal)
-	WriteInteger(3, mirrorTotal)
-	WriteInteger(3, classicTotal)
-	WriteInteger(3, fightSeconds)
-	for i = 1 to 27
-		WriteInteger(3, crabPlayed[i])
-	next i
-	WriteInteger(3, totalMeteors)
-	for i = 1 to 27
-		WriteInteger(3, scoreTableMirror[i])
-	next i
-	for i = 1 to 27
-		WriteInteger(3, scoreTableClassic[i])
-	next i
-	WriteInteger(3, titleIndex)
-	WriteInteger(3, characterSelectIndex)
-	CloseFile(3)
+	if unlockCheat = 0
+		SetFolder("/media")
+		OpenToWrite(3, "save.txt")
+		
+		WriteInteger(3, spHighScore)
+		WriteString(3, spHighCrab$)
+		WriteInteger(3, spHighScoreClassic)
+		WriteString(3, spHighCrabClassic$)
+		WriteInteger(3, curChapter)
+		WriteInteger(3, highestScene)
+		WriteInteger(3, clearedChapter)
+		for i = 1 to 6
+			WriteInteger(3, altUnlocked[i])
+		next i
+		WriteInteger(3, firstStartup)
+		WriteInteger(3, speedUnlock)
+		WriteInteger(3, hardBattleUnlock)
+		WriteInteger(3, musicBattleUnlock)
+		WriteInteger(3, unlockAIHard)
+		WriteInteger(3, musicUnlocked)
+		WriteInteger(3, volumeM)
+		WriteInteger(3, volumeSE)
+		WriteInteger(3, targetFPS)
+		WriteInteger(3, windowSize)
+		WriteInteger(3, evilUnlock)
+		WriteInteger(3, storyEasy)
+		inc totalSecondsPlayed, Round(localSeconds#)
+		WriteInteger(3, totalSecondsPlayed)
+		localSeconds# = 0
+		WriteInteger(3, fightTotal)
+		WriteInteger(3, mirrorTotal)
+		WriteInteger(3, classicTotal)
+		WriteInteger(3, fightSeconds)
+		for i = 1 to 27
+			WriteInteger(3, crabPlayed[i])
+		next i
+		WriteInteger(3, totalMeteors)
+		for i = 1 to 27
+			WriteInteger(3, scoreTableMirror[i])
+		next i
+		for i = 1 to 27
+			WriteInteger(3, scoreTableClassic[i])
+		next i
+		WriteInteger(3, titleIndex)
+		WriteInteger(3, characterSelectIndex)
+		CloseFile(3)
+	endif
 endfunction
 
 function LoadGame()
@@ -239,7 +242,7 @@ if debug
 	curChapter = 25
 	curScene = 4
 	highestScene = 101
-	appState = START
+	appState = SOUNDTEST
 	crab1Type = 6
 	crab1Alt = 3
 	
@@ -356,6 +359,8 @@ do
     SyncG()
 loop
 
+global passwordProg = 0
+
 function DoInputs()
 	inputSelect = 0
 	inputExit = 0
@@ -437,6 +442,60 @@ function DoInputs()
 		if GetRawJoystickButtonPressed(2, 16) then inputDown2 = 1
 	endif
 	
+	//Password is 'ilovesnow'
+	if deviceType = DESKTOP and appState = START
+		//Checking for the password:
+		if passwordProg = 0 and GetRawKeyPressed(73) then passwordProg = 1
+		if passwordProg = 1 and GetRawKeyPressed(76) then passwordProg = 2
+		if passwordProg = 2 and GetRawKeyPressed(79) then passwordProg = 3
+		if passwordProg = 3 and GetRawKeyPressed(86) then passwordProg = 4
+		if passwordProg = 4 and GetRawKeyPressed(69) then passwordProg = 5
+		if passwordProg = 5 and GetRawKeyPressed(83) then passwordProg = 6
+		if passwordProg = 6 and GetRawKeyPressed(78) then passwordProg = 7
+		if passwordProg = 7 and GetRawKeyPressed(79) then passwordProg = 8
+		if passwordProg = 8 and GetRawKeyPressed(87)
+			passwordProg = 9
+			TurnOnCheats()
+		endif
+	endif
+	
+	if dispH = 0 and appState = START
+		//Checking for the password:
+		if passwordProg = 0 and GetMultitouchPressedBottomLeft() then passwordProg = 1
+		if passwordProg = 1 and GetMultitouchPressedTopLeft() then passwordProg = 2
+		if passwordProg = 2 and GetMultitouchPressedBottomRight() then passwordProg = 3
+		if passwordProg = 3 and GetMultitouchPressedTopRight() then passwordProg = 4
+		if passwordProg = 4 and GetMultitouchPressedTopLeft() then passwordProg = 5
+		if passwordProg = 5 and GetMultitouchPressedTopRight() then passwordProg = 6
+		if passwordProg = 6 and GetMultitouchPressedBottomRight() then passwordProg = 7
+		if passwordProg = 7 and GetMultitouchPressedBottomLeft() then passwordProg = 8
+		if passwordProg = 8 and GetMultitouchPressedTopLeft()
+			passwordProg = 9
+			TurnOnCheats()
+		endif
+	endif
+	
+endfunction
+
+function TurnOnCheats()
+	highestScene = 101
+	clearedChapter = 25
+	curChapter = 13
+	curScene = 2
+	altUnlocked[1] = 3
+	altUnlocked[2] = 3
+	altUnlocked[3] = 3
+	altUnlocked[4] = 3
+	altUnlocked[5] = 3
+	altUnlocked[6] = 3
+	speedUnlock = 1
+	hardBattleUnlock = 1
+	musicBattleUnlock = 1
+	unlockAIHard = 1
+	musicUnlocked = 22
+	evilUnlock = 1
+	unlockCheat = 1
+	Popup(MIDDLE, -3)
 endfunction
 
 function TransitionStart(tranType)
@@ -597,11 +656,21 @@ endfunction
 function ShowLeaderBoard(num)
 	
 	if mPlatform = APPLE
-		boardM$ = "grp.scvs.mirrormode"
-		boardC$ = "grp.scvs.classic"
+		if demo
+			boardM$ = "grp.scvs.mirrormode"
+			boardC$ = "grp.scvs.classic"
+		else
+			boardM$ = ""
+			boardC$ = ""
+		endif
 	elseif mPlatform = ANDROID
-		boardM$ = "CgkI3pbJ898dEAIQAQ"
-		boardC$ = "CgkI3pbJ898dEAIQAg"
+		if demo
+			boardM$ = "CgkI3pbJ898dEAIQAQ"
+			boardC$ = "CgkI3pbJ898dEAIQAg"
+		else
+			boardM$ = "CgkI35jTzMMfEAIQAQ"
+			boardC$ = "CgkI35jTzMMfEAIQAg"
+		endif
 	endif
 	
 	board$ = ""
@@ -1035,6 +1104,11 @@ function Popup(area, unlockNum)
 		img = LoadImageR("ui/autosave.png")
 		SetSpriteImage(spr+1, img)
 		trashBag.insert(img)
+	elseif unlockNum = -3
+		//Cheat mode!
+		img = LoadImageR("art/chibicrab4c2.png")
+		SetSpriteImage(spr+1, img)
+		trashBag.insert(img)
 	elseif unlockNum <= 24
 		//Newly unlocked crab
 		crab2Type = Mod(unlockNum-1, 6)+1
@@ -1079,6 +1153,7 @@ function Popup(area, unlockNum)
 	
 	if unlockNum = -1 then SetTextString(spr+2, "")
 	if unlockNum = -2 then SetTextString(spr+2, "Space Crab VS" + chr(10) + "uses autosaves." + chr(10)+chr(10)+chr(10)+chr(10)+chr(10) + "Progress is saved" + chr(10) + "when exiting game.")
+	if unlockNum = -3 then SetTextString(spr+2, "Cheat mode on!" + chr(10) + "All is unlocked." + chr(10)+chr(10)+chr(10)+chr(10)+ "Game won't save." + chr(10) + "Close game to" + chr(10) + "turn off.")
 	if unlockNum = 38 then SetTextString(spr+2, "Winds of change" + chr(10) + "are blowing in...")
 	if unlockNum = 39 then SetTextString(spr+2, "Steel yourself" + chr(10) + "and FIGHT!")
 	if unlockNum = 40 then SetTextString(spr+2, "Metallic seas and" + chr(10) + "reflecting tides!")
@@ -1144,6 +1219,7 @@ endfunction
 
 function ClearPopup1()
 	StopMusicOGGSP(unlockMusic)
+	ClearMultiTouch()
 	
 	if GetSpriteExists(SPR_POPUP_BG)
 		UpdateTweenSprite(SPR_POPUP_BG, SPR_POPUP_BG, 1)
@@ -1162,6 +1238,7 @@ endfunction
 
 function ClearPopup2()
 	StopMusicOGGSP(unlockMusic)
+	ClearMultiTouch()
 	
 	if GetSpriteExists(SPR_POPUP_BG_2)
 		UpdateTweenSprite(SPR_POPUP_BG_2, SPR_POPUP_BG_2, 1)
