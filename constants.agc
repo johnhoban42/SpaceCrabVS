@@ -1042,7 +1042,7 @@ function PlayMusicOGGSP(songID, loopYN)
 			SetMusicLoopTimesOGG(fightAMusic, 28.235, -1)
 		endif
 		if songID = fightBMusic then LoadMusicOGG(fightBMusic, "fightB.ogg")
-		if songID = fightBVocalMusic then LoadMusicOGG(fightBVocalMusic, "retro9.ogg")
+		if songID = fightBVocalMusic then LoadMusicOGG(fightBVocalMusic, "fightBVocal.ogg")
 		if songID = fightJMusic
 			LoadMusicOGG(fightJMusic, "fightJ.ogg")
 			SetMusicLoopTimesOGG(fightJMusic, 6.0, -1)
@@ -1104,7 +1104,7 @@ function PlayMusicOGGSP(songID, loopYN)
 		if songID = skateMusic then LoadMusicOGG(skateMusic, "skate.ogg")
 		if songID = skateVocalMusic then LoadMusicOGG(skateVocalMusic, "skateVocal.ogg")
 		if songID = creditsMusic then LoadMusicOGG(creditsMusic, "credits.ogg")
-		if songID = creditsVocalMusic then LoadMusicOGG(creditsVocalMusic, "retro9.ogg")
+		if songID = creditsVocalMusic then LoadMusicOGG(creditsVocalMusic, "creditsVocal.ogg")
 		if songID = puppetMusic then LoadMusicOGG(puppetMusic, "puppet.ogg")
 
 		
@@ -1239,7 +1239,7 @@ function GetMusicByID(id)
 	if id = 13 then song = loveMusic
 	if id = 14 then song = fightMMusic
 	if id = 15 then song = emotionMusic
-	//if id = 16 then song = fightBVocalMusic
+	if id = 16 then song = fightBVocalMusic
 	if id = 17 then song = creditsMusic
 	if id = 18 then song = skateMusic
 	if id = 19 then song = skateVocalMusic

@@ -26,7 +26,7 @@ SetWindowSize( 700, 1400, 0 )
 SetWindowAllowResize( 1 ) // allow the user to resize the window
 
 global demo = 0
-global debug = 1
+global debug = 0
 global onWeb = 0
 global unlockCheat = 0
 
@@ -262,7 +262,7 @@ if debug
 	evilUnlock = 1
 	gameSongSet = 0
 else
-	//LoadGame()
+	LoadGame()
 	//altUnlocked[1] = 2
 	//altUnlocked[2] = 2
 	//altUnlocked[3] = 1
@@ -1080,7 +1080,7 @@ function Popup(area, unlockNum)
 	SetFolder("/media")
 	
 	//Creating the background of the popup
-	CreateSpriteExpressImage(spr, popupBackI, wid, hei, x-wid/2, y-hei/2, 1)
+	CreateSpriteExpressImage(spr, popupBackI, wid*1.4, hei*1.4, x-wid*1.4/2, y-hei*1.4/2, 1)
 	//SetSpriteColor(spr, 100, 100, 100, 255)
 	
 	//Creating the centered sprite of the popup
@@ -1158,7 +1158,7 @@ function Popup(area, unlockNum)
 	endif
 	
 	//Creating the text message of the popup
-	CreateTextExpress(spr+2, "", 60, fontScoreI, 1, GetSpriteMiddleX(spr), GetSpriteY(spr) + 10, 1)
+	CreateTextExpress(spr+2, "", 60, fontScoreI, 1, GetSpriteMiddleX(spr), GetSpriteY(spr) + 10+hei*0.2, 1)
 	SetTextString(spr+2, "You unlocked" + chr(10) + crab2Str$ + "!" + chr(10)+chr(10)+chr(10)+chr(10)+chr(10) + "Now playable" + chr(10) + "in all modes!")
 	if unlockNum = 0 then SetTextString(spr+2, "That crab is" + chr(10) + "locked!" + chr(10)+chr(10)+chr(10)+chr(10)+chr(10) + "Find them in" + chr(10) + "Story Mode!")
 	//SetTextLineSpacing(spr+2, 5-(dispH-1)*6)
