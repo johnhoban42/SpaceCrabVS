@@ -1288,13 +1288,13 @@ function PlayCredits(credVer)
 		
 		if debug then Print(GetTextY(credT))
 		
-		if GetTextY(credT) < -6000 and dispH
-			SetTextY(credT, -5999)
+		if GetTextY(credT) < -7600 and dispH
+			SetTextY(credT, -7599)
 			DoInputs()
 			if GetPointerPressed() or InputSelect then endDone = 1
 		endif
-		if GetTextY(credT) < -5700 and dispH = 0
-			SetTextY(credT, -5699)
+		if GetTextY(credT) < -7300 and dispH = 0
+			SetTextY(credT, -7299)
 			if GetPointerPressed() or InputSelect then endDone = 1
 		endif
 		

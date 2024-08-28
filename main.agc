@@ -253,7 +253,7 @@ if debug
 	altUnlocked[4] = 3
 	altUnlocked[5] = 3
 	altUnlocked[6] = 3
-	firstStartup = 0
+	firstStartup = 1
 	speedUnlock = 1
 	hardBattleUnlock = 1
 	musicBattleUnlock = 1
@@ -1086,7 +1086,7 @@ function Popup(area, unlockNum)
 	//Creating the centered sprite of the popup
 	chibiSize = wid-40
 	CreateSpriteExpress(spr+1, chibiSize, chibiSize, GetSpriteMiddleX(spr)-chibiSize/2, GetSpriteMiddleY(spr)-chibiSize/2, 1)
-	SetSpriteColor(spr, 100, 100, 100, 255)
+	//SetSpriteColor(spr, 100, 100, 100, 255)
 	//unlockNum = 30
 	//Setting the focus/contents of the popup
 	if unlockNum = 0
@@ -1239,7 +1239,7 @@ endfunction
 
 function ClearPopup1()
 	StopMusicOGGSP(unlockMusic)
-	ClearMultiTouch()
+	//ClearMultiTouch()
 	
 	if GetSpriteExists(SPR_POPUP_BG)
 		UpdateTweenSprite(SPR_POPUP_BG, SPR_POPUP_BG, 1)
@@ -1258,7 +1258,7 @@ endfunction
 
 function ClearPopup2()
 	StopMusicOGGSP(unlockMusic)
-	ClearMultiTouch()
+	//ClearMultiTouch()
 	
 	if GetSpriteExists(SPR_POPUP_BG_2)
 		UpdateTweenSprite(SPR_POPUP_BG_2, SPR_POPUP_BG_2, 1)

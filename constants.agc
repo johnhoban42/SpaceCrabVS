@@ -1106,10 +1106,7 @@ function PlayMusicOGGSP(songID, loopYN)
 		if songID = creditsMusic then LoadMusicOGG(creditsMusic, "credits.ogg")
 		if songID = creditsVocalMusic then LoadMusicOGG(creditsVocalMusic, "retro9.ogg")
 		if songID = puppetMusic then LoadMusicOGG(puppetMusic, "puppet.ogg")
-		
-		//if id = 16 then song = fightBVocalMusic
-	//if id = 17 then song = creditsMusic
-	//if id = 20 then song = puppetMusic
+
 		
 		if songID = dangerAMusic then LoadMusicOGG(dangerAMusic, "dangerA.ogg")
 		if songID = dangerBMusic then LoadMusicOGG(dangerBMusic, "dangerB.ogg")
@@ -1120,7 +1117,7 @@ function PlayMusicOGGSP(songID, loopYN)
 		if songID = dangerAJMusic then LoadMusicOGG(dangerAJMusic, "dangerAJ.ogg")
 		if songID = dangerMMusic then LoadMusicOGG(dangerMMusic, "dangerM.ogg")
 		if songID = dangerSkateMusic then LoadMusicOGG(dangerSkateMusic, "dangerSkate.ogg")
-		//if songID = dangerPuppetMusic then
+		if songID = dangerPuppetMusic then LoadMusicOGG(dangerPuppetMusic, "dangerPuppet.ogg")
 		
 		if songID = raveBass1 and appState = STORY
 			LoadMusicOGG(raveBass1, "special4.ogg")
@@ -1246,7 +1243,7 @@ function GetMusicByID(id)
 	if id = 17 then song = creditsMusic
 	if id = 18 then song = skateMusic
 	if id = 19 then song = skateVocalMusic
-	//if id = 20 then song = puppetMusic
+	if id = 20 then song = puppetMusic
 	if id = 21 then song = fightFMusic
 	if id = 22 then song = creditsVocalMusic
 	
