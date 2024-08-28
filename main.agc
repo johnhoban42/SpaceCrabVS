@@ -249,11 +249,11 @@ if debug
 	spType = AIBATTLE
 	altUnlocked[1] = 3
 	altUnlocked[2] = 3
-	altUnlocked[3] = 3
+	altUnlocked[3] = 1
 	altUnlocked[4] = 3
 	altUnlocked[5] = 3
 	altUnlocked[6] = 3
-	firstStartup = 1
+	firstStartup = 0
 	speedUnlock = 1
 	hardBattleUnlock = 1
 	musicBattleUnlock = 1
@@ -1080,8 +1080,8 @@ function Popup(area, unlockNum)
 	SetFolder("/media")
 	
 	//Creating the background of the popup
-	CreateSpriteExpress(spr, wid, hei, x-wid/2, y-hei/2, 1)
-	SetSpriteColor(spr, 100, 100, 100, 255)
+	CreateSpriteExpressImage(spr, popupBackI, wid, hei, x-wid/2, y-hei/2, 1)
+	//SetSpriteColor(spr, 100, 100, 100, 255)
 	
 	//Creating the centered sprite of the popup
 	chibiSize = wid-40

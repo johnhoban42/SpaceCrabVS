@@ -360,6 +360,7 @@ global met3CD2# = 0 //400
 #constant fontCrabI 1003	//Somerset Barnyard
 #constant fontScoreI 1005	//SnowTunes UI Font
 #constant fontTitleScreenI 1006	//Corbel (Italicised)
+#constant popupBackI 1009
 
 #constant starParticleI 11
 
@@ -1301,6 +1302,7 @@ function LoadBaseImages()
 	LoadImage(fontScoreI, "ScoreFont.png")
 	LoadImage(fontTitleScreenI, "fontTitleScreen.png")
 	
+	
 	//#constant fontDesc 2
 	
 	SetFolder("/media")
@@ -1396,6 +1398,7 @@ function LoadBaseImages()
 	LoadImage(logoI, "vslogo.png")
 	LoadImage(logoDemoI, "titleDemo.png")
 	LoadImage(logoFruitI, "titleFruit.png")
+	LoadImage(popupBackI, "popupBack.png")
 	
 	SetFolder("/media")
 	
