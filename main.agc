@@ -279,6 +279,8 @@ else
 		musicUnlocked = 7
 		curChapter = 1
 		curScene = 1
+		titleIndex = 1
+		characterSelectIndex = 6
 	endif
 	//if altUnlocked[1] = 3 or altUnlocked[2] = 3 or altUnlocked[3] = 3 or altUnlocked[4] = 3 or altUnlocked[5] = 3 or altUnlocked[6] = 3 then LoadSelectCrabImages()
 	LoadSelectCrabImages()
@@ -287,6 +289,8 @@ else
 	windowSize = Min(3, windowSize)
 	windowSize = Max(1, windowSize)
 	gameSongSet = 0
+	if titleIndex = 0 then titleIndex = 1
+	if characterSelectIndex = 0 then characterSelectIndex = 6
 	if targetFPS <> 5
 		SetVSync(0)
 		SetSyncRate(fpsChunk[targetFPS], 0)

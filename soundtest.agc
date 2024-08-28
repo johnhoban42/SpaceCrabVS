@@ -323,7 +323,6 @@ function DoSoundTest()
 		if GetMusicPlayingOGGSP(GetMusicByID(FrameToSongID(soundIndex))) then PauseMusicOGG(GetMusicByID(FrameToSongID(soundIndex)))
 	endif
 		
-	Print(GetMusicPlayingOGGSP(GetMusicByID(FrameToSongID(soundIndex))))
 		
 //~	print(soundList.length)	
 //~	print(soundIndex)
