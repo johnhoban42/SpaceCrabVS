@@ -26,7 +26,7 @@ SetWindowSize( 700, 1400, 0 )
 SetWindowAllowResize( 1 ) // allow the user to resize the window
 
 global demo = 0
-global debug = 0
+global debug = 1
 global onWeb = 0
 global unlockCheat = 0
 
@@ -1143,6 +1143,7 @@ function Popup(area, unlockNum)
 		trashBag.insert(img)
 	elseif unlockNum > 30
 		//Newly unlocked song, they are 30+
+		SetSpriteImage(spr, popupBackGI)
 		sID = unlockNum-30
 		img = LoadImageR("musicBanners/banner" + str(sID) + ".png")
 		SetSpriteImage(spr+1, img)

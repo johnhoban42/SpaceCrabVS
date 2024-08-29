@@ -958,9 +958,9 @@ function SendSpecial2()
 		
 		if GetSpriteExists(special2Ex1) = 0
 			SetFolder("/media/ui")
-			LoadSpriteExpress(special2Ex1, "clockhand2b.png", 100*gameScale#, 100*gameScale#, -100, -100, 6)	//Minute hand
-			LoadSpriteExpress(special2Ex2, "clockhand1b.png", 100*gameScale#, 100*gameScale#, -100, -100, 6)	//Hour hand
-			LoadSpriteExpress(special2Ex3, "clock.png", 100*gameScale#, 100*gameScale#, -200, -200, 7)	//Clock
+			LoadSpriteExpress(special2Ex1, "clockhand4" + AltStr(crab2Alt) + "2.png", 100*gameScale#, 100*gameScale#, -100, -100, 6)	//Minute hand
+			LoadSpriteExpress(special2Ex2, "clockhand4" + AltStr(crab2Alt) + "1.png", 100*gameScale#, 100*gameScale#, -100, -100, 6)	//Hour hand
+			LoadSpriteExpress(special2Ex3, "clock4" + AltStr(crab2Alt) + ".png", 100*gameScale#, 100*gameScale#, -200, -200, 7)	//Clock
 		endif
 		
 		SetSpriteColorAlpha(special2Ex1, 0)

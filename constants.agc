@@ -85,13 +85,13 @@ global metSizeY = 80
 #constant ninjaCrabTimeMax 500	
 
 //										D		D		D		D		D		D		1		2		3		4		5		6		1		2		3		4		5		6		1		2		3		4		5		6
-//									Nul	Space	Wizard	Top		Rave	Chrono	Ninja	Mad		King	Taxi	Fan		Jeff	Team P	Al		Cbcus	Barc	Hwaii	Rock	Crnme	Future	Knight	Sk8r	Holy	Cake	Chimera
+//									Nul	Space	Wizard	Top		Rave		Chrono	Ninja	Mad		King		Taxi		Fan		Jeff		Team P	Al		Cbcus	Barc		Hwaii	Rock		Crnme	Future	Knight	Sk8r		Holy		Cake		Chimera
 global crabVel as float [24] = 		[0,	 1.28,	1.08,	2.48,	1.59,	1.38,	1.5,	1.3,	1.06,	2.78,	1.52,	1.33,	1.6,	1.30,	1.12,	2.2,	1.46,	1.4,	1.4,	1.39,	1.18,	2.3,	1.45,	1.36,	1.4]
-global crabAccel as float [24] = 	[0,	 0.1,	0.13,	0.03,	0.08,	0.1,	0.1,	0.09,	0.13,	0.024,	0.09,	0.115,	0.1,	0.1,	0.12,	0.06,	0.09,	0.1,	0.1,	0.11,	0.14,	0.052,	0.08,	0.12,	0.1]	
+global crabAccel as float [24] = 		[0,	 0.1,	0.13,	0.03,	0.08,	0.1,	0.1,	0.09,	0.13,	0.024,	0.09,	0.115,	0.1,	0.1,	0.12,	0.06,	0.09,	0.1,	0.1,	0.11,	0.14,	0.052,	0.08,	0.12,	0.1]	
 global crabJumpHMax as float [24] = 	[0,	 5,		10.5,	8.0,	10.0,	5.0,	6.0,	4,		11.5,	7.0,	9.8,	5.0,	2,		6,		10.5,	3.0,	11.0,	6.0,	2.0,	-4,		9.0,	8.2,	15,		4.5,	7.0]
 global crabJumpSpeed as float [24] =	[0,	 1.216,	1.516,	-3,		-1.28,	-3.216,	.816,	1.2,	1.516,	-2,		-1.0,	-3.22,	.8,		1.116,	1.516,	-3,		-2,		-4.0,	0.5,	1.3,	1.416,	-2.6,	-1.28,	-2.9,	.9]
 global crabJumpDMax as float [24] =	[0,	 28,	40,		32,		43,		28,		26,		29,		38,		32,		37,		28,		27,		28,		40,		32,		45,		22,		27,		28,		35,		30,		55,		25,		25]
-global crabFramerate as integer[24]=	[0,  10,	13,		10,		18,		10,		15,		14,		12,		15,		12,		10,		15,		12,		12,		16,		10,		12,		12,		10,		10,		14,		10,		12,		10]
+global crabFramerate as integer[24]=	[0,  10,		13,		10,		18,		10,		15,		14,		12,		15,		12,		10,		15,		12,		12,		16,		10,		12,		12,		10,		10,		14,		10,		12,		10]
 global crabSPAtck as integer[24] = 	[0,	 20,	20,		25,		23,		30,		18,		20,		16,		21,		25,		29,		20,		20,		20,		25,		23,		30,		20,		17,		23,		25,		26,		30,		20]
 //global crabSPAtck as integer[24] = 	[0,	 20,	20,		25,		23,		0,		18,		20,		16,		21,		1,		0,		20,		20,		20,		1,		1,		0,		1,		1,		1,		1,		1,		0,		1]
 
@@ -361,6 +361,7 @@ global met3CD2# = 0 //400
 #constant fontScoreI 1005	//SnowTunes UI Font
 #constant fontTitleScreenI 1006	//Corbel (Italicised)
 #constant popupBackI 1009
+#constant popupBackGI 1010
 
 #constant starParticleI 11
 
@@ -1396,6 +1397,7 @@ function LoadBaseImages()
 	LoadImage(logoDemoI, "titleDemo.png")
 	LoadImage(logoFruitI, "titleFruit.png")
 	LoadImage(popupBackI, "popupBack.png")
+	LoadImage(popupBackGI, "popupBackG.png")
 	
 	SetFolder("/media")
 	
