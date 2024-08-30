@@ -1276,6 +1276,17 @@ function PlayCredits(credVer)
 	if dispH then SetTextExpress(credT, credS$, 72, fontDescI, 1, w/2, h+50, 1, -21)
 	if dispH = 0 then SetTextExpress(credT, credS$, 65, fontDescI, 1, w/2, h+50, 1, -18)
 	
+	SetFolder("/media/ui")
+	credPic = LoadSprite("credPic.png")
+	if dispH
+		//SetSpriteExpress(credPic, h*5/6*93/120, h*5/6, w/2 + 80, 0, 1)
+		SetSpriteExpress(credPic, h*5/6*93/120, h*5/6, w/2 + 60, 0, 1)
+	else
+		SetSpriteExpress(credPic, w*3/4, w*3/4*120/93, 0, 0, 1)
+		SetSpriteMiddleScreenX(credPic)
+	endif
+	SetSpriteAngle(credPic, 6)
+	
 	endDone = 0
 	while (endDone = 0)
 		
@@ -1285,6 +1296,8 @@ function PlayCredits(credVer)
 		
 		SetTextY(credT, GetTextY(credT) - GetFrameTime()*100.0)
 		if GetPointerState() or GetRawKeyState(32) then SetTextY(credT, GetTextY(credT) - GetFrameTime()*1000.0)
+		if dispH then SetSpriteY(credPic, GetTextY(credT) + GetTextTotalHeight(credT)-620)
+		if dispH = 0 then SetSpriteY(credPic, GetTextY(credT) + GetTextTotalHeight(credT)-970)
 		
 		if debug then Print(GetTextY(credT))
 		
@@ -1292,11 +1305,14 @@ function PlayCredits(credVer)
 			SetTextY(credT, -7599)
 			DoInputs()
 			if GetPointerPressed() or InputSelect then endDone = 1
+			SetSpriteY(credPic, GetTextY(credT) + GetTextTotalHeight(credT)-620)
 		endif
-		if GetTextY(credT) < -7300 and dispH = 0
-			SetTextY(credT, -7299)
+		if GetTextY(credT) < -7400 and dispH = 0
+			SetTextY(credT, -7399)
+			SetSpriteY(credPic, GetTextY(credT) + GetTextTotalHeight(credT)-970)
 			if GetPointerPressed() or InputSelect then endDone = 1
 		endif
+		
 		
 		curLine = 0
 		for i = 1 to Len(credS$)
@@ -1323,6 +1339,7 @@ function PlayCredits(credVer)
 	DeleteSprite(playButton)
 	DeleteSprite(exitButton)
 	DeleteSprite(ST_TITLE)
+	DeleteSprite(credPic)
 	DeleteText(credT)
 	
 	//TransitionStart(lastTranType)

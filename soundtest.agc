@@ -228,6 +228,8 @@ function DoSoundTest()
 	IncSpriteAngle(sprSoundTitle, 0.5*fpsr#)
 	IncSpriteAngle(sprSoundCharacter, 0.6*fpsr#)
 	
+	if mod(round(localSeconds#)+1080, 8) = 0 and GetSpritePlaying(sprSoundBack) = 0 then PlaySprite(sprSoundBack, 10, 0, 1, 8)
+	
 	//Do loop for the mode is here
 	//check which button the player hit
 	// back button

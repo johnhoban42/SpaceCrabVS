@@ -36,8 +36,8 @@ function InitStart()
 	SetSpriteShape(SPR_TITLE, 1)
 	AddButton(SPR_TITLE)
 
-	CreateTextExpress(TXT_SINGLE, "Single Player", 84, fontTitleScreenI, 0, 40, 60, sDepth)
-
+	//CreateTextExpress(TXT_SINGLE, "Single Player", 84, fontTitleScreenI, 0, 40, 60, sDepth)
+	LoadSprite(TXT_SINGLE, "singleplayer.png")
 	//Enter Story Mode Button
 	LoadAnimatedSprite(SPR_STORY_START, "story", 9)
 	AddButton(SPR_STORY_START)
@@ -54,7 +54,8 @@ function InitStart()
 	LoadSprite(SPR_CLASSIC, "classic1.png")
 	AddButton(SPR_CLASSIC)
 	
-	CreateTextExpress(TXT_MULTI, "Local Two Player", 84, fontTitleScreenI, 0, 40, 60, sDepth)
+	//CreateTextExpress(TXT_MULTI, "Local Two Player", 84, fontTitleScreenI, 0, 40, 60, sDepth)
+	LoadSprite(TXT_MULTI, "localtwoplayer.png")
 	
 	//P1 Start Button
 	//LoadAnimatedSprite(SPR_START1, "ready", 22)
@@ -90,28 +91,30 @@ function InitStart()
 		SetSpriteMiddleScreen(SPR_BG_START)
 		
 		//Title logo
-		SetSpriteExpress(SPR_TITLE, w*3/5, w*3/5, 0, 50, sDepth)
+		SetSpriteExpress(SPR_TITLE, w*3/5, w*3/5, 0, 50, sDepth-1)
 		SetSpriteMiddleScreenX(SPR_TITLE)
 
-		SetTextExpress(TXT_SINGLE, "Single Player", 90, fontTitleScreenI, 0, 40, 550, sDepth, -28)
+		//SetTextExpress(TXT_SINGLE, "Single Player", 90, fontTitleScreenI, 0, 40, 550, sDepth, -28)
+		SetSpriteExpress(TXT_SINGLE, 520, 60, 40, 550, sDepth)
 	
 		smallBW = 250
 		smallBL = smallBW*3/5
 		
 		//Enter Story Mode Button
-		SetSpriteExpress(SPR_STORY_START, smallBW*1.3, smallBL*1.3, w/2+smallBW*(-0.65-0.75), GetTextY(TXT_SINGLE) + smallBL*.7, sDepth)
+		SetSpriteExpress(SPR_STORY_START, smallBW*1.3, smallBL*1.3, w/2+smallBW*(-0.65-0.75), GetSpriteY(TXT_SINGLE) + smallBL*.7 -10, sDepth)
 		//Enter VS AI Button
-		SetSpriteExpress(SPR_STARTAI, smallBW*1.3, smallBL*1.3, w/2+smallBW*(-0.65+0.75), GetTextY(TXT_SINGLE) + smallBL*.7, sDepth)
+		SetSpriteExpress(SPR_STARTAI, smallBW*1.3, smallBL*1.3, w/2+smallBW*(-0.65+0.75), GetSpriteY(TXT_SINGLE) + smallBL*.7-10, sDepth)
 
 		//Mirror Enter Button
-		SetSpriteExpress(SPR_STARTMIRROR, smallBW*1.1, smallBL*1.1, w/2+smallBW*(-0.55-0.6), GetTextY(TXT_SINGLE) + smallBL*2.1, sDepth)
+		SetSpriteExpress(SPR_STARTMIRROR, smallBW*1.1, smallBL*1.1, w/2+smallBW*(-0.55-0.6), GetSpriteY(TXT_SINGLE) + smallBL*2.1-10, sDepth)
 		//Classic Enter Button
-		SetSpriteExpress(SPR_CLASSIC, smallBW*1.1, smallBL*1.1, w/2+smallBW*(-0.55+0.6), GetTextY(TXT_SINGLE) + smallBL*2.1, sDepth)
+		SetSpriteExpress(SPR_CLASSIC, smallBW*1.1, smallBL*1.1, w/2+smallBW*(-0.55+0.6), GetSpriteY(TXT_SINGLE) + smallBL*2.1-10, sDepth)
 
-		SetTextExpress(TXT_MULTI, "Local Two Player", 90, fontTitleScreenI, 0, 40, GetTextY(TXT_SINGLE)+500, sDepth, -28)
+		//SetTextExpress(TXT_MULTI, "Local Two Player", 90, fontTitleScreenI, 0, 40, GetTextY(TXT_SINGLE)+500, sDepth, -28)
+		SetSpriteExpress(TXT_MULTI, 620, 60, 40, GetSpriteY(TXT_SINGLE)+510, sDepth)
 
 		//P1 Start Button
-		SetSpriteExpress(SPR_START1, 842*.67, 317*.67, 0, GetTextY(TXT_MULTI)+90, sDepth)
+		SetSpriteExpress(SPR_START1, 842*.67, 317*.67, 0, GetSpriteY(TXT_MULTI)+80, sDepth)
 		SetSpriteMiddleScreenX(SPR_START1)
 		
 		SetTextExpress(TXT_OTHER, "_____________", 84, fontTitleScreenI, 1, w/2, GetSpriteY(SPR_START1)+GetSpriteHeight(SPR_START1)-30, sDepth, -5)
@@ -135,30 +138,33 @@ function InitStart()
 		SetSpriteMiddleScreen(SPR_BG_START)
 		
 		//Title logo
-		SetSpriteExpress(SPR_TITLE, h*5/9, h*5/9, 0, 50, sDepth)
+		SetSpriteExpress(SPR_TITLE, h*5/9, h*5/9, 0, 50, sDepth-1)
 		SetSpriteMiddleScreenX(SPR_TITLE)
 
 		centerL = 270
 		centerR = w - centerL
 
-		SetTextExpress(TXT_SINGLE, "Single Player", 70, fontTitleScreenI, 1, centerL, 330, sDepth, -23)
+		//SetTextExpress(TXT_SINGLE, "Single Player", 70, fontTitleScreenI, 1, centerL, 330, sDepth, -17)
+		SetSpriteExpress(TXT_SINGLE, 347, 40, centerL-347/2, 330, sDepth)
 	
 		smallBW = 180
 		smallBL = smallBW*3/5
 		//Enter Story Mode Button
-		SetSpriteExpress(SPR_STORY_START, smallBW*1.3, smallBL*1.3, centerL+smallBW*(-0.65-0.75), GetTextY(TXT_SINGLE) + smallBL*.7, sDepth)
+		SetSpriteExpress(SPR_STORY_START, smallBW*1.3, smallBL*1.3, centerL+smallBW*(-0.65-0.75), GetSpriteY(TXT_SINGLE) + smallBL*.7, sDepth)
 		//Enter VS AI Button
-		SetSpriteExpress(SPR_STARTAI, smallBW*1.3, smallBL*1.3, centerL+smallBW*(-0.65+0.75), GetTextY(TXT_SINGLE) + smallBL*.7, sDepth)
+		SetSpriteExpress(SPR_STARTAI, smallBW*1.3, smallBL*1.3, centerL+smallBW*(-0.65+0.75), GetSpriteY(TXT_SINGLE) + smallBL*.7, sDepth)
 
 		//Mirror Enter Button
-		SetSpriteExpress(SPR_STARTMIRROR, smallBW*1.1, smallBL*1.1, centerL+smallBW*(-0.55-0.6), GetTextY(TXT_SINGLE) + smallBL*2.1, sDepth)
+		SetSpriteExpress(SPR_STARTMIRROR, smallBW*1.1, smallBL*1.1, centerL+smallBW*(-0.55-0.6), GetSpriteY(TXT_SINGLE) + smallBL*2.1, sDepth)
 		//Classic Enter Button
-		SetSpriteExpress(SPR_CLASSIC, smallBW*1.1, smallBL*1.1, centerL+smallBW*(-0.55+0.6), GetTextY(TXT_SINGLE) + smallBL*2.1, sDepth)
+		SetSpriteExpress(SPR_CLASSIC, smallBW*1.1, smallBL*1.1, centerL+smallBW*(-0.55+0.6), GetSpriteY(TXT_SINGLE) + smallBL*2.1, sDepth)
 
-		SetTextExpress(TXT_MULTI, "Local Two Player", 70, fontTitleScreenI, 1, centerR, GetTextY(TXT_SINGLE), sDepth, -23)
+		//SetTextExpress(TXT_MULTI, "Local Two Player", 70, fontTitleScreenI, 1, centerR, GetSpriteY(TXT_SINGLE), sDepth, -23)
+		//SetSpriteExpress(TXT_MULTI, "Local Two Player", 70, fontTitleScreenI, 1, centerR, GetSpriteY(TXT_SINGLE), sDepth, -23)
+		SetSpriteExpress(TXT_MULTI, 413, 40, centerR-413/2, 330, sDepth)
 
 		//P1 Start Button
-		SetSpriteExpress(SPR_START1, 842*.67*.72, 317*.67*.72, centerR - 842*.67*.72*.5, GetTextY(TXT_MULTI)+smallBL*.7, sDepth)
+		SetSpriteExpress(SPR_START1, 842*.67*.72, 317*.67*.72, centerR - 842*.67*.72*.5, GetSpriteY(TXT_MULTI)+smallBL*.7, sDepth)
 		
 		SetTextExpress(TXT_OTHER, "__________", 66, fontTitleScreenI, 1, centerR, GetSpriteY(SPR_START1)+GetSpriteHeight(SPR_START1)-30, sDepth, -5)
 		
@@ -184,9 +190,9 @@ function InitStart()
 		SetTweenSpriteY(twn, GetSpriteY(twn)+2000, GetSpriteY(twn), TweenEaseIn2())
 	next i
 	for i = 0 to 2
-		twn = TXT_SINGLE+i
-		CreateTweenText(twn, .3)
-		SetTweenTextY(twn, GetTextY(twn)+2000, GetTextY(twn), TweenEaseIn2())
+		//twn = TXT_SINGLE+i
+		//CreateTweenSprite(twn, .3)
+		//SetTweenSpriteY(twn, GetSpriteY(twn)+2000, GetSpriteY(twn), TweenEaseIn2())
 	next i
 
 	//The mirror/classic stuff
@@ -480,10 +486,8 @@ function DoStart()
 	
 	//Going to the settings screen
 	if ButtonMultitouchEnabled(SPR_SETTINGS)
-		TransitionStart(1)
-		state = PlayCredits(1)
-		//ClearMultiTouch()
-		//StartSettings()
+		ClearMultiTouch()
+		StartSettings()
 	endif
 	
 	
@@ -695,13 +699,13 @@ function ToggleStartScreen(screen, swipe)
 	//The main menu sprites/text in order
 	SetSpriteVisible(SPR_TITLE, 0)
 	
-	SetTextVisible(TXT_SINGLE, 0)
+	SetSpriteVisible(TXT_SINGLE, 0)
 	SetSpriteVisible(SPR_STORY_START, 0) 
 	SetSpriteVisible(SPR_STARTAI, 0)
 	SetSpriteVisible(SPR_STARTMIRROR, 0)
 	SetSpriteVisible(SPR_CLASSIC, 0)
 	
-	SetTextVisible(TXT_MULTI, 0)
+	SetSpriteVisible(TXT_MULTI, 0)
 	SetSpriteVisible(SPR_START1, 0)
 	
 	SetTextVisible(TXT_OTHER, 0)
@@ -754,13 +758,13 @@ function ToggleStartScreen(screen, swipe)
 		
 		SetSpriteVisible(SPR_TITLE, 1)
 		
-		SetTextVisible(TXT_SINGLE, 1)
+		SetSpriteVisible(TXT_SINGLE, 1)
 		SetSpriteVisible(SPR_STORY_START, 1)
 		SetSpriteVisible(SPR_STARTAI, 1)
 		SetSpriteVisible(SPR_STARTMIRROR, 1)
 		SetSpriteVisible(SPR_CLASSIC, 1)
 		
-		SetTextVisible(TXT_MULTI, 1)
+		SetSpriteVisible(TXT_MULTI, 1)
 		SetSpriteVisible(SPR_START1, 1)
 		
 		SetTextVisible(TXT_OTHER, 1)
@@ -1114,8 +1118,8 @@ function ExitStart()
 	DeleteText(TXT_SP_LOGO)
 	DeleteText(TXT_HIGHSCORE)
 	DeleteText(SPR_SP_C1)
-	DeleteText(TXT_SINGLE)
-	DeleteText(TXT_MULTI)
+	DeleteSprite(TXT_SINGLE)
+	DeleteSprite(TXT_MULTI)
 	DeleteText(TXT_OTHER)
 	if GetSpriteExists(coverS) then DeleteSprite(coverS)
 	if GetTweenExists(TXT_SP_LOGO) then DeleteTween(TXT_SP_LOGO)

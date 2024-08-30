@@ -26,7 +26,7 @@ SetWindowSize( 700, 1400, 0 )
 SetWindowAllowResize( 1 ) // allow the user to resize the window
 
 global demo = 0
-global debug = 1
+global debug = 0
 global onWeb = 0
 global unlockCheat = 0
 
@@ -499,6 +499,8 @@ function TurnOnCheats()
 	musicUnlocked = 22
 	evilUnlock = 1
 	unlockCheat = 1
+	ExitStart()
+	InitStart()
 	Popup(MIDDLE, -3)
 endfunction
 

@@ -1070,7 +1070,7 @@ function PlayMusicOGGSP(songID, loopYN)
 		endif
 		if songID = loveMusic
 			LoadMusicOGG(loveMusic, "love.ogg")
-			SetMusicLoopTimesOGG(loveMusic, 3.077, -1)
+			SetMusicLoopTimesOGG(loveMusic, 3.077-.507, -1)
 		endif
 		if songID = emotionMusic
 			LoadMusicOGG(emotionMusic, "emotion.ogg")
